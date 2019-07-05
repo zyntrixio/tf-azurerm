@@ -20,7 +20,7 @@ resource "azurerm_virtual_machine" "default" {
     location = "${var.location}"
     resource_group_name = "${var.resource_group_name}"
     network_interface_ids = [
-        "${azurerm_network_interface.default[count.index]}",
+        "${element(azurerm_network_interface.default.*.id, count.index)}",
     ]
     vm_size = "${var.vm_size}"
     delete_os_disk_on_termination = true
@@ -53,8 +53,8 @@ resource "azurerm_virtual_machine" "default" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "default" {
-    count = 2
-    network_interface_id = "${azurerm_network_interface.default[count.index]}"
+    count = var.vm_count
+    network_interface_id = "${element(azurerm_network_interface.default.*.id, count.index)}"
     ip_configuration_name = "ipconfig"
-    backend_address_pool_id = "${var.lb_backend_address_pool_id_list}"
+    backend_address_pool_id = "${var.azurerm_lb_backend_address_pool_id_list}"
 }

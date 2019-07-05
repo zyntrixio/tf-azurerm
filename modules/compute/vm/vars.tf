@@ -54,9 +54,3 @@ variable "os" {
     version   = "latest"
   }
 }
-
-variable "lb_backend_address_pool_id_list" {
-  description = "the id for the azurerm_lb_backend_address_pool resource"
-#  type        = "list"
-#  default     = ["",""]
-}
