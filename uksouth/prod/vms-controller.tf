@@ -58,9 +58,33 @@ resource "azurerm_virtual_machine" "controller" {
     }
 }
 
-#resource "azurerm_network_interface_backend_address_pool_association" "controller-bap-assoc" {
-#    count = 3
-#    network_interface_id = "${element(azurerm_network_interface.controller.*.id, count.index)}"
-#    ip_configuration_name = "ipconfig"
-#    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.1.id}"
-#}
+module "controller_lb_rules" {
+  source = "../../modules/lb_rules"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.1.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-02"
+
+  lb_port = {
+    kube_api = [ "6443", "TCP", "6443" ]
+  }
+}
+
+module "controller_lb_rules_udp" {
+  source = "../../modules/lb_rules_udp"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.1.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-02"
+
+  lb_port = {
+    udphack_controller = ["65533", "UDP", "65533"]
+  }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "controller-bap-assoc" {
+    count = 3
+    network_interface_id = "${element(azurerm_network_interface.controller.*.id, count.index)}"
+    ip_configuration_name = "ipconfig"
+    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.1.id}"
+}

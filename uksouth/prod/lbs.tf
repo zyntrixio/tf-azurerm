@@ -41,21 +41,21 @@ resource "azurerm_lb_backend_address_pool" "pools" {
     resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
-resource "azurerm_lb_probe" "ssh" {
-    resource_group_name = "${azurerm_resource_group.rg.name}"
-    loadbalancer_id = "${azurerm_lb.lb.id}"
-    name = "ssh-running-probe"
-    port = 22
-}
+#resource "azurerm_lb_probe" "ssh" {
+#    resource_group_name = "${azurerm_resource_group.rg.name}"
+#    loadbalancer_id = "${azurerm_lb.lb.id}"
+#    name = "ssh-running-probe"
+#    port = 22
+#}
 
-resource "azurerm_lb_rule" "ssh" {
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  name = "ssh"
-  protocol = "Tcp"
-  frontend_port = 22
-  backend_port = 22
-  frontend_ip_configuration_name = "subnet-04"
-  probe_id = "${azurerm_lb_probe.ssh.id}"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.3.id}"
-}
+#resource "azurerm_lb_rule" "ssh" {
+#  resource_group_name = "${azurerm_resource_group.rg.name}"
+#  loadbalancer_id = "${azurerm_lb.lb.id}"
+#  name = "ssh"
+#  protocol = "Tcp"
+#  frontend_port = 22
+#  backend_port = 22
+#  frontend_ip_configuration_name = "subnet-04"
+#  probe_id = "${azurerm_lb_probe.ssh.id}"
+#  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.3.id}"
+#}

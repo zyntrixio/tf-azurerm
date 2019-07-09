@@ -57,9 +57,37 @@ resource "azurerm_virtual_machine" "worker" {
     }
 }
 
-#resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-assoc" {
-#    count = 2
-#    network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
-#    ip_configuration_name = "ipconfig"
-#    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
-#}
+module "worker_lb_rules" {
+  source = "../../modules/lb_rules"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-01"
+
+  lb_port = {
+    ingress = [ "443", "TCP", "30139" ]
+    unifi = ["8080", "TCP", "32143"]
+    unifi-guest = ["8880", "TCP", "32153"]
+    unifi-guest-https = ["8843", "TCP", "30585"]
+  }
+}
+
+module "worker_lb_rules_udp" {
+  source = "../../modules/lb_rules_udp"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-01"
+
+  lb_port = {
+    udphack_worker = ["65532", "UDP", "65532"]
+    unifi_stun = ["32145", "UDP", "32145"]
+  }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-assoc" {
+    count = 2
+    network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
+    ip_configuration_name = "ipconfig"
+    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+}
