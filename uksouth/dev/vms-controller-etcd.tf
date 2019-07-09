@@ -1,9 +1,8 @@
-resource "azurerm_network_interface" "controller" {
-    count = 3
-    name = "${format("${azurerm_resource_group.rg.name}-controller-%02d-nic", count.index + 1)}"
+resource "azurerm_network_interface" "controller-etcd" {
+    count = 1
+    name = "${format("${azurerm_resource_group.rg.name}-controller-etcd-%02d-nic", count.index + 1)}"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
-    enable_accelerated_networking = true
 
     ip_configuration {
         name = "ipconfig"
@@ -12,19 +11,19 @@ resource "azurerm_network_interface" "controller" {
     }
 
     tags = {
-        environment = "production"
+        environment = "development"
     }
 }
 
-resource "azurerm_virtual_machine" "controller" {
-    count = 3
-    name = "${format("${azurerm_resource_group.rg.name}-controller-%02d", count.index + 1)}"
+resource "azurerm_virtual_machine" "controller-etcd" {
+    count = 1 
+    name = "${format("${azurerm_resource_group.rg.name}-controller-etcd-%02d", count.index + 1)}"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
     network_interface_ids = [
-        "${element(azurerm_network_interface.controller.*.id, count.index)}",
+        "${element(azurerm_network_interface.controller-etcd.*.id, count.index)}",
     ]
-    vm_size = "${var.controller_vm_size}"
+    vm_size = "${var.controller_etcd_vm_size}"
     delete_os_disk_on_termination = true
     delete_data_disks_on_termination = false
 
@@ -36,7 +35,7 @@ resource "azurerm_virtual_machine" "controller" {
     }
 
     storage_os_disk {
-        name = "${format("${azurerm_resource_group.rg.name}-controller-%02d-disk", count.index + 1)}"
+        name = "${format("${azurerm_resource_group.rg.name}-controller-etcd-%02d-disk", count.index + 1)}"
         disk_size_gb = "32"
         caching = "ReadOnly"
         create_option = "FromImage"
@@ -44,7 +43,7 @@ resource "azurerm_virtual_machine" "controller" {
     }
 
     os_profile {
-        computer_name = "${format("${azurerm_resource_group.rg.name}-controller-%02d", count.index + 1)}"
+        computer_name = "${format("${azurerm_resource_group.rg.name}-controller-etcd-%02d", count.index + 1)}"
         admin_username = "laadmin"
         admin_password = "TFB2248hxq!!"
     }
@@ -54,13 +53,13 @@ resource "azurerm_virtual_machine" "controller" {
     }
 
     tags = {
-        environment = "production"
+        environment = "development"
     }
 }
 
-#resource "azurerm_network_interface_backend_address_pool_association" "controller-bap-assoc" {
+#resource "azurerm_network_interface_backend_address_pool_association" "controller-etcd-bap-assoc" {
 #    count = 3
-#    network_interface_id = "${element(azurerm_network_interface.controller.*.id, count.index)}"
+#    network_interface_id = "${element(azurerm_network_interface.controller-etcd.*.id, count.index)}"
 #    ip_configuration_name = "ipconfig"
 #    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.1.id}"
 #}

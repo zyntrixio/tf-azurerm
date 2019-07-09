@@ -23,7 +23,7 @@ resource "azurerm_virtual_machine" "vault" {
     network_interface_ids = [
         "${element(azurerm_network_interface.vault.*.id, count.index)}",
     ]
-    vm_size = "Standard_B2s"
+    vm_size = "${var.vault_vm_size}"
     delete_os_disk_on_termination = true
     delete_data_disks_on_termination = false
 

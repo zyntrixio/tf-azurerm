@@ -6,3 +6,7 @@ variable subnet_address_prefixes {
         "10.0.66.0/24", # Bastion Hosts
     ]
 }
+variable worker_vm_size { default = "Standard_D8s_v3" }
+variable controller_vm_size { default = "Standard_D4s_v3" }
+variable etcd_vm_size { default = "Standard_D2s_v3" }
+variable bastion_vm_size { default = "Standard_B2s" }
