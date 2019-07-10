@@ -57,6 +57,47 @@ resource "azurerm_virtual_machine" "worker" {
     }
 }
 
+module "worker_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-01-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowAllControllerSubnetTraffic"
+      priority = "100"
+      source_address_prefix = "${var.subnet_address_prefixes[1]}"
+    },
+    {
+      name = "AllowHttpTraffic"
+      priority = "110"
+      destination_port_range = "30000"
+      protocol = "TCP"
+    },
+    {
+      name = "AllowHttpsTraffic"
+      priority = "120"
+      destination_port_range = "30001"
+      protocol = "TCP"
+    },
+    {
+      name = "AllowSSH"
+      priority = "130"
+      protocol = "TCP"
+      destination_port_range = "22"
+    },
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
+  ]
+}
+
 module "worker_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = "${azurerm_lb.lb.id}"
@@ -65,10 +106,8 @@ module "worker_lb_rules" {
   frontend_ip_configuration_name = "subnet-01"
 
   lb_port = {
-    ingress = [ "443", "TCP", "30139" ]
-    unifi = ["8080", "TCP", "32143"]
-    unifi-guest = ["8880", "TCP", "32153"]
-    unifi-guest-https = ["8843", "TCP", "30585"]
+    ingress_http = [ "80", "TCP", "30000" ]
+    ingress_https = [ "443", "TCP", "30001" ]
   }
 }
 
@@ -81,7 +120,6 @@ module "worker_lb_rules_udp" {
 
   lb_port = {
     udphack_worker = ["65532", "UDP", "65532"]
-    unifi_stun = ["32145", "UDP", "32145"]
   }
 }
 

@@ -57,6 +57,32 @@ resource "azurerm_virtual_machine" "bastion" {
     }
 }
 
+module "bastion_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-04-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowSSH"
+      priority = "100"
+      protocol = "TCP"
+      destination_port_range = "22"
+      source_address_prefix = "192.168.0.4/32"
+      destination_address_prefix = "${var.subnet_address_prefixes[3]}"
+    },
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
+  ]
+}
+
 module "bastion_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = "${azurerm_lb.lb.id}"
@@ -66,6 +92,18 @@ module "bastion_lb_rules" {
 
   lb_port = {
     ssh = [ "22", "TCP", "22" ]
+  }
+}
+
+module "bastion_lb_rules_udp" {
+  source = "../../modules/lb_rules_udp"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.3.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-04"
+
+  lb_port = {
+    udphack_bastion = ["65534", "UDP", "65534"]
   }
 }
 

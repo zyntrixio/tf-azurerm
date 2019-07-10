@@ -58,6 +58,39 @@ resource "azurerm_virtual_machine" "controller" {
     }
 }
 
+module "controller_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-02-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowAllBastionSubnetTraffic"
+      priority = "100"
+      source_address_prefix = "${var.subnet_address_prefixes[3]}"
+    },
+    {
+      name = "AllowAllEtcdSubnetTraffic"
+      priority = "110"
+      source_address_prefix = "${var.subnet_address_prefixes[2]}"
+    },
+    {
+      name = "AllowKubectl"
+      priority = "120"
+      destination_port_range = "6443"
+    },
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
+  ]
+}
+
 module "controller_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = "${azurerm_lb.lb.id}"

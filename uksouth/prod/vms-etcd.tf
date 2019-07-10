@@ -57,6 +57,38 @@ resource "azurerm_virtual_machine" "etcd" {
     }
 }
 
+module "etcd_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-03-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowAllBastionSubnetTraffic"
+      priority = "100"
+      source_address_prefix = "${var.subnet_address_prefixes[3]}"
+    },
+    {
+      name = "AllowEtcdClientRequestsWorker"
+      priority = "110"
+      protocol = "TCP"
+      destination_port_range = "2379-2380"
+      source_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowEtcdClientRequestsController"
+      priority = "120"
+      protocol = "TCP"
+      destination_port_range = "2379-2380"
+      source_address_prefix = "${var.subnet_address_prefixes[1]}"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
+  ]
+}
+
 #resource "azurerm_network_interface_backend_address_pool_association" "etcd-bap-assoc" {
 #    count = 2
 #    network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"

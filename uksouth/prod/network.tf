@@ -55,19 +55,19 @@ resource "azurerm_subnet_route_table_association" "rt_assoc" {
     route_table_id = "${azurerm_route_table.rt.id}"
 }
 
-resource "azurerm_network_security_rule" "nsr" {
-  name = "ssh"
-  priority = 100
-  direction = "Inbound"
-  access = "Allow"
-  protocol = "TCP"
-  source_port_range = "*"
-  destination_port_range = "22"
-  source_address_prefix = "192.168.0.4/32"
-  destination_address_prefix = "${var.subnet_address_prefixes[3]}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  network_security_group_name = "${azurerm_network_security_group.nsg.3.name}"
-}
+#resource "azurerm_network_security_rule" "nsr" {
+#  name = "ssh"
+#  priority = 100
+#  direction = "Inbound"
+#  access = "Allow"
+#  protocol = "TCP"
+#  source_port_range = "*"
+#  destination_port_range = "22"
+#  source_address_prefix = "192.168.0.4/32"
+#  destination_address_prefix = "${var.subnet_address_prefixes[3]}"
+#  resource_group_name = "${azurerm_resource_group.rg.name}"
+#  network_security_group_name = "${azurerm_network_security_group.nsg.3.name}"
+#}
 
 resource "azurerm_virtual_network_peering" "peer" {
     name = "local-to-firewall"

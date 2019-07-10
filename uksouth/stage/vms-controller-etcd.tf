@@ -58,6 +58,42 @@ resource "azurerm_virtual_machine" "controller-etcd" {
     }
 }
 
+module "controller_etcd_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-02-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowKubectl"
+      priority = "100"
+      destination_port_range = "6443"
+    },
+    {
+      name = "AllowEtcdClientRequestsWorker"
+      priority = "110"
+      protocol = "TCP"
+      destination_port_range = "2379-2380"
+      source_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowSSH"
+      priority = "120"
+      protocol = "TCP"
+      destination_port_range = "22"
+    },
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
+  ]
+}
+
 module "controller_etcd_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = "${azurerm_lb.lb.id}"
