@@ -1,14 +1,49 @@
+resource "azurerm_availability_set" "worker" {
+  name = "${azurerm_resource_group.rg.name}-worker-as"
+  location = "${azurerm_resource_group.rg.location}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  platform_fault_domain_count = 2
+  managed = true
+
+  tags = {
+    environment = "development"
+  }
+}
+
+variable "pod_ip_configs" {
+    default = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+    ]
+}
+
 resource "azurerm_network_interface" "worker" {
-  count = 2
+  count = "${var.worker_count}"
   name = "${format("${azurerm_resource_group.rg.name}-worker-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb"]
+  depends_on = ["azurerm_lb.lb", "azurerm_lb.plb"]
+  enable_accelerated_networking = true
+  enable_ip_forwarding = true
 
   ip_configuration {
-    name = "ipconfig"
-    subnet_id = "${azurerm_subnet.subnet.0.id}"
-    private_ip_address_allocation = "Dynamic"
+      name = "primary"
+      subnet_id = "${azurerm_subnet.subnet.0.id}"
+      private_ip_address_allocation = "Dynamic"
+      primary = true
+  }
+
+  dynamic "ip_configuration" {
+      for_each = [for s in var.pod_ip_configs: {
+          name = "${format("pod-%02d", s)}"
+      }]
+
+      content {
+          name = ip_configuration.value.name
+          subnet_id = "${azurerm_subnet.subnet.0.id}"
+          private_ip_address_allocation = "Dynamic"
+      }
   }
 
   tags = {
@@ -17,10 +52,11 @@ resource "azurerm_network_interface" "worker" {
 }
 
 resource "azurerm_virtual_machine" "worker" {
-  count = 2
+  count = "${var.worker_count}"
   name = "${format("${azurerm_resource_group.rg.name}-worker-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
+  availability_set_id = "${azurerm_availability_set.worker.id}"
   network_interface_ids = [
     "${element(azurerm_network_interface.worker.*.id, count.index)}",
   ]
@@ -31,7 +67,7 @@ resource "azurerm_virtual_machine" "worker" {
   storage_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "16.04-LTS"
     version   = "latest"
   }
 
@@ -85,26 +121,27 @@ module "worker_nsg_rules" {
       priority = "130"
       protocol = "TCP"
       destination_port_range = "22"
+      source_address_prefix = "192.168.0.0/24"
     },
-#    {
-#      name = "AllowLoadBalancer"
-#      source_address_prefix = "AzureLoadBalancer"
-#      priority = "4095"
-#    },
-#    {
-#      name = "BlockEverything"
-#      priority = "4096"
-#      access = "Deny"
-#    }
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
   ]
 }
 
-module "worker_lb_rules" {
+module "worker_public_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  loadbalancer_id = "${azurerm_lb.plb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  frontend_ip_configuration_name = "subnet-01"
+  frontend_ip_configuration_name = "${azurerm_public_ip.pip.name}"
 
   lb_port = {
     ingress_http = [ "80", "TCP", "30000" ]
@@ -114,19 +151,26 @@ module "worker_lb_rules" {
 
 module "worker_lb_rules_udp" {
   source = "../../modules/lb_rules_udp"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  loadbalancer_id = "${azurerm_lb.plb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  frontend_ip_configuration_name = "subnet-01"
+  frontend_ip_configuration_name = "${azurerm_public_ip.pip.name}"
 
   lb_port = {
     udphack_worker = ["65532", "UDP", "65532"]
   }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-assoc" {
-  count = 2
+resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-ppools-assoc" {
+  count = "${var.worker_count}"
   network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
-  ip_configuration_name = "ipconfig"
+  ip_configuration_name = "primary"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
+  count = "${var.worker_count}"
+  network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
+  ip_configuration_name = "primary"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
 }
