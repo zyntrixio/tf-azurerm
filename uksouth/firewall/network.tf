@@ -51,3 +51,11 @@ resource "azurerm_virtual_network_peering" "prod" {
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/uksouth-prod-vnet"
   allow_virtual_network_access = true
 }
+
+resource "azurerm_virtual_network_peering" "dev" {
+  name = "local-to-dev"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/uksouth-dev-vnet"
+  allow_virtual_network_access = true
+}
