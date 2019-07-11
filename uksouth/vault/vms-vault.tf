@@ -3,15 +3,16 @@ resource "azurerm_network_interface" "vault" {
     name = "${format("${azurerm_resource_group.rg.name}-vault-%02d-nic", count.index + 1)}"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
+    depends_on = ["azurerm_lb.lb"]
 
     ip_configuration {
         name = "ipconfig"
-        subnet_id = "${azurerm_subnet.subnet0.id}"
+        subnet_id = "${azurerm_subnet.subnet.0.id}"
         private_ip_address_allocation = "Dynamic"
     }
 
     tags = {
-        environment = "production"
+        environment = "vault"
     }
 }
 
@@ -53,7 +54,7 @@ resource "azurerm_virtual_machine" "vault" {
     }
 
     tags = {
-        environment = "production"
+        environment = "vault"
     }
 }
 
@@ -101,9 +102,9 @@ module "vault_nsg_rules" {
   ]
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "subnet0" {
+resource "azurerm_network_interface_backend_address_pool_association" "vault-bap-assoc" {
     count = 3
     network_interface_id = "${element(azurerm_network_interface.vault.*.id, count.index)}"
     ip_configuration_name = "ipconfig"
-    backend_address_pool_id = "${azurerm_lb_backend_address_pool.subnet0.id}"
+    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
 }

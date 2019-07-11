@@ -3,15 +3,16 @@ resource "azurerm_network_interface" "etcd" {
     name = "${format("${azurerm_resource_group.rg.name}-etcd-%02d-nic", count.index + 1)}"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
+    depends_on = ["azurerm_lb.lb"]
 
     ip_configuration {
         name = "ipconfig"
-        subnet_id = "${azurerm_subnet.subnet1.id}"
+        subnet_id = "${azurerm_subnet.subnet.1.id}"
         private_ip_address_allocation = "Dynamic"
     }
 
     tags = {
-        environment = "production"
+        environment = "vault"
     }
 }
 
@@ -53,7 +54,7 @@ resource "azurerm_virtual_machine" "etcd" {
     }
 
     tags = {
-        environment = "production"
+        environment = "vault"
     }
 }
 

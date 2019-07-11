@@ -3,6 +3,7 @@ resource "azurerm_network_interface" "controller-etcd" {
     name = "${format("${azurerm_resource_group.rg.name}-controller-etcd-%02d-nic", count.index + 1)}"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
+    depends_on = ["azurerm_lb.lb"]
 
     ip_configuration {
         name = "ipconfig"

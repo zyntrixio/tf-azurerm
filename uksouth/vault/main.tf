@@ -10,6 +10,6 @@ resource "azurerm_resource_group" "rg" {
     location = "uksouth"
 
     tags = {
-        environment = "production"
+        environment = "vault"
     }
 }
