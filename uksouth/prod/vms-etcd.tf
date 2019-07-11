@@ -81,11 +81,11 @@ module "etcd_nsg_rules" {
       destination_port_range = "2379-2380"
       source_address_prefix = "${var.subnet_address_prefixes[1]}"
     },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    }
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
   ]
 }
 

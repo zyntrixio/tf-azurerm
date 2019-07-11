@@ -70,16 +70,16 @@ module "bastion_nsg_rules" {
       source_address_prefix = "192.168.0.4/32"
       destination_address_prefix = "${var.subnet_address_prefixes[3]}"
     },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    }
+#    {
+#      name = "AllowLoadBalancer"
+#      source_address_prefix = "AzureLoadBalancer"
+#      priority = "4095"
+#    },
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
   ]
 }
 

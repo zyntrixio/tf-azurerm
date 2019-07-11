@@ -10,21 +10,21 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_network_security_group" "subnet0" {
-    name = "${azurerm_resource_group.rg.name}-nsg-0"
+    name = "${azurerm_resource_group.rg.name}-subnet-01-nsg"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
 
-    security_rule {
-        name = "ssh"
-        priority = 100
-        direction = "Inbound"
-        access = "Allow"
-        protocol = "Tcp"
-        source_port_range = "*"
-        destination_port_range = "*"
-        source_address_prefix = "192.168.0.4/32"
-        destination_address_prefix = "192.168.1.0/25"
-    }
+#    security_rule {
+#        name = "ssh"
+#        priority = 100
+#        direction = "Inbound"
+#        access = "Allow"
+#        protocol = "Tcp"
+#        source_port_range = "*"
+#        destination_port_range = "*"
+#        source_address_prefix = "192.168.0.4/32"
+#        destination_address_prefix = "192.168.1.0/25"
+#    }
 
     tags = {
         environment = "production"
@@ -32,7 +32,7 @@ resource "azurerm_network_security_group" "subnet0" {
 }
 
 resource "azurerm_network_security_group" "subnet1" {
-    name = "${azurerm_resource_group.rg.name}-nsg-1"
+    name = "${azurerm_resource_group.rg.name}-subnet-02-nsg"
     location = "${azurerm_resource_group.rg.location}"
     resource_group_name = "${azurerm_resource_group.rg.name}"
 

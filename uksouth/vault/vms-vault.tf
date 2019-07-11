@@ -57,6 +57,50 @@ resource "azurerm_virtual_machine" "vault" {
     }
 }
 
+module "vault_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-01-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowVaultStorageTraffic"
+      priority = "100"
+      destination_port_range = "8500"
+      protocol = "TCP"
+    },
+    {
+      name = "AllowVaultListenerTraffic"
+      priority = "110"
+      destination_port_range = "8200"
+      protocol = "TCP"
+    },
+    {
+      name = "AllowVaultTelemetryTraffic"
+      priority = "120"
+      destination_port_range = "8125"
+      protocol = "TCP"
+    },
+    {
+      name = "AllowSSH"
+      priority = "130"
+      protocol = "TCP"
+      destination_port_range = "22"
+      source_address_prefix = "192.168.0.4/32"
+      destination_address_prefix = "192.168.1.0/25"
+    },
+#    {
+#      name = "AllowLoadBalancer"
+#      source_address_prefix = "AzureLoadBalancer"
+#      priority = "4095"
+#    },
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
+  ]
+}
+
 resource "azurerm_network_interface_backend_address_pool_association" "subnet0" {
     count = 3
     network_interface_id = "${element(azurerm_network_interface.vault.*.id, count.index)}"

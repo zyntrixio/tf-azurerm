@@ -78,16 +78,16 @@ module "controller_nsg_rules" {
       priority = "120"
       destination_port_range = "6443"
     },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    }
+#    {
+#      name = "AllowLoadBalancer"
+#      source_address_prefix = "AzureLoadBalancer"
+#      priority = "4095"
+#    },
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
   ]
 }
 

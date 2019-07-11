@@ -57,6 +57,34 @@ resource "azurerm_virtual_machine" "etcd" {
     }
 }
 
+module "etcd_nsg_rules" {
+  source = "../../modules/nsg_rules"
+  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-02-nsg"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  rules = [
+    {
+      name = "AllowEtcdClientRequestsWorker"
+      priority = "100"
+      protocol = "TCP"
+      destination_port_range = "2379-2380"
+      source_address_prefix = "192.168.1.0/25"
+    },
+    {
+      name = "AllowSSH"
+      priority = "110"
+      protocol = "TCP"
+      destination_port_range = "22"
+      source_address_prefix = "192.168.0.4/32"
+      destination_address_prefix = "192.168.1.128/25"
+    },
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
+  ]
+}
+
 #resource "azurerm_network_interface_backend_address_pool_association" "subnet1" {
 #    count = 3
 #    network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"

@@ -85,16 +85,16 @@ module "worker_nsg_rules" {
       destination_port_range = "30001"
       protocol = "TCP"
     },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    }
+#    {
+#      name = "AllowLoadBalancer"
+#      source_address_prefix = "AzureLoadBalancer"
+#      priority = "4095"
+#    },
+#    {
+#      name = "BlockEverything"
+#      priority = "4096"
+#      access = "Deny"
+#    }
   ]
 }
 
