@@ -90,7 +90,7 @@ resource "azurerm_firewall_nat_rule_collection" "test" {
     destination_addresses = [
       "${azurerm_public_ip.pip.0.ip_address}",
     ]
-    translated_address = "10.0.66.4"
+    translated_address = "192.168.4.4"
     translated_port = "22"
     protocols = [
       "TCP",

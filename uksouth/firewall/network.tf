@@ -37,26 +37,42 @@ resource "azurerm_firewall" "firewall" {
   }
 }
 
-# resource "azurerm_virtual_network_peering" "vault" {
-#   name = "local-to-vault"
-#   resource_group_name = "${azurerm_resource_group.rg.name}"
-#   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-#   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/uksouth-vault-vnet"
-#   allow_virtual_network_access = true
-# }
+resource "azurerm_virtual_network_peering" "vault" {
+  name = "local-to-vault"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/vault-vnet"
+  allow_virtual_network_access = true
+}
 
-# resource "azurerm_virtual_network_peering" "prod" {
-#   name = "local-to-prod"
-#   resource_group_name = "${azurerm_resource_group.rg.name}"
-#   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-#   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/uksouth-prod-vnet"
-#   allow_virtual_network_access = true
-# }
+resource "azurerm_virtual_network_peering" "bastion" {
+  name = "local-to-bastion"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
+  allow_virtual_network_access = true
+}
 
-# resource "azurerm_virtual_network_peering" "dev" {
-#   name = "local-to-dev"
-#   resource_group_name = "${azurerm_resource_group.rg.name}"
-#   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-#   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
-#   allow_virtual_network_access = true
-# }
+resource "azurerm_virtual_network_peering" "prod" {
+  name = "local-to-prod"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
+  allow_virtual_network_access = true
+}
+
+resource "azurerm_virtual_network_peering" "stage" {
+  name = "local-to-stage"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-stage/providers/Microsoft.Network/virtualNetworks/stage-vnet"
+  allow_virtual_network_access = true
+}
+
+resource "azurerm_virtual_network_peering" "dev" {
+  name = "local-to-dev"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
+  allow_virtual_network_access = true
+}

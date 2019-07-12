@@ -88,6 +88,18 @@ module "bastion_nsg_rules" {
   ]
 }
 
+module "bastion_lb_rules" {
+  source = "../../modules/lb_rules"
+  loadbalancer_id = "${azurerm_lb.lb.id}"
+  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  frontend_ip_configuration_name = "subnet-01"
+
+  lb_port = {
+    ssh = [ "22", "TCP", "22" ]
+  }
+}
+
 resource "azurerm_network_interface_backend_address_pool_association" "bastion-bap-assoc" {
   count = "${var.bastion_count}"
   network_interface_id = "${element(azurerm_network_interface.bastion.*.id, count.index)}"
