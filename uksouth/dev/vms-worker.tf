@@ -1,5 +1,5 @@
 resource "azurerm_availability_set" "worker" {
-  name = "${azurerm_resource_group.rg.name}-worker-as"
+  name = "${var.environment}-worker-as"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count = 2
@@ -20,7 +20,7 @@ variable "pod_ip_configs" {
 
 resource "azurerm_network_interface" "worker" {
   count = "${var.worker_count}"
-  name = "${format("${azurerm_resource_group.rg.name}-worker-%02d-nic", count.index + 1)}"
+  name = "${format("${var.environment}-worker-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   depends_on = ["azurerm_lb.lb", "azurerm_lb.plb"]
@@ -53,7 +53,7 @@ resource "azurerm_network_interface" "worker" {
 
 resource "azurerm_virtual_machine" "worker" {
   count = "${var.worker_count}"
-  name = "${format("${azurerm_resource_group.rg.name}-worker-%02d", count.index + 1)}"
+  name = "${format("${var.environment}-worker-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   availability_set_id = "${azurerm_availability_set.worker.id}"
@@ -72,7 +72,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   storage_os_disk {
-    name = "${format("${azurerm_resource_group.rg.name}-worker-%02d-disk", count.index + 1)}"
+    name = "${format("${var.environment}-worker-%02d-disk", count.index + 1)}"
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -80,7 +80,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   os_profile {
-    computer_name = "${format("${azurerm_resource_group.rg.name}-worker-%02d", count.index + 1)}"
+    computer_name = "${format("${var.environment}-worker-%02d", count.index + 1)}"
     admin_username = "laadmin"
     admin_password = "TFB2248hxq!!"
   }
@@ -96,7 +96,7 @@ resource "azurerm_virtual_machine" "worker" {
 
 module "worker_nsg_rules" {
   source = "../../modules/nsg_rules"
-  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-01-nsg"
+  network_security_group_name = "${var.environment}-subnet-01-nsg"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {

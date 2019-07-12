@@ -6,7 +6,7 @@ resource "azurerm_availability_set" "controller" {
   managed = true
 
   tags = {
-    environment = "development"
+    environment = "staging"
   }
 }
 
@@ -15,7 +15,6 @@ resource "azurerm_network_interface" "controller" {
   name = "${format("${var.environment}-controller-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb", "azurerm_lb.plb"]
   enable_accelerated_networking = false
 
   ip_configuration {
@@ -26,16 +25,16 @@ resource "azurerm_network_interface" "controller" {
   }
 
   tags = {
-    environment = "development"
+    environment = "staging"
   }
 }
 
 resource "azurerm_virtual_machine" "controller" {
   count = "${var.controller_count}"
-  name = "${format("${var.environment}-controller-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   availability_set_id = "${azurerm_availability_set.controller.id}"
+  name = "${format("${var.environment}-controller-%02d", count.index + 1)}"
   network_interface_ids = [
     "${element(azurerm_network_interface.controller.*.id, count.index)}",
   ]
@@ -45,9 +44,9 @@ resource "azurerm_virtual_machine" "controller" {
 
   storage_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
+    offer = "UbuntuServer"
+    sku = "18.04-LTS"
+    version = "latest"
   }
 
   storage_os_disk {
@@ -69,7 +68,7 @@ resource "azurerm_virtual_machine" "controller" {
   }
 
   tags = {
-    environment = "development"
+    environment = "staging"
   }
 }
 

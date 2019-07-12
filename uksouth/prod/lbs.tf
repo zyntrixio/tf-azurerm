@@ -1,5 +1,5 @@
 resource "azurerm_lb" "lb" {
-  name = "${azurerm_resource_group.rg.name}-lb"
+  name = "${var.environment}-lb"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   sku = "Standard"
@@ -22,12 +22,6 @@ resource "azurerm_lb" "lb" {
     private_ip_address = "${cidrhost(var.subnet_address_prefixes[2], 4)}"
     subnet_id = "${azurerm_subnet.subnet.2.id}"
   }
-  frontend_ip_configuration {
-    name = "subnet-04"
-    private_ip_address_allocation = "Static"
-    private_ip_address = "${cidrhost(var.subnet_address_prefixes[3], 4)}"
-    subnet_id = "${azurerm_subnet.subnet.3.id}"
-  }
 
   tags = {
     environment = "production"
@@ -40,22 +34,3 @@ resource "azurerm_lb_backend_address_pool" "pools" {
   loadbalancer_id = "${azurerm_lb.lb.id}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
-
-#resource "azurerm_lb_probe" "ssh" {
-#  resource_group_name = "${azurerm_resource_group.rg.name}"
-#  loadbalancer_id = "${azurerm_lb.lb.id}"
-#  name = "ssh-running-probe"
-#  port = 22
-#}
-
-#resource "azurerm_lb_rule" "ssh" {
-#  resource_group_name = "${azurerm_resource_group.rg.name}"
-#  loadbalancer_id = "${azurerm_lb.lb.id}"
-#  name = "ssh"
-#  protocol = "Tcp"
-#  frontend_port = 22
-#  backend_port = 22
-#  frontend_ip_configuration_name = "subnet-04"
-#  probe_id = "${azurerm_lb_probe.ssh.id}"
-#  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.3.id}"
-#}

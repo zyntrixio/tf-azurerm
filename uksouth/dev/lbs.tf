@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "pip" {
-  name = "${azurerm_resource_group.rg.name}-pip"
+  name = "${var.environment}-pip"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   sku = "Standard"
@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "pip" {
 }
 
 resource "azurerm_lb" "plb" {
-  name = "${azurerm_resource_group.rg.name}-plb"
+  name = "${var.environment}-plb"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   sku = "Standard"
@@ -19,7 +19,7 @@ resource "azurerm_lb" "plb" {
 }
 
 resource "azurerm_lb" "lb" {
-  name = "${azurerm_resource_group.rg.name}-lb"
+  name = "${var.environment}-lb"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   sku = "Standard"

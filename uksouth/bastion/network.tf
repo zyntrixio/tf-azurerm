@@ -2,10 +2,10 @@ resource "azurerm_virtual_network" "vnet" {
   name = "${var.environment}-vnet"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  address_space = ["10.2.0.0/16"]
+  address_space = ["192.168.4.0/24"]
 
   tags = {
-    environment = "development"
+    environment = "production"
   }
 }
 
@@ -22,21 +22,14 @@ resource "azurerm_route_table" "rt" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
   route {
-    name = "vault"
-    address_prefix = "192.168.1.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "sentry"
-    address_prefix = "192.168.2.0/24"
+    name = "firewall"
+    address_prefix = "0.0.0.0/0"
     next_hop_type = "VirtualAppliance"
     next_hop_in_ip_address = "192.168.0.4"
   }
 
   tags = {
-    environment = "development"
+    environment = "production"
   }
 }
 

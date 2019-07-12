@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "vnet" {
-  name = "${azurerm_resource_group.rg.name}-vnet"
+  name = "${var.environment}-vnet"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   address_space = ["10.0.0.0/16"]
@@ -11,13 +11,13 @@ resource "azurerm_virtual_network" "vnet" {
 
 resource "azurerm_network_security_group" "nsg" {
   count = "${length(var.subnet_address_prefixes)}"
-  name = "${format("${azurerm_resource_group.rg.name}-subnet-%02d-nsg", count.index + 1)}"
+  name = "${format("${var.environment}-subnet-%02d-nsg", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_route_table" "rt" {
-  name = "${azurerm_resource_group.rg.name}-routes"
+  name = "${var.environment}-routes"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
@@ -51,28 +51,14 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
   count = "${length(var.subnet_address_prefixes)}"
-  subnet_id      = "${element(azurerm_subnet.subnet.*.id, count.index)}"
+  subnet_id = "${element(azurerm_subnet.subnet.*.id, count.index)}"
   route_table_id = "${azurerm_route_table.rt.id}"
 }
-
-#resource "azurerm_network_security_rule" "nsr" {
-#  name = "ssh"
-#  priority = 100
-#  direction = "Inbound"
-#  access = "Allow"
-#  protocol = "TCP"
-#  source_port_range = "*"
-#  destination_port_range = "22"
-#  source_address_prefix = "192.168.0.4/32"
-#  destination_address_prefix = "${var.subnet_address_prefixes[3]}"
-#  resource_group_name = "${azurerm_resource_group.rg.name}"
-#  network_security_group_name = "${azurerm_network_security_group.nsg.3.name}"
-#}
 
 resource "azurerm_virtual_network_peering" "peer" {
   name = "local-to-firewall"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/uksouth-firewall-vnet"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/firewall-vnet"
   allow_virtual_network_access = true
 }

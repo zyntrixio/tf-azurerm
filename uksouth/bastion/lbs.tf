@@ -10,12 +10,6 @@ resource "azurerm_lb" "lb" {
     private_ip_address = "${cidrhost(var.subnet_address_prefixes[0], 4)}"
     subnet_id = "${azurerm_subnet.subnet.0.id}"
   }
-  frontend_ip_configuration {
-    name = "subnet-02"
-    private_ip_address_allocation = "Static"
-    private_ip_address = "${cidrhost(var.subnet_address_prefixes[1], 4)}"
-    subnet_id = "${azurerm_subnet.subnet.1.id}"
-  }
 
   tags = {
     environment = "production"

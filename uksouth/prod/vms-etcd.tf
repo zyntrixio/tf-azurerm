@@ -1,12 +1,24 @@
+resource "azurerm_availability_set" "etcd" {
+  name = "${var.environment}-etcd-as"
+  location = "${azurerm_resource_group.rg.location}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  platform_fault_domain_count = 2
+  managed = true
+
+  tags = {
+    environment = "production"
+  }
+}
+
 resource "azurerm_network_interface" "etcd" {
-  count = 5
-  name = "${format("${azurerm_resource_group.rg.name}-etcd-%02d-nic", count.index + 1)}"
+  count = "${var.etcd_count}"
+  name = "${format("${var.environment}-etcd-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   depends_on = ["azurerm_lb.lb"]
 
   ip_configuration {
-    name = "ipconfig"
+    name = "primary"
     subnet_id = "${azurerm_subnet.subnet.2.id}"
     private_ip_address_allocation = "Dynamic"
   }
@@ -17,9 +29,10 @@ resource "azurerm_network_interface" "etcd" {
 }
 
 resource "azurerm_virtual_machine" "etcd" {
-  count = 5
-  name = "${format("${azurerm_resource_group.rg.name}-etcd-%02d", count.index + 1)}"
+  count = "${var.etcd_count}"
+  name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
+  availability_set_id = "${azurerm_availability_set.etcd.id}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   network_interface_ids = [
     "${element(azurerm_network_interface.etcd.*.id, count.index)}",
@@ -36,7 +49,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   storage_os_disk {
-    name = "${format("${azurerm_resource_group.rg.name}-etcd-%02d-disk", count.index + 1)}"
+    name = "${format("${var.environment}-etcd-%02d-disk", count.index + 1)}"
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -44,7 +57,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   os_profile {
-    computer_name = "${format("${azurerm_resource_group.rg.name}-etcd-%02d", count.index + 1)}"
+    computer_name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
     admin_username = "laadmin"
     admin_password = "TFB2248hxq!!"
   }
@@ -60,13 +73,15 @@ resource "azurerm_virtual_machine" "etcd" {
 
 module "etcd_nsg_rules" {
   source = "../../modules/nsg_rules"
-  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-03-nsg"
+  network_security_group_name = "${var.environment}-subnet-03-nsg"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
-      name = "AllowAllBastionSubnetTraffic"
+      name = "AllowSSH"
       priority = "100"
-      source_address_prefix = "${var.subnet_address_prefixes[3]}"
+      protocol = "TCP"
+      destination_port_range = "22"
+      source_address_prefix = "192.168.0.0/24"
     },
     {
       name = "AllowEtcdClientRequestsWorker"
@@ -82,17 +97,17 @@ module "etcd_nsg_rules" {
       destination_port_range = "2379-2380"
       source_address_prefix = "${var.subnet_address_prefixes[1]}"
     },
-#    {
-#      name = "BlockEverything"
-#      priority = "4096"
-#      access = "Deny"
-#    }
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
   ]
 }
 
-#resource "azurerm_network_interface_backend_address_pool_association" "etcd-bap-assoc" {
-#    count = 2
-#    network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"
-#    ip_configuration_name = "ipconfig"
-#    backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
-#}
+resource "azurerm_network_interface_backend_address_pool_association" "etcd-bap-assoc" {
+   count = "${var.etcd_count}"
+   network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"
+   ip_configuration_name = "primary"
+   backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
+}

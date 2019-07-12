@@ -1,24 +1,24 @@
 resource "azurerm_network_interface" "vault" {
-  count = 3
-  name = "${format("${azurerm_resource_group.rg.name}-vault-%02d-nic", count.index + 1)}"
+  count = "${var.vault_count}"
+  name = "${format("${var.environment}-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   depends_on = ["azurerm_lb.lb"]
 
   ip_configuration {
-    name = "ipconfig"
+    name = "primary"
     subnet_id = "${azurerm_subnet.subnet.0.id}"
     private_ip_address_allocation = "Dynamic"
   }
 
   tags = {
-    environment = "vault"
+    environment = "production"
   }
 }
 
 resource "azurerm_virtual_machine" "vault" {
-  count = 3
-  name = "${format("${azurerm_resource_group.rg.name}-vault-%02d", count.index + 1)}"
+  count = "${var.vault_count}"
+  name = "${format("${var.environment}-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   network_interface_ids = [
@@ -36,7 +36,7 @@ resource "azurerm_virtual_machine" "vault" {
   }
 
   storage_os_disk {
-    name = "${format("${azurerm_resource_group.rg.name}-vault-%02d-disk", count.index + 1)}"
+    name = "${format("${var.environment}-%02d-disk", count.index + 1)}"
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -44,7 +44,7 @@ resource "azurerm_virtual_machine" "vault" {
   }
 
   os_profile {
-    computer_name = "${format("${azurerm_resource_group.rg.name}-vault-%02d", count.index + 1)}"
+    computer_name = "${format("${var.environment}-%02d", count.index + 1)}"
     admin_username = "laadmin"
     admin_password = "TFB2248hxq!!"
   }
@@ -54,13 +54,13 @@ resource "azurerm_virtual_machine" "vault" {
   }
 
   tags = {
-    environment = "vault"
+    environment = "production"
   }
 }
 
 module "vault_nsg_rules" {
   source = "../../modules/nsg_rules"
-  network_security_group_name = "${azurerm_resource_group.rg.name}-subnet-01-nsg"
+  network_security_group_name = "${var.environment}-subnet-01-nsg"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
@@ -89,22 +89,22 @@ module "vault_nsg_rules" {
       source_address_prefix = "192.168.0.4/32"
       destination_address_prefix = "192.168.1.0/25"
     },
-#    {
-#      name = "AllowLoadBalancer"
-#      source_address_prefix = "AzureLoadBalancer"
-#      priority = "4095"
-#    },
-#    {
-#      name = "BlockEverything"
-#      priority = "4096"
-#      access = "Deny"
-#    }
+    {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    }
   ]
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "vault-bap-assoc" {
-  count = 3
+  count = "${var.vault_count}"
   network_interface_id = "${element(azurerm_network_interface.vault.*.id, count.index)}"
-  ip_configuration_name = "ipconfig"
+  ip_configuration_name = "primary"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
 }

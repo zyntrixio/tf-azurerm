@@ -1,3 +1,7 @@
+variable environment { default = "dev" }
+variable location { default = "uksouth" }
+variable resource_group_name { default = "uksouth-dev" }
+
 variable subnet_address_prefixes {
   default = [
     "10.2.0.0/18", # Kubernetes Workers
