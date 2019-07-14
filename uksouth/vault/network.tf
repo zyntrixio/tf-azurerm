@@ -20,6 +20,7 @@ resource "azurerm_route_table" "rt" {
   name = "${var.environment}-routes"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
+  disable_bgp_route_propagation = true
 
   route {
     name = "firewall"

@@ -43,6 +43,7 @@ resource "azurerm_virtual_network_peering" "vault" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/vault-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }
 
 resource "azurerm_virtual_network_peering" "bastion" {
@@ -51,6 +52,7 @@ resource "azurerm_virtual_network_peering" "bastion" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }
 
 resource "azurerm_virtual_network_peering" "prod" {
@@ -59,6 +61,7 @@ resource "azurerm_virtual_network_peering" "prod" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }
 
 resource "azurerm_virtual_network_peering" "stage" {
@@ -67,6 +70,7 @@ resource "azurerm_virtual_network_peering" "stage" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-stage/providers/Microsoft.Network/virtualNetworks/stage-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }
 
 resource "azurerm_virtual_network_peering" "dev" {
@@ -75,4 +79,5 @@ resource "azurerm_virtual_network_peering" "dev" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }

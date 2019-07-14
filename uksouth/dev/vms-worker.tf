@@ -100,28 +100,9 @@ module "worker_nsg_rules" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
-      name = "AllowAllControllerSubnetTraffic"
-      priority = "100"
-      source_address_prefix = "${var.subnet_address_prefixes[1]}"
-    },
-    {
-      name = "AllowHttpTraffic"
-      priority = "110"
-      destination_port_range = "30000"
-      protocol = "TCP"
-    },
-    {
-      name = "AllowHttpsTraffic"
-      priority = "120"
-      destination_port_range = "30001"
-      protocol = "TCP"
-    },
-    {
-      name = "AllowSSH"
-      priority = "130"
-      protocol = "TCP"
-      destination_port_range = "22"
-      source_address_prefix = "192.168.0.0/24"
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
     },
     {
       name = "AllowLoadBalancer"
@@ -129,9 +110,32 @@ module "worker_nsg_rules" {
       priority = "4095"
     },
     {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
+      name = "AllowSSH"
+      priority = "500"
+      protocol = "TCP"
+      destination_port_range = "22"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      source_address_prefix = "192.168.4.0/24"
+    },
+    {
+      name = "AllowAllControllerSubnetTraffic"
+      priority = "100"
+      source_address_prefix = "${var.subnet_address_prefixes[1]}"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowHttpTraffic"
+      priority = "110"
+      destination_port_range = "30000"
+      protocol = "TCP"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowHttpsTraffic"
+      priority = "120"
+      destination_port_range = "30001"
+      protocol = "TCP"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
     }
   ]
 }

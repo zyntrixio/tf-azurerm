@@ -77,30 +77,30 @@ module "etcd_nsg_rules" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
-      name = "AllowSSH"
-      priority = "100"
-      protocol = "TCP"
-      destination_port_range = "22"
-      source_address_prefix = "192.168.0.0/24"
-    },
-    {
-      name = "AllowEtcdClientRequestsWorker"
-      priority = "110"
-      protocol = "TCP"
-      destination_port_range = "2379-2380"
-      source_address_prefix = "${var.subnet_address_prefixes[0]}"
-    },
-    {
-      name = "AllowEtcdClientRequestsController"
-      priority = "120"
-      protocol = "TCP"
-      destination_port_range = "2379-2380"
-      source_address_prefix = "${var.subnet_address_prefixes[1]}"
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
     },
     {
       name = "BlockEverything"
       priority = "4096"
       access = "Deny"
+    },
+    {
+      name = "AllowSSH"
+      priority = "500"
+      protocol = "TCP"
+      destination_port_range = "22"
+      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
+      source_address_prefix = "192.168.4.0/24"
+    },
+    {
+      name = "AllowEtcdClientRequestsController"
+      priority = "100"
+      protocol = "TCP"
+      destination_port_range = "2379"
+      source_address_prefix = "${var.subnet_address_prefixes[1]}"
+      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
     }
   ]
 }

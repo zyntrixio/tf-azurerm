@@ -20,6 +20,7 @@ resource "azurerm_route_table" "rt" {
   name = "${var.environment}-routes"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
+  disable_bgp_route_propagation = true
 
   route {
     name = "firewall"
@@ -61,4 +62,5 @@ resource "azurerm_virtual_network_peering" "peer" {
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/firewall-vnet"
   allow_virtual_network_access = true
+  allow_forwarded_traffic = true
 }

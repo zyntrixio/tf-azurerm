@@ -64,6 +64,16 @@ module "bastion_nsg_rules" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
+    },
+    {
       name = "AllowSSH"
       priority = "100"
       protocol = "TCP"
@@ -74,16 +84,6 @@ module "bastion_nsg_rules" {
       priority = "110"
       destination_port_range = "1812-1813"
       protocol = "Udp"
-    },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
     }
   ]
 }

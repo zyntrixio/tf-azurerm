@@ -64,32 +64,6 @@ module "vault_nsg_rules" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
-      name = "AllowVaultStorageTraffic"
-      priority = "100"
-      destination_port_range = "8500"
-      protocol = "TCP"
-    },
-    {
-      name = "AllowVaultListenerTraffic"
-      priority = "110"
-      destination_port_range = "8200"
-      protocol = "TCP"
-    },
-    {
-      name = "AllowVaultTelemetryTraffic"
-      priority = "120"
-      destination_port_range = "8125"
-      protocol = "TCP"
-    },
-    {
-      name = "AllowSSH"
-      priority = "130"
-      protocol = "TCP"
-      destination_port_range = "22"
-      source_address_prefix = "192.168.0.4/32"
-      destination_address_prefix = "192.168.1.0/25"
-    },
-    {
       name = "AllowLoadBalancer"
       source_address_prefix = "AzureLoadBalancer"
       priority = "4095"
@@ -98,6 +72,38 @@ module "vault_nsg_rules" {
       name = "BlockEverything"
       priority = "4096"
       access = "Deny"
+    },
+    {
+      name = "AllowSSH"
+      priority = "500"
+      protocol = "TCP"
+      destination_port_range = "22"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      source_address_prefix = "192.168.4.0/24"
+    },
+    {
+      name = "AllowVaultTrafficProduction"
+      priority = "100"
+      destination_port_range = "8200"
+      protocol = "TCP"
+      source_address_prefix = "10.0.0.0/18"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowVaultTrafficStage"
+      priority = "110"
+      destination_port_range = "8200"
+      protocol = "TCP"
+      source_address_prefix = "10.1.0.0/18"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowVaultTrafficDev"
+      priority = "120"
+      destination_port_range = "8200"
+      protocol = "TCP"
+      source_address_prefix = "10.2.0.0/18"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
     }
   ]
 }

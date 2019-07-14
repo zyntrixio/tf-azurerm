@@ -79,21 +79,9 @@ module "controller_nsg_rules" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   rules = [
     {
-      name = "AllowSSH"
-      priority = "100"
-      protocol = "TCP"
-      destination_port_range = "22"
-      source_address_prefix = "192.168.0.0/24"
-    },
-    {
-      name = "AllowAllEtcdSubnetTraffic"
-      priority = "110"
-      source_address_prefix = "${var.subnet_address_prefixes[2]}"
-    },
-    {
-      name = "AllowKubectl"
-      priority = "120"
-      destination_port_range = "6443"
+      name = "BlockEverything"
+      priority = "4096"
+      access = "Deny"
     },
     {
       name = "AllowLoadBalancer"
@@ -101,9 +89,25 @@ module "controller_nsg_rules" {
       priority = "4095"
     },
     {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
+      name = "AllowSSH"
+      priority = "500"
+      protocol = "TCP"
+      destination_port_range = "22"
+      destination_address_prefix = "${var.subnet_address_prefixes[1]}"
+      source_address_prefix = "192.168.4.0/24"
+    },
+    {
+      name = "AllowKubeAPIAccessWorkers"
+      priority = "100"
+      destination_port_range = "6443"
+      destination_address_prefix = "${var.subnet_address_prefixes[1]}"
+      source_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowKubeAPIAccessBinkHQ"
+      priority = "110"
+      destination_port_range = "6443"
+      source_address_prefix = "194.74.152.11/32"
     }
   ]
 }
