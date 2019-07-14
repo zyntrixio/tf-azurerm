@@ -180,3 +180,19 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     protocols = ["TCP"]
   }
 }
+
+resource "azurerm_firewall_network_rule_collection" "time" {
+  name                = "time"
+  azure_firewall_name = "${azurerm_firewall.firewall.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  priority            = 110
+  action              = "Allow"
+
+  rule {
+    name = "ntp"
+    source_addresses = ["*"]
+    destination_ports = ["123"]
+    destination_addresses = ["*"]
+    protocols = ["UDP"]
+  }
+}
