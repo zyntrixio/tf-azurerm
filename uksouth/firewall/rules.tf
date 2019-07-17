@@ -14,6 +14,7 @@ resource "azurerm_firewall_application_rule_collection" "apt-repos" {
       "security.ubuntu.com",
       "azure.archive.ubuntu.com",
       "keyserver.ubuntu.com",
+      "ppa.launchpad.net",
     ]
     protocol {
       port = "80"
@@ -23,7 +24,7 @@ resource "azurerm_firewall_application_rule_collection" "apt-repos" {
 }
 
 resource "azurerm_firewall_application_rule_collection" "tools" {
-  name = "tools"
+  name = "tools_and_apis"
   azure_firewall_name = "${azurerm_firewall.firewall.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   priority = 110
@@ -31,15 +32,29 @@ resource "azurerm_firewall_application_rule_collection" "tools" {
 
   rule {
     name = "ifconfig.co"
-    source_addresses = [
-      "*"
-    ]
-    target_fqdns = [
-      "ifconfig.co",
-    ]
+    source_addresses = ["*"]
+    target_fqdns = ["ifconfig.co"]
     protocol {
       port = "80"
       type = "Http"
+    }
+  }
+  rule {
+    name = "cloudflare"
+    source_addresses = ["*"]
+    target_fqdns = ["api.cloudflare.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "letsencrypt"
+    source_addresses = ["*"]
+    target_fqdns = ["*.api.letsencrypt.org"]
+    protocol {
+      port = "443"
+      type = "Https"
     }
   }
 }
@@ -92,6 +107,31 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
       type = "Https"
     }
   }
+  rule {
+    name = "chef"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "packages.chef.io",
+      "www.chef.io",
+      ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "python-pypi"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "pypi.python.org",
+      "pypi.org",
+      "files.pythonhosted.org",
+      ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
 }
 
 resource "azurerm_firewall_nat_rule_collection" "ingress" {
@@ -126,6 +166,15 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
     translated_address = "10.0.0.4"
     translated_port = "443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "chef"
+    source_addresses = ["*"]
+    destination_ports = ["4444"]
+    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    translated_address = "192.168.5.4"
+    translated_port = "4444"
     protocols = ["TCP"]
   }
 }
@@ -177,6 +226,13 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     source_addresses = ["192.168.4.0/24"]
     destination_ports = ["22"]
     destination_addresses = ["192.168.3.0/24"]
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "bastion-to-chef"
+    source_addresses = ["192.168.4.0/24"]
+    destination_ports = ["22"]
+    destination_addresses = ["192.168.5.0/24"]
     protocols = ["TCP"]
   }
 }
