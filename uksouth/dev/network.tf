@@ -43,6 +43,13 @@ resource "azurerm_route_table" "rt" {
     next_hop_in_ip_address = "192.168.0.4"
   }
 
+  route {
+    name = "chef"
+    address_prefix = "192.168.5.0/24"
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = "192.168.0.4"
+  }
+
   tags = {
     environment = "development"
   }

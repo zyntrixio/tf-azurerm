@@ -48,6 +48,12 @@ resource "azurerm_virtual_machine" "bastion" {
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
+      write_files:
+      - encoding: base64
+        content: RDViNjJjSFQ5c3NLeWppc0RJZ20wbGNJRi9rdWtVM216bGtkSWhnc0hxdVhWUjBaV1pZRW13RXpaVjB3MXc0aEM0UnZ5c3g5OWpMUldHc25abys5Mi9MTWpXZGdhOUkvRjhhb0F3NzJzRmJFZ0N2TDhKd0xKVTJZNEJZMjFqdithOTBNdDlWZGV3MXZxemhFZFd2TVZYNWUrc1Y0aDFlbEhXSzdMdjNvWDBiUmZrOE5OOFFEbzR0ejUzZ2VNcnhidFQyeHdVcXpSM0F2OVg4ajlHdHJWZjl5WEI2WHlIalVWYVhiQkRzUVQwQnptampCUG5EbStta0JROE9nZTFVczFqT1hJbW9nRnJzNXNqZ2FuNGVEU2xJTDZpbXdxT3lPZEpJSmFzWWFpdGU3WnRFTnJOVHZjRGE3cm1wR2FUZ0xTN3NKd2hmd0R6Zll1Z3FLK3p2eHNnWmJVNS9pZkwxQnlrWSsvbTBBYjMvMTVHemd6czR0eDRkT01RUFlWZ2IzcEhmdTg2WjZITXZ0R3FPSHUrNVVJMzU2Q3JMZXFtbGVEOWlBd2R1eWZTMk5ESDdqcVJXY09xWHZWbXVFZkRHNWRsNlNOVWVuVFd5L2RjUnhZaE1DOE9sZnFaWGVzeG9NU1BScGxxejlwajc2YWsyZHVGS2kvaUprandYbnBqQWs1elpkN1pBRFBITTF0SUw1aitoUlhWYzlUd28yRWcvZG56dHJCUHE0eTRrWGVzdnYrOVBPNHVNdHVGRGZYWDhHMFZiV1hORWFCUFMzbVA1MzdrUUdURVF2V0ErZW52NE5Wc2NYV1RFNml3TEhlc3hLc1hhZkZUYnozNUd2RVM5Qlc0c0F0MThCSmdUUk45RFVzUmpWdDZOYUpiS1M3YjM1cXkyRlQ4eTMwdnc9
+        owner: root:root
+        path: /etc/chef/encrypted_data_bag_secret
+        permissions: '0600'
       chef:
         install_type: "omnibus"
         force_install: true
