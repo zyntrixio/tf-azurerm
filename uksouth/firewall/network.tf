@@ -64,11 +64,11 @@ resource "azurerm_virtual_network_peering" "prod" {
   allow_forwarded_traffic = true
 }
 
-resource "azurerm_virtual_network_peering" "stage" {
-  name = "local-to-stage"
+resource "azurerm_virtual_network_peering" "staging" {
+  name = "local-to-staging"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-stage/providers/Microsoft.Network/virtualNetworks/stage-vnet"
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-staging/providers/Microsoft.Network/virtualNetworks/staging-vnet"
   allow_virtual_network_access = true
   allow_forwarded_traffic = true
 }

@@ -1,6 +1,7 @@
-variable environment { default = "stage" }
+variable environment { default = "staging" }
 variable location { default = "uksouth" }
-variable resource_group_name { default = "uksouth-stage" }
+variable resource_group_name { default = "uksouth-staging" }
+variable address_space { default = "10.1.0.0/16" }
 
 variable subnet_address_prefixes {
   default = [

@@ -38,7 +38,7 @@ resource "azurerm_lb" "lb" {
   }
 
   tags = {
-    environment = "staging"
+    environment = "${var.environment}"
   }
 }
 

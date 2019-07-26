@@ -10,6 +10,6 @@ resource "azurerm_resource_group" "rg" {
   location = "${var.location}"
 
   tags = {
-    environment = "staging"
+    environment = "${var.environment}"
   }
 }

@@ -2,10 +2,10 @@ resource "azurerm_virtual_network" "vnet" {
   name = "${var.environment}-vnet"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  address_space = ["10.2.0.0/16"]
+  address_space = ["${var.address_space}"]
 
   tags = {
-    environment = "development"
+    environment = "${var.environment}"
   }
 }
 
@@ -51,7 +51,7 @@ resource "azurerm_route_table" "rt" {
   }
 
   tags = {
-    environment = "development"
+    environment = "${var.environment}"
   }
 }
 

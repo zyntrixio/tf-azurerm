@@ -6,7 +6,7 @@ resource "azurerm_availability_set" "worker" {
   managed = true
 
   tags = {
-    environment = "development"
+    environment = "${var.environment}"
   }
 }
 
@@ -47,7 +47,7 @@ resource "azurerm_network_interface" "worker" {
   }
 
   tags = {
-    environment = "development"
+    environment = "${var.environment}"
   }
 }
 
@@ -145,7 +145,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   tags = {
-    environment = "development"
+    environment = "${var.environment}"
   }
 }
 
