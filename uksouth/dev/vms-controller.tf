@@ -74,7 +74,7 @@ resource "azurerm_virtual_machine" "controller" {
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
         node_name: "${format("${var.environment}-controller-%02d", count.index + 1)}"
-        environment: "uksouth-dev"
+        environment: "${var.resource_group_name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
