@@ -24,7 +24,7 @@ resource "azurerm_firewall_application_rule_collection" "apt-repos" {
 }
 
 resource "azurerm_firewall_application_rule_collection" "tools" {
-  name = "tools_and_apis"
+  name = "tools-and-apis"
   azure_firewall_name = "${azurerm_firewall.firewall.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   priority = 110
@@ -52,6 +52,33 @@ resource "azurerm_firewall_application_rule_collection" "tools" {
     name = "letsencrypt"
     source_addresses = ["*"]
     target_fqdns = ["*.api.letsencrypt.org"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+}
+
+resource "azurerm_firewall_application_rule_collection" "azure" {
+  name = "azure-resources"
+  azure_firewall_name = "${azurerm_firewall.firewall.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  priority = 400
+  action = "Allow"
+
+  rule {
+    name = "Bink Blob Storage"
+    source_addresses = ["*"]
+    target_fqdns = ["bink.blob.core.windows.net"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Aphrodite Blob Storage"
+    source_addresses = ["*"]
+    target_fqdns = ["aphrodite.blob.core.windows.net"]
     protocol {
       port = "443"
       type = "Https"
@@ -233,6 +260,49 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     source_addresses = ["192.168.4.0/24"]
     destination_ports = ["22"]
     destination_addresses = ["192.168.5.0/24"]
+    protocols = ["TCP"]
+  }
+}
+
+resource "azurerm_firewall_application_rule_collection" "stega" {
+  name = "stega"
+  azure_firewall_name = "${azurerm_firewall.firewall.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  priority = 120
+  action = "Allow"
+  
+  rule {
+    name = "wazuh-packages"
+    source_addresses = ["*"]
+    target_fqdns = ["packages.wazuh.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "wazuh-stega"
+    source_addresses = ["*"]
+    target_fqdns = ["800sky.stega.uk.net"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+}
+
+resource "azurerm_firewall_network_rule_collection" "stega" {
+  name                = "stega"
+  azure_firewall_name = "${azurerm_firewall.firewall.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  priority            = 120
+  action              = "Allow"
+
+  rule {
+    name = "siagent"
+    source_addresses = ["*"]
+    destination_ports = ["8999"]
+    destination_addresses = ["40.81.125.193"]
     protocols = ["TCP"]
   }
 }
