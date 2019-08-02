@@ -1,6 +1,7 @@
 variable environment { default = "prod" }
 variable location { default = "uksouth" }
 variable resource_group_name { default = "uksouth-prod" }
+variable address_space { default = "10.0.0.0/16" }
 
 variable subnet_address_prefixes {
   default = [
@@ -13,8 +14,5 @@ variable worker_vm_size { default = "Standard_D8s_v3" }
 variable worker_count { default = 5 }
 variable controller_vm_size { default = "Standard_D4s_v3" }
 variable controller_count { default = 3 }
-
 variable etcd_vm_size { default = "Standard_D2s_v3" }
 variable etcd_count { default = 5 }
-# variable bastion_vm_size { default = "Standard_B2s" }
-

@@ -108,9 +108,7 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
   }
   rule {
     name = "github"
-    source_addresses = [
-      "192.168.1.0/25",
-    ]
+    source_addresses = ["*"]
     target_fqdns = [
       "github.com",
       "*.s3.amazonaws.com",
@@ -122,12 +120,11 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
   }
   rule {
     name = "kubernetes"
-    source_addresses = [
-      "192.168.1.0/25",
-    ]
+    source_addresses = ["*"]
     target_fqdns = [
       "storage.googleapis.com",
       "download.docker.com",
+      "discovery.etcd.io",
     ]
     protocol {
       port = "443"
@@ -140,6 +137,7 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
     target_fqdns = [
       "packages.chef.io",
       "www.chef.io",
+      "www.rubygems.org",
       ]
     protocol {
       port = "443"
@@ -153,6 +151,17 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
       "pypi.python.org",
       "pypi.org",
       "files.pythonhosted.org",
+      ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "cfssl"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "pkg.cfssl.org",
       ]
     protocol {
       port = "443"
@@ -270,7 +279,7 @@ resource "azurerm_firewall_application_rule_collection" "stega" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   priority = 120
   action = "Allow"
-  
+
   rule {
     name = "wazuh-packages"
     source_addresses = ["*"]

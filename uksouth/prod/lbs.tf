@@ -24,7 +24,7 @@ resource "azurerm_lb" "lb" {
   }
 
   tags = {
-    environment = "production"
+    environment = "${var.environment}"
   }
 }
 
