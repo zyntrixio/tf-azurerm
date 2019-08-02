@@ -2,10 +2,10 @@ resource "azurerm_virtual_network" "vnet" {
   name = "${var.environment}-vnet"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  address_space = ["10.0.0.0/16"]
+  address_space = ["${var.address_space}"]
 
   tags = {
-    environment = "production"
+    environment = "${var.environment}"
   }
 }
 
@@ -29,8 +29,36 @@ resource "azurerm_route_table" "rt" {
     next_hop_in_ip_address = "192.168.0.4"
   }
 
+  route {
+    name = "vault"
+    address_prefix = "192.168.1.0/24"
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = "192.168.0.4"
+  }
+
+  route {
+    name = "sentry"
+    address_prefix = "192.168.2.0/24"
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = "192.168.0.4"
+  }
+
+  route {
+    name = "bastion"
+    address_prefix = "192.168.4.0/24"
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = "192.168.0.4"
+  }
+
+  route {
+    name = "chef"
+    address_prefix = "192.168.5.0/24"
+    next_hop_type = "VirtualAppliance"
+    next_hop_in_ip_address = "192.168.0.4"
+  }
+
   tags = {
-    environment = "production"
+    environment = "${var.environment}"
   }
 }
 
@@ -52,7 +80,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
   count = "${length(var.subnet_address_prefixes)}"
-  subnet_id = "${element(azurerm_subnet.subnet.*.id, count.index)}"
+  subnet_id      = "${element(azurerm_subnet.subnet.*.id, count.index)}"
   route_table_id = "${azurerm_route_table.rt.id}"
 }
 
