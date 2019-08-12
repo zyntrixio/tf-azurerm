@@ -172,21 +172,27 @@ module "worker_nsg_rules" {
       source_address_prefix = "192.168.4.0/24"
     },
     {
-      name = "AllowAllControllerSubnetTraffic"
+      name = "AllowAllSubnetTraffic"
       priority = "100"
+      source_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+    },
+    {
+      name = "AllowAllControllerSubnetTraffic"
+      priority = "110"
       source_address_prefix = "${var.subnet_address_prefixes[1]}"
       destination_address_prefix = "${var.subnet_address_prefixes[0]}"
     },
     {
       name = "AllowHttpTraffic"
-      priority = "110"
+      priority = "120"
       destination_port_range = "30000"
       protocol = "TCP"
       destination_address_prefix = "${var.subnet_address_prefixes[0]}"
     },
     {
       name = "AllowHttpsTraffic"
-      priority = "120"
+      priority = "130"
       destination_port_range = "30001"
       protocol = "TCP"
       destination_address_prefix = "${var.subnet_address_prefixes[0]}"

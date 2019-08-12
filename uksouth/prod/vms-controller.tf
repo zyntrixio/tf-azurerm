@@ -159,22 +159,11 @@ module "controller_nsg_rules" {
       source_address_prefix = "${var.subnet_address_prefixes[0]}"
     },
     {
-      name = "AllowKubeAPIAccessBinkHQ"
+      name = "AllowKubeAPIAccessFirewall"
       priority = "110"
       destination_port_range = "6443"
-      source_address_prefix = "194.74.152.11/32"
-    },
-    {
-      name = "AllowKubeAPIAccessCPHouse"
-      priority = "120"
-      destination_port_range = "6443"
-      source_address_prefix = "80.229.2.38/32"
-    },
-    {
-      name = "AllowKubeAPIAccessTWHouse"
-      priority = "130"
-      destination_port_range = "6443"
-      source_address_prefix = "82.13.29.15/32"
+      #source_address_prefix = "192.168.0.4/32"
+      destination_address_prefix = "${var.subnet_address_prefixes[1]}"
     }
   ]
 }
