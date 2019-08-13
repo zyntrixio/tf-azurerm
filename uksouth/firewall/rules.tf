@@ -324,6 +324,7 @@ resource "azurerm_firewall_application_rule_collection" "third-party-software" {
       "quay.io",
       "production.cloudflare.docker.com",
       "*.cloudfront.net",
+      "*.blob.core.windows.net",
       ]
     protocol {
       port = "443"
