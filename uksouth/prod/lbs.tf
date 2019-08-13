@@ -25,6 +25,7 @@ resource "azurerm_lb" "lb" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 

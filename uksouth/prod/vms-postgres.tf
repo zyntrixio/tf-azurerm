@@ -7,6 +7,7 @@ resource "azurerm_availability_set" "postgres" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -39,6 +40,7 @@ resource "azurerm_network_interface" "postgres" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -140,5 +142,6 @@ resource "azurerm_virtual_machine" "postgres" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }

@@ -4,6 +4,11 @@ resource "azurerm_public_ip" "pip" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   sku = "Standard"
   allocation_method = "Static"
+
+  tags = {
+    environment = "${var.environment}"
+    datadog = "monitored"
+  }
 }
 
 resource "azurerm_lb" "plb" {
@@ -15,6 +20,11 @@ resource "azurerm_lb" "plb" {
   frontend_ip_configuration {
     name = "${azurerm_public_ip.pip.name}"
     public_ip_address_id = "${azurerm_public_ip.pip.id}"
+  }
+
+  tags = {
+    environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -39,6 +49,7 @@ resource "azurerm_lb" "lb" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 

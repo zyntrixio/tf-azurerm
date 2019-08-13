@@ -11,5 +11,6 @@ resource "azurerm_resource_group" "rg" {
 
   tags = {
     environment = "production"
+    datadog = "monitored"
   }
 }

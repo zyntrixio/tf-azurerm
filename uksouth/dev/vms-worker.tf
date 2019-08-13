@@ -7,6 +7,7 @@ resource "azurerm_availability_set" "worker" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -48,6 +49,7 @@ resource "azurerm_network_interface" "worker" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -145,7 +147,8 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = "${var.environment}",
+    datadog = "monitored"
   }
 }
 

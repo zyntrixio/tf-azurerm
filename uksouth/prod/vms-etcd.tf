@@ -7,6 +7,7 @@ resource "azurerm_availability_set" "etcd" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -25,6 +26,7 @@ resource "azurerm_network_interface" "etcd" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -123,6 +125,7 @@ resource "azurerm_virtual_machine" "etcd" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 

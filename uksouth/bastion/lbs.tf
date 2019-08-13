@@ -13,6 +13,7 @@ resource "azurerm_lb" "lb" {
 
   tags = {
     environment = "production"
+    datadog = "monitored"
   }
 }
 

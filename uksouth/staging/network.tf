@@ -6,6 +6,7 @@ resource "azurerm_virtual_network" "vnet" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -14,6 +15,11 @@ resource "azurerm_network_security_group" "nsg" {
   name = "${format("${var.environment}-subnet-%02d-nsg", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
+
+  tags = {
+    environment = "${var.environment}"
+    datadog = "monitored"
+  }
 }
 
 resource "azurerm_route_table" "rt" {
@@ -50,8 +56,9 @@ resource "azurerm_route_table" "rt" {
     next_hop_in_ip_address = "192.168.0.4"
   }
 
-  tags = {
+tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 

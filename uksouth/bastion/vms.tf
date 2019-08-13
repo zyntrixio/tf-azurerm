@@ -13,6 +13,7 @@ resource "azurerm_network_interface" "bastion" {
 
   tags = {
     environment = "production"
+    datadog = "monitored"
   }
 }
 
@@ -110,6 +111,7 @@ resource "azurerm_virtual_machine" "bastion" {
 
   tags = {
     environment = "production"
+    datadog = "monitored"
   }
 }
 

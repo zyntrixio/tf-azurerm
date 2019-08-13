@@ -7,6 +7,7 @@ resource "azurerm_availability_set" "controller" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -27,6 +28,7 @@ resource "azurerm_network_interface" "controller" {
 
   tags = {
     environment = "${var.environment}"
+    datadog = "monitored"
   }
 }
 
@@ -124,7 +126,8 @@ resource "azurerm_virtual_machine" "controller" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = "${var.environment}",
+    datadog = "monitored"
   }
 }
 
