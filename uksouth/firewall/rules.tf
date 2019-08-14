@@ -545,6 +545,13 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     destination_addresses = ["192.168.4.0/24"]
     protocols = ["UDP"]
   }
+  rule {
+    name = "bastion-to-sawest-dev"
+    source_addresses = ["192.168.4.0/24"]
+    destination_ports = ["22"]
+    destination_addresses = ["10.12.0.0/16"]
+    protocols = ["TCP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "third-party-software" {
