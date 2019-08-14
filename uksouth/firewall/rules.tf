@@ -536,6 +536,13 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     destination_addresses = ["192.168.5.0/24"]
     protocols = ["TCP"]
   }
+  rule {
+    name = "all-to-freeradius"
+    source_addresses = ["*"]
+    destination_ports = ["1812"]
+    destination_addresses = ["192.168.4.0/24"]
+    protocols = ["UDP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "third-party-software" {
