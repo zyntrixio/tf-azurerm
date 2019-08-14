@@ -2,6 +2,6 @@ terraform {
   backend "azurerm" {
     storage_account_name = "binkitops"
     container_name = "terraform"
-    key = "sawest-dev.tfstate"
+    key = "sanorth-dev.tfstate"
   }
 }

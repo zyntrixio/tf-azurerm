@@ -1,6 +1,6 @@
 variable environment { default = "dev" }
-variable location { default = "southafricawest" }
-variable resource_group_name { default = "sawest-dev" }
+variable location { default = "southafricanorth" }
+variable resource_group_name { default = "sanorth-dev" }
 variable address_space { default = "10.12.0.0/16" }
 
 variable subnet_address_prefixes {
