@@ -50,6 +50,8 @@ resource "azurerm_firewall_application_rule_collection" "midas" {
     name = "https"
     source_addresses = ["*"]
     target_fqdns = [
+      "customergateway.iceland.co.uk",
+      "api.membership.coop.co.uk",
       "account.theclub.macdonaldhotels.co.uk",
       "accounts.eu1.gigya.com",
       "accounts.eurostar.com",
