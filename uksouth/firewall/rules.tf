@@ -546,7 +546,7 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     protocols = ["UDP"]
   }
   rule {
-    name = "bastion-to-sawest-dev"
+    name = "bastion-to-sanorth-dev"
     source_addresses = ["192.168.4.0/24"]
     destination_ports = ["22"]
     destination_addresses = ["10.12.0.0/16"]
