@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "worker" {
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   depends_on = ["azurerm_lb.lb", "azurerm_lb.plb"]
-  enable_accelerated_networking = true
+  enable_accelerated_networking = false
   enable_ip_forwarding = true
 
   ip_configuration {
