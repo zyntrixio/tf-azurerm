@@ -13,6 +13,7 @@ resource "azurerm_firewall_application_rule_collection" "apt-repos" {
       "azure.archive.ubuntu.com",
       "keyserver.ubuntu.com",
       "ppa.launchpad.net",
+      "archive.ubuntu.com",
     ]
     protocol {
       port = "80"
@@ -222,6 +223,18 @@ resource "azurerm_firewall_application_rule_collection" "azure" {
     name = "Aphrodite Blob Storage"
     source_addresses = ["*"]
     target_fqdns = ["aphrodite.blob.core.windows.net"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Bink API"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "api.bink.com",
+      "api.gb.bink.com",
+      ]
     protocol {
       port = "443"
       type = "Https"
