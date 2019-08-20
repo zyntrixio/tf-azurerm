@@ -1,12 +1,12 @@
-resource "azurerm_firewall_application_rule_collection" "apt-repos" {
-  name = "apt-repos"
+resource "azurerm_firewall_application_rule_collection" "software" {
+  name = "Software"
   azure_firewall_name = "${azurerm_firewall.firewall.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority = 100
+  priority = 150
   action = "Allow"
 
   rule {
-    name = "ubuntu"
+    name = "Ubuntu APT Repos"
     source_addresses = ["*"]
     target_fqdns = [
       "security.ubuntu.com",
@@ -21,44 +21,257 @@ resource "azurerm_firewall_application_rule_collection" "apt-repos" {
     }
   }
   rule {
-    name = "datadog"
+    name = "Datadog"
     source_addresses = ["*"]
-    target_fqdns = ["apt.datadoghq.com"]
+    target_fqdns = [
+      "apt.datadoghq.com",
+      "trace.agent.datadoghq.com",
+      "process.datadoghq.com",
+      "agent-intake.logs.datadoghq.com",
+      "app.datadoghq.com",
+      "*.agent.datadoghq.com",
+    ]
     protocol {
       port = "80"
       type = "Http"
     }
   }
   rule {
-    name = "wazuh-packages"
+    name = "Stega"
     source_addresses = ["*"]
-    target_fqdns = ["packages.wazuh.com"]
+    target_fqdns = ["packages.wazuh.com","800sky.stega.uk.net"]
     protocol {
       port = "443"
       type = "Https"
     }
   }
+  rule {
+    name = "Hashicorp"
+    source_addresses = [
+      "192.168.1.0/25",
+    ]
+    target_fqdns = ["releases.hashicorp.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "GitHub"
+    source_addresses = ["*"]
+    target_fqdns = ["github.com","*.s3.amazonaws.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Kubernetes"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "storage.googleapis.com",
+      "download.docker.com",
+      "discovery.etcd.io",
+      "sts.windows.net",
+      "login.windows.net",
+      "login.microsoftonline.com",
+      "management.azure.com",
+      "pkg.cfssl.org",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Container Registries"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "*.gcr.io",
+      "gcr.io",
+      "*.docker.io",
+      "*.azurecr.io",
+      "quay.io",
+      "production.cloudflare.docker.com",
+      "*.cloudfront.net",
+      "*.blob.core.windows.net",
+      "docker.elastic.co",
+      "docker-auth.elastic.co",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Chef"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "packages.chef.io",
+      "www.chef.io",
+      "www.rubygems.org",
+      ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "python-pypi"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "pypi.python.org",
+      "pypi.org",
+      "files.pythonhosted.org",
+      ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Intercom"
+    source_addresses = ["*"]
+    target_fqdns = ["api.intercom.io"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Slack"
+    source_addresses = ["*"]
+    target_fqdns = ["slack.com","*.slack.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Microsoft Teams"
+    source_addresses = ["*"]
+    target_fqdns = ["outlook.office.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Cloudflare"
+    source_addresses = ["*"]
+    target_fqdns = ["api.cloudflare.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Lets Encrypt"
+    source_addresses = ["*"]
+    target_fqdns = ["*.api.letsencrypt.org"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Flux CD"
+    source_addresses = ["*"]
+    target_fqdns = ["checkpoint-api.weave.works"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Sentry"
+    source_addresses = ["*"]
+    target_fqdns = ["sentry.bink.com"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "ifconfig.co"
+    source_addresses = ["*"]
+    target_fqdns = ["ifconfig.co"]
+    protocol {
+      port = "80"
+      type = "Http"
+    }
+  }
 }
 
-resource "azurerm_firewall_application_rule_collection" "midas" {
-  name = "midas"
+resource "azurerm_firewall_application_rule_collection" "olympus" {
+  name = "Olympus"
   azure_firewall_name = "${azurerm_firewall.firewall.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority = 300
+  priority = 250
   action = "Allow"
 
   rule {
-    name = "https"
+    name = "Bink HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
-      "customergateway.iceland.co.uk",
-      "api.membership.coop.co.uk",
+      "api.bink.com",
+      "api.gb.bink.com",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Hermes HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "api.twitter.com",
+      "graph.facebook.com",
+      "bink.blob.core.windows.net",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Lethe HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "api.mailgun.net",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Metis HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "ws.mastercard.com",
+      "api.qa.americanexpress.com",
+      "apigateway.americanexpress.com",
+      "api.americanexpress.com",
+      "core.spreedly.com",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+  rule {
+    name = "Midas HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = [
       "account.theclub.macdonaldhotels.co.uk",
       "accounts.eu1.gigya.com",
       "accounts.eurostar.com",
       "api.avios.com",
       "api.bink-dev.com",
       "api.loyalty.marksandspencer.services",
+      "api.membership.coop.co.uk",
       "api.prod.eurostar.com",
       "api.services.qantasloyalty.com",
       "api.wyevalegardencentres.co.uk",
@@ -68,7 +281,9 @@ resource "azurerm_firewall_application_rule_collection" "midas" {
       "bookings.priorityguestrewards.com",
       "cdns.gigya.com",
       "customergateway-uat.iceland.co.uk",
+      "customergateway.iceland.co.uk",
       "cws.givex.com",
+      "identity.membership.coop.co.uk",
       "login.microsoftonline.com",
       "loyalty.harveynichols.com",
       "membership.coop.co.uk",
@@ -81,12 +296,14 @@ resource "azurerm_firewall_application_rule_collection" "midas" {
       "secure.accorhotels.com",
       "secure.avis.co.uk",
       "secure.harrods.com",
+      "secure.tesco.com",
       "ssl.omnihotels.com",
       "starrewardapps.valero.com",
       "www.avis.co.uk",
       "www.beefeatergrillrewardclub.co.uk",
       "www.bigbrandtreasure.com",
       "www.boostjuicebars.co.uk",
+      "www.boots.com",
       "www.brewersfayrebonusclub.co.uk",
       "www.clubcarlson.com",
       "www.coffee1.co.uk",
@@ -134,7 +351,7 @@ resource "azurerm_firewall_application_rule_collection" "midas" {
     }
   }
   rule {
-    name = "http"
+    name = "Midas HTTP"
     source_addresses = ["*"]
     target_fqdns = [
       "statement.club-individual.co.uk",
@@ -146,20 +363,13 @@ resource "azurerm_firewall_application_rule_collection" "midas" {
       type = "Http"
     }
   }
-}
-
-resource "azurerm_firewall_application_rule_collection" "metis" {
-  name = "metis"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority = 200
-  action = "Allow"
-
   rule {
-    name = "Mastercard"
+    name = "Athena HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
-      "ws.mastercard.com"
+      "api.appannie.com",
+      "www.googleapis.com",
+      "analyticsreporting.googleapis.com",
     ]
     protocol {
       port = "443"
@@ -167,270 +377,9 @@ resource "azurerm_firewall_application_rule_collection" "metis" {
     }
   }
   rule {
-    name = "Amex"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "api.qa.americanexpress.com",
-      "apigateway.americanexpress.com",
-      "api.americanexpress.com"
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Visa"
-    source_addresses = ["*"]
-    target_fqdns = [
-      ""
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Spreedly"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "core.spreedly.com"
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-}
-
-resource "azurerm_firewall_application_rule_collection" "azure" {
-  name = "azure-resources"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority = 400
-  action = "Allow"
-
-  rule {
-    name = "Bink Blob Storage"
-    source_addresses = ["*"]
-    target_fqdns = ["bink.blob.core.windows.net"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Aphrodite Blob Storage"
+    name = "Aphrodite HTTPS"
     source_addresses = ["*"]
     target_fqdns = ["aphrodite.blob.core.windows.net"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Bink API"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "api.bink.com",
-      "api.gb.bink.com",
-      ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-}
-
-resource "azurerm_firewall_application_rule_collection" "third-party-software" {
-  name = "third-party-software"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority = 500
-  action = "Allow"
-
-  rule {
-    name = "Hashicorp"
-    source_addresses = [
-      "192.168.1.0/25",
-    ]
-    target_fqdns = [
-      "releases.hashicorp.com",
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "GitHub"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "github.com",
-      "*.s3.amazonaws.com",
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Kubernetes"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "storage.googleapis.com",
-      "download.docker.com",
-      "discovery.etcd.io",
-      "sts.windows.net",
-      "login.windows.net",
-      "login.microsoftonline.com",
-      "management.azure.com",
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "chef"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "packages.chef.io",
-      "www.chef.io",
-      "www.rubygems.org",
-      ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "python-pypi"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "pypi.python.org",
-      "pypi.org",
-      "files.pythonhosted.org",
-      ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "cfssl"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "pkg.cfssl.org",
-      ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "container_registries"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "*.gcr.io",
-      "gcr.io",
-      "*.docker.io",
-      "*.azurecr.io",
-      "quay.io",
-      "production.cloudflare.docker.com",
-      "*.cloudfront.net",
-      "*.blob.core.windows.net",
-      ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "intercom"
-    source_addresses = ["*"]
-    target_fqdns = ["api.intercom.io"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "datadog"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "trace.agent.datadoghq.com",
-      "process.datadoghq.com",
-      "agent-intake.logs.datadoghq.com",
-      "app.datadoghq.com",
-      "*.agent.datadoghq.com",
-    ]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "ifconfig.co"
-    source_addresses = ["*"]
-    target_fqdns = ["ifconfig.co"]
-    protocol {
-      port = "80"
-      type = "Http"
-    }
-  }
-  rule {
-    name = "cloudflare"
-    source_addresses = ["*"]
-    target_fqdns = ["api.cloudflare.com"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "letsencrypt"
-    source_addresses = ["*"]
-    target_fqdns = ["*.api.letsencrypt.org"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "wazuh-stega"
-    source_addresses = ["*"]
-    target_fqdns = ["800sky.stega.uk.net"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "flux"
-    source_addresses = ["*"]
-    target_fqdns = ["checkpoint-api.weave.works"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Sentry"
-    source_addresses = ["*"]
-    target_fqdns = ["sentry.bink.com"]
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
-  rule {
-    name = "Slack"
-    source_addresses = ["*"]
-    target_fqdns = [
-      "slack.com",
-      "*.slack.com"
-    ]
     protocol {
       port = "443"
       type = "Https"
@@ -567,61 +516,43 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
   }
 }
 
-resource "azurerm_firewall_network_rule_collection" "third-party-software" {
-  name                = "third-party-software"
+resource "azurerm_firewall_network_rule_collection" "egress" {
+  name                = "Egress"
   azure_firewall_name = "${azurerm_firewall.firewall.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority            = 130
+  priority            = 150
   action              = "Allow"
 
   rule {
-    name = "siagent"
+    name = "Stega Search Inform Agent"
     source_addresses = ["*"]
     destination_ports = ["8999"]
     destination_addresses = ["40.81.125.193/32"]
     protocols = ["TCP"]
   }
   rule {
-    name = "datadog logs"
+    name = "Stega OSSec Agent"
+    source_addresses = ["*"]
+    destination_ports = ["1515"]
+    destination_addresses = ["51.143.173.121/32"]
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "Datadog Logs"
     source_addresses = ["*"]
     destination_ports = ["10516"]
     destination_addresses = ["*"]
     protocols = ["TCP"]
   }
   rule {
-    name = "stega ossec"
-    source_addresses = ["*"]
-    destination_ports = ["1515"]
-    destination_addresses = ["51.143.173.121/32"]
-    protocols = ["TCP"]
-  }
-}
-
-resource "azurerm_firewall_network_rule_collection" "gitlab" {
-  name                = "gitlab"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority            = 120
-  action              = "Allow"
-
-  rule {
-    name = "gitlab"
+    name = "GitLab SSH"
     source_addresses = ["*"]
     destination_ports = ["22"]
     destination_addresses = ["13.69.125.130/32"]
     protocols = ["TCP"]
   }
-}
-
-resource "azurerm_firewall_network_rule_collection" "time" {
-  name                = "time"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  priority            = 110
-  action              = "Allow"
-
   rule {
-    name = "ntp"
+    name = "NTP Time Sync"
     source_addresses = ["*"]
     destination_ports = ["123"]
     destination_addresses = ["*"]
