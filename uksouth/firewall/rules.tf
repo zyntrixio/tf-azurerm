@@ -21,7 +21,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     }
   }
   rule {
-    name = "Datadog"
+    name = "Datadog HTTP"
     source_addresses = ["*"]
     target_fqdns = [
       "apt.datadoghq.com",
@@ -36,6 +36,23 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Http"
     }
   }
+  rule {
+    name = "Datadog HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = [
+      "apt.datadoghq.com",
+      "trace.agent.datadoghq.com",
+      "process.datadoghq.com",
+      "agent-intake.logs.datadoghq.com",
+      "app.datadoghq.com",
+      "*.agent.datadoghq.com",
+    ]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+
   rule {
     name = "Stega"
     source_addresses = ["*"]
