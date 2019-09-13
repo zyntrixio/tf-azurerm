@@ -184,6 +184,12 @@ module "controller_nsg_rules" {
       priority = "140"
       destination_port_range = "6443"
       source_address_prefix = "94.65.163.239/32"
+    },
+    {
+      name = "AllowKubeAPIAccessSABinkOffice"
+      priority = "150"
+      destination_port_range = "6443"
+      source_address_prefix = "169.255.146.109/32"
     }
   ]
 }
