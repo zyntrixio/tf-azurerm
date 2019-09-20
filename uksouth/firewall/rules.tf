@@ -56,7 +56,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
   rule {
     name = "Stega"
     source_addresses = ["*"]
-    target_fqdns = ["packages.wazuh.com","800sky.stega.uk.net"]
+    target_fqdns = ["packages.wazuh.com"]
     protocol {
       port = "443"
       type = "Https"
@@ -541,17 +541,17 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
   action              = "Allow"
 
   rule {
+    name = "Stega OSSEC Agent"
+    source_addresses = ["*"]
+    destination_ports = ["443","1515"]
+    destination_addresses = ["51.143.173.121/32"]
+    protocols = ["TCP"]
+  }
+  rule {
     name = "Stega Search Inform Agent"
     source_addresses = ["*"]
     destination_ports = ["8999"]
     destination_addresses = ["40.81.125.193/32"]
-    protocols = ["TCP"]
-  }
-  rule {
-    name = "Stega OSSec Agent"
-    source_addresses = ["*"]
-    destination_ports = ["1515"]
-    destination_addresses = ["51.143.173.121/32"]
     protocols = ["TCP"]
   }
   rule {
