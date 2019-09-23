@@ -288,6 +288,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "api.avios.com",
       "api.bink-dev.com",
       "api.loyalty.marksandspencer.services",
+      "api.bink.membership.coop.co.uk",
       "api.membership.coop.co.uk",
       "api.prod.eurostar.com",
       "api.services.qantasloyalty.com",
