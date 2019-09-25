@@ -183,7 +183,7 @@ module "controller_nsg_rules" {
       name = "AllowKubeAPIAccessFMHouse"
       priority = "140"
       destination_port_range = "6443"
-      source_address_prefix = "94.65.163.239/32"
+      source_address_prefix = "85.73.52.13/32"
     },
     {
       name = "AllowKubeAPIAccessSABinkOffice"
