@@ -190,6 +190,12 @@ module "controller_nsg_rules" {
       priority = "150"
       destination_port_range = "6443"
       source_address_prefix = "169.255.146.109/32"
+    },
+    {
+      name = "AllowKubeAPIAccessCP2House"
+      priority = "160"
+      destination_port_range = "6443"
+      source_address_prefix = "82.129.48.42/32"
     }
   ]
 }
