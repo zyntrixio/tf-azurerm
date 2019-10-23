@@ -1,5 +1,5 @@
-resource "azurerm_availability_set" "etcd" {
-  name = "${var.environment}-etcd-as"
+resource "azurerm_availability_set" "dbtest" {
+  name = "${var.environment}-dbtest-as"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count = 2
@@ -11,17 +11,31 @@ resource "azurerm_availability_set" "etcd" {
   }
 }
 
-resource "azurerm_network_interface" "etcd" {
-  count = "${var.etcd_count}"
-  name = "${format("${var.environment}-etcd-%02d-nic", count.index + 1)}"
+resource "azurerm_network_interface" "dbtest" {
+  count = 6
+  name = "${format("${var.environment}-dbtest-%02d-nic", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb"]
+  enable_accelerated_networking = true
+  enable_ip_forwarding = true
 
   ip_configuration {
       name = "primary"
-      subnet_id = "${azurerm_subnet.subnet.2.id}"
+      subnet_id = "${azurerm_subnet.subnet.0.id}"
       private_ip_address_allocation = "Dynamic"
+      primary = true
+  }
+
+  dynamic "ip_configuration" {
+      for_each = [for s in var.pod_ip_configs: {
+          name = "${format("pod-%02d", s)}"
+      }]
+
+      content {
+          name = ip_configuration.value.name
+          subnet_id = "${azurerm_subnet.subnet.0.id}"
+          private_ip_address_allocation = "Dynamic"
+      }
   }
 
   tags = {
@@ -30,28 +44,28 @@ resource "azurerm_network_interface" "etcd" {
   }
 }
 
-resource "azurerm_virtual_machine" "etcd" {
-  count = "${var.etcd_count}"
-  name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
+resource "azurerm_virtual_machine" "dbtest" {
+  count = 6
+  name = "${format("${var.environment}-dbtest-%02d", count.index + 1)}"
   location = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  availability_set_id = "${azurerm_availability_set.etcd.id}"
+  availability_set_id = "${azurerm_availability_set.dbtest.id}"
   network_interface_ids = [
-    "${element(azurerm_network_interface.etcd.*.id, count.index)}",
+    "${element(azurerm_network_interface.dbtest.*.id, count.index)}",
   ]
-  vm_size = "${var.etcd_vm_size}"
+  vm_size = "Standard_E32s_v3"
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
   storage_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "16.04-LTS"
     version   = "latest"
   }
 
   storage_os_disk {
-    name = "${format("${var.environment}-etcd-%02d-disk", count.index + 1)}"
+    name = "${format("${var.environment}-dbtest-%02d-disk", count.index + 1)}"
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -59,13 +73,13 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   os_profile {
-    computer_name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
+    computer_name = "${format("${var.environment}-dbtest-%02d", count.index + 1)}"
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
       write_files:
       - encoding: b64
-        content: RTlQWFA0bURDSDE2UlpJaE5BRDNDYktuQ28vZC9kUEVST1hWL1VpM29MOTRUcVRTaVpvQlhDcEJmVVFHQStXenV1Y2ZMaXg4R0wvQVdseDdoa1pNU2d6cWtpZWxmYy9QUThoSDhLR01UOE5BaXFLUkd6eE1EZ3h6Q2tWcnJ4cXlPMUNySDFOTlVxYllBV2FHTnBVZ2hMZjYyb0hzKzN1cnkyK21HdUZ6N0kvRjBIc0kwMzh1eE9RSFhoYzBHYkNXRkVZcWZtNUVXL2pQTXVIRyszQmtVSTc3Yy9KRkJpRW54Ri9IdFFtcFVPdGFKcHJYOUI2cjZLYkdnbWlaem44QkNNY2xXQTdGcFBNRTNBaFpDeUc1MWhodHpLelA4Z3l2TzZVTXJsNTAyS2pMYUtJMGJnOVBoVGFOY3FRZVdFVnlVTkxaTEFuNEE0YmY3YUVScTVvR2lKVDdmQ29US1ZENUxKdWtvK01wTjVQM0RRVEpNeXU2cGhvUHo4WTZ6citFQTdOZDN3eGJxbmp2QUpKUXhCcUt3UGltWjh3QXYzVTAzT0cvT3RuaFlndTdEZjQ2MUhEdkFCaXpUVHJSSmNoa3dHTk14VzBMNEtKWnQwNFQzMTN5ZUpWM0ZXQlJUdi9Eb1dPa3hrNWp4SFlVZEhwcEg1d3V5ZUJKZTE4R2hyZkNlUi8zZ3Aza25kQTdVUXlwdzM4dGE1TWNtekZiQzZPUXltNm92VnJSREEzcUVpQjYxUWxiaGhSc011L0RyZ3g1MWx2TDVBU0J0S2pzZW4rdkRtbUZIWFlGSzJhWGxFVVFGTzNhRHl6V1VEaEp5TmgwYlJpM0w4RStGTlpBenVobWxpaGxnTEpTVnR1ZDl5TzU1U3dTenVia0ZhTmp2YVlra0h4OW9WWGJBNDA9
+        content: RDViNjJjSFQ5c3NLeWppc0RJZ20wbGNJRi9rdWtVM216bGtkSWhnc0hxdVhWUjBaV1pZRW13RXpaVjB3MXc0aEM0UnZ5c3g5OWpMUldHc25abys5Mi9MTWpXZGdhOUkvRjhhb0F3NzJzRmJFZ0N2TDhKd0xKVTJZNEJZMjFqdithOTBNdDlWZGV3MXZxemhFZFd2TVZYNWUrc1Y0aDFlbEhXSzdMdjNvWDBiUmZrOE5OOFFEbzR0ejUzZ2VNcnhidFQyeHdVcXpSM0F2OVg4ajlHdHJWZjl5WEI2WHlIalVWYVhiQkRzUVQwQnptampCUG5EbStta0JROE9nZTFVczFqT1hJbW9nRnJzNXNqZ2FuNGVEU2xJTDZpbXdxT3lPZEpJSmFzWWFpdGU3WnRFTnJOVHZjRGE3cm1wR2FUZ0xTN3NKd2hmd0R6Zll1Z3FLK3p2eHNnWmJVNS9pZkwxQnlrWSsvbTBBYjMvMTVHemd6czR0eDRkT01RUFlWZ2IzcEhmdTg2WjZITXZ0R3FPSHUrNVVJMzU2Q3JMZXFtbGVEOWlBd2R1eWZTMk5ESDdqcVJXY09xWHZWbXVFZkRHNWRsNlNOVWVuVFd5L2RjUnhZaE1DOE9sZnFaWGVzeG9NU1BScGxxejlwajc2YWsyZHVGS2kvaUprandYbnBqQWs1elpkN1pBRFBITTF0SUw1aitoUlhWYzlUd28yRWcvZG56dHJCUHE0eTRrWGVzdnYrOVBPNHVNdHVGRGZYWDhHMFZiV1hORWFCUFMzbVA1MzdrUUdURVF2V0ErZW52NE5Wc2NYV1RFNml3TEhlc3hLc1hhZkZUYnozNUd2RVM5Qlc0c0F0MThCSmdUUk45RFVzUmpWdDZOYUpiS1M3YjM1cXkyRlQ4eTMwdnc9
         owner: root:root
         path: /etc/chef/encrypted_data_bag_secret
         permissions: '0600'
@@ -73,7 +87,7 @@ resource "azurerm_virtual_machine" "etcd" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: "${format("${var.environment}-etcd-%02d", count.index + 1)}"
+        node_name: "${format("${var.environment}-dbtest-%02d", count.index + 1)}"
         environment: "${var.resource_group_name}"
         validation_name: "bink-validator"
         validation_cert: |
@@ -105,7 +119,10 @@ resource "azurerm_virtual_machine" "etcd" {
           kGgAf033beTHYzJa3XIp0XhF7+7SLwaF4Imje4Bp8FKJmVirQT2OYw==
           -----END RSA PRIVATE KEY-----
         run_list:
-         - "role[etcd]"
+         - "role[worker]"
+        initial_attributes:
+          kubernetes:
+            taint: "dbtest"
         omnibus_url: "https://www.chef.io/chef/install.sh"
         omnibus_version: "15.1.36"
       runcmd:
@@ -124,76 +141,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = "${var.environment}",
     datadog = "monitored"
   }
-}
-
-module "etcd_nsg_rules" {
-  source = "../../modules/nsg_rules"
-  network_security_group_name = "${var.environment}-subnet-03-nsg"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  rules = [
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    },
-    {
-      name = "AllowSSH"
-      priority = "500"
-      protocol = "TCP"
-      destination_port_range = "22"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
-      source_address_prefix = "192.168.4.0/24"
-    },
-    {
-      name = "AllowEtcdClientRequestsController"
-      priority = "100"
-      protocol = "TCP"
-      destination_port_range = "2379"
-      source_address_prefix = "${var.subnet_address_prefixes[1]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
-    },
-    {
-      name = "AllowEtcdClustering"
-      priority = "110"
-      protocol = "TCP"
-      destination_port_range = "2380"
-      source_address_prefix = "${var.subnet_address_prefixes[2]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
-    },
-    {
-      name = "AllowEtcdClientClustering"
-      priority = "120"
-      protocol = "TCP"
-      destination_port_range = "2379"
-      source_address_prefix = "${var.subnet_address_prefixes[2]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
-    }
-  ]
-}
-
-module "etcd_lb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  frontend_ip_configuration_name = "subnet-03"
-
-  lb_port = {
-    etcd = [ "2379", "TCP", "2379" ]
-  }
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "etcd-bap-assoc" {
-   count = "${var.etcd_count}"
-   network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"
-   ip_configuration_name = "primary"
-   backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
 }
