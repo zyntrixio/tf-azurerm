@@ -391,6 +391,15 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     }
   }
   rule {
+    name = "Midas Ecrebo HTTPS"
+    source_addresses = ["*"]
+    target_fqdns = ["london-capi.ecrebo.com"]
+    protocol {
+      port = "2361"
+      type = "Https"
+    }
+  }
+  rule {
     name = "Athena HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
@@ -584,5 +593,12 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     destination_ports = ["123"]
     destination_addresses = ["*"]
     protocols = ["UDP"]
+  }
+  rule {
+    name = "Ecrebo SFTP"
+    source_addresses = ["*"]
+    destination_ports = ["22"]
+    destination_addresses = ["52.213.204.110/32"]
+    protocols = ["TCP"]
   }
 }
