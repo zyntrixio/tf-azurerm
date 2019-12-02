@@ -1,7 +1,7 @@
 resource "azurerm_firewall_application_rule_collection" "software" {
   name = "Software"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
   priority = 150
   action = "Allow"
 
@@ -231,8 +231,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
   name = "Olympus"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
   priority = 250
   action = "Allow"
 
@@ -425,8 +425,8 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
 
 resource "azurerm_firewall_nat_rule_collection" "ingress" {
   name = "ingress"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
   priority = 100
   action = "Dnat"
 
@@ -482,8 +482,8 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
 
 resource "azurerm_firewall_network_rule_collection" "ssh" {
   name                = "bastion-to-hosts"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
   priority            = 100
   action              = "Allow"
 
@@ -554,8 +554,8 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
 
 resource "azurerm_firewall_network_rule_collection" "egress" {
   name                = "Egress"
-  azure_firewall_name = "${azurerm_firewall.firewall.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
   priority            = 150
   action              = "Allow"
 

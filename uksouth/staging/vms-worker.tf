@@ -1,12 +1,12 @@
 resource "azurerm_availability_set" "worker" {
   name = "${var.environment}-worker-as"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   platform_fault_domain_count = 2
   managed = true
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
@@ -20,17 +20,17 @@ variable "pod_ip_configs" {
 }
 
 resource "azurerm_network_interface" "worker" {
-  count = "${var.worker_count}"
-  name = "${format("${var.environment}-worker-%02d-nic", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb", "azurerm_lb.plb"]
+  count = var.worker_count
+  name = format("${var.environment}-worker-%02d-nic", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  depends_on = [azurerm_lb.lb, azurerm_lb.plb]
   enable_accelerated_networking = true
   enable_ip_forwarding = true
 
   ip_configuration {
       name = "primary"
-      subnet_id = "${azurerm_subnet.subnet.0.id}"
+      subnet_id = azurerm_subnet.subnet.0.id
       private_ip_address_allocation = "Dynamic"
       primary = true
   }
@@ -42,27 +42,27 @@ resource "azurerm_network_interface" "worker" {
 
       content {
           name = ip_configuration.value.name
-          subnet_id = "${azurerm_subnet.subnet.0.id}"
+          subnet_id = azurerm_subnet.subnet.0.id
           private_ip_address_allocation = "Dynamic"
       }
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
 
 resource "azurerm_virtual_machine" "worker" {
-  count = "${var.worker_count}"
-  name = "${format("${var.environment}-worker-%02d", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  availability_set_id = "${azurerm_availability_set.worker.id}"
+  count = var.worker_count
+  name = format("${var.environment}-worker-%02d", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  availability_set_id = azurerm_availability_set.worker.id
   network_interface_ids = [
-    "${element(azurerm_network_interface.worker.*.id, count.index)}",
+    element(azurerm_network_interface.worker.*.id, count.index),
   ]
-  vm_size = "${var.worker_vm_size}"
+  vm_size = var.worker_vm_size
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
@@ -74,7 +74,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   storage_os_disk {
-    name = "${format("${var.environment}-worker-%02d-disk", count.index + 1)}"
+    name = format("${var.environment}-worker-%02d-disk", count.index + 1)
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -82,7 +82,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   os_profile {
-    computer_name = "${format("${var.environment}-worker-%02d", count.index + 1)}"
+    computer_name = format("${var.environment}-worker-%02d", count.index + 1)
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
@@ -96,8 +96,8 @@ resource "azurerm_virtual_machine" "worker" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: "${format("${var.environment}-worker-%02d", count.index + 1)}"
-        environment: "${var.resource_group_name}"
+        node_name: format("${var.environment}-worker-%02d", count.index + 1)
+        environment: var.resource_group_name
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
@@ -147,7 +147,7 @@ resource "azurerm_virtual_machine" "worker" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
@@ -155,7 +155,7 @@ resource "azurerm_virtual_machine" "worker" {
 module "worker_nsg_rules" {
   source = "../../modules/nsg_rules"
   network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = azurerm_resource_group.rg.name
   rules = [
     {
       name = "BlockEverything"
@@ -172,44 +172,44 @@ module "worker_nsg_rules" {
       priority = "500"
       protocol = "TCP"
       destination_port_range = "22"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = var.subnet_address_prefixes[0]
       source_address_prefix = "192.168.4.0/24"
     },
     {
       name = "AllowAllSubnetTraffic"
       priority = "100"
-      source_address_prefix = "${var.subnet_address_prefixes[0]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      source_address_prefix = var.subnet_address_prefixes[0]
+      destination_address_prefix = var.subnet_address_prefixes[0]
     },
     {
       name = "AllowAllControllerSubnetTraffic"
       priority = "110"
-      source_address_prefix = "${var.subnet_address_prefixes[1]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      source_address_prefix = var.subnet_address_prefixes[1]
+      destination_address_prefix = var.subnet_address_prefixes[0]
     },
     {
       name = "AllowHttpTraffic"
       priority = "120"
       destination_port_range = "30000"
       protocol = "TCP"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = var.subnet_address_prefixes[0]
     },
     {
       name = "AllowHttpsTraffic"
       priority = "130"
       destination_port_range = "30001"
       protocol = "TCP"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = var.subnet_address_prefixes[0]
     }
   ]
 }
 
 module "worker_public_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.plb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  frontend_ip_configuration_name = "${azurerm_public_ip.pip.name}"
+  loadbalancer_id = azurerm_lb.plb.id
+  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
+  resource_group_name = azurerm_resource_group.rg.name
+  frontend_ip_configuration_name = azurerm_public_ip.pip.name
 
   lb_port = {
     ingress_http = [ "80", "TCP", "30000" ]
@@ -219,10 +219,10 @@ module "worker_public_lb_rules" {
 
 module "worker_lb_rules_udp" {
   source = "../../modules/lb_rules_udp"
-  loadbalancer_id = "${azurerm_lb.plb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  frontend_ip_configuration_name = "${azurerm_public_ip.pip.name}"
+  loadbalancer_id = azurerm_lb.plb.id
+  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
+  resource_group_name = azurerm_resource_group.rg.name
+  frontend_ip_configuration_name = azurerm_public_ip.pip.name
 
   lb_port = {
     udphack_worker = ["65532", "UDP", "65532"]
@@ -230,15 +230,15 @@ module "worker_lb_rules_udp" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-ppools-assoc" {
-  count = "${var.worker_count}"
-  network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
+  count = var.worker_count
+  network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
   ip_configuration_name = "primary"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.ppools.0.id}"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.ppools.0.id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
-  count = "${var.worker_count}"
-  network_interface_id = "${element(azurerm_network_interface.worker.*.id, count.index)}"
+  count = var.worker_count
+  network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
   ip_configuration_name = "primary"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }

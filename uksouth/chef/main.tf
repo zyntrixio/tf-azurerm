@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 1.30.1"
+  version = "~> 1.37.0"
   subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
   client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
   tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
@@ -15,7 +15,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg" {
   name = "${var.location}-chef"
-  location = "${var.location}"
+  location = var.location
 
   tags = {
     environment = "production"
@@ -24,8 +24,8 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_virtual_network" "vnet" {
   name = "${var.environment}-vnet"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   address_space = ["192.168.5.0/24"]
 
   tags = {
@@ -34,38 +34,42 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  count = "${length(var.subnet_address_prefixes)}"
-  name = "${format("subnet-%02d", count.index + 1)}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  address_prefix = "${element(var.subnet_address_prefixes, count.index)}"
-  network_security_group_id = "${element(azurerm_network_security_group.nsg.*.id, count.index)}"
-  route_table_id = "${azurerm_route_table.rt.id}"
+  count = length(var.subnet_address_prefixes)
+  name = format("subnet-%02d", count.index + 1)
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefix = element(var.subnet_address_prefixes, count.index)
+  lifecycle {
+    ignore_changes = [
+      network_security_group_id,
+      route_table_id
+    ]
+  }
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  count = "${length(var.subnet_address_prefixes)}"
-  name = "${format("${var.environment}-subnet-%02d-nsg", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  count = length(var.subnet_address_prefixes)
+  name = format("${var.environment}-subnet-%02d-nsg", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
-  count = "${length(var.subnet_address_prefixes)}"
-  subnet_id = "${element(azurerm_subnet.subnet.*.id, count.index)}"
-  network_security_group_id = "${element(azurerm_network_security_group.nsg.*.id, count.index)}"
+  count = length(var.subnet_address_prefixes)
+  subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
+  network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
 }
 
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
-  count = "${length(var.subnet_address_prefixes)}"
-  subnet_id      = "${element(azurerm_subnet.subnet.*.id, count.index)}"
-  route_table_id = "${azurerm_route_table.rt.id}"
+  count = length(var.subnet_address_prefixes)
+  subnet_id      = element(azurerm_subnet.subnet.*.id, count.index)
+  route_table_id = azurerm_route_table.rt.id
 }
 
 resource "azurerm_route_table" "rt" {
   name = "${var.environment}-routes"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   disable_bgp_route_propagation = true
 
   route {
@@ -82,8 +86,8 @@ resource "azurerm_route_table" "rt" {
 
 resource "azurerm_virtual_network_peering" "peer" {
   name = "local-to-firewall"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/firewall-vnet"
   allow_virtual_network_access = true
   allow_forwarded_traffic = true
@@ -91,15 +95,15 @@ resource "azurerm_virtual_network_peering" "peer" {
 
 resource "azurerm_lb" "lb" {
   name = "${var.environment}-lb"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   sku = "Standard"
 
   frontend_ip_configuration {
     name = "subnet-01"
     private_ip_address_allocation = "Static"
-    private_ip_address = "${cidrhost(var.subnet_address_prefixes[0], 4)}"
-    subnet_id = "${azurerm_subnet.subnet.0.id}"
+    private_ip_address = cidrhost(var.subnet_address_prefixes[0], 4)
+    subnet_id = azurerm_subnet.subnet.0.id
   }
   tags = {
     environment = "production"
@@ -107,22 +111,22 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "pools" {
-  count = "${length(var.subnet_address_prefixes)}"
-  name = "${format("subnet-%02d", count.index + 1)}"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  count = length(var.subnet_address_prefixes)
+  name = format("subnet-%02d", count.index + 1)
+  loadbalancer_id = azurerm_lb.lb.id
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_interface" "chef" {
   name = "chef-01-nic"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   enable_accelerated_networking = false
-  depends_on = ["azurerm_lb.lb"]
+  depends_on = [azurerm_lb.lb]
 
   ip_configuration {
     name = "primary"
-    subnet_id = "${azurerm_subnet.subnet.0.id}"
+    subnet_id = azurerm_subnet.subnet.0.id
     private_ip_address_allocation = "Dynamic"
     primary = true
   }
@@ -133,16 +137,16 @@ resource "azurerm_network_interface" "chef" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "chef-bap-assoc" {
-  network_interface_id = "${azurerm_network_interface.chef.id}"
+  network_interface_id = azurerm_network_interface.chef.id
   ip_configuration_name = "primary"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }
 
 module "chef_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  loadbalancer_id = azurerm_lb.lb.id
+  backend_id = azurerm_lb_backend_address_pool.pools.0.id
+  resource_group_name = azurerm_resource_group.rg.name
   frontend_ip_configuration_name = "subnet-01"
 
   lb_port = {
@@ -152,9 +156,9 @@ module "chef_lb_rules" {
 
 resource "azurerm_virtual_machine" "chef" {
   name = "chef-01"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  network_interface_ids = ["${azurerm_network_interface.chef.id}"]
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  network_interface_ids = [azurerm_network_interface.chef.id]
 
   vm_size = "Standard_B2ms"
   delete_os_disk_on_termination = true
@@ -196,7 +200,7 @@ resource "azurerm_virtual_machine" "chef" {
 module "worker_nsg_rules" {
   source = "../../modules/nsg_rules"
   network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = azurerm_resource_group.rg.name
   rules = [
     {
       name = "BlockEverything"
@@ -213,7 +217,7 @@ module "worker_nsg_rules" {
       priority = "500"
       protocol = "TCP"
       destination_port_range = "22"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = var.subnet_address_prefixes[0]
       source_address_prefix = "192.168.4.0/24"
     },
     {
@@ -221,7 +225,7 @@ module "worker_nsg_rules" {
       priority = "100"
       destination_port_range = "4444"
       protocol = "TCP"
-      destination_address_prefix = "${var.subnet_address_prefixes[0]}"
+      destination_address_prefix = var.subnet_address_prefixes[0]
     }
   ]
 }

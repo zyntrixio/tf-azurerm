@@ -1,27 +1,27 @@
 resource "azurerm_availability_set" "postgres" {
   name = "${var.environment}-postgres-as"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   platform_fault_domain_count = 2
   managed = true
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
 
 resource "azurerm_network_interface" "postgres" {
-  count = "${var.postgres_count}"
-  name = "${format("${var.environment}-postgres-%02d-nic", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb"]
+  count = var.postgres_count
+  name = format("${var.environment}-postgres-%02d-nic", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  depends_on = [azurerm_lb.lb]
   enable_accelerated_networking = true
 
   ip_configuration {
       name = "primary"
-      subnet_id = "${azurerm_subnet.subnet.0.id}"
+      subnet_id = azurerm_subnet.subnet.0.id
       private_ip_address_allocation = "Dynamic"
       primary = true
   }
@@ -33,27 +33,27 @@ resource "azurerm_network_interface" "postgres" {
 
       content {
           name = ip_configuration.value.name
-          subnet_id = "${azurerm_subnet.subnet.0.id}"
+          subnet_id = azurerm_subnet.subnet.0.id
           private_ip_address_allocation = "Dynamic"
       }
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
 
 resource "azurerm_virtual_machine" "postgres" {
-  count = "${var.postgres_count}"
-  name = "${format("${var.environment}-postgres-%02d", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  availability_set_id = "${azurerm_availability_set.postgres.id}"
+  count = var.postgres_count
+  name = format("${var.environment}-postgres-%02d", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  availability_set_id = azurerm_availability_set.postgres.id
   network_interface_ids = [
-    "${element(azurerm_network_interface.postgres.*.id, count.index)}",
+    element(azurerm_network_interface.postgres.*.id, count.index),
   ]
-  vm_size = "${var.postgres_vm_size}"
+  vm_size = var.postgres_vm_size
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
@@ -65,7 +65,7 @@ resource "azurerm_virtual_machine" "postgres" {
   }
 
   storage_os_disk {
-    name = "${format("${var.environment}-postgres-%02d-disk", count.index + 1)}"
+    name = format("${var.environment}-postgres-%02d-disk", count.index + 1)
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -73,7 +73,7 @@ resource "azurerm_virtual_machine" "postgres" {
   }
 
   os_profile {
-    computer_name = "${format("${var.environment}-postgres-%02d", count.index + 1)}"
+    computer_name = format("${var.environment}-postgres-%02d", count.index + 1)
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
@@ -88,7 +88,7 @@ resource "azurerm_virtual_machine" "postgres" {
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
         node_name: "${format("${var.environment}-postgres-%02d", count.index + 1)}"
-        environment: "${var.resource_group_name}"
+        environment: var.resource_group_name
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
@@ -141,7 +141,7 @@ resource "azurerm_virtual_machine" "postgres" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
