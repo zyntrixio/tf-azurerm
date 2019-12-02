@@ -1,13 +1,13 @@
 resource "azurerm_network_interface" "bastion" {
-  count = "${var.bastion_count}"
-  name = "${format("${var.environment}-%02d-nic", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb"]
+  count = var.bastion_count
+  name = format("${var.environment}-%02d-nic", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  depends_on = [azurerm_lb.lb]
 
   ip_configuration {
     name = "primary"
-    subnet_id = "${azurerm_subnet.subnet.0.id}"
+    subnet_id = azurerm_subnet.subnet.0.id
     private_ip_address_allocation = "Dynamic"
   }
 
@@ -18,14 +18,14 @@ resource "azurerm_network_interface" "bastion" {
 }
 
 resource "azurerm_virtual_machine" "bastion" {
-  count = "${var.bastion_count}"
-  name = "${format("${var.environment}-%02d", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  count = var.bastion_count
+  name = format("${var.environment}-%02d", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   network_interface_ids = [
-    "${element(azurerm_network_interface.bastion.*.id, count.index)}",
+    element(azurerm_network_interface.bastion.*.id, count.index),
   ]
-  vm_size = "${var.bastion_vm_size}"
+  vm_size = var.bastion_vm_size
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
@@ -37,7 +37,7 @@ resource "azurerm_virtual_machine" "bastion" {
   }
 
   storage_os_disk {
-    name = "${format("${var.environment}-%02d-disk", count.index + 1)}"
+    name = format("${var.environment}-%02d-disk", count.index + 1)
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -45,7 +45,7 @@ resource "azurerm_virtual_machine" "bastion" {
   }
 
   os_profile {
-    computer_name = "${format("${var.environment}-%02d", count.index + 1)}"
+    computer_name = format("${var.environment}-%02d", count.index + 1)
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "bastion" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: "${format("${var.environment}-%02d", count.index + 1)}"
+        node_name: format("${var.environment}-%02d", count.index + 1)
         environment: "uksouth-prod"
         validation_name: "bink-validator"
         validation_cert: |
@@ -118,7 +118,7 @@ resource "azurerm_virtual_machine" "bastion" {
 module "bastion_nsg_rules" {
   source = "../../modules/nsg_rules"
   network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = azurerm_resource_group.rg.name
   rules = [
     {
       name = "AllowLoadBalancer"
@@ -147,9 +147,9 @@ module "bastion_nsg_rules" {
 
 module "bastion_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  loadbalancer_id = azurerm_lb.lb.id
+  backend_id = azurerm_lb_backend_address_pool.pools.0.id
+  resource_group_name = azurerm_resource_group.rg.name
   frontend_ip_configuration_name = "subnet-01"
 
   lb_port = {
@@ -158,8 +158,8 @@ module "bastion_lb_rules" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "bastion-bap-assoc" {
-  count = "${var.bastion_count}"
-  network_interface_id = "${element(azurerm_network_interface.bastion.*.id, count.index)}"
+  count = var.bastion_count
+  network_interface_id = element(azurerm_network_interface.bastion.*.id, count.index)
   ip_configuration_name = "primary"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.0.id}"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }

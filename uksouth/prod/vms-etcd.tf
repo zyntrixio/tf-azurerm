@@ -1,45 +1,45 @@
 resource "azurerm_availability_set" "etcd" {
   name = "${var.environment}-etcd-as"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   platform_fault_domain_count = 2
   managed = true
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
 
 resource "azurerm_network_interface" "etcd" {
-  count = "${var.etcd_count}"
-  name = "${format("${var.environment}-etcd-%02d-nic", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on = ["azurerm_lb.lb"]
+  count = var.etcd_count
+  name = format("${var.environment}-etcd-%02d-nic", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  depends_on = [azurerm_lb.lb]
 
   ip_configuration {
       name = "primary"
-      subnet_id = "${azurerm_subnet.subnet.2.id}"
+      subnet_id = azurerm_subnet.subnet.2.id
       private_ip_address_allocation = "Dynamic"
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
 
 resource "azurerm_virtual_machine" "etcd" {
-  count = "${var.etcd_count}"
-  name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
-  location = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  availability_set_id = "${azurerm_availability_set.etcd.id}"
+  count = var.etcd_count
+  name = format("${var.environment}-etcd-%02d", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  availability_set_id = azurerm_availability_set.etcd.id
   network_interface_ids = [
-    "${element(azurerm_network_interface.etcd.*.id, count.index)}",
+    element(azurerm_network_interface.etcd.*.id, count.index),
   ]
-  vm_size = "${var.etcd_vm_size}"
+  vm_size = var.etcd_vm_size
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
@@ -51,7 +51,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   storage_os_disk {
-    name = "${format("${var.environment}-etcd-%02d-disk", count.index + 1)}"
+    name = format("${var.environment}-etcd-%02d-disk", count.index + 1)
     disk_size_gb = "32"
     caching = "ReadOnly"
     create_option = "FromImage"
@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   os_profile {
-    computer_name = "${format("${var.environment}-etcd-%02d", count.index + 1)}"
+    computer_name = format("${var.environment}-etcd-%02d", count.index + 1)
     admin_username = "terraform"
     custom_data = <<-EOF
       #cloud-config
@@ -73,8 +73,8 @@ resource "azurerm_virtual_machine" "etcd" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: "${format("${var.environment}-etcd-%02d", count.index + 1)}"
-        environment: "${var.resource_group_name}"
+        node_name: format("${var.environment}-etcd-%02d", count.index + 1)
+        environment: var.resource_group_name
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
@@ -124,7 +124,7 @@ resource "azurerm_virtual_machine" "etcd" {
   }
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
     datadog = "monitored"
   }
 }
@@ -132,7 +132,7 @@ resource "azurerm_virtual_machine" "etcd" {
 module "etcd_nsg_rules" {
   source = "../../modules/nsg_rules"
   network_security_group_name = "${var.environment}-subnet-03-nsg"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = azurerm_resource_group.rg.name
   rules = [
     {
       name = "AllowLoadBalancer"
@@ -149,7 +149,7 @@ module "etcd_nsg_rules" {
       priority = "500"
       protocol = "TCP"
       destination_port_range = "22"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
+      destination_address_prefix = var.subnet_address_prefixes[2]
       source_address_prefix = "192.168.4.0/24"
     },
     {
@@ -157,33 +157,33 @@ module "etcd_nsg_rules" {
       priority = "100"
       protocol = "TCP"
       destination_port_range = "2379"
-      source_address_prefix = "${var.subnet_address_prefixes[1]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
+      source_address_prefix = var.subnet_address_prefixes[1]
+      destination_address_prefix = var.subnet_address_prefixes[2]
     },
     {
       name = "AllowEtcdClustering"
       priority = "110"
       protocol = "TCP"
       destination_port_range = "2380"
-      source_address_prefix = "${var.subnet_address_prefixes[2]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
+      source_address_prefix = var.subnet_address_prefixes[2]
+      destination_address_prefix = var.subnet_address_prefixes[2]
     },
     {
       name = "AllowEtcdClientClustering"
       priority = "120"
       protocol = "TCP"
       destination_port_range = "2379"
-      source_address_prefix = "${var.subnet_address_prefixes[2]}"
-      destination_address_prefix = "${var.subnet_address_prefixes[2]}"
+      source_address_prefix = var.subnet_address_prefixes[2]
+      destination_address_prefix = var.subnet_address_prefixes[2]
     }
   ]
 }
 
 module "etcd_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = "${azurerm_lb.lb.id}"
-  backend_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  loadbalancer_id = azurerm_lb.lb.id
+  backend_id = azurerm_lb_backend_address_pool.pools.2.id
+  resource_group_name = azurerm_resource_group.rg.name
   frontend_ip_configuration_name = "subnet-03"
 
   lb_port = {
@@ -192,8 +192,8 @@ module "etcd_lb_rules" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "etcd-bap-assoc" {
-   count = "${var.etcd_count}"
-   network_interface_id = "${element(azurerm_network_interface.etcd.*.id, count.index)}"
+   count = var.etcd_count
+   network_interface_id = element(azurerm_network_interface.etcd.*.id, count.index)
    ip_configuration_name = "primary"
-   backend_address_pool_id = "${azurerm_lb_backend_address_pool.pools.2.id}"
+   backend_address_pool_id = azurerm_lb_backend_address_pool.pools.2.id
 }
