@@ -88,7 +88,7 @@ resource "azurerm_virtual_machine" "postgres" {
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
         node_name: "${format("${var.environment}-postgres-%02d", count.index + 1)}"
-        environment: var.resource_group_name
+        environment: "${var.resource_group_name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----

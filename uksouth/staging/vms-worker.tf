@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine" "worker" {
 
   storage_os_disk {
     name = format("${var.environment}-worker-%02d-disk", count.index + 1)
-    disk_size_gb = "32"
+    disk_size_gb = "128"
     caching = "ReadOnly"
     create_option = "FromImage"
     managed_disk_type = "StandardSSD_LRS"
@@ -96,8 +96,8 @@ resource "azurerm_virtual_machine" "worker" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: format("${var.environment}-worker-%02d", count.index + 1)
-        environment: var.resource_group_name
+        node_name: "${format("${var.environment}-worker-%02d", count.index + 1)}"
+        environment: "${var.resource_group_name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----

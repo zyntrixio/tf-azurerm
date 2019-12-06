@@ -73,8 +73,8 @@ resource "azurerm_virtual_machine" "etcd" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: format("${var.environment}-etcd-%02d", count.index + 1)
-        environment: var.resource_group_name
+        node_name: "${format("${var.environment}-etcd-%02d", count.index + 1)}"
+        environment: "${var.resource_group_name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
