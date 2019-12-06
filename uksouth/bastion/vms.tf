@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "bastion" {
         install_type: "omnibus"
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: format("${var.environment}-%02d", count.index + 1)
+        node_name: "${format("${var.environment}-%02d", count.index + 1)}"
         environment: "uksouth-prod"
         validation_name: "bink-validator"
         validation_cert: |
