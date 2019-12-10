@@ -66,7 +66,7 @@ resource "azurerm_virtual_machine" "postgres" {
 
   storage_os_disk {
     name = format("${var.environment}-postgres-%02d-disk", count.index + 1)
-    disk_size_gb = "32"
+    disk_size_gb = "128"
     caching = "ReadOnly"
     create_option = "FromImage"
     managed_disk_type = "StandardSSD_LRS"
