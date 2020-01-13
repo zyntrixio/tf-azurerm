@@ -16,6 +16,25 @@ resource "azurerm_subnet" "subnet" {
   address_prefix = "192.168.0.0/24"
 }
 
+# New Firewall Design as described here: https://hellobink.atlassian.net/wiki/spaces/INFRA/pages/840630303/Ingress+Revision+Plan
+resource "azurerm_public_ip_prefix" "prefix" {
+  name                = "firewall-pip-prefix"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  prefix_length = 28
+}
+
+resource "azurerm_public_ip" "pips" {
+  count = 16
+  name = format("firewall-pip-prefix-%02d", count.index + 1)
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  allocation_method = "Static"
+  sku = "Standard"
+  idle_timeout_in_minutes = 5
+  public_ip_prefix_id = azurerm_public_ip_prefix.prefix.id
+}
+
 resource "azurerm_public_ip" "pip" {
   count = 1
   name = format("firewall-pip-%02d", count.index + 1)
