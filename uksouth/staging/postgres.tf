@@ -4,13 +4,20 @@ resource "random_password" "pg_pass" {
 }
 
 resource "azurerm_postgresql_server" "postgres" {
-  name = "bink-dev-uksouth"
+  name = "bink-staging-uksouth"
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku_name = "GP_Gen5_2"
+  sku_name = "GP_Gen5_4"
+
+#   sku {
+#     name = "GP_Gen5_4"
+#     capacity = "4"
+#     tier = "GeneralPurpose"
+#     family = "Gen5"
+#   }
 
   storage_profile {
-    storage_mb = 102400
+    storage_mb = 1024000
     backup_retention_days = 7
     geo_redundant_backup = "Disabled"
     auto_grow = "Disabled"
