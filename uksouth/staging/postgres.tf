@@ -9,13 +9,6 @@ resource "azurerm_postgresql_server" "postgres" {
   resource_group_name = azurerm_resource_group.rg.name
   sku_name = "GP_Gen5_4"
 
-#   sku {
-#     name = "GP_Gen5_4"
-#     capacity = "4"
-#     tier = "GeneralPurpose"
-#     family = "Gen5"
-#   }
-
   storage_profile {
     storage_mb = 1024000
     backup_retention_days = 7
