@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "controller" {
   name = format("${var.environment}-controller-%02d-nic", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb, azurerm_lb.plb]
+  depends_on = [azurerm_lb.lb]
   enable_accelerated_networking = false
 
   ip_configuration {
@@ -162,60 +162,13 @@ module "controller_nsg_rules" {
       source_address_prefix = var.subnet_address_prefixes[0]
     },
     {
-      name = "AllowKubeAPIAccessBinkHQ"
+      name = "AllowKubeAPIAccessFirewall"
       priority = "110"
       destination_port_range = "6443"
-      source_address_prefix = "194.74.152.11/32"
-    },
-    {
-      name = "AllowKubeAPIAccessCPHouse"
-      priority = "120"
-      destination_port_range = "6443"
-      source_address_prefix = "80.229.2.38/32"
-    },
-    {
-      name = "AllowKubeAPIAccessTWHouse"
-      priority = "130"
-      destination_port_range = "6443"
-      source_address_prefix = "82.13.29.15/32"
-    },
-    {
-      name = "AllowKubeAPIAccessFMHouse"
-      priority = "140"
-      destination_port_range = "6443"
-      source_address_prefix = "85.73.52.13/32"
-    },
-    {
-      name = "AllowKubeAPIAccessSABinkOffice"
-      priority = "150"
-      destination_port_range = "6443"
-      source_address_prefix = "169.255.146.109/32"
-    },
-    {
-      name = "AllowKubeAPIAccessCP2House"
-      priority = "160"
-      destination_port_range = "6443"
-      source_address_prefix = "82.129.48.42/32"
-    },
-    {
-      name = "AllowKubeAPIAccessCLHouse"
-      priority = "170"
-      destination_port_range = "6443"
-      source_address_prefix = "82.14.246.185/32"
+      # source_address_prefix = "192.168.0.4/32" # TODO: Need to figure this out
+      destination_address_prefix = var.subnet_address_prefixes[1]
     }
   ]
-}
-
-module "controller_plb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.1.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
-
-  lb_port = {
-    kube_api = [ "6443", "TCP", "6443" ]
-  }
 }
 
 module "controller_lb_rules" {
@@ -228,25 +181,6 @@ module "controller_lb_rules" {
   lb_port = {
     kube_api = [ "6443", "TCP", "6443" ]
   }
-}
-
-module "controller_plb_rules_udp" {
-  source = "../../modules/lb_rules_udp"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.1.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
-
-  lb_port = {
-    udphack_controller = ["65533", "UDP", "65533"]
-  }
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "controller-bap-ppools-assoc" {
-  count = var.controller_count
-  network_interface_id = element(azurerm_network_interface.controller.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.ppools.1.id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "controller-bap-pools-assoc" {

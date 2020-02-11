@@ -29,29 +29,8 @@ resource "azurerm_route_table" "rt" {
   disable_bgp_route_propagation = true
 
   route {
-    name = "vault"
-    address_prefix = "192.168.1.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "sentry"
-    address_prefix = "192.168.2.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "bastion"
-    address_prefix = "192.168.4.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "chef"
-    address_prefix = "192.168.5.0/24"
+    name = "firewall"
+    address_prefix = "0.0.0.0/0"
     next_hop_type = "VirtualAppliance"
     next_hop_in_ip_address = "192.168.0.4"
   }
