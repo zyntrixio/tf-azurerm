@@ -114,6 +114,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       "*.blob.core.windows.net",
       "docker.elastic.co",
       "docker-auth.elastic.co",
+      "mcr.microsoft.com",
+      "*.cdn.mscr.io",
     ]
     protocol {
       port = "443"
@@ -434,25 +436,25 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     name = "ssh"
     source_addresses = ["*"]
     destination_ports = ["22"]
-    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "192.168.4.4"
     translated_port = "22"
     protocols = ["TCP"]
   }
   rule {
-    name = "http"
+    name = "prod_http"
     source_addresses = ["*"]
     destination_ports = ["80"]
-    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "10.0.0.4"
     translated_port = "80"
     protocols = ["TCP"]
   }
   rule {
-    name = "https"
+    name = "prod_https"
     source_addresses = ["*"]
     destination_ports = ["443"]
-    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "10.0.0.4"
     translated_port = "443"
     protocols = ["TCP"]
@@ -461,21 +463,83 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     name = "chef"
     source_addresses = ["*"]
     destination_ports = ["4444"]
-    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "192.168.5.4"
     translated_port = "4444"
     protocols = ["TCP"]
   }
   rule {
-    name = "kube-api"
+    name = "prod_kube"
     source_addresses = [
       "194.74.152.11/32",
       "80.229.2.38/32",
       "82.13.29.15/32"
     ]
     destination_ports = ["6443"]
-    destination_addresses = ["${azurerm_public_ip.pip.0.ip_address}"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "10.0.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "staging_http"
+    source_addresses = ["*"]
+    destination_ports = ["80"]
+    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
+    translated_address = "10.1.0.4"
+    translated_port = "80"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "staging_https"
+    source_addresses = ["*"]
+    destination_ports = ["443"]
+    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
+    translated_address = "10.1.0.4"
+    translated_port = "443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "staging_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
+    translated_address = "10.1.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "dev_http"
+    source_addresses = ["*"]
+    destination_ports = ["80"]
+    destination_addresses = [azurerm_public_ip.pips.2.ip_address]
+    translated_address = "10.2.0.4"
+    translated_port = "80"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "dev_https"
+    source_addresses = ["*"]
+    destination_ports = ["443"]
+    destination_addresses = [azurerm_public_ip.pips.2.ip_address]
+    translated_address = "10.2.0.4"
+    translated_port = "443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "dev_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.2.ip_address]
+    translated_address = "10.2.64.4"
     translated_port = "6443"
     protocols = ["TCP"]
   }
@@ -551,13 +615,6 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     destination_addresses = ["192.168.4.0/24"]
     protocols = ["UDP"]
   }
-  rule {
-    name = "bastion-to-sanorth-dev"
-    source_addresses = ["192.168.4.0/24"]
-    destination_ports = ["22"]
-    destination_addresses = ["10.12.0.0/16"]
-    protocols = ["TCP"]
-  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "egress" {
@@ -607,6 +664,13 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     source_addresses = ["*"]
     destination_ports = ["22"]
     destination_addresses = ["52.213.204.110/32"]
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "Azure Redis"
+    source_addresses = ["10.0.0.0/18", "10.1.0.0/18", "10.2.0.0/18"]
+    destination_ports = ["6379", "6380"]
+    destination_addresses = ["*"]
     protocols = ["TCP"]
   }
 }

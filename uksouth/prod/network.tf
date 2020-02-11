@@ -35,38 +35,18 @@ resource "azurerm_route_table" "rt" {
     next_hop_in_ip_address = "192.168.0.4"
   }
 
-  route {
-    name = "vault"
-    address_prefix = "192.168.1.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "sentry"
-    address_prefix = "192.168.2.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "bastion"
-    address_prefix = "192.168.4.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
-  route {
-    name = "chef"
-    address_prefix = "192.168.5.0/24"
-    next_hop_type = "VirtualAppliance"
-    next_hop_in_ip_address = "192.168.0.4"
-  }
-
   tags = {
     environment = var.environment
     datadog = "monitored"
   }
+}
+
+variable service_endpoint {
+  default = [
+    "Microsoft.Storage",
+    "Microsoft.ContainerRegistry",
+    "Microsoft.Sql",
+  ]
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -75,6 +55,7 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefix = element(var.subnet_address_prefixes, count.index)
+  service_endpoints = count.index == 0 ? var.service_endpoint : []
   lifecycle {
     ignore_changes = [
       network_security_group_id,

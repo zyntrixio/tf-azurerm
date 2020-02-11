@@ -165,7 +165,7 @@ module "controller_nsg_rules" {
       name = "AllowKubeAPIAccessFirewall"
       priority = "110"
       destination_port_range = "6443"
-      #source_address_prefix = "192.168.0.4/32"
+      # source_address_prefix = "192.168.0.4/32" # TODO: Need to figure this out
       destination_address_prefix = var.subnet_address_prefixes[1]
     }
   ]

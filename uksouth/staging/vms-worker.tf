@@ -24,7 +24,7 @@ resource "azurerm_network_interface" "worker" {
   name = format("${var.environment}-worker-%02d-nic", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb, azurerm_lb.plb]
+  depends_on = [azurerm_lb.lb]
   enable_accelerated_networking = true
   enable_ip_forwarding = true
 
@@ -204,36 +204,17 @@ module "worker_nsg_rules" {
   ]
 }
 
-module "worker_public_lb_rules" {
+module "worker_lb_rules" {
   source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
+  loadbalancer_id = azurerm_lb.lb.id
+  backend_id = azurerm_lb_backend_address_pool.pools.0.id
   resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
+  frontend_ip_configuration_name = "subnet-01"
 
   lb_port = {
     ingress_http = [ "80", "TCP", "30000" ]
     ingress_https = [ "443", "TCP", "30001" ]
   }
-}
-
-module "worker_lb_rules_udp" {
-  source = "../../modules/lb_rules_udp"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
-
-  lb_port = {
-    udphack_worker = ["65532", "UDP", "65532"]
-  }
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-ppools-assoc" {
-  count = var.worker_count
-  network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.ppools.0.id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
