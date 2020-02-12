@@ -602,6 +602,13 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     protocols = ["TCP"]
   }
   rule {
+    name = "bastion-to-monitoring"
+    source_addresses = ["192.168.4.0/24"]
+    destination_ports = ["22"]
+    destination_addresses = ["192.168.6.0/24"]
+    protocols = ["TCP"]
+  }
+  rule {
     name = "all-to-freeradius"
     source_addresses = ["*"]
     destination_ports = ["1812"]
