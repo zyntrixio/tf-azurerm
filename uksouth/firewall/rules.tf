@@ -373,6 +373,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "www2.hm.com",
       "wwws-uk1.givex.com",
       "wwws-uk2.givex.com",
+      "virtserver.swaggerhub.com",
     ]
     protocol {
       port = "443"
