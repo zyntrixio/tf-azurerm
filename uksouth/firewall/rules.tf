@@ -253,6 +253,11 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     target_fqdns = [
       "api.bink.com",
       "api.gb.bink.com",
+      "api.preprod.gb.bink.com",
+      "api.staging.gb.bink.com",
+      "api.dev.gb.bink.com",
+      "api.sandbox.gb.bink.com",
+      "*.bink-sandbox.com",
     ]
     protocol {
       port = "443"
