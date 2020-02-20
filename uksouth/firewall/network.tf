@@ -163,6 +163,15 @@ resource "azurerm_virtual_network_peering" "dev" {
   allow_forwarded_traffic = true
 }
 
+resource "azurerm_virtual_network_peering" "sandbox" {
+  name = "local-to-sandbox"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-sandbox/providers/Microsoft.Network/virtualNetworks/sandbox-vnet"
+  allow_virtual_network_access = true
+  allow_forwarded_traffic = true
+}
+
 resource "azurerm_virtual_network_peering" "chef" {
   name = "local-to-chef"
   resource_group_name = azurerm_resource_group.rg.name
@@ -179,4 +188,73 @@ resource "azurerm_virtual_network_peering" "monitoring" {
   remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
   allow_virtual_network_access = true
   allow_forwarded_traffic = true
+}
+
+resource "azurerm_private_dns_zone" "uksouth" {
+  name = "uksouth.bink.sh"
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vault" {
+  name = "vault"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/vault-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "bastion" {
+  name = "bastion"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "prod" {
+  name = "prod"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "staging" {
+  name = "staging"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-staging/providers/Microsoft.Network/virtualNetworks/staging-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dev" {
+  name = "dev"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "sandbox" {
+  name = "sandbox"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-sandbox/providers/Microsoft.Network/virtualNetworks/sandbox-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "chef" {
+  name = "chef"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-chef/providers/Microsoft.Network/virtualNetworks/chef-vnet"
+  registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "monitoring" {
+  name = "monitoring"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+  virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
+  registration_enabled = true
 }
