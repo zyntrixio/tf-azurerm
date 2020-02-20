@@ -558,6 +558,37 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "6443"
     protocols = ["TCP"]
   }
+  rule {
+    name = "sandbox_http"
+    source_addresses = ["*"]
+    destination_ports = ["80"]
+    destination_addresses = [azurerm_public_ip.pips.3.ip_address]
+    translated_address = "10.3.0.4"
+    translated_port = "80"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "sandbox_https"
+    source_addresses = ["*"]
+    destination_ports = ["443"]
+    destination_addresses = [azurerm_public_ip.pips.3.ip_address]
+    translated_address = "10.3.0.4"
+    translated_port = "443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "sandbox_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.3.ip_address]
+    translated_address = "10.3.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "ssh" {
@@ -586,6 +617,13 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     source_addresses = ["192.168.4.0/24"]
     destination_ports = ["22"]
     destination_addresses = ["10.2.0.0/16"]
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "bastion-to-sandbox"
+    source_addresses = ["192.168.4.0/24"]
+    destination_ports = ["22"]
+    destination_addresses = ["10.3.0.0/16"]
     protocols = ["TCP"]
   }
   rule {
