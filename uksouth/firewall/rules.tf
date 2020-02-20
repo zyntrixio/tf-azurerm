@@ -726,4 +726,11 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     destination_addresses = ["*"]
     protocols = ["TCP"]
   }
+  rule {
+    name = "CloudFlare DNS" # Workaround for Cert Manager bink.sh validation
+    source_addresses = ["*"]
+    destination_ports = ["53"]
+    destination_addresses = ["1.1.1.1", "1.0.0.1"]
+    protocols = ["TCP"]
+  }
 }
