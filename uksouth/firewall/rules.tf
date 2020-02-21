@@ -410,7 +410,10 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
   rule {
     name = "Midas Ecrebo HTTPS"
     source_addresses = ["*"]
-    target_fqdns = ["london-capi.ecrebo.com"]
+    target_fqdns = [
+      "london-capi.ecrebo.com",
+      "london-capi-test.ecrebo.com"
+    ]
     protocol {
       port = "2361"
       type = "Https"
