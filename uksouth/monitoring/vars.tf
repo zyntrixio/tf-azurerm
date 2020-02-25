@@ -16,3 +16,5 @@ variable elasticsearch_vm_size { default = "Standard_D4s_v3" }
 variable elasticsearch_count { default = 3 }
 variable kibana_vm_size { default = "Standard_D2s_v3" }
 variable kibana_count { default = 1 }
+variable argus_vm_size { default = "Standard_D2s_v3" }
+variable argus_count { default = 1 }
