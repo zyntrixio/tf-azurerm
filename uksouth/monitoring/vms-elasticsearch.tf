@@ -7,7 +7,6 @@ resource "azurerm_availability_set" "elasticsearch" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -26,7 +25,6 @@ resource "azurerm_network_interface" "elasticsearch" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -124,8 +122,7 @@ resource "azurerm_virtual_machine" "elasticsearch" {
   }
 
   tags = {
-    environment = var.environment,
-    datadog = "monitored"
+    environment = var.environment
   }
 }
 
