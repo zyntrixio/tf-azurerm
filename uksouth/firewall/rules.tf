@@ -592,6 +592,24 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "6443"
     protocols = ["TCP"]
   }
+  rule {
+    name = "kibana_http"
+    source_addresses = ["*"]
+    destination_ports = ["5601"]
+    destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+    translated_address = "192.168.6.4"
+    translated_port = "5601"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "argus_http"
+    source_addresses = ["*"]
+    destination_ports = ["8001"]
+    destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+    translated_address = "192.168.6.84"
+    translated_port = "8001"
+    protocols = ["TCP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "ssh" {

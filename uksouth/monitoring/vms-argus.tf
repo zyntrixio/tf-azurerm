@@ -1,9 +1,9 @@
-resource "azurerm_public_ip" "argus" {
-  name = "${var.environment}-argus-pip"
+resource "azurerm_availability_set" "argus" {
+  name = "${var.environment}-argus-as"
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku = "Standard"
-  allocation_method = "Static"
+  platform_fault_domain_count = 2
+  managed = true
 
   tags = {
     environment = var.environment
@@ -15,12 +15,12 @@ resource "azurerm_network_interface" "argus" {
   name = format("${var.environment}-argus-%02d-nic", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+  depends_on = [azurerm_lb.lb]
 
   ip_configuration {
     name = "primary"
     subnet_id = azurerm_subnet.subnet.5.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id  = azurerm_public_ip.pip.id
   }
 
   tags = {
@@ -147,8 +147,27 @@ module "argus_nsg_rules" {
       name = "AllowArgusAccessBinkHQ"
       priority = "100"
       protocol = "TCP"
-      destination_port_range = "80"
+      destination_port_range = "8001"
       source_address_prefix = "194.74.152.11/32"
     }
   ]
+}
+
+module "argus_lb_rules" {
+  source = "../../modules/lb_rules"
+  loadbalancer_id = azurerm_lb.lb.id
+  backend_id = azurerm_lb_backend_address_pool.pools.1.id
+  resource_group_name = azurerm_resource_group.rg.name
+  frontend_ip_configuration_name = "subnet-05"
+
+  lb_port = {
+    argus = [ "8001", "TCP", "8001" ]
+  }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "argus-bap-pools-assoc" {
+  count = var.argus_count
+  network_interface_id = element(azurerm_network_interface.argus.*.id, count.index)
+  ip_configuration_name = "primary"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.1.id
 }

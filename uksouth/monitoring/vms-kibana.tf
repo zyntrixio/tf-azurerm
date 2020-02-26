@@ -7,7 +7,6 @@ resource "azurerm_availability_set" "kibana" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -16,7 +15,7 @@ resource "azurerm_network_interface" "kibana" {
   name = format("${var.environment}-kibana-%02d-nic", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb, azurerm_lb.plb]
+  depends_on = [azurerm_lb.lb]
 
   ip_configuration {
     name = "primary"
@@ -26,7 +25,6 @@ resource "azurerm_network_interface" "kibana" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -125,7 +123,6 @@ resource "azurerm_virtual_machine" "kibana" {
 
   tags = {
     environment = var.environment,
-    datadog = "monitored"
   }
 }
 
@@ -162,30 +159,6 @@ module "kibana_nsg_rules" {
   ]
 }
 
-module "kibana_plb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
-
-  lb_port = {
-    kube_api = [ "5601", "TCP", "5601" ]
-  }
-}
-
-module "kibana_plb_rules_udp" {
-  source = "../../modules/lb_rules_udp"
-  loadbalancer_id = azurerm_lb.plb.id
-  backend_id = azurerm_lb_backend_address_pool.ppools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = azurerm_public_ip.pip.name
-
-  lb_port = {
-    udphack_kibana = ["65533", "UDP", "65533"]
-  }
-}
-
 module "kibana_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = azurerm_lb.lb.id
@@ -203,11 +176,4 @@ resource "azurerm_network_interface_backend_address_pool_association" "kibana-ba
   network_interface_id = element(azurerm_network_interface.kibana.*.id, count.index)
   ip_configuration_name = "primary"
   backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "kibana-bap-ppools-assoc" {
-  count = var.kibana_count
-  network_interface_id = element(azurerm_network_interface.kibana.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.ppools.0.id
 }

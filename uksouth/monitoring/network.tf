@@ -6,7 +6,6 @@ resource "azurerm_virtual_network" "vnet" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -18,7 +17,6 @@ resource "azurerm_network_security_group" "nsg" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -37,7 +35,6 @@ resource "azurerm_route_table" "rt" {
 
   tags = {
     environment = var.environment
-    datadog = "monitored"
   }
 }
 
