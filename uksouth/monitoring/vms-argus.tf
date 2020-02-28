@@ -145,14 +145,14 @@ module "argus_nsg_rules" {
     },
     {
       name = "AllowArgusAccessBinkHQ"
-      priority = "100"
+      priority = "110"
       protocol = "TCP"
       destination_port_range = "8001"
       source_address_prefix = "194.74.152.11/32"
     },
     {
       name = "AllowArgusAccessInternalTest"
-      priority = "90"
+      priority = "100"
       protocol = "TCP"
       destination_port_range = "8001"
       source_address_prefix = "192.168.6.0/24"
