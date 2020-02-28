@@ -152,7 +152,7 @@ module "argus_nsg_rules" {
     },
     {
       name = "AllowArgusAccessInternalTest"
-      priority = "100"
+      priority = "90"
       protocol = "TCP"
       destination_port_range = "8001"
       source_address_prefix = "192.168.6.0/24"
