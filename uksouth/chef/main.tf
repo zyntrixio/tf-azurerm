@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 1.37.0"
+  version = "~> 1.44.0"
   subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
   client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
   tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
@@ -52,6 +52,22 @@ resource "azurerm_network_security_group" "nsg" {
   name = format("${var.environment}-subnet-%02d-nsg", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_network_watcher_flow_log" "flow_logs" {
+  count = length(var.subnet_address_prefixes)
+  network_watcher_name = "NetworkWatcher_uksouth"
+  resource_group_name = "NetworkWatcherRG"
+
+  network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
+  storage_account_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/stega/providers/Microsoft.Storage/storageAccounts/binkstegansgflowlogs"
+  enabled = true
+  version = 2
+
+  retention_policy {
+    enabled = true
+    days    = 3
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
