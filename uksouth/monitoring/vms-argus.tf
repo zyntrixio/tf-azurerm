@@ -156,9 +156,9 @@ module "argus_nsg_rules" {
 module "argus_lb_rules" {
   source = "../../modules/lb_rules"
   loadbalancer_id = azurerm_lb.lb.id
-  backend_id = azurerm_lb_backend_address_pool.pools.1.id
+  backend_id = azurerm_lb_backend_address_pool.pools.5.id
   resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = "subnet-05"
+  frontend_ip_configuration_name = "subnet-06"
 
   lb_port = {
     argus = [ "8001", "TCP", "8001" ]
@@ -169,5 +169,5 @@ resource "azurerm_network_interface_backend_address_pool_association" "argus-bap
   count = var.argus_count
   network_interface_id = element(azurerm_network_interface.argus.*.id, count.index)
   ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.1.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.5.id
 }
