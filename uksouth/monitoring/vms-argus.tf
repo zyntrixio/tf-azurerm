@@ -149,7 +149,7 @@ module "argus_nsg_rules" {
       protocol = "TCP"
       destination_port_range = "8001"
       source_address_prefix = "194.74.152.11/32"
-    }
+    },
     {
       name = "AllowArgusAccessInternalTest"
       priority = "100"
