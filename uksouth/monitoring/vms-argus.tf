@@ -15,6 +15,7 @@ resource "azurerm_network_interface" "argus" {
   name = format("${var.environment}-argus-%02d-nic", count.index + 1)
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+  network_security_group_id = azurerm_network_security_group.nsg.5.id
   depends_on = [azurerm_lb.lb]
 
   ip_configuration {
@@ -136,6 +137,11 @@ module "argus_nsg_rules" {
       access = "Deny"
     },
     {
+      name = "AllowLoadBalancer"
+      source_address_prefix = "AzureLoadBalancer"
+      priority = "4095"
+    },
+    {
       name = "AllowSSH"
       priority = "500"
       protocol = "TCP"
@@ -143,11 +149,20 @@ module "argus_nsg_rules" {
       destination_address_prefix = var.subnet_address_prefixes[5]
       source_address_prefix = "192.168.4.0/24"
     },
+#    {
+#      name = "AllowHTTPMonitoringVnet"
+#      priority = "200"
+#      protocol = "TCP"
+#      destination_port_range = "8001"
+#      destination_address_prefix = var.subnet_address_prefixes[5]
+#      source_address_prefix = "192.168.6.0/24"
+#    },
     {
       name = "AllowArgusAccessBinkHQ"
-      protocol = "TCP"
       priority = "100"
+      protocol = "TCP"
       destination_port_range = "8001"
+      destination_address_prefix = var.subnet_address_prefixes[5]
       source_address_prefix = "194.74.152.11/32"
     }
   ]
