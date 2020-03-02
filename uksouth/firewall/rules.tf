@@ -594,7 +594,11 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
   }
   rule {
     name = "kibana_http"
-    source_addresses = ["*"]
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
     destination_ports = ["5601"]
     destination_addresses = [azurerm_public_ip.pips.15.ip_address]
     translated_address = "192.168.6.4"
@@ -603,7 +607,11 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
   }
   rule {
     name = "argus_http"
-    source_addresses = ["*"]
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
     destination_ports = ["8001"]
     destination_addresses = [azurerm_public_ip.pips.15.ip_address]
     translated_address = "192.168.6.84"
