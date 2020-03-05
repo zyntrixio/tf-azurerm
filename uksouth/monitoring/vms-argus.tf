@@ -163,7 +163,7 @@ module "argus_nsg_rules" {
       protocol = "TCP"
       destination_port_range = "8001"
       destination_address_prefix = var.subnet_address_prefixes[5]
-      source_address_prefix = "194.74.152.11/32"
+#      source_address_prefix = "194.74.152.11/32"
     }
   ]
 }
