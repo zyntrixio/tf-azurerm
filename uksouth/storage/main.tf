@@ -58,6 +58,26 @@ resource "azurerm_storage_account" "binkopsreportsstaging" {
   enable_https_traffic_only = true
 }
 
+resource "azurerm_storage_account" "binkbackupsdev" {
+  name = "binkbackupsdev"
+  resource_group_name = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  account_kind = "BlobStorage"
+  account_tier = "Standard"
+  account_replication_type = "LRS"
+  enable_https_traffic_only = true
+}
+
+resource "azurerm_storage_account" "binkbackupsstaging" {
+  name = "binkbackupsstaging"
+  resource_group_name = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  account_kind = "BlobStorage"
+  account_tier = "Standard"
+  account_replication_type = "LRS"
+  enable_https_traffic_only = true
+}
+
 resource "azurerm_storage_account" "binkdbbackupsdev" {
   name = "binkdbbackupsdev"
   resource_group_name = azurerm_resource_group.rg.name
