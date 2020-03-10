@@ -159,7 +159,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     name = "api-prod-k8s-uksouth-bink-sh"
     accepted_protocols = ["Https"]
     patterns_to_match = ["/*"]
-    frontend_endpoints = ["api-gb-bink-com"]
+    frontend_endpoints = ["default", "api-gb-bink-com"]
     forwarding_configuration {
       forwarding_protocol = "HttpsOnly"
       backend_pool_name  = "api-prod-k8s-uksouth-bink-sh"
@@ -367,10 +367,10 @@ resource "azurerm_frontdoor" "frontdoor" {
   }
 
   backend_pool {
-    name = "api-sandbox-k8s-uksouth-bink-sh"
+    name = "performance-sandbox-k8s-uksouth-bink-sh"
     backend {
-      host_header = "api.sandbox.k8s.uksouth.bink.sh"
-      address     = "api.sandbox.k8s.uksouth.bink.sh"
+      host_header = "performance.sandbox.k8s.uksouth.bink.sh"
+      address     = "performance.sandbox.k8s.uksouth.bink.sh"
       http_port   = 80
       https_port  = 443
     }
@@ -380,13 +380,13 @@ resource "azurerm_frontdoor" "frontdoor" {
   }
 
   routing_rule {
-    name = "api-sandbox-k8s-uksouth-bink-sh"
+    name = "performance-sandbox-k8s-uksouth-bink-sh"
     accepted_protocols = ["Https"]
     patterns_to_match = ["/*"]
-    frontend_endpoints = ["default", "performance-sandbox-gb-bink-com"]
+    frontend_endpoints = ["performance-sandbox-gb-bink-com"]
     forwarding_configuration {
       forwarding_protocol = "HttpsOnly"
-      backend_pool_name  = "api-sandbox-k8s-uksouth-bink-sh"
+      backend_pool_name  = "performance-sandbox-k8s-uksouth-bink-sh"
       cache_enabled = false
     }
   }
