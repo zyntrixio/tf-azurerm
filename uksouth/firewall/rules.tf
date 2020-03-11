@@ -320,7 +320,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     source_addresses = ["*"]
     target_fqdns = [
       "account.theclub.macdonaldhotels.co.uk",
-      "accounts.eu1.gigya.com",
       "accounts.eurostar.com",
       "api.avios.com",
       "api.bink-dev.com",
@@ -334,14 +333,12 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "auth.morrisons.com",
       "beta.addisonlee.com",
       "bookings.priorityguestrewards.com",
-      "cdns.gigya.com",
       "customergateway-uat.iceland.co.uk",
       "customergateway.iceland.co.uk",
       "cws.givex.com",
       "identity.membership.coop.co.uk",
       "login.microsoftonline.com",
       "loyalty.harveynichols.com",
-      "membership.coop.co.uk",
       "order.gbk.co.uk",
       "prd-east.webapi.enterprise.co.uk",
       "prd.b6prdeng.net",
