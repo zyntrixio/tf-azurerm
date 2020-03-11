@@ -78,6 +78,16 @@ resource "azurerm_storage_account" "binkbackupsstaging" {
   enable_https_traffic_only = true
 }
 
+resource "azurerm_storage_account" "binkbackupsprod" {
+  name = "binkbackupsprod"
+  resource_group_name = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  account_kind = "BlobStorage"
+  account_tier = "Standard"
+  account_replication_type = "GRS"
+  enable_https_traffic_only = true
+}
+
 resource "azurerm_storage_account" "binkdbbackupsdev" {
   name = "binkdbbackupsdev"
   resource_group_name = azurerm_resource_group.rg.name
