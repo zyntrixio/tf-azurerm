@@ -141,6 +141,11 @@ module "bastion_nsg_rules" {
       priority = "110"
       destination_port_range = "1812-1813"
       protocol = "Udp"
+    },
+    {
+      name = "AllowNettitude"
+      priority = "1000"
+      source_address_prefix = "192.168.250.0/24"
     }
   ]
 }

@@ -242,6 +242,11 @@ module "worker_nsg_rules" {
       destination_port_range = "4444"
       protocol = "TCP"
       destination_address_prefix = var.subnet_address_prefixes[0]
+    },
+    {
+      name = "AllowNettitude"
+      priority = "1000"
+      source_address_prefix = "192.168.250.0/24"
     }
   ]
 }
