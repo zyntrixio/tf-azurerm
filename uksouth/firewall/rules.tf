@@ -252,6 +252,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
+  rule {
+    name = "Elasticsearch"
+    source_addresses = ["*"]
+    target_fqdns = ["artifacts.elastic.co"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
