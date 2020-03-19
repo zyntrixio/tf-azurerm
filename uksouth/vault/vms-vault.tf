@@ -104,11 +104,6 @@ module "vault_nsg_rules" {
       protocol = "TCP"
       source_address_prefix = "10.2.0.0/18"
       destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowNettitude"
-      priority = "1000"
-      source_address_prefix = "192.168.250.0/24"
     }
   ]
 }

@@ -190,15 +190,6 @@ resource "azurerm_virtual_network_peering" "monitoring" {
   allow_forwarded_traffic = true
 }
 
-resource "azurerm_virtual_network_peering" "nettitude" {
-  name = "local-to-nettitude"
-  resource_group_name = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-nettitude/providers/Microsoft.Network/virtualNetworks/nettitude-vnet"
-  allow_virtual_network_access = true
-  allow_forwarded_traffic = true
-}
-
 resource "azurerm_private_dns_zone" "uksouth" {
   name = "uksouth.bink.sh"
   resource_group_name = azurerm_resource_group.rg.name

@@ -165,11 +165,6 @@ module "controller_nsg_rules" {
       destination_port_range = "6443"
       # source_address_prefix = "192.168.0.4/32" # TODO: Need to figure this out
       destination_address_prefix = var.subnet_address_prefixes[1]
-    },
-    {
-      name = "AllowNettitude"
-      priority = "1000"
-      source_address_prefix = "192.168.250.0/24"
     }
   ]
 }

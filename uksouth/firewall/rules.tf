@@ -14,8 +14,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       "keyserver.ubuntu.com",
       "ppa.launchpad.net",
       "archive.ubuntu.com",
-      "http.kali.org",
-      "ftp.hands.com",
     ]
     protocol {
       port = "80"
@@ -638,15 +636,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "8001"
     protocols = ["TCP"]
   }
-  rule {
-    name = "nettitude_ssh"
-    source_addresses = ["*"]
-    destination_ports = ["22"]
-    destination_addresses = [azurerm_public_ip.pips.14.ip_address]
-    translated_address = "192.168.250.4"
-    translated_port = "22"
-    protocols = ["TCP"]
-  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "ssh" {
@@ -725,22 +714,6 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     destination_ports = ["1812"]
     destination_addresses = ["192.168.4.0/24"]
     protocols = ["UDP"]
-  }
-}
-
-resource "azurerm_firewall_network_rule_collection" "nettitude" {
-  name                = "nettitude-to-all"
-  azure_firewall_name = azurerm_firewall.firewall.name
-  resource_group_name = azurerm_resource_group.rg.name
-  priority            = 200
-  action              = "Allow"
-
-  rule {
-    name = "nettitude-to-all"
-    source_addresses = ["192.168.250.0/24"]
-    destination_ports = ["*"]
-    destination_addresses = ["*"]
-    protocols = ["TCP", "UDP"]
   }
 }
 
