@@ -150,8 +150,16 @@ module "elasticsearch_nsg_rules" {
       destination_address_prefix = var.subnet_address_prefixes[1]
     },
     {
-      name = "AllowElasticsearchTrafficMonitoring"
+      name = "AllowElasticsearchTrafficElasticsearch"
       priority = "100"
+      destination_port_range = "9300"
+      protocol = "TCP"
+      source_address_prefix = "192.168.6.16/28"
+      destination_address_prefix = var.subnet_address_prefixes[1]
+    },
+    {
+      name = "AllowElasticsearchTrafficMonitoring"
+      priority = "110"
       destination_port_range = "9200"
       protocol = "TCP"
       source_address_prefix = "192.168.6.0/24"
@@ -159,7 +167,7 @@ module "elasticsearch_nsg_rules" {
     },
     {
       name = "AllowElasticsearchTrafficProd"
-      priority = "110"
+      priority = "120"
       destination_port_range = "9200"
       protocol = "TCP"
       source_address_prefix = "10.0.0.0/18"
@@ -167,7 +175,7 @@ module "elasticsearch_nsg_rules" {
     },
     {
       name = "AllowElasticsearchTrafficStaging"
-      priority = "120"
+      priority = "130"
       destination_port_range = "9200"
       protocol = "TCP"
       source_address_prefix = "10.1.0.0/18"
@@ -175,7 +183,7 @@ module "elasticsearch_nsg_rules" {
     },
     {
       name = "AllowElasticsearchTrafficDev"
-      priority = "130"
+      priority = "140"
       destination_port_range = "9200"
       protocol = "TCP"
       source_address_prefix = "10.2.0.0/18"
