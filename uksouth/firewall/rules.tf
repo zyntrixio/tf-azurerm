@@ -385,7 +385,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "www.marksandspencer.com",
       "www.maximiles.co.uk",
       "www.miles-and-more.com",
-      "www.nectar.com",
       "www.paperchase.com",
       "www.priorityguestrewards.com",
       "www.quidco.com",
