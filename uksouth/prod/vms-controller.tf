@@ -5,10 +5,7 @@ resource "azurerm_availability_set" "controller" {
   platform_fault_domain_count = 2
   managed = true
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "controller" {
@@ -24,11 +21,6 @@ resource "azurerm_network_interface" "controller" {
     subnet_id = azurerm_subnet.subnet.1.id
     private_ip_address_allocation = "Dynamic"
     primary = true
-  }
-
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -125,10 +117,7 @@ resource "azurerm_virtual_machine" "controller" {
     }
   }
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 module "controller_nsg_rules" {

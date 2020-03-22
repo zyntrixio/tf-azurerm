@@ -5,10 +5,7 @@ resource "azurerm_availability_set" "worker" {
   platform_fault_domain_count = 2
   managed = true
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 variable "pod_ip_configs" {
@@ -45,11 +42,6 @@ resource "azurerm_network_interface" "worker" {
           subnet_id = azurerm_subnet.subnet.0.id
           private_ip_address_allocation = "Dynamic"
       }
-  }
-
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -146,10 +138,7 @@ resource "azurerm_virtual_machine" "worker" {
     }
   }
 
-  tags = {
-    environment = var.environment,
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 module "worker_nsg_rules" {

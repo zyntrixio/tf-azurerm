@@ -5,10 +5,7 @@ resource "azurerm_availability_set" "etcd" {
   platform_fault_domain_count = 2
   managed = true
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "etcd" {
@@ -22,11 +19,6 @@ resource "azurerm_network_interface" "etcd" {
       name = "primary"
       subnet_id = azurerm_subnet.subnet.2.id
       private_ip_address_allocation = "Dynamic"
-  }
-
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
   }
 }
 
@@ -123,10 +115,7 @@ resource "azurerm_virtual_machine" "etcd" {
     }
   }
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 module "etcd_nsg_rules" {

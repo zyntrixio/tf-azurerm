@@ -7,19 +7,18 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "~> 1.44.0"
+  version = "~> 2.2.0"
   subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
   client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
   tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  features {}
 }
 
 resource "azurerm_resource_group" "rg" {
   name = "${var.location}-chef"
   location = var.location
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -28,9 +27,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.rg.name
   address_space = ["192.168.5.0/24"]
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -39,12 +36,6 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefix = element(var.subnet_address_prefixes, count.index)
-  lifecycle {
-    ignore_changes = [
-      network_security_group_id,
-      route_table_id
-    ]
-  }
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -95,9 +86,7 @@ resource "azurerm_route_table" "rt" {
     next_hop_in_ip_address = "192.168.0.4"
   }
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_virtual_network_peering" "peer" {
@@ -121,9 +110,8 @@ resource "azurerm_lb" "lb" {
     private_ip_address = cidrhost(var.subnet_address_prefixes[0], 4)
     subnet_id = azurerm_subnet.subnet.0.id
   }
-  tags = {
-    environment = "production"
-  }
+
+  tags = var.tags
 }
 
 resource "azurerm_lb_backend_address_pool" "pools" {
@@ -145,10 +133,6 @@ resource "azurerm_network_interface" "chef" {
     subnet_id = azurerm_subnet.subnet.0.id
     private_ip_address_allocation = "Dynamic"
     primary = true
-  }
-
-  tags = {
-    environment = "production"
   }
 }
 
@@ -208,9 +192,7 @@ resource "azurerm_virtual_machine" "chef" {
     }
   }
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 module "worker_nsg_rules" {

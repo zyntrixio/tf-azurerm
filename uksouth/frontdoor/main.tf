@@ -1,8 +1,9 @@
 provider "azurerm" {
-  version = "~> 1.43"
+  version = "~> 2.2.0"
   subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
   client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
   tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  features {}
 }
 
 terraform {
@@ -14,19 +15,17 @@ terraform {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name = var.resource_group_name
-  location = var.location
+  name = "frontdoor"
+  location = "uksouth"
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 resource "azurerm_key_vault" "frontdoor" {
-  name                        = "bink-frontdoor"
-  location                    = azurerm_resource_group.rg.location
-  resource_group_name         = azurerm_resource_group.rg.name
-  tenant_id                   = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  name = "bink-frontdoor"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
 
   sku_name = "standard"
 
@@ -99,14 +98,11 @@ resource "azurerm_key_vault" "frontdoor" {
       ]
   }
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 resource "azurerm_frontdoor" "frontdoor" {
   name = "bink-frontdoor"
-  location = "global"
   resource_group_name = azurerm_resource_group.rg.name
   enforce_backend_pools_certificate_name_check = true
 
@@ -391,4 +387,5 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
   }
 
+  tags = var.tags
 }
