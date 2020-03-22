@@ -5,9 +5,7 @@ resource "azurerm_availability_set" "controller" {
   platform_fault_domain_count = 2
   managed = true
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "controller" {
@@ -23,10 +21,6 @@ resource "azurerm_network_interface" "controller" {
     subnet_id = azurerm_subnet.subnet.1.id
     private_ip_address_allocation = "Dynamic"
     primary = true
-  }
-
-  tags = {
-    environment = var.environment
   }
 }
 
@@ -75,7 +69,7 @@ resource "azurerm_virtual_machine" "controller" {
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
         node_name: "${format("${var.environment}-controller-%02d", count.index + 1)}"
-        environment: "${var.resource_group_name}"
+        environment: "${azurerm_resource_group.rg.name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
@@ -124,9 +118,7 @@ resource "azurerm_virtual_machine" "controller" {
     }
   }
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 module "controller_nsg_rules" {

@@ -5,9 +5,7 @@ resource "azurerm_availability_set" "elasticsearch" {
   platform_fault_domain_count = 2
   managed = true
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "elasticsearch" {
@@ -21,10 +19,6 @@ resource "azurerm_network_interface" "elasticsearch" {
     name = "primary"
     subnet_id = azurerm_subnet.subnet.1.id
     private_ip_address_allocation = "Dynamic"
-  }
-
-  tags = {
-    environment = var.environment
   }
 }
 
@@ -72,7 +66,7 @@ resource "azurerm_virtual_machine" "elasticsearch" {
         force_install: true
         server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
         node_name: "${format("${var.environment}-elasticsearch-%02d", count.index + 1)}"
-        environment: "${var.resource_group_name}"
+        environment: "${azurerm_resource_group.rg.name}"
         validation_name: "bink-validator"
         validation_cert: |
           -----BEGIN RSA PRIVATE KEY-----
@@ -121,9 +115,7 @@ resource "azurerm_virtual_machine" "elasticsearch" {
     }
   }
 
-  tags = {
-    environment = var.environment
-  }
+  tags = var.tags
 }
 
 module "elasticsearch_nsg_rules" {

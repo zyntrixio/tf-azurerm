@@ -10,10 +10,6 @@ resource "azurerm_network_interface" "etcd" {
     subnet_id = azurerm_subnet.subnet.1.id
     private_ip_address_allocation = "Dynamic"
   }
-
-  tags = {
-    environment = "production"
-  }
 }
 
 resource "azurerm_virtual_machine" "etcd" {
@@ -53,9 +49,7 @@ resource "azurerm_virtual_machine" "etcd" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 module "etcd_nsg_rules" {

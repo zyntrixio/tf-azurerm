@@ -1,6 +1,4 @@
 variable environment { default = "monitoring" }
-variable location { default = "uksouth" }
-variable resource_group_name { default = "uksouth-monitoring" }
 
 variable subnet_address_prefixes {
   default = [
@@ -12,6 +10,14 @@ variable subnet_address_prefixes {
     "192.168.6.80/28"  # Argus
   ]
 }
+
+variable "tags" {
+  type = map
+  default = {
+    Environment = "Production"
+  }
+}
+
 variable elasticsearch_vm_size { default = "Standard_D4s_v3" }
 variable elasticsearch_count { default = 3 }
 variable kibana_vm_size { default = "Standard_D2s_v3" }

@@ -10,11 +10,6 @@ resource "azurerm_network_interface" "bastion" {
     subnet_id = azurerm_subnet.subnet.0.id
     private_ip_address_allocation = "Dynamic"
   }
-
-  tags = {
-    environment = "production"
-    datadog = "monitored"
-  }
 }
 
 resource "azurerm_virtual_machine" "bastion" {
@@ -109,10 +104,7 @@ resource "azurerm_virtual_machine" "bastion" {
     }
   }
 
-  tags = {
-    environment = "production"
-    datadog = "monitored"
-  }
+  tags = var.tags
 }
 
 module "bastion_nsg_rules" {

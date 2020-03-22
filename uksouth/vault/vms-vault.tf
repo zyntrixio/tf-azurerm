@@ -10,10 +10,6 @@ resource "azurerm_network_interface" "vault" {
     subnet_id = azurerm_subnet.subnet.0.id
     private_ip_address_allocation = "Dynamic"
   }
-
-  tags = {
-    environment = "production"
-  }
 }
 
 resource "azurerm_virtual_machine" "vault" {
@@ -53,9 +49,7 @@ resource "azurerm_virtual_machine" "vault" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 module "vault_nsg_rules" {

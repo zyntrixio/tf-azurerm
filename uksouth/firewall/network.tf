@@ -4,9 +4,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.rg.name
   address_space = ["192.168.0.0/24"]
 
-  tags = {
-    environment = "production"
-  }
+  tags = var.tags
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -16,12 +14,13 @@ resource "azurerm_subnet" "subnet" {
   address_prefix = "192.168.0.0/24"
 }
 
-# New Firewall Design as described here: https://hellobink.atlassian.net/wiki/spaces/INFRA/pages/840630303/Ingress+Revision+Plan
 resource "azurerm_public_ip_prefix" "prefix" {
-  name                = "firewall-pip-prefix"
+  name = "firewall-pip-prefix"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location = azurerm_resource_group.rg.location
   prefix_length = 28
+
+  tags = var.tags
 }
 
 resource "azurerm_public_ip" "pips" {
@@ -33,16 +32,8 @@ resource "azurerm_public_ip" "pips" {
   sku = "Standard"
   idle_timeout_in_minutes = 5
   public_ip_prefix_id = azurerm_public_ip_prefix.prefix.id
-}
 
-resource "azurerm_public_ip" "pip" {
-  count = 1
-  name = format("firewall-pip-%02d", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  allocation_method = "Static"
-  sku = "Standard"
-  idle_timeout_in_minutes = 5
+  tags = var.tags
 }
 
 # TODO: Cleanup the below IP Config Blocks by using Terraform 0.12 Syntax
@@ -116,6 +107,8 @@ resource "azurerm_firewall" "firewall" {
     name = "ipconfig15"
     public_ip_address_id = azurerm_public_ip.pips.15.id
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_virtual_network_peering" "vault" {
@@ -193,6 +186,8 @@ resource "azurerm_virtual_network_peering" "monitoring" {
 resource "azurerm_private_dns_zone" "uksouth" {
   name = "uksouth.bink.sh"
   resource_group_name = azurerm_resource_group.rg.name
+
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vault" {
