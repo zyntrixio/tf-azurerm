@@ -724,7 +724,7 @@ resource "azurerm_firewall_network_rule_collection" "monitoring" {
   action              = "Allow"
 
   rule {
-    name = "all-to-elasaticsearch"
+    name = "all-to-elasticsearch"
     source_addresses = ["*"]
     destination_ports = ["9200"]
     destination_addresses = ["192.168.6.16/28"]
