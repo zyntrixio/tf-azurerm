@@ -38,10 +38,10 @@ resource "azurerm_postgresql_server" "oat" {
   name = "bink-oat-sandbox-uksouth"
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku_name = "GP_Gen5_4"
+  sku_name = "GP_Gen5_2"
 
   storage_profile {
-    storage_mb = 1024000
+    storage_mb = 102400
     backup_retention_days = 7
     geo_redundant_backup = "Disabled"
     auto_grow = "Disabled"
