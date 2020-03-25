@@ -188,6 +188,13 @@ module "worker_nsg_rules" {
       destination_port_range = "30001"
       protocol = "TCP"
       destination_address_prefix = var.subnet_address_prefixes[0]
+    },
+    {
+      name = "AllowSftpTraffic"
+      priority = "140"
+      destination_port_range = "30002"
+      protocol = "TCP"
+      destination_address_prefix = var.subnet_address_prefixes[0]
     }
   ]
 }
@@ -202,6 +209,7 @@ module "worker_lb_rules" {
   lb_port = {
     ingress_http = [ "80", "TCP", "30000" ]
     ingress_https = [ "443", "TCP", "30001" ]
+    sftp = [ "2222", "TCP", "30002" ]
   }
 }
 

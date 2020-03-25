@@ -468,15 +468,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
   action = "Dnat"
 
   rule {
-    name = "ssh"
-    source_addresses = ["*"]
-    destination_ports = ["22"]
-    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-    translated_address = "192.168.4.4"
-    translated_port = "22"
-    protocols = ["TCP"]
-  }
-  rule {
     name = "prod_http"
     source_addresses = ["*"]
     destination_ports = ["80"]
@@ -492,28 +483,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     destination_addresses = [azurerm_public_ip.pips.0.ip_address]
     translated_address = "10.0.0.4"
     translated_port = "443"
-    protocols = ["TCP"]
-  }
-  rule {
-    name = "chef"
-    source_addresses = ["*"]
-    destination_ports = ["4444"]
-    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-    translated_address = "192.168.5.4"
-    translated_port = "4444"
-    protocols = ["TCP"]
-  }
-  rule {
-    name = "prod_kube"
-    source_addresses = [
-      "194.74.152.11/32",
-      "80.229.2.38/32",
-      "82.13.29.15/32"
-    ]
-    destination_ports = ["6443"]
-    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-    translated_address = "10.0.64.4"
-    translated_port = "6443"
     protocols = ["TCP"]
   }
   rule {
@@ -535,19 +504,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     protocols = ["TCP"]
   }
   rule {
-    name = "staging_kube"
-    source_addresses = [
-      "194.74.152.11/32",
-      "80.229.2.38/32",
-      "82.13.29.15/32"
-    ]
-    destination_ports = ["6443"]
-    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
-    translated_address = "10.1.64.4"
-    translated_port = "6443"
-    protocols = ["TCP"]
-  }
-  rule {
     name = "dev_http"
     source_addresses = ["*"]
     destination_ports = ["80"]
@@ -563,19 +519,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     destination_addresses = [azurerm_public_ip.pips.2.ip_address]
     translated_address = "10.2.0.4"
     translated_port = "443"
-    protocols = ["TCP"]
-  }
-  rule {
-    name = "dev_kube"
-    source_addresses = [
-      "194.74.152.11/32",
-      "80.229.2.38/32",
-      "82.13.29.15/32"
-    ]
-    destination_ports = ["6443"]
-    destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-    translated_address = "10.2.64.4"
-    translated_port = "6443"
     protocols = ["TCP"]
   }
   rule {
@@ -596,6 +539,53 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "443"
     protocols = ["TCP"]
   }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "kube" {
+  name = "kube"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 110
+  action = "Dnat"
+  rule {
+    name = "prod_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
+    translated_address = "10.0.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "staging_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
+    translated_address = "10.1.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "dev_kube"
+    source_addresses = [
+      "194.74.152.11/32",
+      "80.229.2.38/32",
+      "82.13.29.15/32"
+    ]
+    destination_ports = ["6443"]
+    destination_addresses = [azurerm_public_ip.pips.2.ip_address]
+    translated_address = "10.2.64.4"
+    translated_port = "6443"
+    protocols = ["TCP"]
+  }
   rule {
     name = "sandbox_kube"
     source_addresses = [
@@ -609,6 +599,51 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "6443"
     protocols = ["TCP"]
   }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "bastion" {
+  name = "bastion"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 120
+  action = "Dnat"
+
+  rule {
+    name = "ssh"
+    source_addresses = ["*"]
+    destination_ports = ["22"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
+    translated_address = "192.168.4.4"
+    translated_port = "22"
+    protocols = ["TCP"]
+  }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "chef" {
+  name = "chef"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 130
+  action = "Dnat"
+
+  rule {
+    name = "chef"
+    source_addresses = ["*"]
+    destination_ports = ["4444"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
+    translated_address = "192.168.5.4"
+    translated_port = "4444"
+    protocols = ["TCP"]
+  }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "kibana" {
+  name = "kibana"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 140
+  action = "Dnat"
+
   rule {
     name = "kibana_http"
     source_addresses = [
@@ -622,6 +657,15 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     translated_port = "5601"
     protocols = ["TCP"]
   }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "argus" {
+  name = "argus"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 150
+  action = "Dnat"
+
   rule {
     name = "argus_http"
     source_addresses = [
@@ -633,6 +677,33 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     destination_addresses = [azurerm_public_ip.pips.15.ip_address]
     translated_address = "192.168.6.84"
     translated_port = "8001"
+    protocols = ["TCP"]
+  }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "sftp" {
+  name = "sftp"
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.rg.name
+  priority = 160
+  action = "Dnat"
+
+  rule {
+    name = "prod_sftp"
+    source_addresses = ["*"]
+    destination_ports = ["2222"]
+    destination_addresses = [azurerm_public_ip.pips.0.ip_address]
+    translated_address = "10.0.0.4"
+    translated_port = "2222"
+    protocols = ["TCP"]
+  }
+  rule {
+    name = "staging_sftp"
+    source_addresses = ["*"]
+    destination_ports = ["2222"]
+    destination_addresses = [azurerm_public_ip.pips.1.ip_address]
+    translated_address = "10.1.0.4"
+    translated_port = "2222"
     protocols = ["TCP"]
   }
 }
