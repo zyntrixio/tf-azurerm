@@ -854,7 +854,7 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
   }
   rule {
     name = "Azure Redis"
-    source_addresses = ["10.0.0.0/18", "10.1.0.0/18", "10.2.0.0/18"]
+    source_addresses = ["10.0.0.0/18", "10.1.0.0/18", "10.2.0.0/18", "10.3.0.0/18"]
     destination_ports = ["6379", "6380"]
     destination_addresses = ["*"]
     protocols = ["TCP"]
