@@ -306,25 +306,16 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
   }
 
-### MCWallet ###
+### Sandbox ###
 
-  frontend_endpoint {
-    name = "mcwallet-dev-gb-bink-com"
-    host_name = "mcwallet.dev.gb.bink.com"
-    custom_https_provisioning_enabled = true
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com"
-        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
-    }
-  }
+  # TODO:
+  # api.sandbox.gb.bink.com - Sandbox - to replace performance.sandbox.gb.bink.com after performance testing is complete
 
   backend_pool {
-    name = "mcwallet-dev-k8s-uksouth-bink-sh"
+    name = "api-sandbox-k8s-uksouth-bink-sh"
     backend {
-      host_header = "mcwallet.dev.k8s.uksouth.bink.sh"
-      address     = "mcwallet.dev.k8s.uksouth.bink.sh"
+      host_header = "api.sandbox.k8s.uksouth.bink.sh"
+      address     = "api.sandbox.k8s.uksouth.bink.sh"
       http_port   = 80
       https_port  = 443
     }
@@ -332,23 +323,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     load_balancing_name = "standard"
     health_probe_name   = "healthz"
   }
-
-  routing_rule {
-    name = "mcwallet-dev-k8s-uksouth-bink-sh"
-    accepted_protocols = ["Https"]
-    patterns_to_match = ["/*"]
-    frontend_endpoints = ["mcwallet-dev-gb-bink-com"]
-    forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name  = "mcwallet-dev-k8s-uksouth-bink-sh"
-      cache_enabled = false
-    }
-  }
-
-### Sandbox ###
-
-  # TODO:
-  # api.sandbox.gb.bink.com - Sandbox - to replace performance.sandbox.gb.bink.com after performance testing is complete
 
   frontend_endpoint {
     name = "performance-sandbox-gb-bink-com"
