@@ -308,8 +308,29 @@ resource "azurerm_frontdoor" "frontdoor" {
 
 ### Sandbox ###
 
-  # TODO:
-  # api.sandbox.gb.bink.com - Sandbox - to replace performance.sandbox.gb.bink.com after performance testing is complete
+  frontend_endpoint {
+    name = "api-sandbox-gb-bink-com"
+    host_name = "api.sandbox.gb.bink.com"
+    custom_https_provisioning_enabled = true
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+  }
+
+  routing_rule {
+    name = "api-sandbox-k8s-uksouth-bink-sh"
+    accepted_protocols = ["Https"]
+    patterns_to_match = ["/*"]
+    frontend_endpoints = ["api-sandbox-gb-bink-com"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name  = "api-sandbox-k8s-uksouth-bink-sh"
+      cache_enabled = false
+    }
+  }
 
   backend_pool {
     name = "api-sandbox-k8s-uksouth-bink-sh"
