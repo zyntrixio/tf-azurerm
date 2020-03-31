@@ -801,6 +801,13 @@ resource "azurerm_firewall_network_rule_collection" "monitoring" {
     destination_addresses = ["192.168.6.16/28"]
     protocols = ["TCP"]
   }
+  rule {
+    name = "all-to-kibana"
+    source_addresses = ["*"]
+    destination_ports = ["5601"]
+    destination_addresses = ["192.168.6.0/28"]
+    protocols = ["TCP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "egress" {
