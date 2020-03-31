@@ -873,4 +873,11 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     destination_addresses = ["1.1.1.1", "1.0.0.1"]
     protocols = ["TCP"]
   }
+  rule {
+    name = "Folding-at-Home Proxy"
+    source_addresses = ["*"]
+    destination_ports = ["8000"]
+    destination_addresses = ["167.172.50.165"]
+    protocols = ["TCP"]
+  }
 }
