@@ -802,8 +802,8 @@ resource "azurerm_firewall_network_rule_collection" "monitoring" {
     protocols = ["TCP"]
   }
   rule {
-    name = "all-to-kibana"
-    source_addresses = ["*"]
+    name = "production-to-kibana"
+    source_addresses = ["10.0.0.0/18"]
     destination_ports = ["5601"]
     destination_addresses = ["192.168.6.0/28"]
     protocols = ["TCP"]
