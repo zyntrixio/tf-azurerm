@@ -142,8 +142,16 @@ module "kibana_nsg_rules" {
       destination_address_prefix = var.subnet_address_prefixes[0]
     },
     {
-      name = "AllowKibanaAccessBinkHQ"
+      name = "AllowKibanaTrafficProd"
       priority = "100"
+      destination_port_range = "5601"
+      protocol = "TCP"
+      source_address_prefix = "10.0.0.0/18"
+      destination_address_prefix = var.subnet_address_prefixes[0]
+    },
+    {
+      name = "AllowKibanaAccessBinkHQ"
+      priority = "110"
       protocol = "TCP"
       destination_port_range = "5601"
       source_address_prefix = "192.168.0.0/24"
