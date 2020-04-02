@@ -291,6 +291,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     target_fqdns = [
       "api.twitter.com",
       "graph.facebook.com",
+      "appleid.apple.com",
       "bink.blob.core.windows.net",
     ]
     protocol {
