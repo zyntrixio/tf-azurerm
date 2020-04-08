@@ -89,66 +89,6 @@ resource "azurerm_storage_account" "binkbackupsprod" {
   enable_https_traffic_only = true
 }
 
-resource "azurerm_storage_account" "binkdbbackupsdev" {
-  name = "binkdbbackupsdev"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
-resource "azurerm_storage_account" "binkdbbackupsstaging" {
-  name = "binkdbbackupsstaging"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
-resource "azurerm_storage_account" "binkdbbackupsprod" {
-  name = "binkdbbackupsprod"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
-resource "azurerm_storage_account" "binkmediabackupsdev" {
-  name = "binkmediabackupsdev"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
-resource "azurerm_storage_account" "binkmediabackupsstaging" {
-  name = "binkmediabackupsstaging"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
-resource "azurerm_storage_account" "binkmediabackupsprod" {
-  name = "binkmediabackupsprod"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  account_kind = "BlobStorage"
-  account_tier = "Standard"
-  account_replication_type = "RAGRS"
-  enable_https_traffic_only = true
-}
-
 resource "azurerm_storage_account" "binkgitlabbackups" {
   name = "binkgitlabbackups"
   resource_group_name = azurerm_resource_group.rg.name
@@ -229,22 +169,6 @@ resource "azurerm_storage_account" "thoughtspot" {
   enable_https_traffic_only = true
 }
 
-resource "azurerm_container_registry" "binkdemo" {
-  name = "binkdemo"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = "westeurope"
-  sku = "Standard"
-  admin_enabled = true
-}
-
-resource "azurerm_container_registry" "binkiceland" {
-  name = "binkiceland"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = "westeurope"
-  sku = "Basic"
-  admin_enabled = true
-}
-
 resource "azurerm_container_registry" "binkops" {
   name = "binkops"
   resource_group_name = azurerm_resource_group.rg.name
@@ -252,14 +176,6 @@ resource "azurerm_container_registry" "binkops" {
   sku = "Premium"
   admin_enabled = true
   georeplication_locations = ["UK South", "UK West"]
-}
-
-resource "azurerm_container_registry" "mygravity" {
-  name = "mygravity"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = "westeurope"
-  sku = "Basic"
-  admin_enabled = true
 }
 
 resource "azurerm_container_registry" "olympus" {

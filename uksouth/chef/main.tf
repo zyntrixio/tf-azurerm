@@ -52,7 +52,7 @@ resource "azurerm_network_watcher_flow_log" "flow_logs" {
 
   network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
   storage_account_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/stega/providers/Microsoft.Storage/storageAccounts/binkstegansgflowlogs"
-  enabled = true
+  enabled = false
   version = 2
 
   retention_policy {
@@ -160,7 +160,7 @@ resource "azurerm_virtual_machine" "chef" {
   resource_group_name = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.chef.id]
 
-  vm_size = "Standard_B2ms"
+  vm_size = "Standard_B2s"
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = false
 
