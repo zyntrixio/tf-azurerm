@@ -17,8 +17,8 @@ variable "tags" {
   }
 }
 
-variable worker_vm_size { default = "Standard_D8s_v3" }
-variable worker_count { default = 6 }
+variable worker_vm_size { default = "Standard_D4s_v3" }
+variable worker_count { default = 12 }
 variable controller_vm_size { default = "Standard_D4s_v3" }
 variable controller_count { default = 3 }
 variable etcd_vm_size { default = "Standard_D2s_v3" }
