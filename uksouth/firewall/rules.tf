@@ -553,7 +553,8 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     source_addresses = [
       "194.74.152.11/32",
       "80.229.2.38/32",
-      "82.13.29.15/32"
+      "82.13.29.15/32",
+      "86.28.118.165/32"
     ]
     destination_ports = ["6443"]
     destination_addresses = [azurerm_public_ip.pips.0.ip_address]
@@ -566,7 +567,8 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     source_addresses = [
       "194.74.152.11/32",
       "80.229.2.38/32",
-      "82.13.29.15/32"
+      "82.13.29.15/32",
+      "86.28.118.165/32"
     ]
     destination_ports = ["6443"]
     destination_addresses = [azurerm_public_ip.pips.1.ip_address]
@@ -579,7 +581,8 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     source_addresses = [
       "194.74.152.11/32",
       "80.229.2.38/32",
-      "82.13.29.15/32"
+      "82.13.29.15/32",
+      "86.28.118.165/32"
     ]
     destination_ports = ["6443"]
     destination_addresses = [azurerm_public_ip.pips.2.ip_address]
@@ -592,7 +595,8 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     source_addresses = [
       "194.74.152.11/32",
       "80.229.2.38/32",
-      "82.13.29.15/32"
+      "82.13.29.15/32",
+      "86.28.118.165/32"
     ]
     destination_ports = ["6443"]
     destination_addresses = [azurerm_public_ip.pips.3.ip_address]
