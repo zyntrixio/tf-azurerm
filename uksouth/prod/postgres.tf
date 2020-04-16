@@ -10,7 +10,7 @@ resource "azurerm_postgresql_server" "postgres" {
   sku_name = "GP_Gen5_8"
 
   storage_profile {
-    storage_mb = 102400
+    storage_mb = 1024000
     backup_retention_days = 7
     geo_redundant_backup = "Disabled"
     auto_grow = "Disabled"
