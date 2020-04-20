@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg" {
-  name = "uksouth-staging"
-  location = "uksouth"
+    name = "uksouth-staging"
+    location = "uksouth"
 
-  tags = var.tags
+    tags = var.tags
 }

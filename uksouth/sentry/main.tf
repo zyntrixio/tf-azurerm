@@ -18,7 +18,7 @@ resource "azurerm_network_security_group" "nsg" {
     name = "${var.environment}-nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
- 
+
     tags = var.tags
 
     security_rule {
@@ -112,7 +112,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 }
 
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
-    subnet_id      = azurerm_subnet.subnet.id
+    subnet_id = azurerm_subnet.subnet.id
     route_table_id = azurerm_route_table.rt.id
 }
 
@@ -179,7 +179,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
         user_key = file("./chef.pem")
         version = "15.9.17"
         ssl_verify_mode = ":verify_peer"
-        
+
         connection {
             type = "ssh"
             user = "terraform"

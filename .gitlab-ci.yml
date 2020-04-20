@@ -1,0 +1,10 @@
+stages:
+  - tests
+
+tfstyle:
+  stage: tests
+  image: terrycain/terrafmt:v1.1.9
+  script:
+    - terrafmt -V
+    - terrafmt -r --check
+

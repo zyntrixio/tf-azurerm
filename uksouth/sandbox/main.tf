@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg" {
-  name = "uksouth-sandbox"
-  location = "uksouth"
+    name = "uksouth-sandbox"
+    location = "uksouth"
 
-  tags = var.tags
+    tags = var.tags
 }

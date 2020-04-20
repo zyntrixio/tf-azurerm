@@ -1,11 +1,11 @@
 resource "azurerm_availability_set" "worker" {
-  name = "${var.environment}-worker-as"
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  platform_fault_domain_count = 2
-  managed = true
+    name = "${var.environment}-worker-as"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    platform_fault_domain_count = 2
+    managed = true
 
-  tags = var.tags
+    tags = var.tags
 }
 
 variable "pod_ip_configs" {
@@ -17,66 +17,66 @@ variable "pod_ip_configs" {
 }
 
 resource "azurerm_network_interface" "worker" {
-  count = var.worker_count
-  name = format("${var.environment}-worker-%02d-nic", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb]
-  enable_accelerated_networking = true
-  enable_ip_forwarding = true
+    count = var.worker_count
+    name = format("${var.environment}-worker-%02d-nic", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    depends_on = [azurerm_lb.lb]
+    enable_accelerated_networking = true
+    enable_ip_forwarding = true
 
-  ip_configuration {
-      name = "primary"
-      subnet_id = azurerm_subnet.subnet.0.id
-      private_ip_address_allocation = "Dynamic"
-      primary = true
-  }
+    ip_configuration {
+        name = "primary"
+        subnet_id = azurerm_subnet.subnet.0.id
+        private_ip_address_allocation = "Dynamic"
+        primary = true
+    }
 
-  dynamic "ip_configuration" {
-      for_each = [for s in var.pod_ip_configs: {
-          name = "${format("pod-%02d", s)}"
-      }]
+    dynamic "ip_configuration" {
+        for_each = [for s in var.pod_ip_configs : {
+            name = "${format("pod-%02d", s)}"
+        }]
 
-      content {
-          name = ip_configuration.value.name
-          subnet_id = azurerm_subnet.subnet.0.id
-          private_ip_address_allocation = "Dynamic"
-      }
-  }
+        content {
+            name = ip_configuration.value.name
+            subnet_id = azurerm_subnet.subnet.0.id
+            private_ip_address_allocation = "Dynamic"
+        }
+    }
 }
 
 resource "azurerm_virtual_machine" "worker" {
-  count = var.worker_count
-  name = format("${var.environment}-worker-%02d", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  availability_set_id = azurerm_availability_set.worker.id
-  network_interface_ids = [
-    element(azurerm_network_interface.worker.*.id, count.index),
-  ]
-  vm_size = var.worker_vm_size
-  delete_os_disk_on_termination = true
-  delete_data_disks_on_termination = false
+    count = var.worker_count
+    name = format("${var.environment}-worker-%02d", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    availability_set_id = azurerm_availability_set.worker.id
+    network_interface_ids = [
+        element(azurerm_network_interface.worker.*.id, count.index),
+    ]
+    vm_size = var.worker_vm_size
+    delete_os_disk_on_termination = true
+    delete_data_disks_on_termination = false
 
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
-  }
+    storage_image_reference {
+        publisher = "Canonical"
+        offer = "UbuntuServer"
+        sku = "16.04-LTS"
+        version = "latest"
+    }
 
-  storage_os_disk {
-    name = format("${var.environment}-worker-%02d-disk", count.index + 1)
-    disk_size_gb = "128"
-    caching = "ReadOnly"
-    create_option = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
-  }
+    storage_os_disk {
+        name = format("${var.environment}-worker-%02d-disk", count.index + 1)
+        disk_size_gb = "128"
+        caching = "ReadOnly"
+        create_option = "FromImage"
+        managed_disk_type = "StandardSSD_LRS"
+    }
 
-  os_profile {
-    computer_name = format("${var.environment}-worker-%02d", count.index + 1)
-    admin_username = "terraform"
-    custom_data = <<-EOF
+    os_profile {
+        computer_name = format("${var.environment}-worker-%02d", count.index + 1)
+        admin_username = "terraform"
+        custom_data = <<-EOF
       #cloud-config
       write_files:
       - encoding: b64
@@ -128,95 +128,95 @@ resource "azurerm_virtual_machine" "worker" {
       output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
     EOF
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-      path = "/home/terraform/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
     }
-  }
 
-  tags = var.tags
+    os_profile_linux_config {
+        disable_password_authentication = true
+        ssh_keys {
+            path = "/home/terraform/.ssh/authorized_keys"
+            key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
+        }
+    }
+
+    tags = var.tags
 }
 
 module "worker_nsg_rules" {
-  source = "../../modules/nsg_rules"
-  network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = azurerm_resource_group.rg.name
-  rules = [
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "AllowSSH"
-      priority = "500"
-      protocol = "TCP"
-      destination_port_range = "22"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-      source_address_prefix = "192.168.4.0/24"
-    },
-    {
-      name = "AllowAllSubnetTraffic"
-      priority = "100"
-      source_address_prefix = var.subnet_address_prefixes[0]
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowAllControllerSubnetTraffic"
-      priority = "110"
-      source_address_prefix = var.subnet_address_prefixes[1]
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowHttpTraffic"
-      priority = "120"
-      destination_port_range = "30000"
-      protocol = "TCP"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowHttpsTraffic"
-      priority = "130"
-      destination_port_range = "30001"
-      protocol = "TCP"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowSftpTraffic"
-      priority = "140"
-      destination_port_range = "30002"
-      protocol = "TCP"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    }
-  ]
+    source = "../../modules/nsg_rules"
+    network_security_group_name = "${var.environment}-subnet-01-nsg"
+    resource_group_name = azurerm_resource_group.rg.name
+    rules = [
+        {
+            name = "BlockEverything"
+            priority = "4096"
+            access = "Deny"
+        },
+        {
+            name = "AllowLoadBalancer"
+            source_address_prefix = "AzureLoadBalancer"
+            priority = "4095"
+        },
+        {
+            name = "AllowSSH"
+            priority = "500"
+            protocol = "TCP"
+            destination_port_range = "22"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+            source_address_prefix = "192.168.4.0/24"
+        },
+        {
+            name = "AllowAllSubnetTraffic"
+            priority = "100"
+            source_address_prefix = var.subnet_address_prefixes[0]
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowAllControllerSubnetTraffic"
+            priority = "110"
+            source_address_prefix = var.subnet_address_prefixes[1]
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowHttpTraffic"
+            priority = "120"
+            destination_port_range = "30000"
+            protocol = "TCP"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowHttpsTraffic"
+            priority = "130"
+            destination_port_range = "30001"
+            protocol = "TCP"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowSftpTraffic"
+            priority = "140"
+            destination_port_range = "30002"
+            protocol = "TCP"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        }
+    ]
 }
 
 module "worker_lb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.lb.id
-  backend_id = azurerm_lb_backend_address_pool.pools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = "subnet-01"
+    source = "../../modules/lb_rules"
+    loadbalancer_id = azurerm_lb.lb.id
+    backend_id = azurerm_lb_backend_address_pool.pools.0.id
+    resource_group_name = azurerm_resource_group.rg.name
+    frontend_ip_configuration_name = "subnet-01"
 
-  lb_port = {
-    ingress_http = [ "80", "TCP", "30000" ]
-    ingress_https = [ "443", "TCP", "30001" ]
-    sftp = [ "2222", "TCP", "30002" ]
-  }
+    lb_port = {
+        ingress_http = ["80", "TCP", "30000"]
+        ingress_https = ["443", "TCP", "30001"]
+        sftp = ["2222", "TCP", "30002"]
+    }
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
-  count = var.worker_count
-  network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    count = var.worker_count
+    network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
+    ip_configuration_name = "primary"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }

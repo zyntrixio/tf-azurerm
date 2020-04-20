@@ -1,9 +1,9 @@
 resource "azurerm_resource_group" "rg" {
-  name = var.resource_group_name
-  location = "uksouth"
+    name = var.resource_group_name
+    location = "uksouth"
 
-  tags = {
-    environment = var.environment
-    datadog = "monitored"
-  }
+    tags = {
+        environment = var.environment
+        datadog = "monitored"
+    }
 }

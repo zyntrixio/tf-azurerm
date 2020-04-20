@@ -141,7 +141,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         frontend_endpoints = ["default", "api-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name  = "api-prod-k8s-uksouth-bink-sh"
+            backend_pool_name = "api-prod-k8s-uksouth-bink-sh"
             cache_enabled = false
         }
     }
@@ -153,7 +153,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         frontend_endpoints = ["api-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name  = "api-prod-k8s-uksouth-bink-sh"
+            backend_pool_name = "api-prod-k8s-uksouth-bink-sh"
             cache_enabled = true
         }
     }
@@ -241,8 +241,8 @@ resource "azurerm_frontdoor" "frontdoor" {
             azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
             azure_key_vault_certificate_secret_name = "gb-bink-com"
             azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+        }
     }
-  }
 
     backend_pool {
         name = "api-dev-k8s-uksouth-bink-sh"
