@@ -270,6 +270,21 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Azure Endpoints"
+        source_addresses = ["*"]
+        # From https://docs.microsoft.com/en-us/azure/azure-monitor/platform/om-agents#network
+        target_fqdns = [
+            "*.ods.opinsights.azure.com",
+            "*.oms.opinsights.azure.com",
+            "*.blob.core.windows.net",
+            "*.azure-automation.net"
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
