@@ -171,7 +171,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     provisioner "chef" {
         environment = "uksouth-sentry"
         client_options = ["chef_license 'accept'"]
-        run_list = ["fury::default"]
+        run_list = ["role[sentry]"]
         node_name = self.name
         server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
         recreate_client = true
