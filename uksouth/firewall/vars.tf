@@ -1,8 +1,8 @@
 variable "tags" {
-  type = map
-  default = {
-    Environment = "Production"
-  }
+    type = map
+    default = {
+        Environment = "Production"
+    }
 }
 
 variable "sentry_vnet_id" {}

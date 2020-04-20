@@ -1,48 +1,48 @@
 resource "azurerm_network_interface" "bastion" {
-  count = var.bastion_count
-  name = format("${var.environment}-%02d-nic", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb]
+    count = var.bastion_count
+    name = format("${var.environment}-%02d-nic", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    depends_on = [azurerm_lb.lb]
 
-  ip_configuration {
-    name = "primary"
-    subnet_id = azurerm_subnet.subnet.0.id
-    private_ip_address_allocation = "Dynamic"
-  }
+    ip_configuration {
+        name = "primary"
+        subnet_id = azurerm_subnet.subnet.0.id
+        private_ip_address_allocation = "Dynamic"
+    }
 }
 
 resource "azurerm_virtual_machine" "bastion" {
-  count = var.bastion_count
-  name = format("${var.environment}-%02d", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  network_interface_ids = [
-    element(azurerm_network_interface.bastion.*.id, count.index),
-  ]
-  vm_size = var.bastion_vm_size
-  delete_os_disk_on_termination = true
-  delete_data_disks_on_termination = false
+    count = var.bastion_count
+    name = format("${var.environment}-%02d", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    network_interface_ids = [
+        element(azurerm_network_interface.bastion.*.id, count.index),
+    ]
+    vm_size = var.bastion_vm_size
+    delete_os_disk_on_termination = true
+    delete_data_disks_on_termination = false
 
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
-  }
+    storage_image_reference {
+        publisher = "Canonical"
+        offer = "UbuntuServer"
+        sku = "16.04-LTS"
+        version = "latest"
+    }
 
-  storage_os_disk {
-    name = format("${var.environment}-%02d-disk", count.index + 1)
-    disk_size_gb = "32"
-    caching = "ReadOnly"
-    create_option = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
-  }
+    storage_os_disk {
+        name = format("${var.environment}-%02d-disk", count.index + 1)
+        disk_size_gb = "32"
+        caching = "ReadOnly"
+        create_option = "FromImage"
+        managed_disk_type = "StandardSSD_LRS"
+    }
 
-  os_profile {
-    computer_name = format("${var.environment}-%02d", count.index + 1)
-    admin_username = "terraform"
-    custom_data = <<-EOF
+    os_profile {
+        computer_name = format("${var.environment}-%02d", count.index + 1)
+        admin_username = "terraform"
+        custom_data = <<-EOF
       #cloud-config
       write_files:
       - encoding: base64
@@ -94,64 +94,64 @@ resource "azurerm_virtual_machine" "bastion" {
       output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
     EOF
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-      path = "/home/terraform/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
     }
-  }
 
-  tags = var.tags
+    os_profile_linux_config {
+        disable_password_authentication = true
+        ssh_keys {
+            path = "/home/terraform/.ssh/authorized_keys"
+            key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
+        }
+    }
+
+    tags = var.tags
 }
 
 module "bastion_nsg_rules" {
-  source = "../../modules/nsg_rules"
-  network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = azurerm_resource_group.rg.name
-  rules = [
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    },
-    {
-      name = "AllowSSH"
-      priority = "100"
-      protocol = "TCP"
-      destination_port_range = "22"
-    },
-    {
-      name = "AllowRADIUS"
-      priority = "110"
-      destination_port_range = "1812-1813"
-      protocol = "Udp"
-    }
-  ]
+    source = "../../modules/nsg_rules"
+    network_security_group_name = "${var.environment}-subnet-01-nsg"
+    resource_group_name = azurerm_resource_group.rg.name
+    rules = [
+        {
+            name = "AllowLoadBalancer"
+            source_address_prefix = "AzureLoadBalancer"
+            priority = "4095"
+        },
+        {
+            name = "BlockEverything"
+            priority = "4096"
+            access = "Deny"
+        },
+        {
+            name = "AllowSSH"
+            priority = "100"
+            protocol = "TCP"
+            destination_port_range = "22"
+        },
+        {
+            name = "AllowRADIUS"
+            priority = "110"
+            destination_port_range = "1812-1813"
+            protocol = "Udp"
+        }
+    ]
 }
 
 module "bastion_lb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.lb.id
-  backend_id = azurerm_lb_backend_address_pool.pools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = "subnet-01"
+    source = "../../modules/lb_rules"
+    loadbalancer_id = azurerm_lb.lb.id
+    backend_id = azurerm_lb_backend_address_pool.pools.0.id
+    resource_group_name = azurerm_resource_group.rg.name
+    frontend_ip_configuration_name = "subnet-01"
 
-  lb_port = {
-    ssh = [ "22", "TCP", "22" ]
-  }
+    lb_port = {
+        ssh = ["22", "TCP", "22"]
+    }
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "bastion-bap-assoc" {
-  count = var.bastion_count
-  network_interface_id = element(azurerm_network_interface.bastion.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    count = var.bastion_count
+    network_interface_id = element(azurerm_network_interface.bastion.*.id, count.index)
+    ip_configuration_name = "primary"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }

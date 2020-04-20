@@ -86,7 +86,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "GitHub"
         source_addresses = ["*"]
-        target_fqdns = ["github.com","*.s3.amazonaws.com"]
+        target_fqdns = ["github.com", "*.s3.amazonaws.com"]
         protocol {
             port = "443"
             type = "Https"
@@ -171,7 +171,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Slack"
         source_addresses = ["*"]
-        target_fqdns = ["slack.com","*.slack.com"]
+        target_fqdns = ["slack.com", "*.slack.com"]
         protocol {
             port = "443"
             type = "Https"
@@ -910,7 +910,7 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     rule {
         name = "Stega OSSEC Agent"
         source_addresses = ["*"]
-        destination_ports = ["443","1515"]
+        destination_ports = ["443", "1515"]
         destination_addresses = ["51.143.173.121/32"]
         protocols = ["TCP"]
     }

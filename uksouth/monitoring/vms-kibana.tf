@@ -1,59 +1,59 @@
 resource "azurerm_availability_set" "kibana" {
-  name = "${var.environment}-kibana-as"
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  platform_fault_domain_count = 2
-  managed = true
+    name = "${var.environment}-kibana-as"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    platform_fault_domain_count = 2
+    managed = true
 
-  tags = var.tags
+    tags = var.tags
 }
 
 resource "azurerm_network_interface" "kibana" {
-  count = var.kibana_count
-  name = format("${var.environment}-kibana-%02d-nic", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  depends_on = [azurerm_lb.lb]
+    count = var.kibana_count
+    name = format("${var.environment}-kibana-%02d-nic", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    depends_on = [azurerm_lb.lb]
 
-  ip_configuration {
-    name = "primary"
-    subnet_id = azurerm_subnet.subnet.0.id
-    private_ip_address_allocation = "Dynamic"
-  }
+    ip_configuration {
+        name = "primary"
+        subnet_id = azurerm_subnet.subnet.0.id
+        private_ip_address_allocation = "Dynamic"
+    }
 }
 
 resource "azurerm_virtual_machine" "kibana" {
-  count = var.kibana_count
-  name = format("${var.environment}-kibana-%02d", count.index + 1)
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  availability_set_id = azurerm_availability_set.kibana.id
-  network_interface_ids = [
-    element(azurerm_network_interface.kibana.*.id, count.index),
-  ]
-  vm_size = var.kibana_vm_size
-  delete_os_disk_on_termination = true
-  delete_data_disks_on_termination = false
+    count = var.kibana_count
+    name = format("${var.environment}-kibana-%02d", count.index + 1)
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    availability_set_id = azurerm_availability_set.kibana.id
+    network_interface_ids = [
+        element(azurerm_network_interface.kibana.*.id, count.index),
+    ]
+    vm_size = var.kibana_vm_size
+    delete_os_disk_on_termination = true
+    delete_data_disks_on_termination = false
 
-  storage_image_reference {
-    publisher = "Canonical"
-    offer = "UbuntuServer"
-    sku = "18.04-LTS"
-    version = "latest"
-  }
+    storage_image_reference {
+        publisher = "Canonical"
+        offer = "UbuntuServer"
+        sku = "18.04-LTS"
+        version = "latest"
+    }
 
-  storage_os_disk {
-    name = format("${var.environment}-kibana-%02d-disk", count.index + 1)
-    disk_size_gb = "32"
-    caching = "ReadOnly"
-    create_option = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
-  }
+    storage_os_disk {
+        name = format("${var.environment}-kibana-%02d-disk", count.index + 1)
+        disk_size_gb = "32"
+        caching = "ReadOnly"
+        create_option = "FromImage"
+        managed_disk_type = "StandardSSD_LRS"
+    }
 
-  os_profile {
-    computer_name = format("${var.environment}-kibana-%02d", count.index + 1)
-    admin_username = "terraform"
-    custom_data = <<-EOF
+    os_profile {
+        computer_name = format("${var.environment}-kibana-%02d", count.index + 1)
+        admin_username = "terraform"
+        custom_data = <<-EOF
       #cloud-config
       write_files:
       - encoding: b64
@@ -105,76 +105,76 @@ resource "azurerm_virtual_machine" "kibana" {
       output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
     EOF
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_keys {
-      path = "/home/terraform/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
     }
-  }
 
-  tags = var.tags
+    os_profile_linux_config {
+        disable_password_authentication = true
+        ssh_keys {
+            path = "/home/terraform/.ssh/authorized_keys"
+            key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
+        }
+    }
+
+    tags = var.tags
 }
 
 module "kibana_nsg_rules" {
-  source = "../../modules/nsg_rules"
-  network_security_group_name = "${var.environment}-subnet-01-nsg"
-  resource_group_name = azurerm_resource_group.rg.name
-  rules = [
-    {
-      name = "BlockEverything"
-      priority = "4096"
-      access = "Deny"
-    },
-    {
-      name = "AllowLoadBalancer"
-      source_address_prefix = "AzureLoadBalancer"
-      priority = "4095"
-    },
-    {
-      name = "AllowSSH"
-      priority = "500"
-      protocol = "TCP"
-      destination_port_range = "22"
-      source_address_prefix = "192.168.4.0/24"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowKibanaTrafficProd"
-      priority = "100"
-      destination_port_range = "5601"
-      protocol = "TCP"
-      source_address_prefix = "10.0.0.0/18"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    },
-    {
-      name = "AllowKibanaAccessBinkHQ"
-      priority = "110"
-      protocol = "TCP"
-      destination_port_range = "5601"
-      source_address_prefix = "192.168.0.0/24"
-      destination_address_prefix = var.subnet_address_prefixes[0]
-    }
-  ]
+    source = "../../modules/nsg_rules"
+    network_security_group_name = "${var.environment}-subnet-01-nsg"
+    resource_group_name = azurerm_resource_group.rg.name
+    rules = [
+        {
+            name = "BlockEverything"
+            priority = "4096"
+            access = "Deny"
+        },
+        {
+            name = "AllowLoadBalancer"
+            source_address_prefix = "AzureLoadBalancer"
+            priority = "4095"
+        },
+        {
+            name = "AllowSSH"
+            priority = "500"
+            protocol = "TCP"
+            destination_port_range = "22"
+            source_address_prefix = "192.168.4.0/24"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowKibanaTrafficProd"
+            priority = "100"
+            destination_port_range = "5601"
+            protocol = "TCP"
+            source_address_prefix = "10.0.0.0/18"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowKibanaAccessBinkHQ"
+            priority = "110"
+            protocol = "TCP"
+            destination_port_range = "5601"
+            source_address_prefix = "192.168.0.0/24"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        }
+    ]
 }
 
 module "kibana_lb_rules" {
-  source = "../../modules/lb_rules"
-  loadbalancer_id = azurerm_lb.lb.id
-  backend_id = azurerm_lb_backend_address_pool.pools.0.id
-  resource_group_name = azurerm_resource_group.rg.name
-  frontend_ip_configuration_name = "subnet-01"
+    source = "../../modules/lb_rules"
+    loadbalancer_id = azurerm_lb.lb.id
+    backend_id = azurerm_lb_backend_address_pool.pools.0.id
+    resource_group_name = azurerm_resource_group.rg.name
+    frontend_ip_configuration_name = "subnet-01"
 
-  lb_port = {
-    kibana = [ "5601", "TCP", "5601" ]
-  }
+    lb_port = {
+        kibana = ["5601", "TCP", "5601"]
+    }
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "kibana-bap-pools-assoc" {
-  count = var.kibana_count
-  network_interface_id = element(azurerm_network_interface.kibana.*.id, count.index)
-  ip_configuration_name = "primary"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    count = var.kibana_count
+    network_interface_id = element(azurerm_network_interface.kibana.*.id, count.index)
+    ip_configuration_name = "primary"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }
