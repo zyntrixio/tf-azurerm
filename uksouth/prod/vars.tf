@@ -9,6 +9,13 @@ variable subnet_address_prefixes {
         "10.0.65.0/24", # etcd Hosts
     ]
 }
+variable subnet_names {
+    default = [
+        "worker",
+        "controller",
+        "etcd"
+    ]
+}
 
 variable "tags" {
     type = map
