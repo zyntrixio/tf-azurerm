@@ -748,12 +748,7 @@ resource "azurerm_firewall_nat_rule_collection" "sentry" {
 
     rule {
         name = "sentry_http"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = ["*"]
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.14.ip_address]
         translated_address = var.sentry_ip_address
@@ -762,12 +757,7 @@ resource "azurerm_firewall_nat_rule_collection" "sentry" {
     }
     rule {
         name = "sentry_https"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = ["*"]
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.14.ip_address]
         translated_address = var.sentry_ip_address
