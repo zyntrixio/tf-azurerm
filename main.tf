@@ -65,6 +65,7 @@ module "uksouth-storage" {
 
 module "uksouth-tableau" {
     source = "./uksouth/tableau"
+    worker_subnet = module.uksouth-prod.subnet_ids.worker
 }
 
 module "uksouth-prod" {
