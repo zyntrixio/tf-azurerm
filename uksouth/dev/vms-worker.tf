@@ -194,7 +194,7 @@ module "worker_nsg_rules" {
         // Temp
         {
             name = "Allow6502"
-            priority = "100"
+            priority = "501"
             protocol = "TCP"
             destination_port_range = "6502"
             destination_address_prefix = var.subnet_address_prefixes[0]
