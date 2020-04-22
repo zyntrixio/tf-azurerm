@@ -848,7 +848,7 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     rule {
         name = "bastion-to-dev6502"
         source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["6052"]
+        destination_ports = ["6502"]
         destination_addresses = ["10.2.0.0/16"]
         protocols = ["TCP"]
     }
