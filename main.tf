@@ -23,6 +23,9 @@ terraform {
 
 module "uksouth-bastion" {
     source = "./uksouth/bastion"
+
+    firewall_route_ip = module.uksouth-firewall.firewall_ip
+    firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
 module "uksouth-chef" {
@@ -41,6 +44,7 @@ module "uksouth-firewall" {
     source = "./uksouth/firewall"
     sentry_vnet_id = module.uksouth-sentry.vnet_id
     sentry_ip_address = module.uksouth-sentry.ip_address
+    bastion_ip_address = module.uksouth-bastion.ip_address
 }
 
 module "uksouth-vault" {
