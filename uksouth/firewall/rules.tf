@@ -644,7 +644,7 @@ resource "azurerm_firewall_nat_rule_collection" "bastion" {
         source_addresses = ["*"]
         destination_ports = ["22"]
         destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "192.168.4.4"
+        translated_address = var.bastion_ip_address
         translated_port = "22"
         protocols = ["TCP"]
     }

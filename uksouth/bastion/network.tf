@@ -2,18 +2,43 @@ resource "azurerm_virtual_network" "vnet" {
     name = "${var.environment}-vnet"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
-    address_space = ["192.168.4.0/24"]
+    address_space = [var.ip_range]
 
     tags = var.tags
 }
 
 resource "azurerm_network_security_group" "nsg" {
-    count = length(var.subnet_address_prefixes)
-    name = format("${var.environment}-subnet-%02d-nsg", count.index + 1)
+    name = "${var.environment}-nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
     tags = var.tags
+
+    security_rule {
+        name = "AllowSSH"
+        description = "SSH Access"
+        access = "Allow"
+        priority = 500
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "*"  # This is limited by Azure Firewall
+        source_port_range = "*"
+        destination_address_prefix = var.ip_range
+        destination_port_ranges = [22]
+    }
+
+    security_rule {
+        name = "BlockEverything"
+        description = "Default Block All Rule"
+        access = "Deny"
+        priority = 4096
+        direction = "Inbound"
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_address_prefix = "*"
+        destination_port_range = "*"
+    }
 }
 
 resource "azurerm_route_table" "rt" {
@@ -26,28 +51,26 @@ resource "azurerm_route_table" "rt" {
         name = "firewall"
         address_prefix = "0.0.0.0/0"
         next_hop_type = "VirtualAppliance"
-        next_hop_in_ip_address = "192.168.0.4"
+        next_hop_in_ip_address = var.firewall_route_ip
     }
 
     tags = var.tags
 }
 
-resource "azurerm_subnet" "subnet" {
-    count = length(var.subnet_address_prefixes)
-    name = format("subnet-%02d", count.index + 1)
+resource "azurerm_subnet" "subnet0" {
+    name = "subnet0"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefix = element(var.subnet_address_prefixes, count.index)
+    address_prefix = var.ip_range
 }
 
 resource "azurerm_network_watcher_flow_log" "flow_logs" {
-    count = length(var.subnet_address_prefixes)
     network_watcher_name = "NetworkWatcher_uksouth"
     resource_group_name = "NetworkWatcherRG"
 
-    network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
+    network_security_group_id = azurerm_network_security_group.nsg.id
     storage_account_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/stega/providers/Microsoft.Storage/storageAccounts/binkstegansgflowlogs"
-    enabled = false
+    enabled = var.flow_logs_enabled
     version = 2
 
     retention_policy {
@@ -57,14 +80,12 @@ resource "azurerm_network_watcher_flow_log" "flow_logs" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
-    count = length(var.subnet_address_prefixes)
-    subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
-    network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
+    subnet_id = azurerm_subnet.subnet0.id
+    network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
-    count = length(var.subnet_address_prefixes)
-    subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
+    subnet_id = azurerm_subnet.subnet0.id
     route_table_id = azurerm_route_table.rt.id
 }
 
@@ -72,30 +93,7 @@ resource "azurerm_virtual_network_peering" "peer" {
     name = "local-to-firewall"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/firewall-vnet"
+    remote_virtual_network_id = var.firewall_vnet_id
     allow_virtual_network_access = true
     allow_forwarded_traffic = true
-}
-
-resource "azurerm_lb" "lb" {
-    name = "${var.environment}-lb"
-    location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
-    sku = "Standard"
-
-    frontend_ip_configuration {
-        name = "subnet-01"
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[0], 4)
-        subnet_id = azurerm_subnet.subnet.0.id
-    }
-
-    tags = var.tags
-}
-
-resource "azurerm_lb_backend_address_pool" "pools" {
-    count = length(var.subnet_address_prefixes)
-    name = format("subnet-%02d", count.index + 1)
-    loadbalancer_id = azurerm_lb.lb.id
-    resource_group_name = azurerm_resource_group.rg.name
 }

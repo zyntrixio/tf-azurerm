@@ -1,157 +1,66 @@
-resource "azurerm_network_interface" "bastion" {
-    count = var.bastion_count
-    name = format("${var.environment}-%02d-nic", count.index + 1)
+resource "azurerm_network_interface" "bastion0" {
+    name = "${var.environment}-nic"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
-    depends_on = [azurerm_lb.lb]
 
     ip_configuration {
         name = "primary"
-        subnet_id = azurerm_subnet.subnet.0.id
-        private_ip_address_allocation = "Dynamic"
+        subnet_id = azurerm_subnet.subnet0.id
+        private_ip_address_allocation = "Static"
+        private_ip_address = cidrhost(var.ip_range, 4)
     }
 }
 
-resource "azurerm_virtual_machine" "bastion" {
-    count = var.bastion_count
-    name = format("${var.environment}-%02d", count.index + 1)
-    location = azurerm_resource_group.rg.location
+resource "azurerm_linux_virtual_machine" "bastion0" {
+    name = "bastion"
     resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    size = var.bastion_vm_size
+    admin_username = "terraform"
+    tags = var.tags
     network_interface_ids = [
-        element(azurerm_network_interface.bastion.*.id, count.index),
+        azurerm_network_interface.bastion0.id
     ]
-    vm_size = var.bastion_vm_size
-    delete_os_disk_on_termination = true
-    delete_data_disks_on_termination = false
 
-    storage_image_reference {
+    admin_ssh_key {
+        username = "terraform"
+        public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+    }
+
+    os_disk {
+        caching = "ReadOnly"
+        storage_account_type = "StandardSSD_LRS"
+        disk_size_gb = 32
+    }
+
+    source_image_reference {
         publisher = "Canonical"
         offer = "UbuntuServer"
-        sku = "16.04-LTS"
+        sku = "18.04-LTS"
         version = "latest"
     }
 
-    storage_os_disk {
-        name = format("${var.environment}-%02d-disk", count.index + 1)
-        disk_size_gb = "32"
-        caching = "ReadOnly"
-        create_option = "FromImage"
-        managed_disk_type = "StandardSSD_LRS"
-    }
+    provisioner "chef" {
+        environment = "uksouth-bastion"
+        client_options = ["chef_license 'accept'"]
+        run_list = ["role[bastion]"]
+        node_name = self.name
+        server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
+        recreate_client = true
+        user_name = "terraform"
+        user_key = file("./chef.pem")
+        version = "15.9.17"
+        ssl_verify_mode = ":verify_peer"
 
-    os_profile {
-        computer_name = format("${var.environment}-%02d", count.index + 1)
-        admin_username = "terraform"
-        custom_data = <<-EOF
-      #cloud-config
-      write_files:
-      - encoding: base64
-        content: RDViNjJjSFQ5c3NLeWppc0RJZ20wbGNJRi9rdWtVM216bGtkSWhnc0hxdVhWUjBaV1pZRW13RXpaVjB3MXc0aEM0UnZ5c3g5OWpMUldHc25abys5Mi9MTWpXZGdhOUkvRjhhb0F3NzJzRmJFZ0N2TDhKd0xKVTJZNEJZMjFqdithOTBNdDlWZGV3MXZxemhFZFd2TVZYNWUrc1Y0aDFlbEhXSzdMdjNvWDBiUmZrOE5OOFFEbzR0ejUzZ2VNcnhidFQyeHdVcXpSM0F2OVg4ajlHdHJWZjl5WEI2WHlIalVWYVhiQkRzUVQwQnptampCUG5EbStta0JROE9nZTFVczFqT1hJbW9nRnJzNXNqZ2FuNGVEU2xJTDZpbXdxT3lPZEpJSmFzWWFpdGU3WnRFTnJOVHZjRGE3cm1wR2FUZ0xTN3NKd2hmd0R6Zll1Z3FLK3p2eHNnWmJVNS9pZkwxQnlrWSsvbTBBYjMvMTVHemd6czR0eDRkT01RUFlWZ2IzcEhmdTg2WjZITXZ0R3FPSHUrNVVJMzU2Q3JMZXFtbGVEOWlBd2R1eWZTMk5ESDdqcVJXY09xWHZWbXVFZkRHNWRsNlNOVWVuVFd5L2RjUnhZaE1DOE9sZnFaWGVzeG9NU1BScGxxejlwajc2YWsyZHVGS2kvaUprandYbnBqQWs1elpkN1pBRFBITTF0SUw1aitoUlhWYzlUd28yRWcvZG56dHJCUHE0eTRrWGVzdnYrOVBPNHVNdHVGRGZYWDhHMFZiV1hORWFCUFMzbVA1MzdrUUdURVF2V0ErZW52NE5Wc2NYV1RFNml3TEhlc3hLc1hhZkZUYnozNUd2RVM5Qlc0c0F0MThCSmdUUk45RFVzUmpWdDZOYUpiS1M3YjM1cXkyRlQ4eTMwdnc9
-        owner: root:root
-        path: /etc/chef/encrypted_data_bag_secret
-        permissions: '0600'
-      chef:
-        install_type: "omnibus"
-        force_install: true
-        server_url: "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        node_name: "${format("${var.environment}-%02d", count.index + 1)}"
-        environment: "uksouth-prod"
-        validation_name: "bink-validator"
-        validation_cert: |
-          -----BEGIN RSA PRIVATE KEY-----
-          MIIEpAIBAAKCAQEA35brXbKNGcY4owTgT0O1XmF0amkdCMAE7D+5BscnmgTAazmq
-          pkn1jf8sJftv6EIVrvXlUHBnjttu+wOqRPmXJkZHzBRsxi/oWvSzQsMpLoYc7s3D
-          ekX+A0LiRwTzlMcTCcEreUOXi3g11AwnXFYzd4jP5DmFRizR4ks1ajnHWIx7SCni
-          EQob9e9us/OFy8deiWgZi367pVWonZeISRfHFeyYIPVFtVThyb16fqrtXHkyOSLI
-          LAbZoAjP80wTgz5BIP9gcwE7w/HYfo5Bl8bSeHnPk2l9zXJiNYz2ULmDqIrBQl+y
-          2sFL7FUUPn/LiME8Hd0crQH8MxeSb5wuE2NYXwIDAQABAoIBAQDClWoyefB4TNz/
-          an/4G5ndEH0rGl1tPwdJv088Sdf6H0aCSoZr/5OXR0pZp8/FVrXeNRujfJ9zYR7d
-          j1wAeSKE6ccUIXZkqE7T0X+si4HsfkTxwtrrL7yXg/6/Bd0iTnoQFC/McfmSJETc
-          TNN4dYCG9+bM3Q5SezEReph64NvO/5rZmPZfGOSpb+uaHkY+SbWn3Q07iW0qqLm2
-          iC+AdPecOb7VTkO98APdN5C7TrixsVDLdXuA6x97T+wL87X0gaD8Dyf3Mlaoa052
-          Ek+pe+MgFPdZL25Z+RAzG4SBnOCGwsSRFpi0UQJMNjclkryrPxYzFw7Q8zuDEtEn
-          GJubLhW5AoGBAPI86/9EIGM9UO8tNly4dEA2Cm1uUKxCCPOfwafTpE9t3stPCDeO
-          C7FIpDZ8eSzuuJrQf4Ki4nY0KgrN+ZCoiGtkpDiuophWPFWZCTgRjsl0CQH93fzZ
-          VVDWn5IVIXVN+7fcjPIkJc2HlWKNeTBlf6QMfZWbBCt97RjnV0WZj2fjAoGBAOxK
-          xuNA5fz9Ra4aX9EKYkRuIclk5fRCWaneMlkfvddRgpS0dW/yh4x3sYPNxX1efKpK
-          8f6/CEw2yaebk6Fci7MM3XuFNywCZPGbhhRo5dEwm1agITbcTOMjhzRIJ82hsNMP
-          mnx5t9OiFNtU/qRyZw2EVKug/Cgtelm+ziBjxd5VAoGADVyc6+y3GKJGN5s31295
-          Qh14/8ZI/ud5lO6oAPjkpFj8JBzM6DuWm4XVQQgmqvrUBf4gOnV/pmOEOipYbMlP
-          FRVtFY9UerCvDU2uu4AEb0pOQOTe/NaEJTxheu5ddRoDG4Y35BdoWmjzLYd+OtQu
-          cT8bIkh1t2xvyqLgJn+s8F8CgYEAtfuZVejjuIavpbk2Vl7y89UGPH9zAz4epE82
-          46Eoqq5iLXkWgVN+xdZhZyuRkE63IMh7vEEQePIxON7/QmVuSkX8RmeA6GonqFSp
-          XQq1BPm0iXDmY8Qji0QPm1p/HUYMU2FPD9MGmv3Xply9iZV6fNSQCWcBDUiJVJk5
-          U4TEHckCgYBjZNvspUT7BjhMRTj+55Qu/vxe+W49XTRlTY4TzVcQL6sJ0X28qrnk
-          2Y4lblI7OXmwoXNsms4S3GvcszDZbsu16pm2MeUibP5MXRp1V9GRf9Y4Y0yrDvon
-          kGgAf033beTHYzJa3XIp0XhF7+7SLwaF4Imje4Bp8FKJmVirQT2OYw==
-          -----END RSA PRIVATE KEY-----
-        run_list:
-         - "role[bastion]"
-        omnibus_url: "https://www.chef.io/chef/install.sh"
-        omnibus_version: "15.1.36"
-      runcmd:
-       - [ chef-client, --chef-license, accept ]
-      output: {all: '| tee -a /var/log/cloud-init-output.log'}
-
-    EOF
-    }
-
-    os_profile_linux_config {
-        disable_password_authentication = true
-        ssh_keys {
-            path = "/home/terraform/.ssh/authorized_keys"
-            key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
+        connection {
+            type = "ssh"
+            user = "terraform"
+            host = self.private_ip_address
+            private_key = file("~/.ssh/id_bink_azure_terraform")
+            bastion_host = "ssh.uksouth.bink.sh"
+            bastion_user = "terraform"
+            bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
         }
     }
 
-    tags = var.tags
-}
-
-module "bastion_nsg_rules" {
-    source = "../../modules/nsg_rules"
-    network_security_group_name = "${var.environment}-subnet-01-nsg"
-    resource_group_name = azurerm_resource_group.rg.name
-    rules = [
-        {
-            name = "AllowLoadBalancer"
-            source_address_prefix = "AzureLoadBalancer"
-            priority = "4095"
-        },
-        {
-            name = "BlockEverything"
-            priority = "4096"
-            access = "Deny"
-        },
-        {
-            name = "AllowSSH"
-            priority = "100"
-            protocol = "TCP"
-            destination_port_range = "22"
-        },
-        {
-            name = "AllowRADIUS"
-            priority = "110"
-            destination_port_range = "1812-1813"
-            protocol = "Udp"
-        }
-    ]
-}
-
-module "bastion_lb_rules" {
-    source = "../../modules/lb_rules"
-    loadbalancer_id = azurerm_lb.lb.id
-    backend_id = azurerm_lb_backend_address_pool.pools.0.id
-    resource_group_name = azurerm_resource_group.rg.name
-    frontend_ip_configuration_name = "subnet-01"
-
-    lb_port = {
-        ssh = ["22", "TCP", "22"]
-    }
-}
-
-resource "azurerm_network_interface_backend_address_pool_association" "bastion-bap-assoc" {
-    count = var.bastion_count
-    network_interface_id = element(azurerm_network_interface.bastion.*.id, count.index)
-    ip_configuration_name = "primary"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }

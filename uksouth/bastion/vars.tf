@@ -1,9 +1,12 @@
+# Module required vars:
+variable "firewall_vnet_id" {}
+variable "firewall_route_ip" {}
+
+# Defaults:
+
 variable environment { default = "bastion" }
 
-variable subnet_address_prefixes {
-    type = list
-    default = ["192.168.4.0/24"]
-}
+variable "ip_range" { default = "192.168.4.0/24" }
 
 variable "tags" {
     type = map
@@ -13,4 +16,4 @@ variable "tags" {
 }
 
 variable bastion_vm_size { default = "Standard_B2s" }
-variable bastion_count { default = 2 }
+variable flow_logs_enabled { default = false }
