@@ -355,6 +355,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         name = "Midas HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
+            "wasabiuat.wasabiworld.co.uk",
             "account.theclub.macdonaldhotels.co.uk",
             "accounts.eurostar.com",
             "api.avios.com",
