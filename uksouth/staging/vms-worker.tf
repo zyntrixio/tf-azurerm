@@ -62,7 +62,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
     size = var.worker_vm_size
     admin_username = "terraform"
     tags = var.tags
-    
+
     network_interface_ids = [
         element(azurerm_network_interface.worker.*.id, count.index),
     ]
