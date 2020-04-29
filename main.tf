@@ -76,6 +76,11 @@ module "uksouth-prod" {
     source = "./uksouth/prod"
 }
 
+module "uksouth-preprod" {
+    source = "./uksouth/preprod"
+    worker_subnet = module.uksouth-prod.subnet_ids.worker
+}
+
 module "uksouth-sentry" {
     source = "./uksouth/sentry"
     firewall_vnet_id = module.uksouth-firewall.vnet_id
