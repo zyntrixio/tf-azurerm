@@ -119,6 +119,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.docker.io",
             "*.azurecr.io",
             "quay.io",
+            "*.quay.io",
             "production.cloudflare.docker.com",
             "*.cloudfront.net",
             "*.blob.core.windows.net",
