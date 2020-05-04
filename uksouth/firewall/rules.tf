@@ -52,12 +52,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Datadog HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
-            "apt.datadoghq.com",
-            "trace.agent.datadoghq.com",
-            "process.datadoghq.com",
-            "agent-intake.logs.datadoghq.com",
-            "app.datadoghq.com",
-            "*.agent.datadoghq.com",
+            "*.datadoghq.com"
         ]
         protocol {
             port = "443"
