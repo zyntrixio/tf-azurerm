@@ -109,6 +109,13 @@ resource "azurerm_frontdoor" "frontdoor" {
         interval_in_seconds = 120
     }
 
+    backend_pool_health_probe {
+        name = "grafana"
+        path = "/api/health"
+        protocol = "Https"
+        interval_in_seconds = 120
+    }
+
     frontend_endpoint {
         name = "api-gb-bink-com"
         host_name = "api.gb.bink.com"
@@ -425,6 +432,43 @@ resource "azurerm_frontdoor" "frontdoor" {
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "kibana-prod-k8s-uksouth-bink-sh"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "starbug-gb-bink-com"
+        host_name = "starbug.gb.bink.com"
+        custom_https_provisioning_enabled = true
+        custom_https_configuration {
+            certificate_source = "AzureKeyVault"
+            azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+            azure_key_vault_certificate_secret_name = "gb-bink-com"
+            azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+        }
+    }
+
+    backend_pool {
+        name = "starbug-uksouth-bink-sh"
+        backend {
+            host_header = "starbug.uksouth.bink.sh"
+            address = "starbug.uksouth.bink.sh"
+            http_port = 80
+            https_port = 443
+        }
+
+        load_balancing_name = "standard"
+        health_probe_name = "grafana"
+    }
+
+    routing_rule {
+        name = "starbug-uksouth-bink-sh"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["starbug-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "starbug-uksouth-bink-sh"
             cache_enabled = false
         }
     }
