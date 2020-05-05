@@ -51,6 +51,7 @@ resource "azurerm_virtual_machine" "worker" {
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     availability_set_id = azurerm_availability_set.worker.id
+    depends_on = [azurerm_network_interface_backend_address_pool_association.worker-bap-pools-assoc]
     network_interface_ids = [
         element(azurerm_network_interface.worker.*.id, count.index),
     ]
@@ -140,6 +141,63 @@ resource "azurerm_virtual_machine" "worker" {
 
     tags = var.tags
 }
+
+# resource "azurerm_linux_virtual_machine" "worker" {
+#     count = var.worker_count
+#     name = format("${var.environment}-worker-%02d", count.index + 1)
+#     resource_group_name = azurerm_resource_group.rg.name
+#     location = azurerm_resource_group.rg.location
+#     availability_set_id = azurerm_availability_set.worker.id
+#     size = var.worker_vm_size
+#     admin_username = "terraform"
+#     tags = var.tags
+
+#     network_interface_ids = [
+#         element(azurerm_network_interface.worker.*.id, count.index),
+#     ]
+
+#     admin_ssh_key {
+#         username = "terraform"
+#         public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+#     }
+
+#     os_disk {
+#         caching = "ReadOnly"
+#         storage_account_type = "StandardSSD_LRS"
+#         disk_size_gb = 32
+#     }
+
+#     source_image_reference {
+#         publisher = "Canonical"
+#         offer = "UbuntuServer"
+#         sku = "16.04-LTS"
+#         version = "latest"
+#     }
+
+#     provisioner "chef" {
+#         environment = "uksouth-dev"
+#         client_options = ["chef_license 'accept'"]
+#         run_list = ["role[worker]"]
+#         node_name = self.name
+#         server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
+#         recreate_client = true
+#         user_name = "terraform"
+#         user_key = file("chef.pem")
+#         version = "15.9.17"
+#         ssl_verify_mode = ":verify_peer"
+#         secret_key = "+BaQMO750ZU5StwAJyIi9RY8ikOjFWGt7812U3TGEBhLV3o3euiBRDTb8h9dOnpxeuJRhdKB/sMI7OXqb0uGpcjwwYKffnNGnij2UtqqVD5R5GUE+Z4VXgFWNTM5QsSr8WJwjDbXaP0euHXKJ1f3tOn7vgsBB0lWJ3qWcOKWiV67hJDJdRkByUGAHH/3XyrWCGN2pH/NmxSz3zq4ITbG68ehVIr65ZBYDBYazHnGRGVBxlocecDwosnQbZWgSQUEcHIpnMEwY4IDbd9iA9pwalq6IjB2hZiyngBuyG9m+9hbdpICW+LjLPG+EPqD1Q3oTKgx1jT/OrlqX3vvYSrqy2mQj5xeqmNtMIanf/++jyqNtKS+FI5m792qjHstOowzVDwi1GuXki69cq41YG8PZFmtzj9fNIPxMBviQKk7if+ueAofnawzpiu2ndoYx9GhkOH2Egi8sLLKqd3WS69W4ouMpeIROL7/0QGGn0DprNILKqBmtHztmrWADDXHSApoO/M9hxZq6pifxhmbdAjkHwZzLYDW61skH6kj6mWUTbQYhIBJGVcs46ozXgprzs2HwGXoujbdOQKOdjIviFy0dK4ueK4jV9XPfbQOqA61o/1hHvsqmvuEMWF1S8GbI2CSBdvQBepuciGw9/7o9oXBrx1tRhtTsOcPbXCtb3Gy/sw="
+
+#         connection {
+#             type = "ssh"
+#             user = "terraform"
+#             host = self.private_ip_address
+#             private_key = file("~/.ssh/id_bink_azure_terraform")
+#             bastion_host = "ssh.uksouth.bink.sh"
+#             bastion_user = "terraform"
+#             bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
+#         }
+#     }
+# }
 
 module "worker_nsg_rules" {
     source = "../../modules/nsg_rules"
