@@ -162,6 +162,7 @@ resource "azurerm_frontdoor" "frontdoor" {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "api-prod-k8s-uksouth-bink-sh"
             cache_enabled = true
+            cache_query_parameter_strip_directive = "StripNone"
         }
     }
 
@@ -236,6 +237,7 @@ resource "azurerm_frontdoor" "frontdoor" {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "api-staging-k8s-uksouth-bink-sh"
             cache_enabled = true
+            cache_query_parameter_strip_directive = "StripNone"
         }
     }
 
@@ -285,6 +287,7 @@ resource "azurerm_frontdoor" "frontdoor" {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "api-dev-k8s-uksouth-bink-sh"
             cache_enabled = true
+            cache_query_parameter_strip_directive = "StripNone"
         }
     }
 
