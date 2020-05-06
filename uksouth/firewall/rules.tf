@@ -88,6 +88,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Gitlab"
+        source_addresses = ["*"]
+        target_fqdns = ["git.bink.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Kubernetes"
         source_addresses = ["*"]
         target_fqdns = [
