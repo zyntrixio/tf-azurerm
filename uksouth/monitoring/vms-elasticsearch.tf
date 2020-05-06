@@ -44,7 +44,7 @@ resource "azurerm_virtual_machine" "elasticsearch" {
 
     storage_os_disk {
         name = format("${var.environment}-elasticsearch-%02d-disk", count.index + 1)
-        disk_size_gb = "128"
+        disk_size_gb = "1024"
         caching = "ReadOnly"
         create_option = "FromImage"
         managed_disk_type = "StandardSSD_LRS"
