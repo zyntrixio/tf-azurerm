@@ -283,7 +283,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.ods.opinsights.azure.com",
             "*.oms.opinsights.azure.com",
             "*.blob.core.windows.net",
-            "*.azure-automation.net"
+            "*.azure-automation.net",
+            "*.vault.azure.net"
         ]
         protocol {
             port = "443"
