@@ -180,6 +180,14 @@ module "elasticsearch_nsg_rules" {
             protocol = "TCP"
             source_address_prefix = "10.2.0.0/18"
             destination_address_prefix = var.subnet_address_prefixes[1]
+        },
+        {
+            name = "AllowElasticsearchTrafficSandbox"
+            priority = "150"
+            destination_port_range = "9200"
+            protocol = "TCP"
+            source_address_prefix = "10.3.0.0/18"
+            destination_address_prefix = var.subnet_address_prefixes[1]
         }
     ]
 }
