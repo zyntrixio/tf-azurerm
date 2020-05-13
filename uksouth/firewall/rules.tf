@@ -594,12 +594,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     action = "Dnat"
     rule {
         name = "prod_kube"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.0.ip_address]
         translated_address = "10.0.64.4"
@@ -608,12 +603,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "staging_kube"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.1.ip_address]
         translated_address = "10.1.64.4"
@@ -622,12 +612,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "dev_kube"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.2.ip_address]
         translated_address = "10.2.64.4"
@@ -636,12 +621,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "sandbox_kube"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32",
-            "86.28.118.165/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.3.ip_address]
         translated_address = "10.3.64.4"
@@ -695,11 +675,7 @@ resource "azurerm_firewall_nat_rule_collection" "kibana" {
 
     rule {
         name = "kibana_http"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["5601"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.6.4"
@@ -717,11 +693,7 @@ resource "azurerm_firewall_nat_rule_collection" "argus" {
 
     rule {
         name = "argus_http"
-        source_addresses = [
-            "194.74.152.11/32",
-            "80.229.2.38/32",
-            "82.13.29.15/32"
-        ]
+        source_addresses = var.secure_origins
         destination_ports = ["8001"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.6.84"
