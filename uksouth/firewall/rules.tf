@@ -302,6 +302,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Healthchecks.io"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "hchk.io"
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
