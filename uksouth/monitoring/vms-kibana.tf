@@ -129,12 +129,23 @@ module "kibana_nsg_rules" {
             access = "Deny"
         },
         {
-            name = "AllowLoadBalancer"
+            name = "AllowHTTP_AzureLoadBalancerHealthCheck"
             source_address_prefix = "AzureLoadBalancer"
+            protocol = "TCP"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+            destination_port_range = "80"
             priority = "4095"
         },
         {
-            name = "AllowSSH"
+            name = "AllowHTTPS_AzureLoadBalancerHealthCheck"
+            source_address_prefix = "AzureLoadBalancer"
+            protocol = "TCP"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+            destination_port_range = "443"
+            priority = "4094"
+        },
+        {
+            name = "AllowSSH_Bastion"
             priority = "500"
             protocol = "TCP"
             destination_port_range = "22"
@@ -142,18 +153,18 @@ module "kibana_nsg_rules" {
             destination_address_prefix = var.subnet_address_prefixes[0]
         },
         {
-            name = "AllowKibanaTrafficProd"
+            name = "AllowHTTP_AzureFirewall"
             priority = "100"
-            destination_port_range = "5601"
+            destination_port_range = "80"
             protocol = "TCP"
-            source_address_prefix = "10.0.0.0/18"
+            source_address_prefix = "192.168.0.0/24"
             destination_address_prefix = var.subnet_address_prefixes[0]
         },
         {
-            name = "AllowKibanaAccessBinkHQ"
+            name = "AllowHTTPS_AzureFirewall"
             priority = "110"
             protocol = "TCP"
-            destination_port_range = "5601"
+            destination_port_range = "443"
             source_address_prefix = "192.168.0.0/24"
             destination_address_prefix = var.subnet_address_prefixes[0]
         }
@@ -168,7 +179,8 @@ module "kibana_lb_rules" {
     frontend_ip_configuration_name = "subnet-01"
 
     lb_port = {
-        kibana = ["5601", "TCP", "5601"]
+        kibana_http = ["80", "TCP", "80"],
+        kibana_https = ["443", "TCP", "443"]
     }
 }
 

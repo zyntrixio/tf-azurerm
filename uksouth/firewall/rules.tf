@@ -687,10 +687,19 @@ resource "azurerm_firewall_nat_rule_collection" "kibana" {
     rule {
         name = "kibana_http"
         source_addresses = var.secure_origins
-        destination_ports = ["5601"]
+        destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.6.4"
-        translated_port = "5601"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "kibana_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.6.4"
+        translated_port = "443"
         protocols = ["TCP"]
     }
 }
