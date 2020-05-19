@@ -179,16 +179,28 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "api-preprod-k8s-uksouth-bink-sh"
+        name = "api-preprod-uksouth-bink-sh"
         backend {
-            host_header = "api.preprod.k8s.uksouth.bink.sh"
-            address = "api.preprod.k8s.uksouth.bink.sh"
+            host_header = "api.preprod.uksouth.bink.sh"
+            address = "api.preprod.uksouth.bink.sh"
             http_port = 80
             https_port = 443
         }
 
         load_balancing_name = "standard"
         health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "api-preprod-uksouth-bink-sh"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["api-preprod-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "api-preprod-uksouth-bink-sh"
+            cache_enabled = false
+        }
     }
 
     frontend_endpoint {
