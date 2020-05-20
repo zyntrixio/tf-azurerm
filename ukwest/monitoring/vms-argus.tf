@@ -141,10 +141,18 @@ module "argus_nsg_rules" {
             destination_address_prefix = var.subnet_address_prefixes[5]
         },
         {
-            name = "AllowArgusAccessBinkHQ"
+            name = "AllowHTTPArgusAccessBinkHQ"
+            priority = "110"
+            protocol = "TCP"
+            destination_port_range = "80"
+            source_address_prefix = "194.74.152.11"
+            destination_address_prefix = var.subnet_address_prefixes[5]
+        },
+        {
+            name = "AllowHTTPSArgusAccessBinkHQ"
             priority = "100"
             protocol = "TCP"
-            destination_port_range = "8001"
+            destination_port_range = "443"
             source_address_prefix = "194.74.152.11"
             destination_address_prefix = var.subnet_address_prefixes[5]
         }
@@ -159,7 +167,8 @@ module "argus_plb_rules" {
     frontend_ip_configuration_name = azurerm_public_ip.pip.name
 
     lb_port = {
-        argus_http = ["8001", "TCP", "8001"]
+        argus_http = ["80", "TCP", "80"]
+        argus_https = ["443", "TCP", "443"]
         argus_ssh = ["22", "TCP", "22"]
     }
 }
@@ -184,7 +193,8 @@ module "argus_lb_rules" {
     frontend_ip_configuration_name = "subnet-06"
 
     lb_port = {
-        argus_http = ["8001", "TCP", "8001"]
+        argus_http = ["80", "TCP", "80"]
+        argus_https = ["443", "TCP", "443"]
         argus_ssh = ["22", "TCP", "22"]
     }
 }
