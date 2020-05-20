@@ -1,8 +1,8 @@
 resource "azurerm_user_assigned_identity" "keyvault2kube" {
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
 
-  name = "keyvault2kube"
+    name = "keyvault2kube"
 }
 
 resource "azurerm_key_vault_access_policy" "keyvault2kube" {
