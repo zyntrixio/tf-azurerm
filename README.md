@@ -9,3 +9,9 @@ CI Now runs `terrafmt --check` so you'll probably want to setup a pre commit hoo
 
 ---
 
+
+## UKSouth Deployment Order
+
+1. Deploy the region pre-requisites - `uksouth-common/ `
+2. Set up pre-requisite secrets / info `uksouth-common/README.md`
+3. Deploy environments `uksouth/`
