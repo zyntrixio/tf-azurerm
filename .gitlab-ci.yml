@@ -3,7 +3,7 @@ stages:
 
 tfstyle:
   stage: tests
-  image: terrycain/terrafmt:v1.1.9
+  image: terrycain/terrafmt:v1.2.0
   script:
     - terrafmt -V
     - terrafmt -r --check

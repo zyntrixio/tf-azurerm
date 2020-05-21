@@ -1,10 +1,10 @@
 resource "chef_environment" "env" {
-  name = var.resource_group_name
-  cookbook_constraints = {
-    bifrost = ">= 2.4.3"
-    romanoff = ">= 2.0.2"
-    fury = ">= 1.5.0"
-  }
+    name = var.resource_group_name
+    cookbook_constraints = {
+        bifrost = ">= 2.4.3"
+        romanoff = ">= 2.0.2"
+        fury = ">= 1.5.0"
+    }
 }
 
 resource "commandpersistence_cmd" "databag_secret" {

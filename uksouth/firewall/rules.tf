@@ -853,7 +853,7 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
         destination_addresses = ["192.168.2.0/24"]
         protocols = ["TCP"]
     }
-    
+
     rule { // Temp
         name = "bastion-to-dev6502"
         source_addresses = ["192.168.4.0/24"]

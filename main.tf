@@ -29,14 +29,14 @@ terraform {
 }
 
 data "terraform_remote_state" "uksouth-common" {
-  backend = "azurerm"
+    backend = "azurerm"
 
-  config = {
-    resource_group_name = "storage"
-    storage_account_name = "binkitops"
-    container_name = "terraform"
-    key = "uksouth-common.tfstate"
-  }
+    config = {
+        resource_group_name = "storage"
+        storage_account_name = "binkitops"
+        container_name = "terraform"
+        key = "uksouth-common.tfstate"
+    }
 }
 
 module "uksouth-bastion" {
@@ -61,7 +61,7 @@ module "uksouth-dev" {
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
     sentry_vnet_id = module.uksouth-sentry.vnet_id
-    tools_vnet_id =  module.uksouth-tools.vnet_id
+    tools_vnet_id = module.uksouth-tools.vnet_id
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
 }
