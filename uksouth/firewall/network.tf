@@ -192,6 +192,15 @@ resource "azurerm_virtual_network_peering" "sentry" {
     allow_forwarded_traffic = true
 }
 
+resource "azurerm_virtual_network_peering" "tools" {
+    name = "local-to-tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = var.tools_vnet_id
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = true
+}
+
 resource "azurerm_private_dns_zone" "uksouth" {
     name = "uksouth.bink.sh"
     resource_group_name = azurerm_resource_group.rg.name
@@ -268,5 +277,13 @@ resource "azurerm_private_dns_zone_virtual_network_link" "sentry" {
     resource_group_name = azurerm_resource_group.rg.name
     private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
     virtual_network_id = var.sentry_vnet_id
+    registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "tools" {
+    name = "tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+    virtual_network_id = var.tools_vnet_id
     registration_enabled = true
 }
