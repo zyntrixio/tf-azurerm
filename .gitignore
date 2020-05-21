@@ -1,3 +1,5 @@
 *.tfvars
 .terraform
 chef.pem
+uksouth-common/flux
+uksouth-common/flux.pub
