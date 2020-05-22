@@ -55,7 +55,7 @@ output "vaultshim" {
     }
 }
 output "keyvault" {
-    description = "Env Specific KeyVault"
+    description = "Tools Specific KeyVault"
     value = {
         name = azurerm_key_vault.tools.name
         id = azurerm_key_vault.tools.id
