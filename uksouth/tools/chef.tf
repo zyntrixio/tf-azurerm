@@ -5,7 +5,19 @@ resource "chef_environment" "env" {
         romanoff = ">= 2.0.2"
         fury = ">= 1.5.0"
     }
+
+    default_attributes_json = jsonencode({
+        "flux" : {
+            "repo" : var.gitops_repo,
+        },
+        "common_secrets" : {
+            "keyvault_url" : var.common_keyvault.url,
+            "keyvault2kube_resourceid" : var.common_keyvault_sync_identity.resource_id,
+            "keyvault2kube_clientid" : var.common_keyvault_sync_identity.client_id
+        }
+    })
 }
+
 
 resource "commandpersistence_cmd" "databag_secret" {
     program = ["python3", "${path.root}/scripts/generate-secret.py"]
@@ -21,10 +33,6 @@ resource "commandpersistence_cmd" "certs" {
     query = {
         key = commandpersistence_cmd.databag_secret.result.secret
         data_bag_name = chef_data_bag.databag.id
-        gitops_repo = var.gitops_repo
-        keyvault_url = var.common_keyvault.url
-        keyvault_ident_resourceid = var.common_keyvault_sync_identity.resource_id
-        keyvault_ident_clientid = var.common_keyvault_sync_identity.client_id
     }
 }
 

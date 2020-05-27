@@ -17,11 +17,7 @@ SECRET = INPUT['key']
 DATABAG = INPUT['data_bag_name']
 
 result = {
-    "id": "certificates",
-    "gitops_repo": INPUT['gitops_repo'],
-    "keyvault_url": INPUT['keyvault_url'],
-    "keyvault2kube_resourceid": INPUT['keyvault_ident_resourceid'],
-    "keyvault2kube_clientid": INPUT['keyvault_ident_clientid'],
+    "id": "certificates"
 }
 
 serviceaccount_key_proc = subprocess.Popen(('openssl', 'genrsa', '2048'), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
