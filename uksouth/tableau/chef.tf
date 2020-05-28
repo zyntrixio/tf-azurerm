@@ -2,13 +2,21 @@ resource "chef_environment" "env" {
     name = azurerm_resource_group.rg.name
     cookbook_constraints = {
         fury = ">= 1.5.0"
+        rorschach = ">= 1.0.1"
     }
 
     default_attributes_json = jsonencode({
-        "acr" : {
-            "registry" : azurerm_container_registry.acr.login_server,
-            "username" : azurerm_container_registry.acr.admin_username,
-            "password" : azurerm_container_registry.acr.admin_password
+        "rorschach" : {
+            "domain" : "tableau.uksouth.bink.sh",
+            "port" : 8080
         }
     })
+}
+
+resource "chef_role" "tableau" {
+    name = "tableau"
+    run_list = [
+        "recipe[fury]",
+        "recipe[rorschach]"
+    ]
 }

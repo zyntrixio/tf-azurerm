@@ -139,6 +139,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
         azurerm_network_interface.nic.id
     ]
 
+    depends_on = [
+        chef_role.tableau
+    ]
+
     admin_ssh_key {
         username = "terraform"
         public_key = file("~/.ssh/id_bink_azure_terraform.pub")
@@ -160,7 +164,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     provisioner "chef" {
         environment = chef_environment.env.name
         client_options = ["chef_license 'accept'"]
-        run_list = ["role[bastion]"]
+        run_list = ["role[tableau]"]
         node_name = self.name
         server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
         recreate_client = true
