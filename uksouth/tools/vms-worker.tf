@@ -102,6 +102,12 @@ resource "azurerm_linux_virtual_machine" "worker" {
             bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
         }
     }
+
+    lifecycle {
+        ignore_changes = [
+            identity
+        ]
+    }
 }
 
 module "worker_nsg_rules" {

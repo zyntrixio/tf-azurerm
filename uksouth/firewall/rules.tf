@@ -776,6 +776,33 @@ resource "azurerm_firewall_nat_rule_collection" "sentry" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "tableau" {
+    name = "tableau"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 180
+    action = "Dnat"
+
+    rule {
+        name = "tableau_http"
+        source_addresses = ["*"]
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
+        translated_address = var.tableau_ip_address
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_https"
+        source_addresses = ["*"]
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
+        translated_address = var.tableau_ip_address
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_network_rule_collection" "ssh" {
     name = "bastion-to-hosts"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -847,10 +874,10 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
         protocols = ["TCP"]
     }
     rule {
-        name = "bastion-to-sentry"
+        name = "bastion-to-tableau"
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
-        destination_addresses = ["192.168.2.0/24"]
+        destination_addresses = ["192.168.7.0/24"]
         protocols = ["TCP"]
     }
 

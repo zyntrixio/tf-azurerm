@@ -60,10 +60,14 @@ module "uksouth-dev" {
 
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
+
     sentry_vnet_id = module.uksouth-sentry.vnet_id
+    tableau_vnet_id = module.uksouth-tableau.vnet_id
     tools_vnet_id = module.uksouth-tools.vnet_id
+
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
+    tableau_ip_address = module.uksouth-tableau.ip_address
 }
 
 module "uksouth-vault" {
@@ -89,6 +93,7 @@ module "uksouth-storage" {
 module "uksouth-tableau" {
     source = "./uksouth/tableau"
     worker_subnet = module.uksouth-prod.subnet_ids.worker
+    firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
 module "uksouth-prod" {
