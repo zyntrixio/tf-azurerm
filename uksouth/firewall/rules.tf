@@ -317,7 +317,11 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Tableau"
         source_addresses = ["*"]
         target_fqdns = [
-            "*.tableau.com"
+            "*.tableau.com",
+            "*.tableausoftware.com",
+            "*.mapbox.com",
+            "tableau.internal.cloudapp.net",
+            "licensing.tableau.com",
         ]
         protocol {
             port = "443"
@@ -798,7 +802,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         name = "tableau_http"
         source_addresses = ["*"]
         destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
+        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address
         translated_port = "80"
         protocols = ["TCP"]
@@ -807,7 +811,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         name = "tableau_https"
         source_addresses = ["*"]
         destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
+        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address
         translated_port = "443"
         protocols = ["TCP"]
