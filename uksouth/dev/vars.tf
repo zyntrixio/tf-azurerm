@@ -1,3 +1,6 @@
+variable common_keyvault {}
+variable common_keyvault_sync_identity {}
+
 variable environment { default = "dev" }
 variable resource_group_name { default = "uksouth-dev" }
 variable address_space { default = "10.2.0.0/16" }

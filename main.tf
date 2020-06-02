@@ -56,6 +56,9 @@ module "uksouth-frontdoor" {
 
 module "uksouth-dev" {
     source = "./uksouth/dev"
+
+    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
+    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 }
 
 module "uksouth-firewall" {
