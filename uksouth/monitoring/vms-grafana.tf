@@ -167,6 +167,14 @@ module "grafana_nsg_rules" {
             destination_port_range = "443"
             source_address_prefix = "192.168.0.0/24"
             destination_address_prefix = var.subnet_address_prefixes[2]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "120"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[2]
         }
     ]
 }
