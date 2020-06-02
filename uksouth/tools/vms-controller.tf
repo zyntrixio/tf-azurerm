@@ -121,6 +121,14 @@ module "controller_nsg_rules" {
             destination_port_range = "6443"
             # source_address_prefix = "192.168.0.4/32" # TODO: Need to figure this out
             destination_address_prefix = var.subnet_address_prefixes[1]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "120"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[1]
         }
     ]
 }

@@ -159,7 +159,14 @@ module "worker_nsg_rules" {
             protocol = "TCP"
             destination_address_prefix = var.subnet_address_prefixes[0]
         },
-
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "140"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[0]
+        },
         // Temp
         {
             name = "Allow6502"
