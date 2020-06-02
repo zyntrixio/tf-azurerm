@@ -188,6 +188,14 @@ module "elasticsearch_nsg_rules" {
             protocol = "TCP"
             source_address_prefix = "10.3.0.0/18"
             destination_address_prefix = var.subnet_address_prefixes[1]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "160"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[1]
         }
     ]
 }

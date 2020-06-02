@@ -147,6 +147,14 @@ module "argus_nsg_rules" {
             destination_port_range = "8001"
             source_address_prefix = "192.168.0.0/24"
             destination_address_prefix = var.subnet_address_prefixes[5]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "110"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[5]
         }
     ]
 }

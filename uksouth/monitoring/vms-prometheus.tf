@@ -167,6 +167,30 @@ module "prometheus_nsg_rules" {
             destination_port_range = "443"
             source_address_prefix = "192.168.0.0/24"
             destination_address_prefix = var.subnet_address_prefixes[4]
+        },
+        {
+            name = "AllowHTTP_Prometheus"
+            priority = "120"
+            protocol = "TCP"
+            destination_port_range = "9090"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[4]
+        },
+        {
+            name = "AllowHTTP_Grafana"
+            priority = "130"
+            protocol = "TCP"
+            destination_port_range = "9090"
+            source_address_prefix = "192.168.6.32/28"
+            destination_address_prefix = var.subnet_address_prefixes[4]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "140"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[4]
         }
     ]
 }
