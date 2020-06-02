@@ -328,6 +328,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Grafana"
+        source_addresses = ["*"]
+        target_fqdns = ["packages.grafana.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
@@ -818,6 +827,87 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "alertmanager" {
+    name = "alertmanager"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 190
+    action = "Dnat"
+
+    rule {
+        name = "alertmanager_http"
+        source_addresses = var.secure_origins
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.10.ip_address]
+        translated_address = "192.168.6.52"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "alertmanager_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.10.ip_address]
+        translated_address = "192.168.6.52"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "prometheus" {
+    name = "prometheus"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 200
+    action = "Dnat"
+
+    rule {
+        name = "prometheus_http"
+        source_addresses = var.secure_origins
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.11.ip_address]
+        translated_address = "192.168.6.68"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "prometheus_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.11.ip_address]
+        translated_address = "192.168.6.68"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "grafana" {
+    name = "grafana"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 210
+    action = "Dnat"
+
+    rule {
+        name = "grafana_http"
+        source_addresses = var.secure_origins
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.6.36"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "grafana_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.6.36"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_network_rule_collection" "ssh" {
     name = "bastion-to-hosts"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -932,6 +1022,13 @@ resource "azurerm_firewall_network_rule_collection" "monitoring" {
         source_addresses = ["10.0.0.0/18"]
         destination_ports = ["5601"]
         destination_addresses = ["192.168.6.0/28"]
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "prometheus-to-node-exporter"
+        source_addresses = ["192.168.6.64/28"]
+        destination_ports = ["9100"]
+        destination_addresses = ["*"]
         protocols = ["TCP"]
     }
 }
