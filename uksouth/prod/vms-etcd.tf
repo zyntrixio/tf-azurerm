@@ -164,6 +164,14 @@ module "etcd_nsg_rules" {
             destination_port_range = "2379"
             source_address_prefix = var.subnet_address_prefixes[2]
             destination_address_prefix = var.subnet_address_prefixes[2]
+        },
+        {
+            name = "AllowHTTP_PrometheusNodeExporter"
+            priority = "130"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "192.168.6.64/28"
+            destination_address_prefix = var.subnet_address_prefixes[2]
         }
     ]
 }
