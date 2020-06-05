@@ -73,10 +73,6 @@ module "uksouth-firewall" {
     tableau_ip_address = module.uksouth-tableau.ip_address
 }
 
-module "uksouth-vault" {
-    source = "./uksouth/vault"
-}
-
 module "uksouth-monitoring" {
     source = "./uksouth/monitoring"
 }

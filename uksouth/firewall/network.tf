@@ -217,14 +217,6 @@ resource "azurerm_private_dns_zone" "uksouth" {
     tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "vault" {
-    name = "vault"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/vault-vnet"
-    registration_enabled = true
-}
-
 resource "azurerm_private_dns_zone_virtual_network_link" "bastion" {
     name = "bastion"
     resource_group_name = azurerm_resource_group.rg.name
