@@ -17,6 +17,6 @@ resource "chef_role" "tableau" {
     name = "tableau"
     run_list = [
         "recipe[fury]",
-        #        "recipe[rorschach]"
+        "recipe[rorschach]"
     ]
 }
