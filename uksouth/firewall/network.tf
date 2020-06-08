@@ -111,15 +111,6 @@ resource "azurerm_firewall" "firewall" {
     tags = var.tags
 }
 
-resource "azurerm_virtual_network_peering" "vault" {
-    name = "local-to-vault"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vault/providers/Microsoft.Network/virtualNetworks/vault-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
 resource "azurerm_virtual_network_peering" "bastion" {
     name = "local-to-bastion"
     resource_group_name = azurerm_resource_group.rg.name
@@ -179,6 +170,15 @@ resource "azurerm_virtual_network_peering" "monitoring" {
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
     remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = true
+}
+
+resource "azurerm_virtual_network_peering" "wireguard" {
+    name = "local-to-wireguard"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = var.wireguard_vnet_id
     allow_virtual_network_access = true
     allow_forwarded_traffic = true
 }
@@ -281,6 +281,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "sentry" {
     registration_enabled = true
 }
 
+resource "azurerm_private_dns_zone_virtual_network_link" "wireguard" {
+    name = "wireguard"
+    resource_group_name = azurerm_resource_group.rg.name
+    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+    virtual_network_id = var.wireguard_vnet_id
+    registration_enabled = true
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "tableau" {
     name = "tableau"
     resource_group_name = azurerm_resource_group.rg.name
@@ -295,4 +303,44 @@ resource "azurerm_private_dns_zone_virtual_network_link" "tools" {
     private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
     virtual_network_id = var.tools_vnet_id
     registration_enabled = true
+}
+
+resource "azurerm_private_dns_a_record" "tools-k8s" {
+    name = "tools.k8s"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.4.64.4"]
+}
+
+resource "azurerm_private_dns_a_record" "sandbox-k8s" {
+    name = "sandbox.k8s"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.3.64.4"]
+}
+
+resource "azurerm_private_dns_a_record" "dev-k8s" {
+    name = "dev.k8s"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.2.64.4"]
+}
+
+resource "azurerm_private_dns_a_record" "staging-k8s" {
+    name = "staging.k8s"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.1.64.4"]
+}
+
+resource "azurerm_private_dns_a_record" "prod-k8s" {
+    name = "prod.k8s"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.0.64.4"]
 }

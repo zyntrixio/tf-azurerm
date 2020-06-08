@@ -64,17 +64,19 @@ module "uksouth-dev" {
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
+    wireguard_vnet_id = module.uksouth-wireguard.vnet_id
     sentry_vnet_id = module.uksouth-sentry.vnet_id
     tableau_vnet_id = module.uksouth-tableau.vnet_id
     tools_vnet_id = module.uksouth-tools.vnet_id
 
+    wireguard_ip_address = module.uksouth-wireguard.ip_address
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
     tableau_ip_address = module.uksouth-tableau.ip_address
 }
 
-module "uksouth-vwan" {
-    source = "./uksouth/vwan"
+module "uksouth-wireguard" {
+    source = "./uksouth/wireguard"
     firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
