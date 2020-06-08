@@ -255,15 +255,6 @@ module "worker_nsg_rules" {
             destination_port_range = "9100"
             source_address_prefix = "192.168.6.64/28"
             destination_address_prefix = var.subnet_address_prefixes[0]
-        },
-        // Temp
-        {
-            name = "Allow6502"
-            priority = "501"
-            protocol = "TCP"
-            destination_port_range = "6502"
-            destination_address_prefix = var.subnet_address_prefixes[0]
-            source_address_prefix = "192.168.4.0/24"
         }
     ]
 }

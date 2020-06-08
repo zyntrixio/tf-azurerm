@@ -73,6 +73,11 @@ module "uksouth-firewall" {
     tableau_ip_address = module.uksouth-tableau.ip_address
 }
 
+module "uksouth-vwan" {
+    source = "./uksouth/vwan"
+    firewall_vnet_id = module.uksouth-firewall.vnet_id
+}
+
 module "uksouth-monitoring" {
     source = "./uksouth/monitoring"
 }
