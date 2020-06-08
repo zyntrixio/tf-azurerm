@@ -663,6 +663,16 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
         translated_port = "6443"
         protocols = ["TCP"]
     }
+
+    rule {
+        name = "tools_kube"
+        source_addresses = var.secure_origins
+        destination_ports = ["6443"]
+        destination_addresses = [azurerm_public_ip.pips.4.ip_address]
+        translated_address = "10.4.64.4"
+        translated_port = "6443"
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_nat_rule_collection" "bastion" {
