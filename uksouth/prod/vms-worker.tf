@@ -101,6 +101,11 @@ resource "azurerm_linux_virtual_machine" "worker" {
         }
     }
 
+    lifecycle {
+        ignore_changes = [
+            identity
+        ]
+    }
 }
 
 module "worker_nsg_rules" {

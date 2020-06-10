@@ -140,6 +140,12 @@ resource "azurerm_virtual_machine" "worker" {
     }
 
     tags = var.tags
+
+    lifecycle {
+        ignore_changes = [
+            identity
+        ]
+    }
 }
 
 # resource "azurerm_linux_virtual_machine" "worker" {
