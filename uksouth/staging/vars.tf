@@ -1,4 +1,8 @@
+variable common_keyvault {}
+variable common_keyvault_sync_identity {}
+
 variable environment { default = "staging" }
+variable resource_group_name { default = "uksouth-staging" }
 variable address_space { default = "10.1.0.0/16" }
 
 variable subnet_address_prefixes {
