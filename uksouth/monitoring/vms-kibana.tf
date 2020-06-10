@@ -175,6 +175,14 @@ module "kibana_nsg_rules" {
             destination_port_range = "9100"
             source_address_prefix = "192.168.6.64/28"
             destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowHTTPS_VPN"
+            priority = "130"
+            protocol = "TCP"
+            destination_port_range = "443"
+            source_address_prefix = "192.168.1.0/24"
+            destination_address_prefix = var.subnet_address_prefixes[0]
         }
     ]
 }

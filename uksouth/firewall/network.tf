@@ -344,3 +344,11 @@ resource "azurerm_private_dns_a_record" "prod-k8s" {
     ttl = 300
     records = ["10.0.64.4"]
 }
+
+resource "azurerm_private_dns_a_record" "kibana" {
+    name = "kubana"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["192.168.6.4"]
+}
