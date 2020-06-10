@@ -1,7 +1,7 @@
 resource "chef_environment" "env" {
     name = var.resource_group_name
     cookbook_constraints = {
-        bifrost = "= 2.6.1"
+        bifrost = "= 2.6.3"
         romanoff = "= 2.1"
         fury = "= 1.5.0"
         jarvis = "= 2.0.0"
