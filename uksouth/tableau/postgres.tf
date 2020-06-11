@@ -46,19 +46,9 @@ resource "azurerm_postgresql_virtual_network_rule" "tableauserver" {
     subnet_id = azurerm_subnet.subnet.id
 }
 
-
-# TODO Remove after Covid19
-resource "azurerm_postgresql_firewall_rule" "chris_gormley" {
-    name = "chris_gormley"
+resource "azurerm_postgresql_virtual_network_rule" "vpnsubnet" {
+    name = "vpnsubnet"
     resource_group_name = azurerm_resource_group.rg.name
     server_name = azurerm_postgresql_server.postgres.name
-    start_ip_address = "82.11.7.50"
-    end_ip_address = "82.11.7.50"
-}
-resource "azurerm_postgresql_firewall_rule" "terry_cain" {
-    name = "terry_cain"
-    resource_group_name = azurerm_resource_group.rg.name
-    server_name = azurerm_postgresql_server.postgres.name
-    start_ip_address = "86.28.118.165"
-    end_ip_address = "86.28.118.165"
+    subnet_id = var.vpn_subnet_id
 }

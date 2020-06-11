@@ -103,6 +103,7 @@ module "uksouth-tableau" {
     source = "./uksouth/tableau"
     worker_subnet = module.uksouth-prod.subnet_ids.worker
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+    vpn_subnet_id = module.uksouth-wireguard.subnet_id
 }
 
 module "uksouth-prod" {

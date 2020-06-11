@@ -11,3 +11,5 @@ variable "tags" {
         Environment = "Tableau"
     }
 }
+
+variable "vpn_subnet_id" {}
