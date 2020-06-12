@@ -346,9 +346,17 @@ resource "azurerm_private_dns_a_record" "prod-k8s" {
 }
 
 resource "azurerm_private_dns_a_record" "kibana" {
-    name = "kubana"
+    name = "kibana"
     resource_group_name = azurerm_resource_group.rg.name
     zone_name = azurerm_private_dns_zone.uksouth.name
     ttl = 300
     records = ["192.168.6.4"]
+}
+
+resource "azurerm_private_dns_a_record" "tableau" {
+    name = "tableau"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["192.168.7.4"]
 }

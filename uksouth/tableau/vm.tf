@@ -70,6 +70,18 @@ resource "azurerm_network_security_group" "nsg" {
         destination_address_prefix = var.ip_range
         destination_port_ranges = [9100]
     }
+    security_rule {
+        name = "AllowHTTPS_VPN"
+        description = "VPN -> tab;eai"
+        access = "Allow"
+        priority = 520
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "192.168.1.0/24"
+        source_port_range = "*"
+        destination_address_prefix = var.ip_range
+        destination_port_range = "443"
+    }
 
     security_rule {
         name = "BlockEverything"

@@ -1178,6 +1178,13 @@ resource "azurerm_firewall_network_rule_collection" "wireguard" {
         destination_addresses = ["192.168.6.4/32"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "wireguard-to-tableau"
+        source_addresses = ["192.168.1.4/32"]
+        destination_ports = ["80", "443"]
+        destination_addresses = ["192.168.7.4/32"]
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "egress" {
