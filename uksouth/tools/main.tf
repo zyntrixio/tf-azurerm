@@ -16,21 +16,21 @@ resource "azurerm_user_assigned_identity" "prometheus" {
 }
 
 resource "azurerm_role_definition" "prometheus_azure_vm_read" {
-  name               = "prometheus_vm_read"
-  scope              = data.azurerm_subscription.current.id
+    name = "prometheus_vm_read"
+    scope = data.azurerm_subscription.current.id
 
-  permissions {
-    actions     = ["Microsoft.Compute/virtualMachines/read"]
-    not_actions = []
-  }
+    permissions {
+        actions = ["Microsoft.Compute/virtualMachines/read"]
+        not_actions = []
+    }
 
-  assignable_scopes = [
-    data.azurerm_subscription.current.id,
-  ]
+    assignable_scopes = [
+        data.azurerm_subscription.current.id,
+    ]
 }
 
 resource "azurerm_role_assignment" "example" {
-  scope              = data.azurerm_subscription.current.id
-  role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.id
-  principal_id       = azurerm_user_assigned_identity.prometheus.principal_id
+    scope = data.azurerm_subscription.current.id
+    role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.id
+    principal_id = azurerm_user_assigned_identity.prometheus.principal_id
 }
