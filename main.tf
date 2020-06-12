@@ -108,6 +108,7 @@ module "uksouth-tableau" {
 
 module "uksouth-prod" {
     source = "./uksouth/prod"
+    vpn_subnet_id = module.uksouth-wireguard.subnet_id
 }
 
 module "uksouth-preprod" {

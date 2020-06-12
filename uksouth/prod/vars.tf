@@ -30,3 +30,5 @@ variable controller_vm_size { default = "Standard_D4s_v3" }
 variable controller_count { default = 3 }
 variable etcd_vm_size { default = "Standard_D2s_v3" }
 variable etcd_count { default = 5 }
+
+variable "vpn_subnet_id" {}
