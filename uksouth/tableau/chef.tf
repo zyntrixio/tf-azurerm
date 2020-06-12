@@ -2,7 +2,8 @@ resource "chef_environment" "env" {
     name = azurerm_resource_group.rg.name
     cookbook_constraints = {
         fury = ">= 1.5.0"
-        rorschach = ">= 1.0.1"
+        rorschach = ">= 1.0.1",
+        jarvis = ">= 2.1.0",
     }
 
     default_attributes_json = jsonencode({
@@ -17,6 +18,7 @@ resource "chef_role" "tableau" {
     name = "tableau"
     run_list = [
         "recipe[fury]",
-        "recipe[rorschach]"
+        "recipe[rorschach]",
+        "recipe[jarvis]"
     ]
 }
