@@ -29,9 +29,9 @@ resource "azurerm_postgresql_virtual_network_rule" "workers" {
     subnet_id = azurerm_subnet.subnet.0.id
 }
 
-resource "azurerm_postgresql_virtual_network_rule" "vpnsubnet" {
-    name = "vpnsubnet"
-    resource_group_name = azurerm_resource_group.rg.name
-    server_name = azurerm_postgresql_server.postgres.name
-    subnet_id = var.vpn_subnet_id
-}
+# resource "azurerm_postgresql_virtual_network_rule" "vpnsubnet" {
+#     name = "vpnsubnet"
+#     resource_group_name = azurerm_resource_group.rg.name
+#     server_name = azurerm_postgresql_server.postgres.name
+#     subnet_id = var.vpn_subnet_id
+# }
