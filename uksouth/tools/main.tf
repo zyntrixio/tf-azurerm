@@ -20,7 +20,10 @@ resource "azurerm_role_definition" "prometheus_azure_vm_read" {
     scope = data.azurerm_subscription.current.id
 
     permissions {
-        actions = ["Microsoft.Compute/virtualMachines/read"]
+        actions = [
+            "Microsoft.Compute/virtualMachines/read",
+            "Microsoft.Network/networkInterfaces/read"
+        ]
         not_actions = []
     }
 
@@ -29,7 +32,7 @@ resource "azurerm_role_definition" "prometheus_azure_vm_read" {
     ]
 }
 
-resource "azurerm_role_assignment" "example" {
+resource "azurerm_role_assignment" "prometheus_azure_vm_read" {
     scope = data.azurerm_subscription.current.id
     role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.id
     principal_id = azurerm_user_assigned_identity.prometheus.principal_id
