@@ -28,3 +28,24 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
         "delete"
     ]
 }
+
+locals {
+    kv_users = {
+        Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
+        LocalDev = { object_id = "a43dcb6e-7c82-4503-89c2-0bd9029bba3d" },
+    }
+}
+
+resource "azurerm_key_vault_access_policy" "kv_access" {
+    for_each = local.kv_users
+
+    key_vault_id = module.kv.keyvault.id
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = each.value["object_id"]
+    secret_permissions = [
+        "get",
+        "list",
+        "set",
+        "delete"
+    ]
+}

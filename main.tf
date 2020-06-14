@@ -39,6 +39,56 @@ data "terraform_remote_state" "uksouth-common" {
     }
 }
 
+data "azurerm_subscription" "primary" {}
+
+resource "azurerm_role_assignment" "devops" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Owner"
+  principal_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+}
+
+resource "azurerm_role_assignment" "backend" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id = "219194f6-b186-4146-9be7-34b731e19001"
+}
+
+resource "azurerm_role_assignment" "qa" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
+}
+
+resource "azurerm_role_assignment" "architecture" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
+}
+
+resource "azurerm_role_assignment" "john_rouffas" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id = "d04bb55a-9ca8-4115-9b00-54ec0d61a64c"
+}
+
+resource "azurerm_role_assignment" "jo_raine" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Billing Reader"
+  principal_id = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
+}
+
+resource "azurerm_role_assignment" "kubernetes_sso" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Contributor"
+  principal_id = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
+}
+
+resource "azurerm_role_assignment" "azure_frontdoor" {
+  scope = data.azurerm_subscription.primary.id
+  role_definition_name = "Contributor"
+  principal_id = "f0222751-c786-45ca-bbfb-66037b63c4ac"
+}
+
 module "uksouth-bastion" {
     source = "./uksouth/bastion"
 

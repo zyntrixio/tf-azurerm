@@ -29,11 +29,10 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
     ]
 }
 
-# Allow dev users access to dev keyvault
 locals {
     kv_users = {
-        MartinMarsh = { object_id = "3c92809d-91a4-456f-a161-a8b9df4c01e1" },
-        StewartPerrygrove = { object_id = "c7c13573-de9a-443e-a1a7-cc272cb26e2e" },
+        Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
+        LocalDev = { object_id = "a43dcb6e-7c82-4503-89c2-0bd9029bba3d" },
     }
 }
 
