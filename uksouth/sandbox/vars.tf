@@ -22,3 +22,6 @@ variable worker_vm_size { default = "Standard_D4s_v3" }
 variable worker_count { default = 10 }
 variable controller_vm_size { default = "Standard_D2s_v3" }
 variable controller_count { default = 1 }
+
+variable xxxlarge_worker_vm_size { default = "Standard_D16s_v3" }
+variable xxxlarge_worker_count { default = 1 }
