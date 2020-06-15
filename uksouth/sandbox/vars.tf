@@ -1,3 +1,6 @@
+variable common_keyvault {}
+variable common_keyvault_sync_identity {}
+
 variable environment { default = "sandbox" }
 variable address_space { default = "10.3.0.0/16" }
 
