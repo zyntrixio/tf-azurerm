@@ -70,6 +70,18 @@ resource "azurerm_network_security_group" "nsg" {
         destination_port_range = "22"
     }
     security_rule {
+        name = "AllowToolsPrometheusNodeExporter"
+        description = "Allow prometheus to access node exporter"
+        access = "Allow"
+        priority = 510
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "10.4.0.0/18"
+        source_port_range = "*"
+        destination_address_prefix = var.ip_range
+        destination_port_range = "9100"
+    }
+    security_rule {
         name = "BlockEverything"
         description = "Default Block All Rule"
         access = "Deny"
