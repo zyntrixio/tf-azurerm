@@ -162,6 +162,9 @@ module "uksouth-tableau" {
 module "uksouth-prod" {
     source = "./uksouth/prod"
     vpn_subnet_id = module.uksouth-wireguard.subnet_id
+
+    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
+    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 }
 
 module "uksouth-preprod" {
