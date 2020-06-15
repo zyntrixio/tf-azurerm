@@ -3,7 +3,7 @@ resource "chef_environment" "env" {
     cookbook_constraints = {
         bifrost = "= 2.6.1"
         fury = "= 1.5.0"
-        jarvis = "= 2.0.0"
+        jarvis = "= 2.1.0"
         romanoff = "= 2.1"
     }
 
