@@ -16,7 +16,7 @@ variable "pod_ip_configs" {
     ]
 }
 
-resource "azurerm_network_interface" "newworker" {
+resource "azurerm_network_interface" "worker" {
     count = var.worker_count
     name = format("${var.environment}-worker-%02d-nic", count.index + 1)
     location = azurerm_resource_group.rg.location
@@ -45,26 +45,26 @@ resource "azurerm_network_interface" "newworker" {
     }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "newworker-bap-pools-assoc" {
+resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
     count = var.worker_count
-    network_interface_id = element(azurerm_network_interface.newworker.*.id, count.index)
+    network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
     ip_configuration_name = "primary"
     backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }
 
-resource "azurerm_linux_virtual_machine" "newworker" {
+resource "azurerm_linux_virtual_machine" "worker" {
     count = var.worker_count
     name = format("${var.environment}-worker-%02d", count.index + 1)
     availability_set_id = azurerm_availability_set.worker.id
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    depends_on = [azurerm_network_interface_backend_address_pool_association.newworker-bap-pools-assoc]
+    depends_on = [azurerm_network_interface_backend_address_pool_association.worker-bap-pools-assoc]
     size = var.worker_vm_size
     admin_username = "terraform"
     tags = var.tags
 
     network_interface_ids = [
-        element(azurerm_network_interface.newworker.*.id, count.index),
+        element(azurerm_network_interface.worker.*.id, count.index),
     ]
 
     admin_ssh_key {
