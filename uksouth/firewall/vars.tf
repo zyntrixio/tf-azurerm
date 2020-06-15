@@ -21,6 +21,6 @@ variable "secure_origins" {
         "217.169.3.233/32", # cpressland@bink.com
         "81.2.99.144/29", # cpressland@bink.com
         "82.13.29.15/32", # twinchester@bink.com
-        "86.28.118.165/32" # tcain@bink.com
+        "82.24.92.107/32" # tcain@bink.com
     ]
 }
