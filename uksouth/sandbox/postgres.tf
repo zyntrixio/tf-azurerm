@@ -7,7 +7,7 @@ resource "azurerm_postgresql_server" "performance" {
     name = "bink-performance-sandbox-uksouth"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
-    sku_name = "GP_Gen5_8"
+    sku_name = "GP_Gen5_16"
 
     storage_profile {
         storage_mb = 3145728
