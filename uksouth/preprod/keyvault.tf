@@ -27,3 +27,23 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
         "delete"
     ]
 }
+
+locals {
+    kv_users = {
+        ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
+    }
+}
+
+resource "azurerm_key_vault_access_policy" "kv_access" {
+    for_each = local.kv_users
+
+    key_vault_id = module.kv_preprod.keyvault.id
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = each.value["object_id"]
+    secret_permissions = [
+        "get",
+        "list",
+        "set",
+        "delete"
+    ]
+}
