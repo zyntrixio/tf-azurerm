@@ -208,6 +208,14 @@ module "worker_nsg_rules" {
             destination_port_range = "4444"
             protocol = "TCP"
             destination_address_prefix = var.subnet_address_prefixes[0]
+        },
+        {
+            name = "AllowToolsPrometheusNodeExporter"
+            priority = "110"
+            protocol = "TCP"
+            destination_port_range = "9100"
+            source_address_prefix = "10.4.0.0/18"
+            destination_address_prefix = var.subnet_address_prefixes[0]
         }
     ]
 }
