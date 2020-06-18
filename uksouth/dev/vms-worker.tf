@@ -269,14 +269,6 @@ module "worker_nsg_rules" {
             destination_port_range = "9100"
             source_address_prefix = "10.4.0.0/18"
             destination_address_prefix = var.subnet_address_prefixes[0]
-        },
-        {
-            name = "AllowToolsPrometheusKubelet"
-            priority = "160"
-            protocol = "TCP"
-            destination_port_range = "10250"
-            source_address_prefix = "10.4.0.0/18"
-            destination_address_prefix = var.subnet_address_prefixes[0]
         }
     ]
 }

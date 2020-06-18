@@ -1285,16 +1285,4 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         ]
         protocols = ["TCP"]
     }
-    rule {
-        name = "prometheus-to-kubelet-cadvisor"
-        source_addresses = ["10.4.0.0/18"]
-        destination_ports = ["10250"]
-        destination_addresses = [  # Technically only needs access to the nodes not the pods
-            "10.0.0.0/18",  # Prod
-            "10.1.0.0/18",  # Staging
-            "10.2.0.0/18",  # Dev
-            "10.3.0.0/18"   # Sandbox
-        ]
-        protocols = ["TCP"]
-    }
 }
