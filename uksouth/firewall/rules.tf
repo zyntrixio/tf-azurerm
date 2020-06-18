@@ -1273,4 +1273,16 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         destination_addresses = ["*"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "prometheus-to-kube-api"
+        source_addresses = ["10.4.0.0/18"]
+        destination_ports = ["6443"]
+        destination_addresses = [
+            "10.0.64.4/32",  # Prod
+            "10.1.64.4/32",  # Staging
+            "10.2.64.4/32",  # Dev
+            "10.3.64.4/32"   # Sandbox
+        ]
+        protocols = ["TCP"]
+    }
 }

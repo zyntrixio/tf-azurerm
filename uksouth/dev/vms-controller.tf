@@ -172,6 +172,13 @@ module "controller_nsg_rules" {
             destination_port_range = "9100"
             source_address_prefix = "10.4.0.0/18"
             destination_address_prefix = var.subnet_address_prefixes[1]
+            }, {
+            name = "AllowToolsPrometheusKubeApi"
+            priority = "140"
+            protocol = "TCP"
+            destination_port_range = "6443"
+            source_address_prefix = "10.4.0.0/18"
+            destination_address_prefix = var.subnet_address_prefixes[1]
         }
     ]
 }
