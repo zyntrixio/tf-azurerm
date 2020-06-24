@@ -1165,6 +1165,14 @@ resource "azurerm_firewall_network_rule_collection" "wireguard" {
         protocols = ["TCP"]
     }
     rule {
+        name = "wireguard-to-tools-http"
+        source_addresses = ["192.168.1.4/32"]
+        destination_ports = ["80", "443"]
+        destination_addresses = ["10.4.0.4/32"]
+        protocols = ["TCP"]
+    }
+    # 192.168.1.0/24
+    rule {
         name = "wireguard-to-sentry"
         source_addresses = ["192.168.1.4/32"]
         destination_ports = ["80", "443"]

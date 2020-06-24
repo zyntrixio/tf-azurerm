@@ -217,6 +217,13 @@ resource "azurerm_private_dns_zone" "uksouth" {
     tags = var.tags
 }
 
+resource "azurerm_private_dns_zone" "tools" {
+    name = "tools.bink.sh"
+    resource_group_name = azurerm_resource_group.rg.name
+
+    tags = var.tags
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "bastion" {
     name = "bastion"
     resource_group_name = azurerm_resource_group.rg.name
@@ -287,6 +294,13 @@ resource "azurerm_private_dns_zone_virtual_network_link" "wireguard" {
     private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
     virtual_network_id = var.wireguard_vnet_id
     registration_enabled = true
+}
+resource "azurerm_private_dns_zone_virtual_network_link" "wireguard-tools" {
+    name = "wireguard-tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    private_dns_zone_name = azurerm_private_dns_zone.tools.name
+    virtual_network_id = var.wireguard_vnet_id
+    registration_enabled = false
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "tableau" {
@@ -360,3 +374,12 @@ resource "azurerm_private_dns_a_record" "tableau" {
     ttl = 300
     records = ["192.168.7.4"]
 }
+
+resource "azurerm_private_dns_a_record" "grafana" {
+    name = "grafana"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.tools.name
+    ttl = 300
+    records = ["10.4.0.4"]
+}
+
