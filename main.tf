@@ -183,8 +183,3 @@ module "uksouth-tools" {
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 }
-
-module "ukwest-monitoring" {
-    source = "./ukwest/monitoring"
-}
-

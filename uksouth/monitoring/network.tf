@@ -113,12 +113,6 @@ resource "azurerm_lb" "lb" {
         private_ip_address = cidrhost(var.subnet_address_prefixes[4], 4)
         subnet_id = azurerm_subnet.subnet.4.id
     }
-    frontend_ip_configuration {
-        name = "subnet-06"
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[5], 4)
-        subnet_id = azurerm_subnet.subnet.5.id
-    }
 
     tags = var.tags
 }
