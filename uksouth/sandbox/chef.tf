@@ -1,7 +1,7 @@
 resource "chef_environment" "env" {
     name = azurerm_resource_group.rg.name
     cookbook_constraints = {
-        bifrost = "= 2.6.3"
+        bifrost = "= 2.7.0"
         fury = "= 1.5.0"
         jarvis = "= 2.1.0"
         romanoff = "= 2.1"
