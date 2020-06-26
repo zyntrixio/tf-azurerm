@@ -383,6 +383,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         source_addresses = ["*"]
         target_fqdns = [
             "api.mailgun.net",
+            "api.eu.mailgun.net",
         ]
         protocol {
             port = "443"
