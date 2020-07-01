@@ -31,6 +31,7 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
 locals {
     kv_users = {
         ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
+        MartinMarsh = { object_id = "3c92809d-91a4-456f-a161-a8b9df4c01e1" },
     }
 }
 
