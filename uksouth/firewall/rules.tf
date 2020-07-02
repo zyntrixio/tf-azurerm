@@ -399,6 +399,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "apigateway.americanexpress.com",
             "api.americanexpress.com",
             "core.spreedly.com",
+            "api.visa.com",
         ]
         protocol {
             port = "443"
