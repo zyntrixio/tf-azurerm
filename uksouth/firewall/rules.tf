@@ -430,6 +430,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "identity.membership.coop.co.uk",
             "login.microsoftonline.com",
             "loyalty.harveynichols.com",
+            "*.harveynichols.com",
             "order.gbk.co.uk",
             "prd-east.webapi.enterprise.co.uk",
             "prd.b6prdeng.net",
