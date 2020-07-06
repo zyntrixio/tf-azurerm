@@ -113,6 +113,12 @@ resource "azurerm_storage_account" "bink" {
     enable_https_traffic_only = true
 }
 
+resource "azurerm_role_assignment" "bink_iam_sperrygrove" {
+  scope = azurerm_storage_account.bink.id
+  role_definition_name = "Contributor"
+  principal_id = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
+}
+
 resource "azurerm_storage_account" "harmonia" {
     name = "harmonia"
     resource_group_name = azurerm_resource_group.rg.name
@@ -133,6 +139,12 @@ resource "azurerm_storage_account" "harmoniastaging" {
     enable_https_traffic_only = true
 }
 
+resource "azurerm_role_assignment" "harmoniastaging_iam_sperrygrove" {
+  scope = azurerm_storage_account.harmoniastaging.id
+  role_definition_name = "Contributor"
+  principal_id = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
+}
+
 resource "azurerm_storage_account" "harmoniadev" {
     name = "harmoniadev"
     resource_group_name = azurerm_resource_group.rg.name
@@ -141,6 +153,12 @@ resource "azurerm_storage_account" "harmoniadev" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+}
+
+resource "azurerm_role_assignment" "harmoniadev_iam_sperrygrove" {
+  scope = azurerm_storage_account.harmoniadev.id
+  role_definition_name = "Contributor"
+  principal_id = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
 }
 
 resource "azurerm_storage_account" "thoughtspot" {
