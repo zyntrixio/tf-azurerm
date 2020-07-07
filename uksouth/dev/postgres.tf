@@ -7,19 +7,21 @@ resource "azurerm_postgresql_server" "postgres" {
     name = "bink-dev-uksouth"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
-    sku_name = "GP_Gen5_2"
-
-    storage_profile {
-        storage_mb = 102400
-        backup_retention_days = 7
-        geo_redundant_backup = "Disabled"
-        auto_grow = "Disabled"
-    }
 
     administrator_login = "laadmin"
     administrator_login_password = random_password.pg_pass.result
-    version = 11
-    ssl_enforcement = "Enabled"
+
+    sku_name = "GP_Gen5_2"
+    version = "11"
+    storage_mb = 102400
+
+    backup_retention_days = 7
+    geo_redundant_backup_enabled = false
+    auto_grow_enabled = false
+
+    public_network_access_enabled = true
+    ssl_enforcement_enabled = true
+    ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "workers" {
