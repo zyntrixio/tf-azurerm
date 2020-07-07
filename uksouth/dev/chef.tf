@@ -3,7 +3,7 @@ resource "chef_environment" "env" {
     cookbook_constraints = {
         bifrost = "= 2.7.0"
         romanoff = "= 2.1"
-        fury = ">= 1.5.0"
+        fury = ">= 1.5.1"
     }
 
     default_attributes_json = jsonencode({
