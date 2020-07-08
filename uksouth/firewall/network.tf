@@ -111,6 +111,23 @@ resource "azurerm_firewall" "firewall" {
     tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "diags" {
+    name = "binkuksouthlogs"
+    target_resource_id = azurerm_firewall.firewall.id
+    eventhub_name = "azurefirewall"
+    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    log {
+        category = "AzureFirewallApplicationRule"
+        enabled = true
+    }
+    log {
+        category = "AzureFirewallNetworkRule"
+        enabled = true
+    }
+}
+
+
 resource "azurerm_virtual_network_peering" "bastion" {
     name = "local-to-bastion"
     resource_group_name = azurerm_resource_group.rg.name

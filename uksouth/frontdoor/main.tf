@@ -525,3 +525,15 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "diags" {
+    name = "binkuksouthlogs"
+    target_resource_id = azurerm_frontdoor.frontdoor.id
+    eventhub_name = "azurefrontdoor"
+    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    log {
+        category = "FrontdoorAccessLog"
+        enabled = true
+    }
+}

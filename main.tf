@@ -96,6 +96,10 @@ module "uksouth-bastion" {
     firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
+module "uksouth-eventhubs" {
+    source = "./uksouth/eventhubs"
+}
+
 module "uksouth-chef" {
     source = "./uksouth/chef"
 }
