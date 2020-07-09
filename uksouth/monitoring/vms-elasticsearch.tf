@@ -205,6 +205,14 @@ module "elasticsearch_nsg_rules" {
             source_address_prefix = "10.4.0.0/18"
             destination_address_prefix = var.subnet_address_prefixes[1]
         },
+        {
+            name = "AllowElasticsearchTrafficBastion"
+            priority = "180"
+            destination_port_range = "9200"
+            protocol = "TCP"
+            source_address_prefix = "192.168.4.0/24"
+            destination_address_prefix = var.subnet_address_prefixes[1]
+        },
     ]
 }
 
