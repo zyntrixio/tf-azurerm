@@ -1,7 +1,7 @@
 resource "chef_environment" "env" {
     name = azurerm_resource_group.rg.name
     cookbook_constraints = {
-        nebula = "= 2.0.0"
+        nebula = "= 2.0.1"
     }
 }
 
