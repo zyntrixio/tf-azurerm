@@ -26,27 +26,27 @@ resource "azurerm_eventhub_namespace" "binkuksouthlogs" {
 
 
 resource "azurerm_eventhub" "azurefrontdoor" {
-  name                = "azurefrontdoor"
-  namespace_name      = azurerm_eventhub_namespace.binkuksouthlogs.name
-  resource_group_name = azurerm_resource_group.rg.name
-  partition_count     = 2
-  message_retention   = 1
+    name = "azurefrontdoor"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
 }
 
 resource "azurerm_eventhub" "azurefirewall" {
-  name                = "azurefirewall"
-  namespace_name      = azurerm_eventhub_namespace.binkuksouthlogs.name
-  resource_group_name = azurerm_resource_group.rg.name
-  partition_count     = 2
-  message_retention   = 1
+    name = "azurefirewall"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
 }
 
 resource "azurerm_eventhub" "azureactivedirectory" {
-  name                = "azureactivedirectory"
-  namespace_name      = azurerm_eventhub_namespace.binkuksouthlogs.name
-  resource_group_name = azurerm_resource_group.rg.name
-  partition_count     = 2
-  message_retention   = 1
+    name = "azureactivedirectory"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
 }
 
 

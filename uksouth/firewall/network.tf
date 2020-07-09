@@ -121,24 +121,24 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
         category = "AzureFirewallApplicationRule"
         enabled = true
         retention_policy {
-          days = 0
-          enabled = false
+            days = 0
+            enabled = false
         }
     }
     log {
         category = "AzureFirewallNetworkRule"
         enabled = true
         retention_policy {
-          days = 0
-          enabled = false
+            days = 0
+            enabled = false
         }
     }
     metric {
         category = "AllMetrics"
         enabled = false
         retention_policy {
-          days = 0
-          enabled = false
+            days = 0
+            enabled = false
         }
     }
 }
