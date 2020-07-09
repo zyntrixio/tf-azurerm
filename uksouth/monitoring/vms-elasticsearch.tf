@@ -196,7 +196,15 @@ module "elasticsearch_nsg_rules" {
             destination_port_range = "9100"
             source_address_prefix = "10.4.0.0/28"
             destination_address_prefix = var.subnet_address_prefixes[1]
-        }
+        },
+        {
+            name = "AllowElasticsearchTrafficTools"
+            priority = "170"
+            destination_port_range = "9200"
+            protocol = "TCP"
+            source_address_prefix = "10.4.0.0/18"
+            destination_address_prefix = var.subnet_address_prefixes[1]
+        },
     ]
 }
 
