@@ -1206,17 +1206,10 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     action = "Allow"
 
     rule {
-        name = "Stega OSSEC Agent"
+        name = "binkuksouthlogs.servicebus.windows.net"
         source_addresses = ["*"]
-        destination_ports = ["443", "1515"]
-        destination_addresses = ["51.143.173.121/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "Stega Search Inform Agent"
-        source_addresses = ["*"]
-        destination_ports = ["8999"]
-        destination_addresses = ["40.81.125.193/32"]
+        destination_ports = ["5671", "5672", "80", "443", "9093"]
+        destination_addresses = ["51.105.66.65"]
         protocols = ["TCP"]
     }
     rule {
