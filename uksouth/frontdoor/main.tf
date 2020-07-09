@@ -535,5 +535,25 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     log {
         category = "FrontdoorAccessLog"
         enabled = true
+        retention_policy {
+          days = 0
+          enabled = false
+        }
+    }
+    log {
+        category = "FrontdoorWebApplicationFirewallLog"
+        enabled = false
+        retention_policy {
+          days = 0
+          enabled = false
+        }
+    }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+        retention_policy {
+          days = 0
+          enabled = false
+        }
     }
 }
