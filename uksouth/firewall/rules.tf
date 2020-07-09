@@ -81,7 +81,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "GitHub"
         source_addresses = ["*"]
-        target_fqdns = ["github.com", "*.s3.amazonaws.com"]
+        target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com"]
         protocol {
             port = "443"
             type = "Https"
