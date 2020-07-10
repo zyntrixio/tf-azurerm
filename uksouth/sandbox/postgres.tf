@@ -11,7 +11,7 @@ resource "azurerm_postgresql_server" "performance" {
     administrator_login = "laadmin"
     administrator_login_password = random_password.performance.result
 
-    sku_name = "GP_Gen5_32"
+    sku_name = "GP_Gen5_4"
     version = "11"
     storage_mb = 3145728
 
