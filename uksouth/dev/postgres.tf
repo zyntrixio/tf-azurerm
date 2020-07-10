@@ -30,3 +30,43 @@ resource "azurerm_postgresql_virtual_network_rule" "workers" {
     server_name = azurerm_postgresql_server.postgres.name
     subnet_id = azurerm_subnet.subnet.0.id
 }
+
+resource "azurerm_monitor_diagnostic_setting" "diags" {
+    name = "binkuksouthlogs"
+    target_resource_id = azurerm_postgresql_server.postgres.id
+    eventhub_name = "azurepostgres"
+    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    log {
+        category = "PostgreSQLLogs"
+        enabled = true
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    log {
+        category = "QueryStoreRuntimeStatistics"
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    log {
+        category = "QueryStoreWaitStatistics"
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+}
