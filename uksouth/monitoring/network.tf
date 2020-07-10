@@ -61,6 +61,15 @@ resource "azurerm_virtual_network_peering" "peer" {
     allow_forwarded_traffic = true
 }
 
+resource "azurerm_virtual_network_peering" "bastion" {
+    name = "local-to-bastion"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
 resource "azurerm_virtual_network_peering" "tools" {
     name = "local-to-tools"
     resource_group_name = azurerm_resource_group.rg.name
