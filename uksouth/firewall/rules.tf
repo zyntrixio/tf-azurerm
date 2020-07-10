@@ -131,6 +131,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "docker.elastic.co",
             "docker-auth.elastic.co",
             "mcr.microsoft.com",
+            "*.data.mcr.microsoft.com",
             "*.cdn.mscr.io",
         ]
         protocol {
@@ -1068,20 +1069,6 @@ resource "azurerm_firewall_network_rule_collection" "monitoring" {
     action = "Allow"
 
     rule {
-        name = "all-to-elasticsearch"
-        source_addresses = ["*"]
-        destination_ports = ["9200"]
-        destination_addresses = ["192.168.6.16/28"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "production-to-kibana"
-        source_addresses = ["10.0.0.0/18"]
-        destination_ports = ["5601"]
-        destination_addresses = ["192.168.6.0/28"]
-        protocols = ["TCP"]
-    }
-    rule {
         name = "prometheus-to-node-exporter"
         source_addresses = ["192.168.6.64/28"]
         destination_ports = ["9100"]
@@ -1214,13 +1201,6 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     priority = 150
     action = "Allow"
 
-    rule {
-        name = "binkuksouthlogs.servicebus.windows.net"
-        source_addresses = ["*"]
-        destination_ports = ["5671", "5672", "80", "443", "9093"]
-        destination_addresses = ["51.105.66.65"]
-        protocols = ["TCP"]
-    }
     rule {
         name = "Datadog Logs"
         source_addresses = ["*"]

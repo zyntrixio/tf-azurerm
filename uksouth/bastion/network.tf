@@ -77,21 +77,6 @@ resource "azurerm_subnet" "subnet0" {
     address_prefixes = [var.ip_range]
 }
 
-resource "azurerm_network_watcher_flow_log" "flow_logs" {
-    network_watcher_name = "NetworkWatcher_uksouth"
-    resource_group_name = "NetworkWatcherRG"
-
-    network_security_group_id = azurerm_network_security_group.nsg.id
-    storage_account_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/stega/providers/Microsoft.Storage/storageAccounts/binkstegansgflowlogs"
-    enabled = var.flow_logs_enabled
-    version = 2
-
-    retention_policy {
-        enabled = true
-        days = 3
-    }
-}
-
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
     subnet_id = azurerm_subnet.subnet0.id
     network_security_group_id = azurerm_network_security_group.nsg.id

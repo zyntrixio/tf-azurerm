@@ -16,4 +16,3 @@ variable "tags" {
 }
 
 variable bastion_vm_size { default = "Standard_B2s" }
-variable flow_logs_enabled { default = false }

@@ -40,22 +40,6 @@ resource "azurerm_subnet" "subnet" {
     address_prefixes = [element(var.subnet_address_prefixes, count.index)]
 }
 
-resource "azurerm_network_watcher_flow_log" "flow_logs" {
-    count = length(var.subnet_address_prefixes)
-    network_watcher_name = "NetworkWatcher_uksouth"
-    resource_group_name = "NetworkWatcherRG"
-
-    network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
-    storage_account_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/stega/providers/Microsoft.Storage/storageAccounts/binkstegansgflowlogs"
-    enabled = false
-    version = 2
-
-    retention_policy {
-        enabled = true
-        days = 3
-    }
-}
-
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
     count = length(var.subnet_address_prefixes)
     subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
@@ -77,6 +61,51 @@ resource "azurerm_virtual_network_peering" "peer" {
     allow_forwarded_traffic = true
 }
 
+resource "azurerm_virtual_network_peering" "tools" {
+    name = "local-to-tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-tools/providers/Microsoft.Network/virtualNetworks/tools-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
+resource "azurerm_virtual_network_peering" "sandbox" {
+    name = "local-to-sandbox"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-sandbox/providers/Microsoft.Network/virtualNetworks/sandbox-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
+resource "azurerm_virtual_network_peering" "dev" {
+    name = "local-to-dev"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
+resource "azurerm_virtual_network_peering" "staging" {
+    name = "local-to-staging"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-staging/providers/Microsoft.Network/virtualNetworks/staging-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
+resource "azurerm_virtual_network_peering" "prod" {
+    name = "local-to-prod"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
 resource "azurerm_lb" "lb" {
     name = "${var.environment}-lb"
     location = azurerm_resource_group.rg.location
@@ -94,24 +123,6 @@ resource "azurerm_lb" "lb" {
         private_ip_address_allocation = "Static"
         private_ip_address = cidrhost(var.subnet_address_prefixes[1], 4)
         subnet_id = azurerm_subnet.subnet.1.id
-    }
-    frontend_ip_configuration {
-        name = "subnet-03"
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[2], 4)
-        subnet_id = azurerm_subnet.subnet.2.id
-    }
-    frontend_ip_configuration {
-        name = "subnet-04"
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[3], 4)
-        subnet_id = azurerm_subnet.subnet.3.id
-    }
-    frontend_ip_configuration {
-        name = "subnet-05"
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[4], 4)
-        subnet_id = azurerm_subnet.subnet.4.id
     }
 
     tags = var.tags
