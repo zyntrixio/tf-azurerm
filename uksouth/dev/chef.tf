@@ -4,6 +4,7 @@ resource "chef_environment" "env" {
         bifrost = "= 2.7.0"
         romanoff = "= 2.1"
         fury = ">= 1.5.1"
+        nebula = "= 2.0.3"
     }
 
     default_attributes_json = jsonencode({

@@ -5,7 +5,8 @@ resource "chef_role" "controller" {
         "recipe[fury]",
         "recipe[bifrost::controller]",
         "recipe[jarvis]",
-        "recipe[romanoff]"
+        "recipe[romanoff]",
+        "recipe[nebula]"
     ]
 }
 
@@ -15,7 +16,8 @@ resource "chef_role" "controller_with_etcd" {
         "recipe[fury]",
         "recipe[bifrost::controller]",
         "recipe[jarvis]",
-        "recipe[romanoff]"
+        "recipe[romanoff]",
+        "recipe[nebula]"
     ]
 }
 
@@ -25,7 +27,8 @@ resource "chef_role" "worker" {
         "recipe[fury]",
         "recipe[bifrost::worker]",
         "recipe[jarvis]",
-        "recipe[romanoff]"
+        "recipe[romanoff]",
+        "recipe[nebula]"
     ]
 }
 
