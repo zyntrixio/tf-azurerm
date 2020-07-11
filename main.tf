@@ -96,6 +96,14 @@ module "uksouth-bastion" {
     firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
+
+module "uksouth-gitlab" {
+    source = "./uksouth/gitlab"
+
+    firewall_route_ip = module.uksouth-firewall.firewall_ip
+    firewall_vnet_id = module.uksouth-firewall.vnet_id
+}
+
 module "uksouth-eventhubs" {
     source = "./uksouth/eventhubs"
 }

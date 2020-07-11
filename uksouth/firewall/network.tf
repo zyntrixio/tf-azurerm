@@ -143,12 +143,20 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     }
 }
 
-
 resource "azurerm_virtual_network_peering" "bastion" {
     name = "local-to-bastion"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
     remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = true
+}
+
+resource "azurerm_virtual_network_peering" "gitlab" {
+    name = "local-to-gitlab"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-gitlab/providers/Microsoft.Network/virtualNetworks/gitlab-vnet"
     allow_virtual_network_access = true
     allow_forwarded_traffic = true
 }
@@ -263,6 +271,22 @@ resource "azurerm_private_dns_zone_virtual_network_link" "bastion" {
     private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
     virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
     registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "gitlab" {
+    name = "gitlab"
+    resource_group_name = azurerm_resource_group.rg.name
+    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
+    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-gitlab/providers/Microsoft.Network/virtualNetworks/gitlab-vnet"
+    registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "gitlab-tools" {
+    name = "gitlab-tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    private_dns_zone_name = azurerm_private_dns_zone.tools.name
+    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-gitlab/providers/Microsoft.Network/virtualNetworks/gitlab-vnet"
+    registration_enabled = false
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "prod" {
@@ -416,3 +440,10 @@ resource "azurerm_private_dns_a_record" "grafana" {
     records = ["10.4.0.4"]
 }
 
+resource "azurerm_private_dns_a_record" "minio" {
+    name = "minio"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.tools.name
+    ttl = 300
+    records = ["10.4.0.4"]
+}

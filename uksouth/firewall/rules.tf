@@ -59,16 +59,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
-
-    rule {
-        name = "Stega"
-        source_addresses = ["*"]
-        target_fqdns = ["packages.wazuh.com"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
     rule {
         name = "Hashicorp"
         source_addresses = ["192.168.1.0/25"]
@@ -176,15 +166,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Slack"
-        source_addresses = ["*"]
-        target_fqdns = ["slack.com", "*.slack.com"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Microsoft Teams"
         source_addresses = ["*"]
         target_fqdns = ["outlook.office.com"]
@@ -203,7 +184,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Lets Encrypt"
+        name = "LetsEncrypt"
         source_addresses = ["*"]
         target_fqdns = ["*.api.letsencrypt.org"]
         protocol {
@@ -343,6 +324,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "ClamAV"
         source_addresses = ["*"]
         target_fqdns = ["*.clamav.net"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
+        name = "GitLab"
+        source_addresses = ["*"]
+        target_fqdns = ["packages.gitlab.com"]
         protocol {
             port = "443"
             type = "Https"
@@ -968,6 +958,42 @@ resource "azurerm_firewall_nat_rule_collection" "wireguard" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "gitlab" {
+    name = "gitlab"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 230
+    action = "Dnat"
+
+    rule {
+        name = "ssh"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
+        translated_address = "192.168.10.4"
+        translated_port = "22"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "http"
+        source_addresses = ["*"]
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
+        translated_address = "192.168.10.4"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "https"
+        source_addresses = ["*"]
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
+        translated_address = "192.168.10.4"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_network_rule_collection" "ssh" {
     name = "bastion-to-hosts"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -976,87 +1002,10 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     action = "Allow"
 
     rule {
-        name = "bastion-to-production"
+        name = "bastion-to-all"
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
-        destination_addresses = ["10.0.0.0/16"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-staging"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["10.1.0.0/16"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-dev"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["10.2.0.0/16"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-sandbox"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["10.3.0.0/16"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-vault"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.1.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-sentry"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.2.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-sftp"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.3.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-chef"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.5.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-monitoring"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.6.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-tableau"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.7.0/24"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-tools"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["10.4.0.0/16"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "bastion-to-wireguard"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["192.168.1.0/24"]
+        destination_addresses = ["*"]
         protocols = ["TCP"]
     }
 }
@@ -1212,7 +1161,7 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         name = "GitLab SSH"
         source_addresses = ["*"]
         destination_ports = ["22"]
-        destination_addresses = ["13.69.125.130/32"]
+        destination_addresses = ["${azurerm_public_ip.pips.8.ip_address}/32"]
         protocols = ["TCP"]
     }
     rule {
@@ -1244,10 +1193,10 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         protocols = ["TCP"]
     }
     rule {
-        name = "Folding-at-Home Proxy"
+        name = "Outbound SMTP" # We should log a helpdesk ticket with Mailgun to lock this down
         source_addresses = ["*"]
-        destination_ports = ["8000"]
-        destination_addresses = ["167.172.50.165"]
+        destination_ports = ["587"]
+        destination_addresses = ["*"]
         protocols = ["TCP"]
     }
 }
@@ -1276,6 +1225,13 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
             "10.2.64.4/32",  # Dev
             "10.3.64.4/32"   # Sandbox
         ]
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "gitlab-to-minio"
+        source_addresses = ["192.168.10.0/24"]
+        destination_ports = ["443"]
+        destination_addresses = ["10.4.0.0/18"]
         protocols = ["TCP"]
     }
 }
