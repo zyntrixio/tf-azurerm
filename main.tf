@@ -104,6 +104,10 @@ module "uksouth-gitlab" {
     firewall_vnet_id = module.uksouth-firewall.vnet_id
 }
 
+module "uksouth-alerts" {
+    source = "./uksouth/alerts"
+}
+
 module "uksouth-eventhubs" {
     source = "./uksouth/eventhubs"
 }
