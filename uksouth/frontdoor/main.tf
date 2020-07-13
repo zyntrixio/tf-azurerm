@@ -543,7 +543,7 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     }
     log {
         category = "FrontdoorWebApplicationFirewallLog"
-        enabled = false
+        enabled = true
         retention_policy {
             days = 0
             enabled = false
