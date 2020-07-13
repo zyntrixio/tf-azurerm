@@ -49,12 +49,25 @@ resource "azurerm_network_security_group" "nsg" {
 
     security_rule {
         name = "AllowSSH"
-        description = "SSH Access"
+        description = "Allow SSH Access from Bastion Subnet"
         access = "Allow"
         priority = 500
         direction = "Inbound"
         protocol = "TCP"
-        source_address_prefix = "*"  # This is limited by Azure Firewall
+        source_address_prefix = "192.168.4.0/24"
+        source_port_range = "*"
+        destination_address_prefix = var.ip_range
+        destination_port_range = "22"
+    }
+
+    security_rule {
+        name = "AllowSSHGitLab"
+        description = "SSH Access for Git Access"
+        access = "Allow"
+        priority = 510
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "192.168.0.0/24"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
         destination_port_ranges = [22]
@@ -64,7 +77,7 @@ resource "azurerm_network_security_group" "nsg" {
         name = "AllowNodeExporterAccess"
         description = "Tools Prometheus -> Node Exporter"
         access = "Allow"
-        priority = 510
+        priority = 520
         direction = "Inbound"
         protocol = "TCP"
         source_address_prefix = "10.4.0.0/18"

@@ -21,7 +21,7 @@ resource "azurerm_network_security_group" "nsg" {
         priority = 500
         direction = "Inbound"
         protocol = "TCP"
-        source_address_prefix = "*"  # This is limited by Azure Firewall
+        source_address_prefix = "192.168.0.0/24"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
         destination_port_ranges = [22]
