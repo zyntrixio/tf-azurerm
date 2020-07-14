@@ -18,6 +18,30 @@ resource "azurerm_key_vault" "tools" {
     }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "diags" {
+    name = "binkuksouthlogs"
+    target_resource_id = azurerm_key_vault.tools.id
+    eventhub_name = var.eventhub_name
+    eventhub_authorization_rule_id = var.eventhub_auth
+
+    log {
+        category = "AuditEvent"
+        enabled = true
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+}
+
 resource "azurerm_key_vault_access_policy" "devops" {
     for_each = var.devops_objectids
 

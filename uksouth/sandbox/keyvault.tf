@@ -4,6 +4,8 @@ module "kv_sandbox_sit" {
     name = "uksouth-sit"  # Prefixes it with bink-
     rg_name = azurerm_resource_group.rg.name  # has name as well as we'll have multiple keyvaults per cluster
     rg_location = azurerm_resource_group.rg.location
+    eventhub_name = "azurekeyvault"
+    eventhub_auth = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     tags = var.tags
 }
 module "kv_sandbox_oat" {
@@ -12,6 +14,8 @@ module "kv_sandbox_oat" {
     name = "uksouth-oat"  # Prefixes it with bink-
     rg_name = azurerm_resource_group.rg.name  # has name as well as we'll have multiple keyvaults per cluster
     rg_location = azurerm_resource_group.rg.location
+    eventhub_name = "azurekeyvault"
+    eventhub_auth = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     tags = var.tags
 }
 
@@ -21,6 +25,8 @@ module "kv_sandbox_perf" {
     name = "uksouth-perf"  # Prefixes it with bink-
     rg_name = azurerm_resource_group.rg.name  # has name as well as we'll have multiple keyvaults per cluster
     rg_location = azurerm_resource_group.rg.location
+    eventhub_name = "azurekeyvault"
+    eventhub_auth = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     tags = var.tags
 }
 
