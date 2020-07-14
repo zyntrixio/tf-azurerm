@@ -332,7 +332,10 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "GitLab"
         source_addresses = ["*"]
-        target_fqdns = ["packages.gitlab.com"]
+        target_fqdns = [
+            "packages.gitlab.com",
+            "*.bitrise.io",
+        ]
         protocol {
             port = "443"
             type = "Https"
