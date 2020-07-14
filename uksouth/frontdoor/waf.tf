@@ -11,12 +11,18 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
         enabled = true
         priority = 1
         type = "MatchRule"
-        action = "Log"
+        action = "Block"
 
         match_condition {
             match_variable = "RequestUri"
             operator = "Contains"
             match_values = ["/admin"]
+        }
+        match_condition {
+            match_variable     = "RemoteAddr"
+            operator           = "IPMatch"
+            negation_condition = true
+            match_values       = ["194.74.152.11"]
         }
     }
 }
