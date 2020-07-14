@@ -19,10 +19,10 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
             match_values = ["/admin"]
         }
         match_condition {
-            match_variable     = "RemoteAddr"
-            operator           = "IPMatch"
+            match_variable = "RemoteAddr"
+            operator = "IPMatch"
             negation_condition = true
-            match_values       = ["194.74.152.11"]
+            match_values = ["194.74.152.11"]
         }
     }
 }
