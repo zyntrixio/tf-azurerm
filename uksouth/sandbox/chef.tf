@@ -5,7 +5,7 @@ resource "chef_environment" "env" {
         fury = "= 1.5.1"
         jarvis = "= 2.1.0"
         romanoff = "= 2.1"
-        nebula = "= 2.0.4"
+        nebula = "= 2.0.6"
     }
 
     default_attributes_json = jsonencode({

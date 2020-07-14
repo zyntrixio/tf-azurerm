@@ -250,6 +250,7 @@ resource "azurerm_frontdoor" "frontdoor" {
             azure_key_vault_certificate_secret_name = "gb-bink-com"
             azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
         }
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
