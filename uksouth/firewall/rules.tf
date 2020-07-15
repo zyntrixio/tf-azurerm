@@ -1202,6 +1202,13 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         destination_addresses = ["*"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "Amex SFTP"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = ["148.173.107.23"]
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "tools" {
