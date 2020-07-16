@@ -125,15 +125,15 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
             enabled = false
         }
     }
-    log {
-        category = "AzureFirewallDnsProxy"
-        enabled = false
+    # log {
+    #     category = "AzureFirewallDnsProxy"
+    #     enabled = false
 
-        retention_policy {
-            days = 0
-            enabled = false
-        }
-    }
+    #     retention_policy {
+    #         days = 0
+    #         enabled = false
+    #     }
+    # }
     log {
         category = "AzureFirewallNetworkRule"
         enabled = true
