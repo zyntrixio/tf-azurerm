@@ -94,14 +94,18 @@ module "uksouth-bastion" {
 
     firewall_route_ip = module.uksouth-firewall.firewall_ip
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+    private_dns_link = module.uksouth-dns.uksouth-bink-io
 }
-
 
 module "uksouth-gitlab" {
     source = "./uksouth/gitlab"
 
     firewall_route_ip = module.uksouth-firewall.firewall_ip
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+}
+
+module "uksouth-dns" {
+    source = "./uksouth/dns"
 }
 
 module "uksouth-alerts" {
@@ -125,6 +129,7 @@ module "uksouth-dev" {
 
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    private_dns_link = module.uksouth-dns.uksouth-bink-io
 }
 
 module "uksouth-firewall" {

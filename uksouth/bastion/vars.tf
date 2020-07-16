@@ -1,6 +1,7 @@
 # Module required vars:
 variable "firewall_vnet_id" {}
 variable "firewall_route_ip" {}
+variable private_dns_link {}
 
 # Defaults:
 

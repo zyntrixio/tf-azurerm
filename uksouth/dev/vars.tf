@@ -1,5 +1,6 @@
 variable common_keyvault {}
 variable common_keyvault_sync_identity {}
+variable private_dns_link {}
 
 variable environment { default = "dev" }
 variable resource_group_name { default = "uksouth-dev" }
