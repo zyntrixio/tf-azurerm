@@ -393,6 +393,14 @@ resource "azurerm_private_dns_a_record" "tools-k8s" {
     records = ["10.4.64.4"]
 }
 
+resource "azurerm_private_dns_a_record" "tools-uksouth" {
+    name = "tools"
+    resource_group_name = azurerm_resource_group.rg.name
+    zone_name = azurerm_private_dns_zone.uksouth.name
+    ttl = 300
+    records = ["10.4.0.4"]
+}
+
 resource "azurerm_private_dns_a_record" "sandbox-k8s" {
     name = "sandbox.k8s"
     resource_group_name = azurerm_resource_group.rg.name

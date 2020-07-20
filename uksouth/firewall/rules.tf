@@ -361,6 +361,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "api.dev.gb.bink.com",
             "api.sandbox.gb.bink.com",
             "*.bink-sandbox.com",
+            "*.bink.sh"
         ]
         protocol {
             port = "443"
