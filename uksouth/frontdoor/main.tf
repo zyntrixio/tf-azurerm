@@ -29,7 +29,7 @@ resource "azurerm_key_vault" "frontdoor" {
 
     access_policy {
         tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
-        object_id = "48aca6b1-4d56-4a15-bc92-8aa9d97300df" # Chris Pressland
+        object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"  # DevOps
 
         secret_permissions = [
             "backup",
@@ -55,33 +55,6 @@ resource "azurerm_key_vault" "frontdoor" {
         ]
     }
 
-    access_policy {
-        tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
-        object_id = "de80162c-8e52-466b-affd-f3ccc0a66d5d" # Tom Winchester
-
-        secret_permissions = [
-            "backup",
-            "delete",
-            "get",
-            "list",
-            "purge",
-            "recover",
-            "restore",
-            "set",
-        ]
-
-        certificate_permissions = [
-            "get",
-            "list",
-            "update",
-            "create",
-            "import",
-            "delete",
-            "recover",
-            "backup",
-            "restore",
-        ]
-    }
 }
 
 resource "azurerm_frontdoor" "frontdoor" {
