@@ -260,34 +260,11 @@ resource "azurerm_virtual_network_peering" "tools" {
     allow_forwarded_traffic = true
 }
 
-resource "azurerm_private_dns_zone" "uksouth" {
-    name = "uksouth.bink.sh"
-    resource_group_name = azurerm_resource_group.rg.name
-
-    tags = var.tags
-}
-
 resource "azurerm_private_dns_zone" "tools" {
     name = "tools.bink.sh"
     resource_group_name = azurerm_resource_group.rg.name
 
     tags = var.tags
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "bastion" {
-    name = "bastion"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-bastion/providers/Microsoft.Network/virtualNetworks/bastion-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "gitlab" {
-    name = "gitlab"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-gitlab/providers/Microsoft.Network/virtualNetworks/gitlab-vnet"
-    registration_enabled = true
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "gitlab-tools" {
@@ -298,155 +275,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "gitlab-tools" {
     registration_enabled = false
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "prod" {
-    name = "prod"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "staging" {
-    name = "staging"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-staging/providers/Microsoft.Network/virtualNetworks/staging-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "dev" {
-    name = "dev"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "sandbox" {
-    name = "sandbox"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-sandbox/providers/Microsoft.Network/virtualNetworks/sandbox-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "chef" {
-    name = "chef"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-chef/providers/Microsoft.Network/virtualNetworks/chef-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "monitoring" {
-    name = "monitoring"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "sentry" {
-    name = "sentry"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = var.sentry_vnet_id
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "wireguard" {
-    name = "wireguard"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = var.wireguard_vnet_id
-    registration_enabled = true
-}
 resource "azurerm_private_dns_zone_virtual_network_link" "wireguard-tools" {
     name = "wireguard-tools"
     resource_group_name = azurerm_resource_group.rg.name
     private_dns_zone_name = azurerm_private_dns_zone.tools.name
     virtual_network_id = var.wireguard_vnet_id
     registration_enabled = false
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "tableau" {
-    name = "tableau"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = var.tableau_vnet_id
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "tools" {
-    name = "tools"
-    resource_group_name = azurerm_resource_group.rg.name
-    private_dns_zone_name = azurerm_private_dns_zone.uksouth.name
-    virtual_network_id = var.tools_vnet_id
-    registration_enabled = true
-}
-
-resource "azurerm_private_dns_a_record" "tools-k8s" {
-    name = "tools.k8s"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.4.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "tools-uksouth" {
-    name = "tools"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sandbox-k8s" {
-    name = "sandbox.k8s"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.3.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "dev-k8s" {
-    name = "dev.k8s"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.2.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "staging-k8s" {
-    name = "staging.k8s"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.1.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "prod-k8s" {
-    name = "prod.k8s"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["10.0.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "kibana" {
-    name = "kibana"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["192.168.6.4"]
-}
-
-resource "azurerm_private_dns_a_record" "tableau" {
-    name = "tableau"
-    resource_group_name = azurerm_resource_group.rg.name
-    zone_name = azurerm_private_dns_zone.uksouth.name
-    ttl = 300
-    records = ["192.168.7.4"]
 }
 
 resource "azurerm_private_dns_a_record" "grafana" {

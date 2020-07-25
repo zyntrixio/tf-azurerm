@@ -94,7 +94,8 @@ module "uksouth-bastion" {
 
     firewall_route_ip = module.uksouth-firewall.firewall_ip
     firewall_vnet_id = module.uksouth-firewall.vnet_id
-    private_dns_link = module.uksouth-dns.uksouth-bink-io
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-gitlab" {
@@ -102,6 +103,8 @@ module "uksouth-gitlab" {
 
     firewall_route_ip = module.uksouth-firewall.firewall_ip
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-dns" {
@@ -118,6 +121,9 @@ module "uksouth-eventhubs" {
 
 module "uksouth-chef" {
     source = "./uksouth/chef"
+
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-frontdoor" {
@@ -129,7 +135,8 @@ module "uksouth-dev" {
 
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-    private_dns_link = module.uksouth-dns.uksouth-bink-io
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-firewall" {
@@ -139,7 +146,6 @@ module "uksouth-firewall" {
     sentry_vnet_id = module.uksouth-sentry.vnet_id
     tableau_vnet_id = module.uksouth-tableau.vnet_id
     tools_vnet_id = module.uksouth-tools.vnet_id
-
     wireguard_ip_address = module.uksouth-wireguard.ip_address
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
@@ -148,11 +154,17 @@ module "uksouth-firewall" {
 
 module "uksouth-wireguard" {
     source = "./uksouth/wireguard"
+
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-monitoring" {
     source = "./uksouth/monitoring"
+
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-sandbox" {
@@ -160,6 +172,8 @@ module "uksouth-sandbox" {
 
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-staging" {
@@ -167,6 +181,8 @@ module "uksouth-staging" {
 
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-storage" {
@@ -175,17 +191,22 @@ module "uksouth-storage" {
 
 module "uksouth-tableau" {
     source = "./uksouth/tableau"
+
     worker_subnet = module.uksouth-prod.subnet_ids.worker
     firewall_vnet_id = module.uksouth-firewall.vnet_id
     vpn_subnet_id = module.uksouth-wireguard.subnet_id
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-prod" {
     source = "./uksouth/prod"
-    vpn_subnet_id = module.uksouth-wireguard.subnet_id
 
+    vpn_subnet_id = module.uksouth-wireguard.subnet_id
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-preprod" {
@@ -195,12 +216,18 @@ module "uksouth-preprod" {
 
 module "uksouth-sentry" {
     source = "./uksouth/sentry"
+
     firewall_vnet_id = module.uksouth-firewall.vnet_id
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-tools" {
     source = "./uksouth/tools"
+
     gitops_repo = "git@git.bink.com:DevOps/gitops/tools.k8s.uksouth.bink.sh.git"
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }

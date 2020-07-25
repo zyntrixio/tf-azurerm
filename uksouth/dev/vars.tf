@@ -1,6 +1,7 @@
 variable common_keyvault {}
 variable common_keyvault_sync_identity {}
-variable private_dns_link {}
+variable "private_dns_link_bink_host" {}
+variable "private_dns_link_bink_sh" {}
 
 variable environment { default = "dev" }
 variable resource_group_name { default = "uksouth-dev" }

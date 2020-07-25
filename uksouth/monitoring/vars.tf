@@ -1,3 +1,6 @@
+variable "private_dns_link_bink_host" {}
+variable "private_dns_link_bink_sh" {}
+
 variable environment { default = "monitoring" }
 
 variable subnet_address_prefixes {
