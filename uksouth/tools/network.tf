@@ -113,14 +113,24 @@ resource "azurerm_virtual_network_peering" "peer" {
     allow_forwarded_traffic = true
 }
 
-resource "azurerm_virtual_network_peering" "elasticsearch" {
-    name = "local-to-elasticsearch"
+resource "azurerm_virtual_network_peering" "elasticsearch-old" {
+    name = "local-to-elasticsearch-old"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
     remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
     allow_virtual_network_access = true
     allow_forwarded_traffic = false
 }
+
+resource "azurerm_virtual_network_peering" "elasticsearch" {
+    name = "local-to-elasticsearch"
+    resource_group_name = azurerm_resource_group.rg.name
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-elasticsearch/providers/Microsoft.Network/virtualNetworks/elasticsearch-vnet"
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = false
+}
+
 
 resource "azurerm_lb" "lb" {
     name = "${var.environment}-lb"
