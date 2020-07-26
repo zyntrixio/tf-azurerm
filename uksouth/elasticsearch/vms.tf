@@ -174,6 +174,14 @@ module "elasticsearch_nsg_rules" {
             source_address_prefix = "192.168.4.0/24"
             destination_address_prefix = var.address_space
         },
+        {
+            name = "AllowElasticsearchTrafficOLDElasticsearch"
+            priority = "190"
+            destination_port_range = "9200"
+            protocol = "TCP"
+            source_address_prefix = "192.168.6.0/24"
+            destination_address_prefix = var.address_space
+        },
     ]
 }
 
