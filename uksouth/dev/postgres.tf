@@ -24,6 +24,24 @@ resource "azurerm_postgresql_server" "postgres" {
     ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
 }
 
+resource "azurerm_key_vault_secret" "dev_pg_pass" {
+    name = "infra-dev-uksouth"
+    value = jsonencode({
+        "host" : azurerm_postgresql_server.postgres.fqdn,
+        "port" : "5432",
+        "admin_user" : "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.name}",
+        "password" : random_password.pg_pass.result
+    })
+    content_type = "application/json"
+    key_vault_id = module.kv.keyvault.id
+
+    tags = {
+        k8s_secret_name = "pg-test"
+        k8s_namespaces = "default"
+        k8s_convert = "/app/templates/pgbouncer.yaml"
+    }
+}
+
 resource "azurerm_postgresql_virtual_network_rule" "workers" {
     name = "workers"
     resource_group_name = azurerm_resource_group.rg.name

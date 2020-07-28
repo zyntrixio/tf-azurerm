@@ -32,6 +32,26 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
     ]
 }
 
+# For keyvault syncing
+resource "azurerm_user_assigned_identity" "keyvaultsync" {
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+
+    name = "dev-keyvaultsync"
+}
+
+resource "azurerm_key_vault_access_policy" "keyvaultsync" {
+    key_vault_id = module.kv.keyvault.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = azurerm_user_assigned_identity.keyvaultsync.principal_id
+
+    secret_permissions = [
+        "get",
+        "list"
+    ]
+}
+
 locals {
     kv_users = {
         Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },

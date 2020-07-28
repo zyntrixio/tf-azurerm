@@ -36,16 +36,16 @@ resource "azurerm_subnet_network_security_group_association" "nsg-assoc" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  name = "${azurerm_resource_group.rg.name}-nic"
-  location = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+    name = "${azurerm_resource_group.rg.name}-nic"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
 
-  ip_configuration {
-    name = "internal"
-    subnet_id = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.ip.id
-  }
+    ip_configuration {
+        name = "internal"
+        subnet_id = azurerm_subnet.subnet.id
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id = azurerm_public_ip.ip.id
+    }
 }
 
 resource "azurerm_network_security_rule" "rdp" {
@@ -88,8 +88,8 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
     source_image_reference {
         publisher = "MicrosoftWindowsServer"
-        offer     = "WindowsServer"
-        sku       = "2019-Datacenter"
-        version   = "latest"
+        offer = "WindowsServer"
+        sku = "2019-Datacenter"
+        version = "latest"
     }
 }
