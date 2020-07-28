@@ -238,3 +238,7 @@ module "uksouth-elasticsearch" {
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
+
+module "uksouth-mastercard" {
+    source = "./uksouth/mastercard"
+}
