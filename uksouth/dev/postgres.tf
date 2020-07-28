@@ -25,7 +25,7 @@ resource "azurerm_postgresql_server" "postgres" {
 }
 
 resource "azurerm_key_vault_secret" "dev_pg_pass" {
-    name = "infra-dev-uksouth"
+    name = "infra-postgres-dev-uksouth"
     value = jsonencode({
         "host" : azurerm_postgresql_server.postgres.fqdn,
         "port" : "5432",
@@ -36,9 +36,9 @@ resource "azurerm_key_vault_secret" "dev_pg_pass" {
     key_vault_id = module.kv.keyvault.id
 
     tags = {
-        k8s_secret_name = "pg-test"
+        k8s_secret_name = "azure-pgbouncer-config"
         k8s_namespaces = "default"
-        k8s_convert = "/app/templates/pgbouncer.yaml"
+        k8s_convert = "file:/app/templates/pgbouncer.yaml"
     }
 }
 
