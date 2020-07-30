@@ -6,6 +6,51 @@ provider "azurerm" {
     features {}
 }
 
+provider "azurerm" {
+    alias = "uksouth-prod"
+    version = "~> 2.17.0"
+    subscription_id = "79560fde-5831-481d-8c3c-e812ef5046e5"
+    client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    features {}
+}
+
+provider "azurerm" {
+    alias = "uksouth-preprod"
+    version = "~> 2.17.0"
+    subscription_id = "6e685cd8-73f6-4aa6-857c-04ed9b21d17d"
+    client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    features {}
+}
+
+provider "azurerm" {
+    alias = "uksouth-staging"
+    version = "~> 2.17.0"
+    subscription_id = "457b0db5-6680-480f-9e77-2dafb06bd9dc"
+    client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    features {}
+}
+
+provider "azurerm" {
+    alias = "uksouth-dev"
+    version = "~> 2.17.0"
+    subscription_id = "794aa787-ec6a-40dd-ba82-0ad64ed51639"
+    client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    features {}
+}
+
+provider "azurerm" {
+    alias = "uksouth-sandbox"
+    version = "~> 2.17.0"
+    subscription_id = "957523d8-bbe2-4f68-8fae-95975157e91c"
+    client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    features {}
+}
+
 provider "chef" {
     server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink/"
 
