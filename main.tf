@@ -7,7 +7,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-    alias = "uksouth-prod"
+    alias = "uk_production"
     version = "~> 2.17.0"
     subscription_id = "79560fde-5831-481d-8c3c-e812ef5046e5"
     client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
@@ -16,7 +16,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-    alias = "uksouth-preprod"
+    alias = "uk_preprod"
     version = "~> 2.17.0"
     subscription_id = "6e685cd8-73f6-4aa6-857c-04ed9b21d17d"
     client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
@@ -25,7 +25,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-    alias = "uksouth-staging"
+    alias = "uk_staging"
     version = "~> 2.17.0"
     subscription_id = "457b0db5-6680-480f-9e77-2dafb06bd9dc"
     client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
@@ -34,7 +34,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-    alias = "uksouth-dev"
+    alias = "uk_dev"
     version = "~> 2.17.0"
     subscription_id = "794aa787-ec6a-40dd-ba82-0ad64ed51639"
     client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
@@ -43,7 +43,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-    alias = "uksouth-sandbox"
+    alias = "uk_sandbox"
     version = "~> 2.17.0"
     subscription_id = "957523d8-bbe2-4f68-8fae-95975157e91c"
     client_id = "98e2ee67-a52d-40fc-9b39-155887530a7b"
@@ -286,4 +286,55 @@ module "uksouth-elasticsearch" {
 
 module "uksouth-mastercard" {
     source = "./uksouth/mastercard"
+}
+
+module "uksouth_preprod_environment" {
+    source = "./modules/environment"
+    providers = {
+        azurerm = azurerm.uk_preprod
+    }
+    resource_group_name = "uksouth-preprod"
+    location = "uksouth"
+    tags = {
+        "Environment" = "Pre-Production",
+    }
+    keyvault_config = {
+        common = {
+            name = "bink-uksouth-preprod-com", # 24 character limit
+        },
+        infra = {
+            name = "bink-uksouth-preprod-inf", # 24 character limit
+        },
+    }
+    postgres_config = {
+        common = {
+            name = "bink-uksouth-preprod-common",
+        },
+        hermes = {
+            name = "bink-uksouth-preprod-hermes",
+        },
+        hades = {
+            name = "bink-uksouth-preprod-hades",
+        },
+        harmonia = {
+            name = "bink-uksouth-preprod-harmonia",
+            sku_name = "GP_Gen5_4",
+        },
+    }
+    redis_config = {
+        common = {
+            name = "bink-uksouth-preprod-common",
+        },
+    }
+    storage_config = {
+        common = {
+            name = "binkuksouthpreprod",
+            account_replication_type = "GZRS",
+        },
+    }
+}
+
+output "uksouth_preprod_passwords" {
+    value = module.uksouth_preprod_environment.passwords
+    sensitive = false
 }
