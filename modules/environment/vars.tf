@@ -6,6 +6,10 @@ variable keyvault_config {
     type = map
     default = {}
 }
+variable keyvault_users {
+    type = map
+    default = {}
+}
 variable postgres_config {
     type = map
     default = {}

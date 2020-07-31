@@ -14,6 +14,32 @@ resource "azurerm_key_vault" "kv" {
     soft_delete_enabled = lookup(each.value, "soft_delete_enabled", false)
     purge_protection_enabled = lookup(each.value, "purge_protection_enabled", true)
 
+    access_policy {
+        tenant_id = data.azurerm_client_config.current.tenant_id
+        object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+        secret_permissions = [
+            "backup",
+            "delete",
+            "get",
+            "list",
+            "purge",
+            "recover",
+            "restore",
+            "set",
+        ]
+    }
+
+    dynamic "access_policy" {
+        for_each = [for i in var.keyvault_users : {
+            id = i["object_id"]
+        }]
+
+        content {
+            tenant_id = data.azurerm_client_config.current.tenant_id
+            object_id = access_policy.value.id
+            secret_permissions = [ "get", "list", "set", "delete" ]
+        }
+    }
     # lifecycle {
     #     prevent_destroy = true
     # }
