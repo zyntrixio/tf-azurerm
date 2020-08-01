@@ -18,7 +18,7 @@ resource "azurerm_postgresql_server" "pg" {
 
     sku_name = lookup(each.value, "sku_name", "GP_Gen5_2")
     version = lookup(each.value, "version", "11")
-    storage_mb = lookup(each.value, "storage_mb", 102400)
+    storage_mb = lookup(each.value, "storage_gb", 100) * 1024
 
     backup_retention_days = lookup(each.value, "backup_retention_days", 7)
     geo_redundant_backup_enabled = lookup(each.value, "geo_redundant_backup_enabled", false)
@@ -26,5 +26,5 @@ resource "azurerm_postgresql_server" "pg" {
 
     public_network_access_enabled = lookup(each.value, "public_network_access_enabled", false)
     ssl_enforcement_enabled = lookup(each.value, "ssl_enforcement_enabled", true)
-    ssl_minimal_tls_version_enforced = lookup(each.value, "ssl_minimal_tls_version_enforced", "TLSEnforcementDisabled")
+    ssl_minimal_tls_version_enforced = lookup(each.value, "ssl_minimal_tls_version_enforced", "TLS1_2")
 }

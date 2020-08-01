@@ -298,14 +298,11 @@ module "uksouth_preprod_environment" {
     tags = {
         "Environment" = "Pre-Production",
     }
-    keyvault_config = {
-        common = {
-            name = "bink-uksouth-preprod-com", # 24 character limit
-        },
-    }
+
     keyvault_users = {
         Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
     }
+    
     postgres_config = {
         common = {
             name = "bink-uksouth-preprod-common",
