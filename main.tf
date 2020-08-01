@@ -51,6 +51,17 @@ provider "azurerm" {
     features {}
 }
 
+locals {
+    subscriptions = {
+        uk_core = { id = "0add5c8e-50a6-4821-be0f-7a47c879b009" },
+        uk_production = { id = "79560fde-5831-481d-8c3c-e812ef5046e5" },
+        uk_preprod = { id = "6e685cd8-73f6-4aa6-857c-04ed9b21d17d" },
+        uk_staging = { id = "457b0db5-6680-480f-9e77-2dafb06bd9dc" },
+        uk_dev = { id = "794aa787-ec6a-40dd-ba82-0ad64ed51639" },
+        uk_sandbox = { id = "957523d8-bbe2-4f68-8fae-95975157e91c" },
+    }
+}
+
 provider "chef" {
     server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink/"
 
@@ -87,7 +98,9 @@ data "terraform_remote_state" "uksouth-common" {
 data "azurerm_subscription" "primary" {}
 
 resource "azurerm_role_assignment" "devops" {
-    scope = data.azurerm_subscription.primary.id
+    for_each = local.subscriptions
+
+    scope = "/subscriptions/${each.value["id"]}"
     role_definition_name = "Owner"
     principal_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
 }
