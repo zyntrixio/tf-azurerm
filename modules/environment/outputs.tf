@@ -27,6 +27,7 @@ output "managedidentites" {
             resource_id = azurerm_user_assigned_identity.fakicorp.id
             keyvault_url = azurerm_key_vault.common.vault_uri
         }
+        test = [for s in azurerm_postgresql_server.pg : {test = s.name}]
     }
 }
 

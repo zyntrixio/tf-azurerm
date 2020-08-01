@@ -28,3 +28,23 @@ resource "azurerm_postgresql_server" "pg" {
     ssl_enforcement_enabled = lookup(each.value, "ssl_enforcement_enabled", true)
     ssl_minimal_tls_version_enforced = lookup(each.value, "ssl_minimal_tls_version_enforced", "TLS1_2")
 }
+
+resource "azurerm_key_vault_secret" "pg_individual_pass" {
+    for_each = var.postgres_config
+
+    name = "infra-${each.key}"
+    value = jsonencode({
+        "host" : azurerm_postgresql_server.pg[each.key].fqdn,
+        "port" : "5432",
+        "admin_user" : "${azurerm_postgresql_server.pg[each.key].administrator_login}@${azurerm_postgresql_server.pg[each.key].name}",
+        "password" : random_password.pg[each.key].result
+    })
+    content_type = "application/json"
+    key_vault_id = azurerm_key_vault.infra.id
+
+    tags = {
+        k8s_secret_name = "azure-pg-${each.key}"
+        k8s_namespaces = "default"
+        # k8s_convert = "file:/app/templates/pgbouncer.yaml"
+    }
+}
