@@ -48,3 +48,23 @@ resource "azurerm_key_vault_secret" "pg_individual_pass" {
         # k8s_convert = "file:/app/templates/pgbouncer.yaml"
     }
 }
+
+resource "azurerm_key_vault_secret" "pg_all_pass" {
+    name = "infra-pg-all"
+    value = jsonencode({
+        "servers" : [for key, res in azurerm_postgresql_server.pg : {
+            host = res.fqdn
+            port = "5432"
+            admin_user = "${res.administrator_login}@${res.name}"
+            password = random_password.pg[key].result
+        }]
+    })
+    content_type = "application/json"
+    key_vault_id = azurerm_key_vault.infra.id
+
+    tags = {
+        k8s_secret_name = "azure-pg-all"
+        k8s_namespaces = "default"
+        k8s_convert = "file:/app/templates/pgbouncer_multi.yaml"
+    }
+}

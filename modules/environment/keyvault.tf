@@ -12,21 +12,25 @@ resource "azurerm_key_vault" "infra" {
     tenant_id = data.azurerm_client_config.current.tenant_id
     soft_delete_enabled = false
     purge_protection_enabled = false
+}
 
-    access_policy {
-        tenant_id = data.azurerm_client_config.current.tenant_id
-        object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
-        secret_permissions = [
-            "backup",
-            "delete",
-            "get",
-            "list",
-            "purge",
-            "recover",
-            "restore",
-            "set",
-        ]
-    }
+# Need to do access policies separately if your going to add additional after
+resource "azurerm_key_vault_access_policy" "infra_devops" {
+    key_vault_id = azurerm_key_vault.infra.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+
+    secret_permissions = [
+        "backup",
+        "delete",
+        "get",
+        "list",
+        "purge",
+        "recover",
+        "restore",
+        "set",
+    ]
 }
 
 # Used to sync KeyVault postgres/redis/... to the cluster secrets
@@ -34,7 +38,7 @@ resource "azurerm_user_assigned_identity" "infra_sync" {
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
 
-    name = "kv-${azurerm_resource_group.rg.name}-infra-sync"
+    name = "bink-${azurerm_resource_group.rg.name}-infra-sync"
 }
 
 # TODO export resource and client id
@@ -61,43 +65,13 @@ resource "azurerm_key_vault" "common" {
     tenant_id = data.azurerm_client_config.current.tenant_id
     soft_delete_enabled = false
     purge_protection_enabled = false
-
-    access_policy {
-        tenant_id = data.azurerm_client_config.current.tenant_id
-        object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
-        secret_permissions = [
-            "backup",
-            "delete",
-            "get",
-            "list",
-            "purge",
-            "recover",
-            "restore",
-            "set",
-        ]
-    }
-
-    dynamic "access_policy" {
-        for_each = [for i in var.keyvault_users : {
-            id = i["object_id"]
-        }]
-
-        content {
-            tenant_id = data.azurerm_client_config.current.tenant_id
-            object_id = access_policy.value.id
-            secret_permissions = ["get", "list", "set", "delete"]
-        }
-    }
-    # lifecycle {
-    #     prevent_destroy = true
-    # }
 }
 
 resource "azurerm_user_assigned_identity" "fakicorp" {
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
 
-    name = "kv-${azurerm_resource_group.rg.name}-fakicorp"
+    name = "bink-${azurerm_resource_group.rg.name}-fakicorp"
 }
 
 # TODO export resource and client id
@@ -112,5 +86,40 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
         "list",
         "set",
         "delete"
+    ]
+}
+
+resource "azurerm_key_vault_access_policy" "common_devops" {
+    key_vault_id = azurerm_key_vault.common.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+
+    secret_permissions = [
+        "backup",
+        "delete",
+        "get",
+        "list",
+        "purge",
+        "recover",
+        "restore",
+        "set",
+    ]
+}
+
+resource "azurerm_key_vault_access_policy" "common_users" {
+    for_each = var.keyvault_users
+
+    key_vault_id = azurerm_key_vault.common.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = each.value["object_id"]
+
+    secret_permissions = [
+        "backup",
+        "delete",
+        "get",
+        "list",
+        "set"
     ]
 }
