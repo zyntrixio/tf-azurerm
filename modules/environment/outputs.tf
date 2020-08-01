@@ -1,17 +1,32 @@
 output "passwords" {
     value = {
         postgres = {
-            for i in azurerm_postgresql_server.pg:
+            for i in azurerm_postgresql_server.pg :
             i.name => i.administrator_login_password
         },
         redis = {
-            for i in data.azurerm_redis_cache.redis:
+            for i in data.azurerm_redis_cache.redis :
             i.name => i.primary_access_key
         },
         storage = {
-            for i in azurerm_storage_account.storage:
+            for i in azurerm_storage_account.storage :
             i.name => i.primary_access_key
         },
+    }
+}
+
+output "managedidentites" {
+    value = {
+        infra_sync = {
+            client_id = azurerm_user_assigned_identity.infra_sync.client_id
+            resource_id = azurerm_user_assigned_identity.infra_sync.id
+            keyvault_url = azurerm_key_vault.infra.vault_uri
+        }
+        fakicorp = {
+            client_id = azurerm_user_assigned_identity.fakicorp.client_id
+            resource_id = azurerm_user_assigned_identity.fakicorp.id
+            keyvault_url = azurerm_key_vault.common.vault_uri
+        }
     }
 }
 

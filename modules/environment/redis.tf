@@ -17,7 +17,7 @@ resource "azurerm_redis_cache" "redis" {
 
 data "azurerm_redis_cache" "redis" {
     for_each = var.redis_config
-    depends_on = [ azurerm_redis_cache.redis ]
+    depends_on = [azurerm_redis_cache.redis]
 
     name = each.value["name"]
     resource_group_name = azurerm_resource_group.rg.name

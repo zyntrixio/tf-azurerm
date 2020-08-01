@@ -315,7 +315,7 @@ module "uksouth_preprod_environment" {
     keyvault_users = {
         Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
     }
-    
+
     postgres_config = {
         common = {
             name = "bink-uksouth-preprod-common",
@@ -346,5 +346,9 @@ module "uksouth_preprod_environment" {
 
 output "uksouth_preprod_passwords" {
     value = module.uksouth_preprod_environment.passwords
+    sensitive = false
+}
+output "uksouth_preprod_managedidentites" {
+    value = module.uksouth_preprod_environment.managedidentites
     sensitive = false
 }

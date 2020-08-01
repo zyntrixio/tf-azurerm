@@ -85,7 +85,7 @@ resource "azurerm_key_vault" "common" {
         content {
             tenant_id = data.azurerm_client_config.current.tenant_id
             object_id = access_policy.value.id
-            secret_permissions = [ "get", "list", "set", "delete" ]
+            secret_permissions = ["get", "list", "set", "delete"]
         }
     }
     # lifecycle {
