@@ -37,6 +37,95 @@ resource "azurerm_network_security_group" "worker_nsg" {
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
+    security_rule {
+        name = "BlockEverything"
+        priority = 4096
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = "*"
+        access = "Deny"
+        direction = "Inbound"
+    }
+    security_rule {
+        name = "AllowLoadBalancer"
+        protocol = "*"
+        source_address_prefix = "AzureLoadBalancer"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = "*"
+        priority = 4095
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowSSH"
+        priority = 500
+        protocol = "TCP"
+        destination_port_range = 22
+        source_port_range = "*"
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = "192.168.4.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowAllSubnetTraffic"
+        priority = 100
+        protocol = "*"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowAllControllerSubnetTraffic"
+        priority = 110
+        protocol = "*"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowHttpTraffic"
+        priority = 120
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 30000
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = "AzureLoadBalancer"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowHttpsTraffic"
+        priority = 130
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 30001
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = "AzureLoadBalancer"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowPrometheusNodeExporter"
+        priority = 140
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 9100
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = "10.4.0.0/18"
+        direction = "Inbound"
+        access = "Allow"
+    }
+
     tags = var.tags
 }
 
@@ -68,6 +157,51 @@ resource "azurerm_network_security_group" "controller_nsg" {
     name = "controller_nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
+
+    security_rule {
+        name = "BlockEverything"
+        priority = 4096
+        protocol = "*"
+        access = "Deny"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = "*"
+        source_address_prefix = "*"
+        direction = "Inbound"
+    }
+    security_rule {
+        name = "AllowSSH"
+        priority = 500
+        protocol = "TCP"
+        destination_port_range = 22
+        source_port_range = "*"
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = "192.168.4.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowKubeAPIAccessWorkers"
+        priority = 100
+        protocol = "TCP"
+        destination_port_range = 6443
+        source_port_range = "*"
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowPrometheusNodeExporter"
+        priority = 110
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 9100
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = "10.4.0.0/18"
+        direction = "Inbound"
+        access = "Allow"
+    }
 
     tags = var.tags
 }

@@ -32,3 +32,7 @@ variable peers { type = map(object({
 variable gitops_repo { type = string }
 variable common_keyvault {}
 variable common_keyvault_sync_identity {}
+
+variable controller_vm_size { default = "Standard_D2s_v3" }
+variable worker_vm_size { default = "Standard_D4s_v3" }
+variable worker_count { default = 3 }
