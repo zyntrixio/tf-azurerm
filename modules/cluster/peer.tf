@@ -17,7 +17,7 @@ resource "azurerm_virtual_network_peering" "peer" {
 resource "azurerm_virtual_network_peering" "remote_peer" {
     for_each = var.peers
 
-    provider = azurerm.uk_core
+    provider = azurerm.core
 
     name = "local-to-${azurerm_resource_group.rg.name}"
     resource_group_name = each.value["resource_group_name"]

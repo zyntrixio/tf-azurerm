@@ -2,6 +2,18 @@ variable resource_group_name { type = string }
 variable location { type = string }
 variable tags { type = map(string) }
 variable vnet_cidr { type = string }
+variable eventhub_authid { type = string }
+
+variable firewall { type = object({
+    firewall_name = string
+    resource_group_name = string
+    ingress_priority = number
+    public_ip = string
+    secure_origins = list(string)
+    ingress_http = number
+    ingress_https = number
+    ingress_controller = number
+}) }
 
 variable private_dns { type = map(object({
     resource_group_name = string

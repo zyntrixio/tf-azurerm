@@ -45,12 +45,13 @@ module "uksouth_preprod_cluster_1" {
     source = "./modules/cluster"
     providers = {
         azurerm = azurerm.uk_preprod
-        azurerm.uk_core = azurerm
+        azurerm.core = azurerm
     }
 
     resource_group_name = "uksouth-preprod-k1"
     location = "uksouth"
     vnet_cidr = "10.69.0.0/16"
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:DevOps/gitops/tools.k8s.uksouth.bink.sh.git"
@@ -69,14 +70,16 @@ module "uksouth_preprod_cluster_1" {
         }
     }
 
-
-
-
-
-
-
-
-
+    firewall = {
+        firewall_name = module.uksouth-firewall.firewall_name
+        resource_group_name = module.uksouth-firewall.resource_group_name
+        ingress_priority = 800
+        public_ip = module.uksouth-firewall.public_ips.15.ip_address
+        secure_origins = local.secure_origins
+        ingress_http = 8000
+        ingress_https = 4000
+        ingress_controller = 6000
+    }
 
     tags = {
         "Environment" = "Pre-Production",

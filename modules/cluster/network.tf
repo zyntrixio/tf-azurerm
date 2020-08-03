@@ -44,7 +44,7 @@ resource "azurerm_monitor_diagnostic_setting" "worker_nsg_eventhub" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_network_security_group.worker_nsg.id
     eventhub_name = "azurensg"
-    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    eventhub_authorization_rule_id = var.eventhub_authid
 
     log {
         category = "NetworkSecurityGroupEvent"
@@ -76,7 +76,7 @@ resource "azurerm_monitor_diagnostic_setting" "controller_nsg_eventhub" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_network_security_group.controller_nsg.id
     eventhub_name = "azurensg"
-    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    eventhub_authorization_rule_id = var.eventhub_authid
 
     log {
         category = "NetworkSecurityGroupEvent"

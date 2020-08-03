@@ -5,5 +5,5 @@ resource "azurerm_resource_group" "rg" {
 }
 
 provider "azurerm" {
-    alias = "uk_core"
+    alias = "core"
 }

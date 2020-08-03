@@ -751,51 +751,6 @@ resource "azurerm_firewall_nat_rule_collection" "chef" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "kibana" {
-    name = "kibana"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 140
-    action = "Dnat"
-
-    rule {
-        name = "kibana_http"
-        source_addresses = var.secure_origins
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.6.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "kibana_https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.6.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "argus" {
-    name = "argus"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 150
-    action = "Dnat"
-
-    rule {
-        name = "argus_http"
-        source_addresses = var.secure_origins
-        destination_ports = ["8001"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.6.84"
-        translated_port = "8001"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "sftp" {
     name = "sftp"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -872,87 +827,6 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "alertmanager" {
-    name = "alertmanager"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 190
-    action = "Dnat"
-
-    rule {
-        name = "alertmanager_http"
-        source_addresses = var.secure_origins
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.10.ip_address]
-        translated_address = "192.168.6.52"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "alertmanager_https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.10.ip_address]
-        translated_address = "192.168.6.52"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "prometheus" {
-    name = "prometheus"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 200
-    action = "Dnat"
-
-    rule {
-        name = "prometheus_http"
-        source_addresses = var.secure_origins
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.11.ip_address]
-        translated_address = "192.168.6.68"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prometheus_https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.11.ip_address]
-        translated_address = "192.168.6.68"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "grafana" {
-    name = "grafana"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 210
-    action = "Dnat"
-
-    rule {
-        name = "grafana_http"
-        source_addresses = var.secure_origins
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.6.36"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "grafana_https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.6.36"
         translated_port = "443"
         protocols = ["TCP"]
     }
