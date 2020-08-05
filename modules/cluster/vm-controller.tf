@@ -59,7 +59,7 @@ resource "azurerm_linux_virtual_machine" "controller" {
     provisioner "chef" {
         environment = chef_environment.env.name
         client_options = ["chef_license 'accept'"]
-        run_list = ["role[bastion]"]
+        run_list = ["role[controller_with_etcd]"]
         node_name = self.name
         server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
         recreate_client = true

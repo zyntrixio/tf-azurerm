@@ -47,7 +47,11 @@ resource "azurerm_network_interface" "worker" {
 
 resource "azurerm_linux_virtual_machine" "worker" {
     count = var.worker_count
-    depends_on = [commandpersistence_cmd.certs]
+    depends_on = [
+        commandpersistence_cmd.certs,
+        chef_environment.env,
+        azurerm_linux_virtual_machine.controller
+    ]
 
     name = format("${var.cluster_name}-worker%02d", count.index)
     resource_group_name = azurerm_resource_group.rg.name
@@ -82,7 +86,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
     provisioner "chef" {
         environment = chef_environment.env.name
         client_options = ["chef_license 'accept'"]
-        run_list = ["role[bastion]"]
+        run_list = ["role[worker]"]
         node_name = self.name
         server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
         recreate_client = true

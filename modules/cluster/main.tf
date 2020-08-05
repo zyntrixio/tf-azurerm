@@ -7,3 +7,6 @@ resource "azurerm_resource_group" "rg" {
 provider "azurerm" {
     alias = "core"
 }
+
+data "azurerm_subscription" "current" {
+}

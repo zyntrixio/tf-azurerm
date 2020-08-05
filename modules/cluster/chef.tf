@@ -1,20 +1,38 @@
 resource "chef_environment" "env" {
     name = var.resource_group_name
     cookbook_constraints = {
-        bifrost = "= 2.9.0"
+        bifrost = "= 4.0.0"
         romanoff = ">= 2.0.2"
         fury = ">= 1.5.1"
         nebula = ">= 2.0.6"
     }
 
     default_attributes_json = jsonencode({
+        "kubernetes" : {
+            "api" : {
+                "host" : "${var.cluster_name}.uksouth.bink.sh",
+                "ipaddress" : cidrhost(cidrsubnet(var.vnet_cidr, 8, 64), 4)  # Removes depenency on subnet
+            }
+        },
         "flux" : {
             "repo" : var.gitops_repo,
         },
-        "common_secrets" : {
-            "keyvault_url" : var.common_keyvault.url,
-            "keyvault2kube_resourceid" : var.common_keyvault_sync_identity.resource_id,
-            "keyvault2kube_clientid" : var.common_keyvault_sync_identity.client_id
+        "azure" : {
+            "keyvault" : {
+                "url" : var.common_keyvault.url,
+                "resource_id" : var.common_keyvault_sync_identity.resource_id,
+                "client_id" : var.common_keyvault_sync_identity.client_id
+            },
+            "config" : {
+                "subscription_id" : data.azurerm_subscription.current.subscription_id,
+                "resource_group" : azurerm_resource_group.rg.name,
+                "route_table_name" : azurerm_route_table.rt.name,
+                "vnet_name" : azurerm_virtual_network.vnet.name,
+                "vnet_resource_group" : azurerm_resource_group.rg.name,
+                "subnet_name" : azurerm_subnet.worker.name,
+                "security_group_name" : azurerm_network_security_group.worker_nsg.name,
+                "primary_availability_set_name" : azurerm_availability_set.worker.name
+            }
         }
     })
 }
