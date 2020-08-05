@@ -65,7 +65,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         protocol = "TCP"
         destination_port_range = 22
         source_port_range = "*"
-        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
         source_address_prefix = "192.168.4.0/24"
         direction = "Inbound"
         access = "Allow"

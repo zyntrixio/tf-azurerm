@@ -49,6 +49,7 @@ module "uksouth_preprod_cluster_1" {
     }
 
     resource_group_name = "uksouth-preprod-k1"
+    cluster_name = "preprod0"
     location = "uksouth"
     vnet_cidr = "10.69.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"

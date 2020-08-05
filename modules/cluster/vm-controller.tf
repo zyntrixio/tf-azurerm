@@ -1,5 +1,5 @@
 resource "azurerm_availability_set" "controller" {
-    name = "controller-as"
+    name = "${var.cluster_name}-controller-as"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     platform_fault_domain_count = 2
@@ -8,7 +8,7 @@ resource "azurerm_availability_set" "controller" {
 }
 
 resource "azurerm_network_interface" "controller" {
-    name = "${azurerm_resource_group.rg.name}-controller-nic"
+    name = "${var.cluster_name}-controller-nic"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     enable_accelerated_networking = false
@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "controller" {
 resource "azurerm_linux_virtual_machine" "controller" {
     depends_on = [commandpersistence_cmd.certs]
 
-    name = "${azurerm_resource_group.rg.name}-controller"
+    name = "${var.cluster_name}-controller"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
     availability_set_id = azurerm_availability_set.controller.id
