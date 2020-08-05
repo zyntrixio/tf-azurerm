@@ -1098,6 +1098,13 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         destination_addresses = ["148.173.107.23"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "Wasabi SFTP"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = ["185.10.90.93/32"]
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "tools" {
