@@ -81,14 +81,14 @@ resource "azurerm_network_security_group" "worker_nsg" {
         direction = "Inbound"
         access = "Allow"
     }
-    security_rule {
+    security_rule {  # This allows apiserver to get logs etc...
         name = "AllowAllControllerSubnetTraffic"
         priority = 110
         protocol = "*"
         source_port_range = "*"
         destination_port_range = "*"
-        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
-        source_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = azurerm_subnet.controller.address_prefixes[0]
         direction = "Inbound"
         access = "Allow"
     }
