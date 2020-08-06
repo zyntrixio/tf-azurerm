@@ -150,6 +150,9 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
             enabled = false
         }
     }
+    lifecycle {
+        ignore_changes = [log]
+    }
 }
 
 resource "azurerm_virtual_network_peering" "bastion" {

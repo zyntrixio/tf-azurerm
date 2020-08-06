@@ -561,4 +561,8 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
             enabled = false
         }
     }
+
+    lifecycle {
+        ignore_changes = [target_resource_id]
+    }
 }
