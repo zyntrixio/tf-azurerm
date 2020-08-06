@@ -154,6 +154,18 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "policies-bink-com"
+        host_name = "policies.bink.com"
+        custom_https_provisioning_enabled = true
+        custom_https_configuration {
+            certificate_source = "AzureKeyVault"
+            azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+            azure_key_vault_certificate_secret_name = "bink-com-legacy"
+            azure_key_vault_certificate_secret_version = "dc0f85cc2abb443a92a9eb062329b9a5"
+        }
+    }
+
+    frontend_endpoint {
         name = "policies-gb-bink-com"
         host_name = "policies.gb.bink.com"
         custom_https_provisioning_enabled = true
@@ -182,7 +194,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "policies-uksouth-bink-sh"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["policies-gb-bink-com"]
+        frontend_endpoints = ["policies-gb-bink-com", "policies-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "policies-uksouth-bink-sh"
