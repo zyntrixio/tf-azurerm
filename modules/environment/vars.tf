@@ -2,6 +2,11 @@ variable resource_group_name { type = string }
 variable location { type = string }
 variable tags { type = map }
 
+variable resource_group_iam {
+    type = map
+    default = {}
+}
+
 variable keyvault_users {
     type = map(object({ object_id = string }))
     default = {}
