@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "vnet" {
-    name = "${azurerm_resource_group.rg.name}-vnet"
+    name = "${var.cluster_name}-vnet"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     address_space = [var.vnet_cidr]
@@ -33,7 +33,7 @@ resource "azurerm_subnet" "controller" {
 }
 
 resource "azurerm_network_security_group" "worker_nsg" {
-    name = "worker_nsg"
+    name = "${var.cluster_name}-worker-nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
@@ -154,7 +154,7 @@ resource "azurerm_monitor_diagnostic_setting" "worker_nsg_eventhub" {
 }
 
 resource "azurerm_network_security_group" "controller_nsg" {
-    name = "controller_nsg"
+    name = "${var.cluster_name}-controller-nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
@@ -241,7 +241,7 @@ resource "azurerm_subnet_network_security_group_association" "controller_nsg_ass
 }
 
 resource "azurerm_route_table" "rt" {
-    name = "routes"
+    name = "${var.cluster_name}-routes"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     disable_bgp_route_propagation = true
@@ -267,7 +267,7 @@ resource "azurerm_subnet_route_table_association" "controller_rt_assoc" {
 }
 
 resource "azurerm_lb" "lb" {
-    name = "lb"
+    name = "${var.cluster_name}-lb"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     sku = "Standard"
@@ -283,13 +283,7 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "worker_pool" {
-    name = "worker_pool"
+    name = "workers"
     loadbalancer_id = azurerm_lb.lb.id
     resource_group_name = azurerm_resource_group.rg.name
 }
-
-
-
-
-
-

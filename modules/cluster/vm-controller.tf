@@ -1,12 +1,3 @@
-resource "azurerm_availability_set" "controller" {
-    name = "${var.cluster_name}-controller-as"
-    location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
-    platform_fault_domain_count = 2
-
-    tags = var.tags
-}
-
 resource "azurerm_network_interface" "controller" {
     name = "${var.cluster_name}-controller-nic"
     location = azurerm_resource_group.rg.location
@@ -28,7 +19,6 @@ resource "azurerm_linux_virtual_machine" "controller" {
     name = "${var.cluster_name}-controller"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    availability_set_id = azurerm_availability_set.controller.id
     size = var.controller_vm_size
 
     network_interface_ids = [

@@ -54,8 +54,10 @@ module "uksouth_preprod_cluster_1" {
     vnet_cidr = "10.69.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
+    worker_count = 5
+
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:DevOps/gitops/tools.k8s.uksouth.bink.sh.git"
+    gitops_repo = "git@git.bink.com:GitOps/sockshop.git"
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
@@ -86,13 +88,6 @@ module "uksouth_preprod_cluster_1" {
         "Environment" = "Pre-Production",
     }
 }
-
-
-
-
-
-
-
 
 output "uksouth_preprod_passwords" {
     value = module.uksouth_preprod_environment.passwords
