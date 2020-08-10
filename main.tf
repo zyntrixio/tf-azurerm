@@ -78,9 +78,9 @@ module "uksouth-chef" {
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
-# module "uksouth-frontdoor" {
-#     source = "./uksouth/frontdoor"
-# }
+module "uksouth-frontdoor" {
+    source = "./uksouth/frontdoor"
+}
 
 module "uksouth-dev" {
     source = "./uksouth/dev"
