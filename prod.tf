@@ -37,18 +37,23 @@ module "uksouth_prod_environment" {
     postgres_config = {
         common = {
             name = "bink-uksouth-prod-common",
+            sku_name = "GP_Gen5_2",
+            databases = ["test1"]
         },
         hermes = {
             name = "bink-uksouth-prod-hermes",
             sku_name = "GP_Gen5_4",
+            databases = ["hermes"]
         },
         hades = {
             name = "bink-uksouth-prod-hades",
             sku_name = "GP_Gen5_4",
+            databases = ["hades"]
         },
         harmonia = {
             name = "bink-uksouth-prod-harmonia",
             sku_name = "GP_Gen5_4",
+            databases = ["harmonia"]
         },
     }
     redis_config = {

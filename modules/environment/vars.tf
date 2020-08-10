@@ -12,7 +12,11 @@ variable keyvault_users {
     default = {}
 }
 variable postgres_config {
-    type = map
+    type = map(object({
+        name = string
+        databases = list(string)
+        sku_name = string
+    }))
     default = {}
 }
 variable redis_config {
