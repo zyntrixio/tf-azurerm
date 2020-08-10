@@ -538,6 +538,12 @@ resource "azurerm_frontdoor" "frontdoor" {
             cache_enabled = false
         }
     }
+
+    timeouts {
+        update = "60m"
+        create = "60m"
+        delete = "60m"
+    }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "diags" {
