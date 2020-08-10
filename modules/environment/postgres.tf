@@ -32,7 +32,7 @@ resource "azurerm_postgresql_server" "pg" {
 resource "azurerm_key_vault_secret" "pg_individual_pass" {
     for_each = var.postgres_config
 
-    name = "infra-${each.key}"
+    name = "infra-pg-${each.key}"
     value = jsonencode({
         "host" : azurerm_postgresql_server.pg[each.key].fqdn,
         "port" : "5432",

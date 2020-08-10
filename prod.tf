@@ -74,10 +74,6 @@ module "uksouth_prod_environment" {
     }
 }
 
-output "uksouth_prod_passwords" {
-    value = module.uksouth_prod_environment.passwords
-    sensitive = false
-}
 output "uksouth_prod_managedidentites" {
     value = module.uksouth_prod_environment.managedidentites
     sensitive = false

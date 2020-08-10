@@ -115,10 +115,6 @@ module "uksouth_preprod_cluster_1" {
     }
 }
 
-output "uksouth_preprod_passwords" {
-    value = module.uksouth_preprod_environment.passwords
-    sensitive = false
-}
 output "uksouth_preprod_managedidentites" {
     value = module.uksouth_preprod_environment.managedidentites
     sensitive = false
