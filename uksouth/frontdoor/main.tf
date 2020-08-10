@@ -1,10 +1,10 @@
 # All resources in here have been removed from state
 # Import with the following commands:
-# terraform import module.uksouth-frontdoor.azurerm_resource_group_rg /subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor
-# terraform import module.uksouth-frontdoor.azurerm_key_vault.frontdoor /subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor/providers/Microsoft.KeyVault/vaults/bink-frontdoor
-# terraform import module.uksouth-frontdoor.azurerm_frontdoor.frontdoor /subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor/providers/Microsoft.Network/frontdoors/bink-frontdoor
-# terraform import module.uksouth-frontdoor.azurerm_monitor_diagnostic_setting.diags /subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourcegroups/frontdoor/providers/Microsoft.Network/frontdoors/bink-frontdoor|binkuksouthlogs
-# terraform import module.uksouth-frontdoor.azurerm_frontdoor_firewall_policy.policy /subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourcegroups/frontdoor/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/policy
+# terraform import "module.uksouth-frontdoor.azurerm_resource_group.rg" "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor"
+# terraform import "module.uksouth-frontdoor.azurerm_key_vault.frontdoor" "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor/providers/Microsoft.KeyVault/vaults/bink-frontdoor"
+# terraform import "module.uksouth-frontdoor.azurerm_frontdoor.frontdoor" "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor/providers/Microsoft.Network/frontdoors/bink-frontdoor"
+# terraform import "module.uksouth-frontdoor.azurerm_monitor_diagnostic_setting.diags" "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourcegroups/frontdoor/providers/Microsoft.Network/frontdoors/bink-frontdoor|binkuksouthlogs"
+# terraform import "module.uksouth-frontdoor.azurerm_frontdoor_firewall_policy.policy" "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourcegroups/frontdoor/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/policy"
 
 
 resource "azurerm_resource_group" "rg" {

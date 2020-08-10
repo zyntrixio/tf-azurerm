@@ -11,6 +11,7 @@ resource "azurerm_storage_account" "itops" {
     account_tier = "Standard"
     account_replication_type = "GRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkopsreports" {
@@ -21,6 +22,7 @@ resource "azurerm_storage_account" "binkopsreports" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkopsreportsdev" {
@@ -31,6 +33,7 @@ resource "azurerm_storage_account" "binkopsreportsdev" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkopsreportsstaging" {
@@ -41,6 +44,7 @@ resource "azurerm_storage_account" "binkopsreportsstaging" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkbackupsdev" {
@@ -51,6 +55,7 @@ resource "azurerm_storage_account" "binkbackupsdev" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkbackupsstaging" {
@@ -61,6 +66,7 @@ resource "azurerm_storage_account" "binkbackupsstaging" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkbackupsprod" {
@@ -71,6 +77,7 @@ resource "azurerm_storage_account" "binkbackupsprod" {
     account_tier = "Standard"
     account_replication_type = "GRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "binkgitlabbackups" {
@@ -81,6 +88,7 @@ resource "azurerm_storage_account" "binkgitlabbackups" {
     account_tier = "Standard"
     account_replication_type = "RAGRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "aphrodite" {
@@ -91,6 +99,7 @@ resource "azurerm_storage_account" "aphrodite" {
     account_tier = "Standard"
     account_replication_type = "GRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "aphroditestaging" {
@@ -101,6 +110,7 @@ resource "azurerm_storage_account" "aphroditestaging" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "bink" {
@@ -111,6 +121,7 @@ resource "azurerm_storage_account" "bink" {
     account_tier = "Standard"
     account_replication_type = "GRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_role_assignment" "bink_iam_sperrygrove" {
@@ -127,6 +138,7 @@ resource "azurerm_storage_account" "mids" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "harmonia" {
@@ -137,6 +149,7 @@ resource "azurerm_storage_account" "harmonia" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "harmoniapreprod" {
@@ -147,6 +160,7 @@ resource "azurerm_storage_account" "harmoniapreprod" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "harmoniastaging" {
@@ -157,6 +171,7 @@ resource "azurerm_storage_account" "harmoniastaging" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_role_assignment" "harmoniastaging_iam_sperrygrove" {
@@ -173,6 +188,7 @@ resource "azurerm_storage_account" "harmoniadev" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_role_assignment" "harmoniadev_iam_sperrygrove" {
@@ -189,6 +205,7 @@ resource "azurerm_storage_account" "thoughtspot" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_container_registry" "binkops" {
@@ -217,4 +234,5 @@ resource "azurerm_storage_account" "stagingsftp" {
     account_tier = "Standard"
     account_replication_type = "LRS"
     enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
