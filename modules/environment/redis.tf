@@ -21,8 +21,8 @@ resource "azurerm_key_vault_secret" "redis_individual_pass" {
     name = "infra-redis-${each.key}"
     value = jsonencode({
         "host" : azurerm_redis_cache.redis[each.key].hostname,
-        "port" : "${azurerm_redis_cache.redis[each.key].port}",
-        "ssl_port" : "${azurerm_redis_cache.redis[each.key].ssl_port}",
+        "port" : tostring(azurerm_redis_cache.redis[each.key].port),
+        "ssl_port" : tostring(azurerm_redis_cache.redis[each.key].ssl_port),
         "password" : azurerm_redis_cache.redis[each.key].primary_access_key,
         "azure_connection_string" : azurerm_redis_cache.redis[each.key].primary_connection_string,
         "uri" : "redis://:${azurerm_redis_cache.redis[each.key].primary_access_key}@${azurerm_redis_cache.redis[each.key].hostname}:${azurerm_redis_cache.redis[each.key].port}/0",
