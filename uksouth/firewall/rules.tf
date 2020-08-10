@@ -539,6 +539,17 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
+        name = "Harmonia HTTPS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "tools.wasabi.atreemo.co.uk"
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Athena HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
