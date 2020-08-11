@@ -31,3 +31,12 @@ resource "azurerm_postgresql_virtual_network_rule" "workers" {
     server_name = azurerm_postgresql_server.postgres.name
     subnet_id = var.worker_subnet
 }
+
+# TODO remove
+resource "azurerm_postgresql_firewall_rule" "terry_temp" {
+    name = "terry"
+    resource_group_name = azurerm_resource_group.rg.name
+    server_name = azurerm_postgresql_server.postgres.name
+    start_ip_address = "82.24.92.107"
+    end_ip_address = "82.24.92.107"
+}
