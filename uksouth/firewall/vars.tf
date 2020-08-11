@@ -18,3 +18,8 @@ variable "secure_origins" {
     type = list
     default = []
 }
+
+variable "developer_ips" {
+    type = list
+    default = []
+}

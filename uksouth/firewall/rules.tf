@@ -680,7 +680,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     action = "Dnat"
     rule {
         name = "prod_kube"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.developer_ips)
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.0.ip_address]
         translated_address = "10.0.64.4"
@@ -689,7 +689,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "staging_kube"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.developer_ips)
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.1.ip_address]
         translated_address = "10.1.64.4"
@@ -698,7 +698,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "dev_kube"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.developer_ips)
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.2.ip_address]
         translated_address = "10.2.64.4"
@@ -707,7 +707,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
     }
     rule {
         name = "sandbox_kube"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.developer_ips)
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.3.ip_address]
         translated_address = "10.3.64.4"
@@ -717,7 +717,7 @@ resource "azurerm_firewall_nat_rule_collection" "kube" {
 
     rule {
         name = "tools_kube"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.developer_ips)
         destination_ports = ["6443"]
         destination_addresses = [azurerm_public_ip.pips.4.ip_address]
         translated_address = "10.4.64.4"

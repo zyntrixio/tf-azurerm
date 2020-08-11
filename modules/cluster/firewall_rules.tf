@@ -27,7 +27,7 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     }
     rule {
         name = "controller"
-        source_addresses = var.firewall.secure_origins
+        source_addresses = concat(var.firewall.secure_origins, var.firewall.developer_ips)
         destination_ports = [var.firewall.ingress_controller]
         destination_addresses = [var.firewall.public_ip]
         translated_address = cidrhost(azurerm_subnet.controller.address_prefixes[0], 4)

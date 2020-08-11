@@ -11,9 +11,15 @@ locals {
         "194.74.152.11/32", # Ascot Bink HQ
         "217.169.3.233/32", # cpressland@bink.com
         "81.2.99.144/29", # cpressland@bink.com
-        "82.13.29.15/32", # twinchester@bink.com
+        "82.21.178.183/32", # twinchester@bink.com
         "82.24.92.107/32", # tcain@bink.com
-        "82.14.246.185/32", # cl@bink.com - Testing, to be removed later
+    ]
+    developer_ips = [
+        "82.22.136.116/32", # ml@bink.com
+        "82.14.246.185/32", # cl@bink.com
+        "92.232.43.170/32", # akhan@bink.com
+        "82.43.219.91/32", # kaziz@bink.com
+        "86.150.164.212/32", # sperrygrove@bink.com
     ]
 }
 
@@ -103,6 +109,7 @@ module "uksouth-firewall" {
     bastion_ip_address = module.uksouth-bastion.ip_address
     tableau_ip_address = module.uksouth-tableau.ip_address
     secure_origins = local.secure_origins
+    developer_ips = local.developer_ips
 }
 
 module "uksouth-wireguard" {

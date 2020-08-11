@@ -11,6 +11,7 @@ variable firewall { type = object({
     ingress_priority = number
     public_ip = string
     secure_origins = list(string)
+    developer_ips = list(string)
     ingress_http = number
     ingress_https = number
     ingress_controller = number
