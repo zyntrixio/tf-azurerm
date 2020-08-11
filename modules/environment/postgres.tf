@@ -24,9 +24,21 @@ resource "azurerm_postgresql_server" "pg" {
     geo_redundant_backup_enabled = lookup(each.value, "geo_redundant_backup_enabled", false)
     auto_grow_enabled = lookup(each.value, "auto_grow_enabled", false)
 
-    public_network_access_enabled = lookup(each.value, "public_network_access_enabled", false)
+    # public_network_access_enabled = lookup(each.value, "public_network_access_enabled", false)
+    public_network_access_enabled = true
     ssl_enforcement_enabled = lookup(each.value, "ssl_enforcement_enabled", true)
     ssl_minimal_tls_version_enforced = lookup(each.value, "ssl_minimal_tls_version_enforced", "TLS1_2")
+}
+
+# TODO remove
+resource "azurerm_postgresql_firewall_rule" "terry_temp" {
+    for_each = var.postgres_config
+
+    name = "${each.value["name"]}-terry"
+    resource_group_name = azurerm_resource_group.rg.name
+    server_name = azurerm_postgresql_server.pg[each.key].name
+    start_ip_address = "82.24.92.107"
+    end_ip_address = "82.24.92.107"
 }
 
 resource "azurerm_key_vault_secret" "pg_individual_pass" {
