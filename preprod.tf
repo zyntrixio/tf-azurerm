@@ -111,6 +111,8 @@ module "uksouth_preprod_cluster_1" {
         ingress_controller = 6000
     }
 
+    postgres_servers = module.uksouth_preprod_environment.postgres_servers
+
     tags = {
         "Environment" = "Pre-Production",
     }

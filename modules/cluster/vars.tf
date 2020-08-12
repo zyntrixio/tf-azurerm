@@ -17,6 +17,10 @@ variable firewall { type = object({
     ingress_controller = number
 }) }
 
+variable postgres_servers {
+    type = map(string)
+}
+
 variable private_dns { type = map(object({
     resource_group_name = string
     private_dns_zone_name = string

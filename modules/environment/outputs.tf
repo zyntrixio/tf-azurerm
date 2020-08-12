@@ -13,3 +13,6 @@ output "managedidentites" {
     }
 }
 
+output "postgres_servers" {
+    value = { for server in azurerm_postgresql_server.pg : server.name => azurerm_resource_group.rg.name }
+}

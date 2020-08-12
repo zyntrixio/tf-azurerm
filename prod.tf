@@ -78,3 +78,5 @@ output "uksouth_prod_managedidentites" {
     value = module.uksouth_prod_environment.managedidentites
     sensitive = false
 }
+
+# postgres_servers = module.uksouth_preprod_environment.postgres_servers
