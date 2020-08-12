@@ -67,6 +67,11 @@ module "uksouth_preprod_environment" {
     }
 }
 
+output "uksouth_preprod_managedidentites" {
+    value = module.uksouth_preprod_environment.managedidentites
+    sensitive = false
+}
+
 module "uksouth_preprod_cluster_1" {
     source = "./modules/cluster"
     providers = {
@@ -83,7 +88,7 @@ module "uksouth_preprod_cluster_1" {
     worker_count = 5
 
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/sockshop.git"
+    gitops_repo = "git@git.bink.com:GitOps/uksouth-preprod.git"
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
@@ -118,7 +123,3 @@ module "uksouth_preprod_cluster_1" {
     }
 }
 
-output "uksouth_preprod_managedidentites" {
-    value = module.uksouth_preprod_environment.managedidentites
-    sensitive = false
-}
