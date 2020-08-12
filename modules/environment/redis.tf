@@ -36,3 +36,23 @@ resource "azurerm_key_vault_secret" "redis_individual_pass" {
         k8s_namespaces = "default"
     }
 }
+
+resource "azurerm_redis_firewall_rule" "uksouth_firewall" {
+    for_each = var.redis_config
+
+    name = "uksouth_firewall"
+    redis_cache_name = azurerm_redis_cache.redis[each.key].name
+    resource_group_name = azurerm_resource_group.rg.name
+    start_ip = "51.132.44.240"
+    end_ip = "51.132.44.255"
+}
+
+resource "azurerm_redis_firewall_rule" "binkhq" {
+    for_each = var.redis_config
+
+    name = "binkhq"
+    redis_cache_name = azurerm_redis_cache.redis[each.key].name
+    resource_group_name = azurerm_resource_group.rg.name
+    start_ip = "194.74.152.11"
+    end_ip = "194.74.152.11"
+}
