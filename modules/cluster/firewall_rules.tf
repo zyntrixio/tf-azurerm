@@ -35,3 +35,20 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         protocols = ["TCP"]
     }
 }
+resource "azurerm_firewall_network_rule_collection" "egress" {
+    provider = azurerm.core
+
+    name = "${var.cluster_name}-egress"
+    azure_firewall_name = var.firewall.firewall_name
+    resource_group_name = var.firewall.resource_group_name
+    priority = var.firewall.ingress_priority
+    action = "Allow"
+
+    rule {
+        name = "Azure Redis"
+        source_addresses = [var.vnet_cidr]
+        destination_ports = ["6379", "6380"]
+        destination_addresses = ["*"]
+        protocols = ["TCP"]
+    }
+}

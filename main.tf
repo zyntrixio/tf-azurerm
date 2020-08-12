@@ -86,6 +86,12 @@ module "uksouth-chef" {
 
 module "uksouth-frontdoor" {
     source = "./uksouth/frontdoor"
+
+    backends = {
+        "preprod" : [
+            # module.uksouth_preprod_cluster_1.frontdoor_backend_pool
+        ]
+    }
 }
 
 module "uksouth-dev" {

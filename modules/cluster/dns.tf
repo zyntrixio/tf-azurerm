@@ -10,3 +10,22 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_link" {
     registration_enabled = each.value["should_register"]
 }
 
+resource "azurerm_dns_a_record" "api_record" {
+    provider = azurerm.core
+
+    name = "api.${var.cluster_name}.uksouth"
+    zone_name = var.public_dns["bink_sh"].dns_zone_name
+    resource_group_name = var.public_dns["bink_sh"].resource_group_name
+    ttl = 300
+    records = [var.firewall.public_ip]
+}
+
+resource "azurerm_dns_a_record" "policies_record" {
+    provider = azurerm.core
+
+    name = "policies.${var.cluster_name}.uksouth"
+    zone_name = var.public_dns["bink_sh"].dns_zone_name
+    resource_group_name = var.public_dns["bink_sh"].resource_group_name
+    ttl = 300
+    records = [var.firewall.public_ip]
+}

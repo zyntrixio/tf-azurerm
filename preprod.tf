@@ -94,6 +94,7 @@ module "uksouth_preprod_cluster_1" {
 
     # DNS zones
     private_dns = module.uksouth-dns.private_dns
+    public_dns = module.uksouth-dns.public_dns
 
     # Peers    
     peers = {
@@ -108,6 +109,7 @@ module "uksouth_preprod_cluster_1" {
         firewall_name = module.uksouth-firewall.firewall_name
         resource_group_name = module.uksouth-firewall.resource_group_name
         ingress_priority = 800
+        rule_priority = 800
         public_ip = module.uksouth-firewall.public_ips.15.ip_address
         secure_origins = local.secure_origins
         developer_ips = local.developer_ips

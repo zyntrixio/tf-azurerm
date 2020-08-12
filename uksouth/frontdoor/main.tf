@@ -233,6 +233,16 @@ resource "azurerm_frontdoor" "frontdoor" {
             https_port = 443
         }
 
+        dynamic "backend" {
+            for_each = var.backends["preprod"]
+            content {
+                host_header = backend.value["host_header"]
+                address = backend.value["address"]
+                http_port = backend.value["http_port"]
+                https_port = backend.value["https_port"]
+            }
+        }
+
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }

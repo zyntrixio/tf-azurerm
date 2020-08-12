@@ -7,3 +7,12 @@ variable "tags" {
         Environment = "Production"
     }
 }
+
+variable backends {
+    type = map(list(object({
+        host_header = string
+        address = string
+        http_port = number
+        https_port = number
+    })))
+}

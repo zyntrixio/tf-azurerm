@@ -32,3 +32,12 @@ output "private_dns" {
         }
     }
 }
+
+output "public_dns" {
+    value = {
+        "bink_sh" = {
+            resource_group_name = azurerm_resource_group.rg.name
+            dns_zone_name = azurerm_dns_zone.bink-sh.name
+        }
+    }
+}

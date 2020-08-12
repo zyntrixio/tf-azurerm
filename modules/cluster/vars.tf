@@ -9,6 +9,7 @@ variable firewall { type = object({
     firewall_name = string
     resource_group_name = string
     ingress_priority = number
+    rule_priority = number
     public_ip = string
     secure_origins = list(string)
     developer_ips = list(string)
@@ -25,6 +26,11 @@ variable private_dns { type = map(object({
     resource_group_name = string
     private_dns_zone_name = string
     should_register = bool
+})) }
+
+variable public_dns { type = map(object({
+    resource_group_name = string
+    dns_zone_name = string
 })) }
 
 variable peers { type = map(object({
