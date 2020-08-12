@@ -93,7 +93,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         access = "Allow"
     }
     security_rule {
-        name = "AllowHttpTraffic"
+        name = "AllowHttpTrafficFromLoadbalancer"
         priority = 120
         protocol = "TCP"
         source_port_range = "*"
@@ -104,7 +104,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         access = "Allow"
     }
     security_rule {
-        name = "AllowHttpsTraffic"
+        name = "AllowHttpsTrafficFromLoadbalancer"
         priority = 130
         protocol = "TCP"
         source_port_range = "*"
@@ -115,8 +115,30 @@ resource "azurerm_network_security_group" "worker_nsg" {
         access = "Allow"
     }
     security_rule {
-        name = "AllowPrometheusNodeExporter"
+        name = "AllowHttpTrafficFromFirewall"
         priority = 140
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 30000
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = "192.168.4.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowHttpsTrafficFromFirewall"
+        priority = 150
+        protocol = "TCP"
+        source_port_range = "*"
+        destination_port_range = 30001
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+        source_address_prefix = "192.168.4.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowPrometheusNodeExporter"
+        priority = 160
         protocol = "TCP"
         source_port_range = "*"
         destination_port_range = 9100
@@ -277,6 +299,15 @@ resource "azurerm_subnet_route_table_association" "controller_rt_assoc" {
     route_table_id = azurerm_route_table.rt.id
 }
 
+resource "azurerm_postgresql_virtual_network_rule" "workers" {
+    for_each = var.postgres_servers
+
+    name = "${var.cluster_name}-workers"
+    resource_group_name = each.value
+    server_name = each.key
+    subnet_id = azurerm_subnet.worker.id
+}
+
 resource "azurerm_lb" "lb" {
     name = "${var.cluster_name}-lb"
     location = azurerm_resource_group.rg.location
@@ -299,11 +330,38 @@ resource "azurerm_lb_backend_address_pool" "worker_pool" {
     resource_group_name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_postgresql_virtual_network_rule" "workers" {
-    for_each = var.postgres_servers
+resource "azurerm_lb_rule" "https" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "HTTPS"
+    protocol = "Tcp"
+    frontend_port = 30001
+    backend_port = 30001
+    frontend_ip_configuration_name = "workers"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+}
 
-    name = "${var.cluster_name}-workers"
-    resource_group_name = each.value
-    server_name = each.key
-    subnet_id = azurerm_subnet.worker.id
+resource "azurerm_lb_rule" "http" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "HTTP"
+    protocol = "Tcp"
+    frontend_port = 30000
+    backend_port = 30000
+    frontend_ip_configuration_name = "workers"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+}
+
+resource "azurerm_lb_probe" "https" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "https-probe"
+    port = 30001
+}
+
+resource "azurerm_lb_probe" "http" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "http-probe"
+    port = 30000
 }

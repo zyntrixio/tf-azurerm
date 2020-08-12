@@ -13,7 +13,7 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         destination_ports = [var.firewall.ingress_http]
         destination_addresses = [var.firewall.public_ip]
         translated_address = cidrhost(azurerm_subnet.worker.address_prefixes[0], 4)
-        translated_port = "80"
+        translated_port = "30000"
         protocols = ["TCP"]
     }
     rule {
@@ -22,7 +22,7 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         destination_ports = [var.firewall.ingress_https]
         destination_addresses = [var.firewall.public_ip]
         translated_address = cidrhost(azurerm_subnet.worker.address_prefixes[0], 4)
-        translated_port = "443"
+        translated_port = "30001"
         protocols = ["TCP"]
     }
     rule {

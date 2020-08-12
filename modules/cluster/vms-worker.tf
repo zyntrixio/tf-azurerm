@@ -119,4 +119,8 @@ resource "azurerm_network_interface_backend_address_pool_association" "worker-ba
     network_interface_id = element(azurerm_network_interface.worker.*.id, count.index)
     ip_configuration_name = "primary"
     backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+    depends_on = [
+        azurerm_lb_rule.https,
+        azurerm_lb_rule.http
+    ]
 }
