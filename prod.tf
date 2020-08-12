@@ -69,7 +69,8 @@ module "uksouth_prod_environment" {
     storage_config = {
         common = {
             name = "binkuksouthprod",
-            account_replication_type = "GZRS",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
         },
     }
 }
@@ -79,4 +80,62 @@ output "uksouth_prod_managedidentites" {
     sensitive = false
 }
 
-# postgres_servers = module.uksouth_preprod_environment.postgres_servers
+
+module "uksouth_prod_cluster_0" {
+    source = "./modules/cluster"
+    providers = {
+        azurerm = azurerm.uk_production
+        azurerm.core = azurerm
+    }
+
+    resource_group_name = "uksouth-prod-k0"
+    cluster_name = "prod0"
+    location = "uksouth"
+    vnet_cidr = "10.169.0.0/16"
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    worker_count = 10
+
+    # Gitops repo, Managed identity for syncing common secrets
+    gitops_repo = "git@git.bink.com:GitOps/uksouth-prod.git"
+    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
+    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+
+    # DNS zones
+    private_dns = module.uksouth-dns.private_dns
+    public_dns = module.uksouth-dns.public_dns
+
+    # Peers    
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+        elasticsearch = {
+            vnet_id = module.uksouth-elasticsearch.vnet_id
+            vnet_name = module.uksouth-elasticsearch.vnet_name
+            resource_group_name = module.uksouth-elasticsearch.resource_group_name
+        }
+    }
+
+    firewall = {
+        firewall_name = module.uksouth-firewall.firewall_name
+        resource_group_name = module.uksouth-firewall.resource_group_name
+        ingress_priority = 900
+        rule_priority = 900
+        public_ip = module.uksouth-firewall.public_ips.0.ip_address
+        secure_origins = local.secure_origins
+        developer_ips = local.developer_ips
+        ingress_source = "*"
+        ingress_http = 8000
+        ingress_https = 4000
+        ingress_controller = 6000
+    }
+
+    postgres_servers = module.uksouth_prod_environment.postgres_servers
+
+    tags = {
+        "Environment" = "Production",
+    }
+}

@@ -62,7 +62,7 @@ module "uksouth_preprod_environment" {
     storage_config = {
         common = {
             name = "binkuksouthpreprod",
-            account_replication_type = "GZRS",
+            account_replication_type = "ZRS",
         },
     }
 }
