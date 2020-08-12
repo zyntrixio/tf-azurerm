@@ -29,3 +29,13 @@ resource "azurerm_dns_a_record" "policies_record" {
     ttl = 300
     records = [var.firewall.public_ip]
 }
+
+resource "azurerm_dns_a_record" "base_record" {
+    provider = azurerm.core
+
+    name = "${var.cluster_name}.uksouth"
+    zone_name = var.public_dns["bink_sh"].dns_zone_name
+    resource_group_name = var.public_dns["bink_sh"].resource_group_name
+    ttl = 300
+    records = [var.firewall.public_ip]
+}
