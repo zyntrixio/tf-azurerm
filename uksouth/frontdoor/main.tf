@@ -541,10 +541,10 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "starbug-uksouth-bink-sh"
         backend {
-            host_header = "starbug.uksouth.bink.sh"
-            address = "starbug.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
+            host_header = "starbug.prod0.uksouth.bink.sh"
+            address = "starbug.prod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"

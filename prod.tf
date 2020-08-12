@@ -38,7 +38,7 @@ module "uksouth_prod_environment" {
         common = {
             name = "bink-uksouth-prod-common",
             sku_name = "GP_Gen5_2",
-            databases = ["test1"]
+            databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
         },
         hermes = {
             name = "bink-uksouth-prod-hermes",

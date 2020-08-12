@@ -25,12 +25,12 @@ resource "azurerm_postgresql_server" "postgres" {
 }
 
 # Allow prod kube workers to access
-resource "azurerm_postgresql_virtual_network_rule" "workers" {
-    name = "workers"
-    resource_group_name = azurerm_resource_group.rg.name
-    server_name = azurerm_postgresql_server.postgres.name
-    subnet_id = var.worker_subnet
-}
+# resource "azurerm_postgresql_virtual_network_rule" "workers" {
+#     name = "workers"
+#     resource_group_name = azurerm_resource_group.rg.name
+#     server_name = azurerm_postgresql_server.postgres.name
+#     subnet_id = var.worker_subnet
+# }
 
 # TODO remove
 resource "azurerm_postgresql_firewall_rule" "terry_temp" {
