@@ -142,7 +142,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         protocol = "TCP"
         source_port_range = "*"
         destination_port_range = 9100
-        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
         source_address_prefix = "10.4.0.0/18"
         direction = "Inbound"
         access = "Allow"
