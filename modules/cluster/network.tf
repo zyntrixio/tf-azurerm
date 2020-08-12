@@ -192,8 +192,19 @@ resource "azurerm_network_security_group" "controller_nsg" {
         access = "Allow"
     }
     security_rule {
-        name = "AllowPrometheusNodeExporter"
+        name = "AllowKubeAPIAccessExternal"
         priority = 110
+        protocol = "TCP"
+        destination_port_range = 6443
+        source_port_range = "*"
+        destination_address_prefix = azurerm_subnet.controller.address_prefixes[0]
+        source_address_prefix = "192.168.0.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowPrometheusNodeExporter"
+        priority = 120
         protocol = "TCP"
         source_port_range = "*"
         destination_port_range = 9100

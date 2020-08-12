@@ -226,12 +226,13 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     backend_pool {
         name = "api-preprod-uksouth-bink-sh"
-        backend {
-            host_header = "api.preprod.uksouth.bink.sh"
-            address = "api.preprod.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
-        }
+        # TODO remove
+        # backend {
+        #     host_header = "api.preprod.uksouth.bink.sh"
+        #     address = "api.preprod.uksouth.bink.sh"
+        #     http_port = 80
+        #     https_port = 443
+        # }
 
         dynamic "backend" {
             for_each = var.backends["preprod"]
