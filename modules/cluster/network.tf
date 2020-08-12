@@ -121,7 +121,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         source_port_range = "*"
         destination_port_range = 30000
         destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
-        source_address_prefix = "192.168.4.0/24"
+        source_address_prefix = "192.168.0.0/24"
         direction = "Inbound"
         access = "Allow"
     }
@@ -132,7 +132,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
         source_port_range = "*"
         destination_port_range = 30001
         destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
-        source_address_prefix = "192.168.4.0/24"
+        source_address_prefix = "192.168.0.0/24"
         direction = "Inbound"
         access = "Allow"
     }
@@ -339,6 +339,7 @@ resource "azurerm_lb_rule" "https" {
     backend_port = 30001
     frontend_ip_configuration_name = "workers"
     backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+    probe_id = azurerm_lb_probe.https.id
 }
 
 resource "azurerm_lb_rule" "http" {
@@ -350,6 +351,7 @@ resource "azurerm_lb_rule" "http" {
     backend_port = 30000
     frontend_ip_configuration_name = "workers"
     backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+    probe_id = azurerm_lb_probe.http.id
 }
 
 resource "azurerm_lb_probe" "https" {

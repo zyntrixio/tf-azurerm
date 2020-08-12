@@ -118,6 +118,7 @@ module "uksouth_preprod_cluster_1" {
         public_ip = module.uksouth-firewall.public_ips.15.ip_address
         secure_origins = local.secure_origins
         developer_ips = local.developer_ips
+        ingress_source = "*"
         ingress_http = 8000
         ingress_https = 4000
         ingress_controller = 6000

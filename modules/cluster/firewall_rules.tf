@@ -9,7 +9,7 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
 
     rule {
         name = "http"
-        source_addresses = ["*"]
+        source_addresses = [var.firewall.ingress_source]
         destination_ports = [var.firewall.ingress_http]
         destination_addresses = [var.firewall.public_ip]
         translated_address = cidrhost(azurerm_subnet.worker.address_prefixes[0], 4)
@@ -18,7 +18,7 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     }
     rule {
         name = "https"
-        source_addresses = ["*"]
+        source_addresses = [var.firewall.ingress_source]
         destination_ports = [var.firewall.ingress_https]
         destination_addresses = [var.firewall.public_ip]
         translated_address = cidrhost(azurerm_subnet.worker.address_prefixes[0], 4)
