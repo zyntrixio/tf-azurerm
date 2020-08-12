@@ -1140,7 +1140,8 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
             "10.0.64.4/32",  # Prod
             "10.1.64.4/32",  # Staging
             "10.2.64.4/32",  # Dev
-            "10.3.64.4/32"   # Sandbox
+            "10.3.64.4/32",   # Sandbox
+            "10.0.0.0/8"  # Everywhere :/
         ]
         protocols = ["TCP"]
     }
