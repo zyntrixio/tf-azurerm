@@ -165,8 +165,7 @@ module "uksouth-storage" {
 module "uksouth-tableau" {
     source = "./uksouth/tableau"
 
-    # worker_subnet = module.uksouth-prod.subnet_ids.worker
-    worker_subnet = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/subnet-01"
+    worker_subnet = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod-k0/providers/Microsoft.Network/virtualNetworks/prod0-vnet/subnets/worker"
     firewall_vnet_id = module.uksouth-firewall.vnet_id
     vpn_subnet_id = module.uksouth-wireguard.subnet_id
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host

@@ -15,3 +15,7 @@ output "frontdoor_backend_policies_pool" {
         https_port = var.firewall.ingress_https
     }
 }
+
+output "worker_subnet" {
+    value = azurerm_subnet.worker.id
+}
