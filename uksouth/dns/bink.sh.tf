@@ -103,3 +103,11 @@ resource "azurerm_private_dns_a_record" "sh-prod-k8s" {
     ttl = 300
     records = ["10.0.64.4"]
 }
+
+resource "azurerm_private_dns_a_record" "sh-cluster-autodiscover" {
+    name = "cluster-autodiscover"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["10.4.0.4"]
+}
