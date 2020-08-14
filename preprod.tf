@@ -121,6 +121,7 @@ module "uksouth_preprod_cluster_1" {
         ingress_source = "*"
         ingress_http = 8000
         ingress_https = 4000
+        ingress_sftp = 2000
         ingress_controller = 6000
     }
 

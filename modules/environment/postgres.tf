@@ -49,7 +49,8 @@ resource "azurerm_key_vault_secret" "pg_individual_pass" {
         "host" : azurerm_postgresql_server.pg[each.key].fqdn,
         "port" : "5432",
         "admin_user" : "${azurerm_postgresql_server.pg[each.key].administrator_login}@${azurerm_postgresql_server.pg[each.key].name}",
-        "password" : random_password.pg[each.key].result
+        "password" : random_password.pg[each.key].result,
+        "dsn" : "host=${azurerm_postgresql_server.pg[each.key].fqdn} user=${azurerm_postgresql_server.pg[each.key].administrator_login}@${azurerm_postgresql_server.pg[each.key].name} sslmode=verify-ca password=${random_password.pg[each.key].result}"
         # "databases": each.value["databases"]
     })
     content_type = "application/json"

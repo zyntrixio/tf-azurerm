@@ -365,6 +365,18 @@ resource "azurerm_lb_rule" "http" {
     probe_id = azurerm_lb_probe.http.id
 }
 
+# resource "azurerm_lb_rule" "sftp" {
+#     resource_group_name = azurerm_resource_group.rg.name
+#     loadbalancer_id = azurerm_lb.lb.id
+#     name = "SFTP"
+#     protocol = "Tcp"
+#     frontend_port = 30002
+#     backend_port = 30002
+#     frontend_ip_configuration_name = "workers"
+#     backend_address_pool_id = azurerm_lb_backend_address_pool.worker_pool.id
+#     probe_id = azurerm_lb_probe.sftp.id
+# }
+
 resource "azurerm_lb_probe" "https" {
     resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
@@ -378,3 +390,10 @@ resource "azurerm_lb_probe" "http" {
     name = "http-probe"
     port = 30000
 }
+
+# resource "azurerm_lb_probe" "sftp" {
+#     resource_group_name = azurerm_resource_group.rg.name
+#     loadbalancer_id = azurerm_lb.lb.id
+#     name = "http-probe"
+#     port = 30002
+# }
