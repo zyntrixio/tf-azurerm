@@ -843,24 +843,6 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "wireguard" {
-    name = "wireguard"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 220
-    action = "Dnat"
-
-    rule {
-        name = "wireguard"
-        source_addresses = ["*"]
-        destination_ports = ["51820"]
-        destination_addresses = [azurerm_public_ip.pips.9.ip_address]
-        translated_address = var.wireguard_ip_address
-        translated_port = "51820"
-        protocols = ["UDP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     name = "gitlab"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -962,86 +944,6 @@ resource "azurerm_firewall_network_rule_collection" "sentry" {
         source_addresses = ["10.3.0.0/16"]
         destination_ports = ["80", "443"]
         destination_addresses = ["${var.sentry_ip_address}/32"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "wireguard" {
-    name = "Wireguard"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 130
-    action = "Allow"
-
-    rule {
-        name = "wireguard-to-prod-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.0.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-staging-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.1.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-dev-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.2.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-sandbox-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.3.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-tools-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.4.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-tools-k8s"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["6443"]
-        destination_addresses = ["10.4.64.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-tools-http"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["10.4.0.4/32"]
-        protocols = ["TCP"]
-    }
-    # 192.168.1.0/24
-    rule {
-        name = "wireguard-to-sentry"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["192.168.2.5/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-monitoring"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["192.168.6.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wireguard-to-tableau"
-        source_addresses = ["192.168.1.4/32"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["192.168.7.4/32"]
         protocols = ["TCP"]
     }
 }

@@ -113,24 +113,14 @@ module "uksouth-dev" {
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
-    wireguard_vnet_id = module.uksouth-wireguard.vnet_id
     sentry_vnet_id = module.uksouth-sentry.vnet_id
     tableau_vnet_id = module.uksouth-tableau.vnet_id
     tools_vnet_id = module.uksouth-tools.vnet_id
-    wireguard_ip_address = module.uksouth-wireguard.ip_address
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
     tableau_ip_address = module.uksouth-tableau.ip_address
     secure_origins = local.secure_origins
     developer_ips = local.developer_ips
-}
-
-module "uksouth-wireguard" {
-    source = "./uksouth/wireguard"
-
-    firewall_vnet_id = module.uksouth-firewall.vnet_id
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-monitoring" {
@@ -167,25 +157,8 @@ module "uksouth-tableau" {
 
     worker_subnet = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod-k0/providers/Microsoft.Network/virtualNetworks/prod0-vnet/subnets/worker"
     firewall_vnet_id = module.uksouth-firewall.vnet_id
-    vpn_subnet_id = module.uksouth-wireguard.subnet_id
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
-}
-
-# module "uksouth-prod" {
-#     source = "./uksouth/prod"
-
-#     vpn_subnet_id = module.uksouth-wireguard.subnet_id
-#     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-#     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-#     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-#     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
-# }
-
-module "uksouth-preprod" {
-    source = "./uksouth/preprod"
-    # worker_subnet = module.uksouth-prod.subnet_ids.worker
-    worker_subnet = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet/subnets/subnet-01"
 }
 
 module "uksouth-sentry" {
