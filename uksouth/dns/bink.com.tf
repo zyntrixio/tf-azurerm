@@ -18,7 +18,7 @@ locals {
         "api.za" = "127.0.0.1",
         "api.dev.za" = "127.0.0.1"
         "api.staging.za" = "127.0.0.1",
-        
+
         # United States
         "api.us" = "127.0.0.1",
         "api.dev.us" = "127.0.0.1",
@@ -26,7 +26,7 @@ locals {
 
         # Bink Offices
         "ascot" = "194.74.152.11",  # |
-                                    # | Duplicates
+        # | Duplicates
         "hq" = "194.74.152.11",     # |
 
         # SFTP
@@ -215,9 +215,9 @@ resource "azurerm_dns_srv_record" "srv" {
 
     record {
         priority = each.value["priority"]
-        weight   = each.value["weight"]
-        port     = each.value["port"]
-        target   = each.value["target"]
+        weight = each.value["weight"]
+        port = each.value["port"]
+        target = each.value["target"]
     }
 }
 
