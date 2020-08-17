@@ -130,7 +130,6 @@ module "uksouth_prod_cluster_0" {
         ingress_source = "*"
         ingress_http = 8000
         ingress_https = 4000
-        ingress_sftp = 2222
         ingress_controller = 6000
     }
 
