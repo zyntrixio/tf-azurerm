@@ -26,15 +26,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         protocols = ["TCP"]
     }
     rule {
-        name = "sftp"
-        source_addresses = [var.firewall.ingress_source]
-        destination_ports = [var.firewall.ingress_sftp]
-        destination_addresses = [var.firewall.public_ip]
-        translated_address = cidrhost(azurerm_subnet.worker.address_prefixes[0], 4)
-        translated_port = "30002"
-        protocols = ["TCP"]
-    }
-    rule {
         name = "controller"
         source_addresses = concat(var.firewall.secure_origins, var.firewall.developer_ips)
         destination_ports = [var.firewall.ingress_controller]

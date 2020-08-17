@@ -16,7 +16,6 @@ variable firewall { type = object({
     ingress_source = string
     ingress_http = number
     ingress_https = number
-    ingress_sftp = number
     ingress_controller = number
 }) }
 

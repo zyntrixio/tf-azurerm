@@ -10,9 +10,6 @@ resource "azurerm_virtual_network_peering" "peer" {
     allow_forwarded_traffic = true
 }
 
-
-
-
 # Remote peers
 resource "azurerm_virtual_network_peering" "remote_peer" {
     for_each = var.peers

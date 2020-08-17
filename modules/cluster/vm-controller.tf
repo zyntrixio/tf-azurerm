@@ -14,7 +14,11 @@ resource "azurerm_network_interface" "controller" {
 }
 
 resource "azurerm_linux_virtual_machine" "controller" {
-    depends_on = [commandpersistence_cmd.certs]
+    depends_on = [
+        commandpersistence_cmd.certs,
+        azurerm_virtual_network_peering.peer,
+        azurerm_virtual_network_peering.remote_peer,
+    ]
 
     name = "${var.cluster_name}-controller"
     resource_group_name = azurerm_resource_group.rg.name
