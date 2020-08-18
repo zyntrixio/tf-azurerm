@@ -36,21 +36,25 @@ module "uksouth_preprod_environment" {
         common = {
             name = "bink-uksouth-preprod-common",
             sku_name = "GP_Gen5_2",
+            storage_gb = 100,
             databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
         },
         hermes = {
             name = "bink-uksouth-preprod-hermes",
             sku_name = "GP_Gen5_2",
+            storage_gb = 100,
             databases = ["hermes"]
         },
         hades = {
             name = "bink-uksouth-preprod-hades",
             sku_name = "GP_Gen5_2",
+            storage_gb = 100,
             databases = ["hades"]
         },
         harmonia = {
             name = "bink-uksouth-preprod-harmonia",
             sku_name = "GP_Gen5_4",
+            storage_gb = 100,
             databases = ["harmonia"]
         },
     }

@@ -28,6 +28,7 @@ module "uksouth_performance_environment" {
         common = {
             name = "bink-uksouth-perf-common",
             sku_name = "GP_Gen5_32",
+            storage_gb = 1000,
             databases = ["*"]
         },
     }

@@ -16,6 +16,7 @@ variable postgres_config {
         name = string
         databases = list(string)
         sku_name = string
+        storage_gb = number
     }))
     default = {}
 }
