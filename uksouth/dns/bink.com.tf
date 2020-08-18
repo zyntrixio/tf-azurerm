@@ -40,12 +40,15 @@ locals {
         "chef" = "13.95.9.172", # not convinced we're using this, this might be the OG Amazon AWS instance
         "controller" = "137.117.246.94", # no idea what this is
         "docs" = "104.40.220.129", # can probably go away,
+        "filewave" = "51.136.16.203",
         "git" = "51.132.44.248",
     }
     cname_records = {
 
         # API/Front Door
         "policies" = "bink-frontdoor.azurefd.net",
+        "policies.gb" = "bink-frontdoor.azurefd.net"
+        "policies.staging.gb" = "bink-frontdoor.azurefd.net",
         "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
         "mcwallet.dev.gb" = "bink-frontdoor.azurefd.net",
         "api" = "bink-frontdoor.azurefd.net",
@@ -55,7 +58,6 @@ locals {
         "api.dev.gb" = "bink-frontdoor.azurefd.net",
         "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
         "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
-        "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
         "kibana.gb" = "bink-frontdoor.azurefd.net",
         "starbug.gb" = "bink-frontdoor.azurefd.net",
 
@@ -78,6 +80,8 @@ locals {
 
         # Zendesk
         "help" = "binkcx.zendesk.com",
+        "zendesk1" = "mail1.zendesk.com",
+        "zendesk1" = "mail2.zendesk.com",
         "zendesk3" = "mail3.zendesk.com",
         "zendesk4" = "mail4.zendesk.com",
 
@@ -122,7 +126,7 @@ locals {
             priority = 100,
             weight = 1,
             port = 443,
-            target = "sipfed.online.lync.com",
+            target = "sipdir.online.lync.com",
         }
         "_sipfederationtls._tcp.teams" = {
             priority = 100,
@@ -134,7 +138,7 @@ locals {
             priority = 100,
             weight = 1,
             port = 443,
-            target = "sipfed.online.lync.com",
+            target = "sipdir.online.lync.com",
         }
     }
     txt_records = {
