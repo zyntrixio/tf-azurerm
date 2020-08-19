@@ -111,3 +111,11 @@ resource "azurerm_private_dns_a_record" "sh-cluster-autodiscover" {
     ttl = 300
     records = ["10.4.0.4"]
 }
+
+resource "azurerm_private_dns_a_record" "sh-aqua-gateway" {
+    name = "aqua-gateway"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["10.4.0.4"]
+}
