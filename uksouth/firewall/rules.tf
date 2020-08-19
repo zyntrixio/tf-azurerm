@@ -1065,4 +1065,11 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         destination_addresses = ["10.4.0.0/18"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "allkube-to-toolshttps"
+        source_addresses = ["10.0.0.0/8"]
+        destination_ports = ["443"]
+        destination_addresses = ["10.4.0.4/32"]
+        protocols = ["TCP"]
+    }
 }
