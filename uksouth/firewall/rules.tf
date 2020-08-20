@@ -1072,4 +1072,11 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         destination_addresses = ["10.4.0.4/32"]
         protocols = ["TCP"]
     }
+    rule {  // TEMP to test aqua
+        name = "allkube-to-toolshttpsalt"
+        source_addresses = ["10.0.0.0/8"]
+        destination_ports = ["8443"]
+        destination_addresses = ["10.4.0.4/32"]
+        protocols = ["TCP"]
+    }
 }
