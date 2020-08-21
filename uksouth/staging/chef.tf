@@ -3,9 +3,9 @@ resource "chef_environment" "env" {
     cookbook_constraints = {
         bifrost = "= 2.9.0"
         romanoff = "= 2.1"
-        fury = "= 1.5.1"
         jarvis = "= 2.1.0"
-        nebula = "= 2.0.6"
+        fury = ">= 1.6.0"
+        nebula = "= 2.1.0"
     }
 
     default_attributes_json = jsonencode({

@@ -3,7 +3,8 @@ resource "chef_environment" "env" {
     cookbook_constraints = {
         manhattan = "= 2.0.2"
         romanoff = ">= 2.0.2"
-        fury = ">= 1.5.1"
+        fury = ">= 1.6.0"
+        nebula = "= 2.1.0"
         jarvis = ">= 2.1.0"
     }
 
