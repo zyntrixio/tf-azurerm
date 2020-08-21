@@ -94,9 +94,9 @@ module "uksouth_dev_cluster_0" {
         secure_origins = local.secure_origins
         developer_ips = local.developer_ips
         ingress_source = "*"
-        ingress_http = 8000
-        ingress_https = 4000
-        ingress_controller = 6000
+        ingress_http = 8050
+        ingress_https = 4050
+        ingress_controller = 6050
     }
 
     postgres_servers = module.uksouth_dev_environment.postgres_servers
