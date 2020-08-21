@@ -3,7 +3,7 @@ resource "chef_environment" "env" {
     cookbook_constraints = {
         bifrost = "= 2.9.0"
         romanoff = "= 2.1"
-        fury = ">= 1.6.0"
+        fury = ">= 1.6.1"
         nebula = "= 2.1.0"
     }
 
