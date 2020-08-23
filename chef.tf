@@ -40,3 +40,12 @@ resource "chef_role" "etcd" {
         "recipe[jarvis]"
     ]
 }
+
+resource "chef_role" "sftp" {
+    name = "sftp"
+    run_list = [
+        "recipe[fury]",
+        "recipe[nebula]",
+        "recipe[jarvis]"
+    ]
+}

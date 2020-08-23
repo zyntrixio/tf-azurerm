@@ -47,6 +47,69 @@ module "uksouth_dev_environment" {
     }
 }
 
+module "uksouth_dev_sftp" {
+    source = "./modules/sftp"
+    providers = {
+        azurerm = azurerm.uk_dev
+        azurerm.core = azurerm
+    }
+    resource_group_name = "uksouth-dev-sftp"
+    location = "uksouth"
+    tags = {
+        "Environment" = "Dev",
+    }
+
+    resource_group_iam = {
+        Backend = {
+            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            role = "Reader",
+        },
+        QA = {
+            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            role = "Reader",
+        },
+    }
+
+    private_dns = module.uksouth-dns.private_dns
+    public_dns = module.uksouth-dns.public_dns
+
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+        elasticsearch = {
+            vnet_id = module.uksouth-elasticsearch.vnet_id
+            vnet_name = module.uksouth-elasticsearch.vnet_name
+            resource_group_name = module.uksouth-elasticsearch.resource_group_name
+        }
+    }
+
+    sftp_users = {
+        "users" : {
+            "sftp" : [
+                {
+                    "name" : "binktest",
+                    "id" :  "4000",
+                    "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELQcHnP/OLHDHoBciexk8gkrD/H4cUSbWVNjhDKmWNp"
+                }
+            ]
+        }
+    }
+
+    vnet_cidr = "192.168.25.0/24"
+
+    firewall = {
+        firewall_name = module.uksouth-firewall.firewall_name
+        resource_group_name = module.uksouth-firewall.resource_group_name
+        ingress_priority = 510
+        public_ip = module.uksouth-firewall.public_ips.2.ip_address
+        ingress_source = "*"
+        ingress_sftp = 2222
+    }
+}
+
 module "uksouth_dev_cluster_0" {
     source = "./modules/cluster"
     providers = {
