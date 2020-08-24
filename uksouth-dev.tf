@@ -91,7 +91,7 @@ module "uksouth_dev_sftp" {
             "sftp" : [
                 {
                     "name" : "binktest",
-                    "id" :  "4000",
+                    "id" : "4000",
                     "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELQcHnP/OLHDHoBciexk8gkrD/H4cUSbWVNjhDKmWNp"
                 }
             ]
