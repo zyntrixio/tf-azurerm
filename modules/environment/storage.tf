@@ -9,6 +9,8 @@ resource "azurerm_storage_account" "storage" {
     account_tier = lookup(each.value, "account_tier", "Standard")
     account_replication_type = lookup(each.value, "account_replication_type", "ZRS")
     min_tls_version = "TLS1_2"
+
+    allow_blob_public_access = true
 }
 
 resource "azurerm_key_vault_secret" "storage_individual_pass" {

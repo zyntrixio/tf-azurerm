@@ -1,12 +1,12 @@
-module "uksouth_performance_environment" {
+module "uksouth_sit_environment" {
     source = "./modules/environment"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
-    resource_group_name = "uksouth-perf"
+    resource_group_name = "uksouth-sit"
     location = "uksouth"
     tags = {
-        "Environment" = "Performance",
+        "Environment" = "Barclays SIT",
     }
 
     resource_group_iam = {
@@ -27,45 +27,43 @@ module "uksouth_performance_environment" {
 
     postgres_config = {
         common = {
-            name = "bink-uksouth-perf-common",
-            sku_name = "GP_Gen5_32",
+            name = "bink-uksouth-sit-common",
+            sku_name = "GP_Gen5_4",
             storage_gb = 1000,
             databases = ["*"]
         },
     }
     redis_config = {
         common = {
-            name = "bink-uksouth-perf-common",
-            family = "P",
-            sku_name = "Premium",
+            name = "bink-uksouth-sit-common",
         },
     }
     storage_config = {
         common = {
-            name = "binkuksouthperf",
+            name = "binkuksouthsit",
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
     }
 }
 
-module "uksouth_performance_cluster_0" {
+module "uksouth_sit_cluster_0" {
     source = "./modules/cluster"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
     }
 
-    resource_group_name = "uksouth-perf-k0"
-    cluster_name = "perf0"
+    resource_group_name = "uksouth-sit-k0"
+    cluster_name = "sit0"
     location = "uksouth"
-    vnet_cidr = "10.43.0.0/16"
+    vnet_cidr = "10.187.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-    worker_count = 40
+    worker_count = 6
 
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/uksouth-performance.git"
+    gitops_repo = "git@git.bink.com:GitOps/uksouth-sit.git"
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
@@ -90,20 +88,20 @@ module "uksouth_performance_cluster_0" {
     firewall = {
         firewall_name = module.uksouth-firewall.firewall_name
         resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 950
-        rule_priority = 950
-        public_ip = module.uksouth-firewall.public_ips.3.ip_address
+        ingress_priority = 1180
+        rule_priority = 1180
+        public_ip = module.uksouth-firewall.public_ips.4.ip_address
         secure_origins = local.secure_origins
         developer_ips = local.developer_ips
         ingress_source = "*"
-        ingress_http = 8050
-        ingress_https = 4050
-        ingress_controller = 6050
+        ingress_http = 8080
+        ingress_https = 4080
+        ingress_controller = 6080
     }
 
-    postgres_servers = module.uksouth_performance_environment.postgres_servers
+    postgres_servers = module.uksouth_sit_environment.postgres_servers
 
     tags = {
-        "Environment" = "Performance",
+        "Environment" = "Barclays SIT",
     }
 }
