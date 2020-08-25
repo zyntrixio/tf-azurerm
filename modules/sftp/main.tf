@@ -223,3 +223,20 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         protocols = ["TCP"]
     }
 }
+
+resource "azurerm_firewall_network_rule_collection" "network" {
+    provider = azurerm.core
+    name = "network-${azurerm_resource_group.rg.name}"
+    azure_firewall_name = var.firewall.firewall_name
+    resource_group_name = var.firewall.resource_group_name
+    priority = var.firewall.ingress_priority
+    action = "Allow"
+
+    rule {
+        name = "clusters_to_sftp"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = [azurerm_network_interface.nic.private_ip_address]
+        protocols = ["TCP"]
+    }
+}
