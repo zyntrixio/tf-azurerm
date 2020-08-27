@@ -773,33 +773,6 @@ resource "azurerm_firewall_nat_rule_collection" "chef" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "sftp" {
-    name = "sftp"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 160
-    action = "Dnat"
-
-    rule {
-        name = "prod_sftp"
-        source_addresses = ["*"]
-        destination_ports = ["2222"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.0.0.4"
-        translated_port = "2222"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "staging_sftp"
-        source_addresses = ["*"]
-        destination_ports = ["2222"]
-        destination_addresses = [azurerm_public_ip.pips.1.ip_address]
-        translated_address = "10.1.0.4"
-        translated_port = "2222"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "sentry" {
     name = "sentry"
     azure_firewall_name = azurerm_firewall.firewall.name

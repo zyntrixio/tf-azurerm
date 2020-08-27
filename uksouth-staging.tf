@@ -12,11 +12,11 @@ module "uksouth_staging_environment" {
     resource_group_iam = {
         Backend = {
             object_id = "219194f6-b186-4146-9be7-34b731e19001",
-            role = "Reader",
+            role = "Contributor",
         },
         QA = {
             object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
-            role = "Reader",
+            role = "Contributor",
         },
     }
 
