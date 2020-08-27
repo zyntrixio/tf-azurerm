@@ -16,9 +16,9 @@ locals {
     ]
     developer_ips = [
         "82.22.136.116/32", # ml@bink.com
-        "82.14.246.185/32", # cl@bink.com
+        "82.14.237.4/32", # cl@bink.com
         "92.232.43.170/32", # akhan@bink.com
-        "82.43.219.91/32", # kaziz@bink.com
+        "92.233.6.15/32", # kaziz@bink.com
         "86.150.164.212/32", # sperrygrove@bink.com
     ]
 }
