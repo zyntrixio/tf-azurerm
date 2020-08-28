@@ -123,7 +123,7 @@ module "uksouth_staging_cluster_0" {
     vnet_cidr = "10.128.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-    worker_count = 3
+    worker_count = 4
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-staging.git"
