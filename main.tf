@@ -20,6 +20,7 @@ locals {
         "92.232.43.170/32", # akhan@bink.com
         "92.233.6.15/32", # kaziz@bink.com
         "86.150.164.212/32", # sperrygrove@bink.com
+        "92.0.40.250/32", # njames@bink.com
     ]
 }
 
