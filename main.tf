@@ -10,17 +10,17 @@ locals {
     secure_origins = [
         "194.74.152.11/32", # Ascot Bink HQ
         "217.169.3.233/32", # cpressland@bink.com
-        "81.2.99.144/29", # cpressland@bink.com
-        "82.21.89.96/32", # twinchester@bink.com
-        "82.24.92.107/32", # tcain@bink.com
+        "81.2.99.144/29",   # cpressland@bink.com
+        "82.21.89.96/32",   # twinchester@bink.com
+        "82.24.92.107/32",  # tcain@bink.com
     ]
     developer_ips = [
-        "82.22.136.116/32", # ml@bink.com
-        "82.14.237.4/32", # cl@bink.com
-        "92.232.43.170/32", # akhan@bink.com
-        "92.233.6.15/32", # kaziz@bink.com
+        "82.22.136.116/32",  # ml@bink.com
+        "82.14.237.4/32",    # cl@bink.com
+        "92.232.43.170/32",  # akhan@bink.com
+        "92.233.6.15/32",    # kaziz@bink.com
         "86.150.164.212/32", # sperrygrove@bink.com
-        "92.0.40.250/32", # njames@bink.com
+        "92.0.40.250/32",    # njames@bink.com
     ]
 }
 
@@ -32,7 +32,23 @@ terraform {
         key = "azure.tfstate"
     }
 
-    required_version = ">= 0.12"
+    required_version = ">= 0.13"
+
+    required_providers {
+        commandpersistence = {
+            source = "terrycain/commandpersistence"
+            version = "1.0.2"
+        }
+        azurerm = {
+            source = "hashicorp/azurerm"
+        }
+        chef = {
+            source = "terraform-providers/chef"
+        }
+        random = {
+            source = "hashicorp/random"
+        }
+    }
 }
 
 data "terraform_remote_state" "uksouth-common" {
