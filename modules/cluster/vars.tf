@@ -19,6 +19,11 @@ variable firewall { type = object({
     ingress_controller = number
 }) }
 
+variable bifrost_version {
+    type = string
+    default = "4.0.0"
+}
+
 variable postgres_servers {
     type = map(string)
 }
