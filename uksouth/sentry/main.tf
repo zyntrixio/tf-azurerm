@@ -202,6 +202,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
         azurerm_network_interface.nic.id
     ]
 
+    # depends_on = [
+    #     chef_environment.env,
+    #     chef_role.sentry
+    # ]
+
     admin_ssh_key {
         username = "terraform"
         public_key = file("~/.ssh/id_bink_azure_terraform.pub")
