@@ -63,6 +63,10 @@ module "uksouth_preprod_environment" {
             name = "bink-uksouth-preprod-common",
         },
     }
+    redis_patch_schedule = {
+        day_of_week = "Wednesday"
+        start_hour_utc = 1
+    }
     storage_config = {
         common = {
             name = "binkuksouthpreprod",

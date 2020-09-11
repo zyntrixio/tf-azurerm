@@ -40,6 +40,10 @@ module "uksouth_performance_environment" {
             sku_name = "Premium",
         },
     }
+    redis_patch_schedule = {
+        day_of_week = "Monday"
+        start_hour_utc = 1
+    }
     storage_config = {
         common = {
             name = "binkuksouthperf",

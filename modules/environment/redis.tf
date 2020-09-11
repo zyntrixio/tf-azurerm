@@ -13,6 +13,11 @@ resource "azurerm_redis_cache" "redis" {
     minimum_tls_version = lookup(each.value, "minimum_tls_version", "1.2")
 
     redis_configuration {}
+
+    patch_schedule {
+        day_of_week = var.redis_patch_schedule.day_of_week
+        start_hour_utc = var.redis_patch_schedule.start_hour_utc
+    }
 }
 
 resource "azurerm_key_vault_secret" "redis_individual_pass" {

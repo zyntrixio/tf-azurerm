@@ -38,6 +38,10 @@ module "uksouth_dev_environment" {
             name = "bink-uksouth-dev-common",
         },
     }
+    redis_patch_schedule = {
+        day_of_week = "Monday"
+        start_hour_utc = 1
+    }
     storage_config = {
         common = {
             name = "binkuksouthdev",

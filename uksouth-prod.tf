@@ -70,6 +70,10 @@ module "uksouth_prod_environment" {
             sku_name = "Premium",
         },
     }
+    redis_patch_schedule = {
+        day_of_week = "Wednesday"
+        start_hour_utc = 1
+    }
     storage_config = {
         common = {
             name = "binkuksouthprod",

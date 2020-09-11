@@ -38,6 +38,10 @@ module "uksouth_staging_environment" {
             name = "bink-uksouth-staging-common",
         },
     }
+    redis_patch_schedule = {
+        day_of_week = "Tuesday"
+        start_hour_utc = 1
+    }
     storage_config = {
         common = {
             name = "binkuksouthstaging",
