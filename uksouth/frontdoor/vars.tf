@@ -16,3 +16,13 @@ variable backends {
         https_port = number
     })))
 }
+
+variable "secure_origins" {
+    type = list
+    default = []
+}
+
+variable "secure_origins_v6" {
+    type = list
+    default = []
+}

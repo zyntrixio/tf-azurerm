@@ -13,6 +13,10 @@ locals {
         "81.2.99.144/29",   # cpressland@bink.com
         "82.21.89.96/32",   # twinchester@bink.com
         "82.24.92.107/32",  # tcain@bink.com
+        "${module.uksouth-wireguard.public_ip}/32",
+    ]
+    secure_origins_v6 = [
+        "2001:8b0:b130:a52d::/64", # cpressland@bink.com
     ]
     developer_ips = [
         "82.22.136.116/32",  # ml@bink.com
@@ -104,6 +108,8 @@ module "uksouth-chef" {
 module "uksouth-frontdoor" {
     source = "./uksouth/frontdoor"
 
+    secure_origins = local.secure_origins
+    secure_origins_v6 = local.secure_origins_v6
     backends = {
         "prod" : [
             module.uksouth_prod_cluster_0.frontdoor_backend_pool
@@ -203,4 +209,9 @@ module "uksouth-elasticsearch" {
 
 module "uksouth-mastercard" {
     source = "./uksouth/mastercard"
+}
+
+module "uksouth-wireguard" {
+    source = "./uksouth/wireguard"
+    secure_origins = local.secure_origins
 }

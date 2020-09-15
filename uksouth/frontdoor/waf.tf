@@ -22,7 +22,7 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
             match_variable = "RemoteAddr"
             operator = "IPMatch"
             negation_condition = true
-            match_values = ["194.74.152.11"]
+            match_values = concat(var.secure_origins, var.secure_origins_v6)
         }
     }
 }
