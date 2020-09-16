@@ -33,6 +33,14 @@ resource "azurerm_postgresql_firewall_rule" "binkhq" {
     end_ip_address = "194.74.152.11"
 }
 
+resource "azurerm_postgresql_firewall_rule" "wireguard_vpn_uk" {
+    name = "wireguard_vpn_uk"
+    resource_group_name = azurerm_resource_group.rg.name
+    server_name = azurerm_postgresql_server.postgres.name
+    start_ip_address = var.wireguard_ip
+    end_ip_address = var.wireguard_ip
+}
+
 resource "azurerm_postgresql_virtual_network_rule" "workers" {
     name = "workers"
     resource_group_name = azurerm_resource_group.rg.name
