@@ -279,11 +279,15 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     backend_pool {
         name = "api-staging-k8s-uksouth-bink-sh"
-        backend {
-            host_header = "api.staging.k8s.uksouth.bink.sh"
-            address = "api.staging.k8s.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
+
+        dynamic "backend" {
+            for_each = var.backends["staging"]
+            content {
+                host_header = backend.value["host_header"]
+                address = backend.value["address"]
+                http_port = backend.value["http_port"]
+                https_port = backend.value["https_port"]
+            }
         }
 
         load_balancing_name = "standard"
@@ -334,6 +338,16 @@ resource "azurerm_frontdoor" "frontdoor" {
             address = "policies.staging.uksouth.bink.sh"
             http_port = 80
             https_port = 443
+        }
+
+        dynamic "backend" {
+            for_each = var.backends["staging-policies"]
+            content {
+                host_header = backend.value["host_header"]
+                address = backend.value["address"]
+                http_port = backend.value["http_port"]
+                https_port = backend.value["https_port"]
+            }
         }
 
         load_balancing_name = "standard"

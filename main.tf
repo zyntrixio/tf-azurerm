@@ -116,12 +116,18 @@ module "uksouth-frontdoor" {
     secure_origins = local.secure_origins
     secure_origins_v6 = local.secure_origins_v6
     backends = {
+        "staging" : [
+            module.uksouth_staging_cluster_0.frontdoor_backend_pool
+        ],
+        "staging-policies" : [
+            module.uksouth_staging_cluster_0.frontdoor_backend_policies_pool
+        ],
         "prod" : [
             module.uksouth_prod_cluster_0.frontdoor_backend_pool
         ],
         "prod-policies" : [
             module.uksouth_prod_cluster_0.frontdoor_backend_policies_pool
-        ]
+        ],
         "preprod" : [
             module.uksouth_preprod_cluster_1.frontdoor_backend_pool
         ],
