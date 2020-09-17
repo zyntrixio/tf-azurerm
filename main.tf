@@ -94,6 +94,11 @@ module "uksouth-alerts" {
     source = "./uksouth/alerts"
 }
 
+# Blocked until https://github.com/terraform-providers/terraform-provider-azuread/issues/173
+# module "uksouth-azuread-apps" {
+#     source = "./uksouth/azuread_applications"
+# }
+
 module "uksouth-eventhubs" {
     source = "./uksouth/eventhubs"
 }
