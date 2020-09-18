@@ -6,6 +6,7 @@ resource "chef_role" "role" {
     name = "wireguard"
     run_list = [
         "recipe[fury]",
+        "recipe[jarvis]",
         "recipe[valkyrie]",
     ]
 }

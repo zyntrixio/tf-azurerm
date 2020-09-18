@@ -62,6 +62,19 @@ resource "azurerm_network_security_group" "nsg" {
     }
 
     security_rule {
+        name = "AllowPrometheus"
+        description = "Allow Prometheus to hit exporters"
+        access = "Allow"
+        priority = 510
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefixes = var.prometheus_origin
+        source_port_range = "*"
+        destination_address_prefix = "*"
+        destination_port_ranges = [9100, 9586]
+    }
+
+    security_rule {
         name = "BlockEverything"
         description = "Default Block All Rule"
         access = "Deny"

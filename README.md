@@ -2,7 +2,7 @@
 
 ## Environment Variables
 
-Shell Environment Variables need to be set for Terraform operation, these can be found in 1Password in the DevOps Vault
+Shell Environment Variables need to be set for Terraform operation, these can be found in 1Password in the DevOps Vault [here](https://bink.1password.com/vaults/k5lbodflcbgmnahxrxu2rvmbey/allitems/ij3bqa4mmvgcbe63we3zsiscju)
 
 Fish:
 ```

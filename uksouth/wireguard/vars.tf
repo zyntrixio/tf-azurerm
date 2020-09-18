@@ -13,3 +13,8 @@ variable "secure_origins" {
     type = list
     default = []
 }
+
+variable "prometheus_origin" {
+    type = list
+    default = ["51.132.44.240/28"]
+}

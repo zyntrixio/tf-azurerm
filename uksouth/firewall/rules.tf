@@ -1019,6 +1019,13 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         protocols = ["TCP"]
     }
     rule {
+        name = "prometheus-to-wireguard"
+        source_addresses = ["10.0.0.0/8"]
+        destination_ports = ["9100", "9586"]
+        destination_addresses = ["20.49.163.188/32"]
+        protocols = ["TCP"]
+    }
+    rule {
         name = "prometheus-to-kube-api"
         source_addresses = ["10.4.0.0/18"]
         destination_ports = ["6443"]
