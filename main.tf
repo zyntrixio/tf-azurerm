@@ -30,10 +30,10 @@ locals {
 
 terraform {
     backend "azurerm" {
-        resource_group_name = "storage"
         storage_account_name = "binkitops"
         container_name = "terraform"
         key = "azure.tfstate"
+        access_key = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
     }
 
     required_version = ">= 0.13"
@@ -59,10 +59,10 @@ data "terraform_remote_state" "uksouth-common" {
     backend = "azurerm"
 
     config = {
-        resource_group_name = "storage"
         storage_account_name = "binkitops"
         container_name = "terraform"
         key = "uksouth-common.tfstate"
+        access_key = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
     }
 }
 

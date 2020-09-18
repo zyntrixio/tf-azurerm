@@ -14,6 +14,24 @@ resource "azurerm_key_vault" "infra" {
     purge_protection_enabled = false
 }
 
+resource "azurerm_key_vault_access_policy" "infra_terraform" {
+    key_vault_id = azurerm_key_vault.infra.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "4869640a-3727-4496-a8eb-f7fae0872410"
+
+    secret_permissions = [
+        "backup",
+        "delete",
+        "get",
+        "list",
+        "purge",
+        "recover",
+        "restore",
+        "set",
+    ]
+}
+
 # Need to do access policies separately if your going to add additional after
 resource "azurerm_key_vault_access_policy" "infra_devops" {
     key_vault_id = azurerm_key_vault.infra.id
@@ -94,6 +112,24 @@ resource "azurerm_key_vault_access_policy" "common_devops" {
 
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+
+    secret_permissions = [
+        "backup",
+        "delete",
+        "get",
+        "list",
+        "purge",
+        "recover",
+        "restore",
+        "set",
+    ]
+}
+
+resource "azurerm_key_vault_access_policy" "common_terraform" {
+    key_vault_id = azurerm_key_vault.common.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "4869640a-3727-4496-a8eb-f7fae0872410"
 
     secret_permissions = [
         "backup",

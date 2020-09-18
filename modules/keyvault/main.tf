@@ -42,6 +42,13 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     }
 }
 
+resource "azurerm_key_vault_access_policy" "terraform" {
+    key_vault_id = azurerm_key_vault.tools.id
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "4869640a-3727-4496-a8eb-f7fae0872410"
+    secret_permissions = var.devops_keyvault_secretperms
+}
+
 resource "azurerm_key_vault_access_policy" "devops" {
     for_each = var.devops_objectids
 
