@@ -140,15 +140,6 @@ module "uksouth-frontdoor" {
     }
 }
 
-module "uksouth-dev" {
-    source = "./uksouth/dev"
-
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
-}
-
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
@@ -164,15 +155,6 @@ module "uksouth-firewall" {
 
 module "uksouth-sandbox" {
     source = "./uksouth/sandbox"
-
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
-}
-
-module "uksouth-staging" {
-    source = "./uksouth/staging"
 
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
