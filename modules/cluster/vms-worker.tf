@@ -109,6 +109,31 @@ resource "azurerm_linux_virtual_machine" "worker" {
 
     custom_data = local.ubuntu_metadata[var.ubuntu_version]
 
+    provisioner "remote-exec" {
+        inline = [
+            "sudo reboot"
+        ]
+
+        on_failure = continue
+
+        connection {
+            type = "ssh"
+            user = "terraform"
+            host = self.private_ip_address
+            private_key = file("~/.ssh/id_bink_azure_terraform")
+            bastion_host = "ssh.uksouth.bink.sh"
+            bastion_user = "terraform"
+            bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
+        }
+    }
+
+    # :( 20.04 with "dont use imds network config" takes longer to get an ip and be
+    # reachable, so the sleep reduces the number of tries the chef provisioner
+    # takes to connect
+    provisioner "local-exec" {
+        command = "echo 'Waiting for reboot' && sleep 60"
+    }
+
     provisioner "chef" {
         environment = chef_environment.env.name
         client_options = ["chef_license 'accept'"]
