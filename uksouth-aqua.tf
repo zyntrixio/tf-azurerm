@@ -18,62 +18,63 @@ module "uksouth_aqua_environment" {
     }
 }
 
-# module "uksouth_aqua_cluster_0" {
-#     source = "./modules/cluster"
-#     providers = {
-#         azurerm = azurerm
-#         azurerm.core = azurerm
-#     }
+module "uksouth_aqua_cluster_0" {
+    source = "./modules/cluster"
+    providers = {
+        azurerm = azurerm
+        azurerm.core = azurerm
+    }
 
-#     resource_group_name = "uksouth-aqua-k0"
-#     cluster_name = "aqua0"
-#     location = "uksouth"
-#     vnet_cidr = "10.5.0.0/16"
-#     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-#     bifrost_version = "4.1.0"
+    resource_group_name = "uksouth-aqua-k0"
+    cluster_name = "aqua0"
+    location = "uksouth"
+    vnet_cidr = "10.5.0.0/16"
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    bifrost_version = "4.1.1"
+    ubuntu_version = "20.04"
 
-#     worker_count = 2
+    worker_count = 2
 
-#     # Gitops repo, Managed identity for syncing common secrets
-#     gitops_repo = "git@git.bink.com:GitOps/uksouth-aqua.git"
-#     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-#     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+    # Gitops repo, Managed identity for syncing common secrets
+    gitops_repo = "git@git.bink.com:GitOps/uksouth-aqua.git"
+    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
+    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
-#     # DNS zones
-#     private_dns = module.uksouth-dns.private_dns
-#     public_dns = module.uksouth-dns.public_dns
+    # DNS zones
+    private_dns = module.uksouth-dns.private_dns
+    public_dns = module.uksouth-dns.public_dns
 
-#     # Peers    
-#     peers = {
-#         firewall = {
-#             vnet_id = module.uksouth-firewall.vnet_id
-#             vnet_name = module.uksouth-firewall.vnet_name
-#             resource_group_name = module.uksouth-firewall.resource_group_name
-#         }
-#         elasticsearch = {
-#             vnet_id = module.uksouth-elasticsearch.vnet_id
-#             vnet_name = module.uksouth-elasticsearch.vnet_name
-#             resource_group_name = module.uksouth-elasticsearch.resource_group_name
-#         }
-#     }
+    # Peers    
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+        elasticsearch = {
+            vnet_id = module.uksouth-elasticsearch.vnet_id
+            vnet_name = module.uksouth-elasticsearch.vnet_name
+            resource_group_name = module.uksouth-elasticsearch.resource_group_name
+        }
+    }
 
-#     firewall = {
-#         firewall_name = module.uksouth-firewall.firewall_name
-#         resource_group_name = module.uksouth-firewall.resource_group_name
-#         ingress_priority = 500
-#         rule_priority = 500
-#         public_ip = module.uksouth-firewall.public_ips.12.ip_address
-#         secure_origins = local.secure_origins
-#         developer_ips = local.developer_ips
-#         ingress_source = "*"
-#         ingress_http = 80
-#         ingress_https = 443
-#         ingress_controller = 6000
-#     }
+    firewall = {
+        firewall_name = module.uksouth-firewall.firewall_name
+        resource_group_name = module.uksouth-firewall.resource_group_name
+        ingress_priority = 1000
+        rule_priority = 1000
+        public_ip = module.uksouth-firewall.public_ips.12.ip_address
+        secure_origins = local.secure_origins
+        developer_ips = local.developer_ips
+        ingress_source = "*"
+        ingress_http = 80
+        ingress_https = 443
+        ingress_controller = 6000
+    }
 
-#     postgres_servers = module.uksouth_aqua_environment.postgres_servers
+    postgres_servers = module.uksouth_aqua_environment.postgres_servers
 
-#     tags = {
-#         "Environment" = "Production",
-#     }
-# }
+    tags = {
+        "Environment" = "Production",
+    }
+}

@@ -16,6 +16,23 @@ variable "pod_ip_configs" {
     ]
 }
 
+locals {
+    ubuntu_image = {
+        "16.04" = [{
+            publisher = "Canonical"
+            offer = "UbuntuServer"
+            sku = "16.04-LTS"
+            version = "latest"
+        }],
+        "20.04" = [{
+            publisher = "Canonical"
+            offer = "0001-com-ubuntu-server-focal"
+            sku = "20_04-lts"
+            version = "latest"
+        }]
+    }
+}
+
 resource "azurerm_network_interface" "worker" {
     count = var.worker_count
     name = format("${var.cluster_name}-worker%02d-nic", count.index)
@@ -76,11 +93,14 @@ resource "azurerm_linux_virtual_machine" "worker" {
         disk_size_gb = 32
     }
 
-    source_image_reference {
-        publisher = "Canonical"
-        offer = "UbuntuServer"
-        sku = "16.04-LTS"
-        version = "latest"
+    dynamic "source_image_reference" {
+        for_each = local.ubuntu_image[var.ubuntu_version]
+        content {
+            publisher = source_image_reference.value["publisher"]
+            offer = source_image_reference.value["offer"]
+            sku = source_image_reference.value["sku"]
+            version = source_image_reference.value["version"]
+        }
     }
 
     provisioner "chef" {

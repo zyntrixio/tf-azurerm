@@ -24,6 +24,11 @@ variable bifrost_version {
     default = "4.0.0"
 }
 
+variable ubuntu_version {
+    type = string
+    default = "16.04"
+}
+
 variable postgres_servers {
     type = map(string)
 }
