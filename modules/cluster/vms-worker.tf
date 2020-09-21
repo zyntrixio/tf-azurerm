@@ -31,6 +31,10 @@ locals {
             version = "latest"
         }]
     }
+    ubuntu_metadata = {
+        "16.04" = null
+        "20.04" = "I2Nsb3VkLWNvbmZpZwoKd3JpdGVfZmlsZXM6Ci0gY29udGVudDogfAogICAgZGF0YXNvdXJjZToKICAgICAgQXp1cmU6CiAgICAgICAgYXBwbHlfbmV0d29ya19jb25maWc6IGZhbHNlCiAgb3duZXI6IHJvb3Q6cm9vdAogIHBhdGg6IC9ldGMvY2xvdWQvY2xvdWQuY2ZnLmQvODBfYXp1cmVfbmV0X2NvbmZpZy5jZmcKICBwZXJtaXNzaW9uczogJzA2NDAnCg=="
+    }
 }
 
 resource "azurerm_network_interface" "worker" {
@@ -102,6 +106,8 @@ resource "azurerm_linux_virtual_machine" "worker" {
             version = source_image_reference.value["version"]
         }
     }
+
+    custom_data = local.ubuntu_metadata[var.ubuntu_version]
 
     provisioner "chef" {
         environment = chef_environment.env.name
