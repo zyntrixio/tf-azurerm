@@ -168,7 +168,11 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Microsoft Teams"
         source_addresses = ["*"]
-        target_fqdns = ["outlook.office.com"]
+        target_fqdns = [
+            "outlook.office.com",
+            "login.botframework.com",
+            "smba.trafficmanager.net",
+        ]
         protocol {
             port = "443"
             type = "Https"
