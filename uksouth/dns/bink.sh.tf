@@ -143,3 +143,11 @@ resource "azurerm_private_dns_a_record" "sh-wireguard" {
     ttl = 300
     records = ["20.49.163.188"]
 }
+
+resource "azurerm_private_dns_a_record" "sh-aqua" {
+    name = "aqua"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["10.5.0.4"]
+}
