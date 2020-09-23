@@ -78,7 +78,7 @@ module "uksouth_aqua_cluster_0" {
             name = "aqua-grpc"
             source_addresses = ["10.169.0.0/18"]
             destination_ports = ["30002"]
-            destination_addresses = [cidrsubnet("10.5.0.0/16", 2, 0)]
+            destination_addresses = [cidrhost(cidrsubnet("10.5.0.0/16", 2, 0), 4)]
             protocols = ["TCP"]
         }
     ]
