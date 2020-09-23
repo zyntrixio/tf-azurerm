@@ -35,6 +35,8 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
         protocols = ["TCP"]
     }
 }
+
+# Shouldn't really be called egress
 resource "azurerm_firewall_network_rule_collection" "egress" {
     provider = azurerm.core
 
@@ -50,5 +52,16 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         destination_ports = ["6379", "6380"]
         destination_addresses = ["*"]
         protocols = ["TCP"]
+    }
+
+    dynamic "rule" {
+        for_each = var.additional_firewall_rules
+        content {
+            name = rule.value["name"]
+            source_addresses = rule.value["source_addresses"]
+            destination_ports = rule.value["destination_ports"]
+            destination_addresses = rule.value["destination_addresses"]
+            protocols = rule.value["protocols"]
+        }
     }
 }

@@ -19,6 +19,22 @@ variable firewall { type = object({
     ingress_controller = number
 }) }
 
+variable tcp_endpoint {
+    type = bool
+    default = false
+}
+variable additional_firewall_rules {
+    type = list(object({
+        name = string
+        source_addresses = list(string)
+        destination_ports = list(string)
+        destination_addresses = list(string)
+        protocols = list(string)
+    }))
+    default = []
+}
+
+
 variable bifrost_version {
     type = string
     default = "4.0.0"

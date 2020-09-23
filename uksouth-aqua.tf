@@ -72,6 +72,17 @@ module "uksouth_aqua_cluster_0" {
         ingress_controller = 6000
     }
 
+    tcp_endpoint = true
+    additional_firewall_rules = [
+        {
+            name = "aqua-grpc"
+            source_addresses = ["10.169.0.0/18"]
+            destination_ports = ["30002"]
+            destination_addresses = [cidrsubnet("10.5.0.0/16", 2, 0)]
+            protocols = ["TCP"]
+        }
+    ]
+
     postgres_servers = module.uksouth_aqua_environment.postgres_servers
 
     tags = {
