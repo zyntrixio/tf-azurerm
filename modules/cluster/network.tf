@@ -148,6 +148,35 @@ resource "azurerm_network_security_group" "worker_nsg" {
         access = "Allow"
     }
 
+    dynamic "security_rule" {
+        for_each = var.tcp_endpoint ? ["1"] : []
+        content {
+            name = "AllowTCPTrafficFromFirewall"
+            priority = 170
+            protocol = "TCP"
+            source_port_range = "*"
+            destination_port_range = 30002
+            destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+            source_address_prefix = "192.168.0.0/24"
+            direction = "Inbound"
+            access = "Allow"
+        }
+    }
+    dynamic "security_rule" {
+        for_each = var.tcp_endpoint ? ["1"] : []
+        content {
+            name = "AllowTCPTrafficFromLoadbalancer"
+            priority = 171
+            protocol = "TCP"
+            source_port_range = "*"
+            destination_port_range = 30002
+            destination_address_prefix = azurerm_subnet.worker.address_prefixes[0]
+            source_address_prefix = "AzureLoadBalancer"
+            direction = "Inbound"
+            access = "Allow"
+        }
+    }
+
     tags = var.tags
 }
 
