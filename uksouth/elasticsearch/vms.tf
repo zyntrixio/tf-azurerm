@@ -71,7 +71,7 @@ resource "azurerm_linux_virtual_machine" "elasticsearch" {
         recreate_client = true
         user_name = "terraform"
         user_key = file("chef.pem")
-        version = "15.9.17"
+        version = "16.5.64"
         ssl_verify_mode = ":verify_peer"
         secret_key = "l/iAhIHQeM4UtimiQQrX+EtECAvfEfw9zgpadPrzhmhlbHB3eLhwGdXPsKVlbOpPn/b7XGECtQaodKdaMVdpJ9qyT6v3X3AD8XzliI6Z0wgHT8ZHN9RaOveLSpeAZt/XXG6RJcCGQEyqTM9RYckz6d7VSuKdeP2XyuU3i7o2BvlMTw8txaB9eCCAWYKAx7aPiimeVZQ3FnlNgMoORvS8NvtifCG/5TC6Y4Wv8ZM4cqD+RfUjHfjFzNI7gla6/XLcXCX25UbROOFBckL+FRn8FIubSQv8JSGUYUiS4TAadyMQAs+Qjg+vENNVbB85tCyOE714WdlhSN5h1VoLoc1MqKqj4VS+s58bc6tQn1hYHLeLd0bXHzUUVTpijkyRGH9RbVeJqMMXIVR/mpF8sNYhAzLiLjKx92LQUuxCltzEUDm6f0VS1AIlnIcNgSLI4+rKhpq+osZfe9R6vmmnK7w24v6Fpiag5ShKmkCy1AwYfIEzf+0s0zCBc5kpPpkTls7pPu85vDz9sPWqUb7SX2yurNkzJlqYcmChMgj3PG/QKx0STXF4y7E+g+yX5LrMWuGWhJ/rzAn8ug29BaKeKOfuThZx01vNz3iymDT90W2oz4kIwa+FNc5dZcSHn+kgv213KR7KMrCvRw2MYyjxfpcj1zkZ5MTacPBemYn/j3No2BY="
 
@@ -164,4 +164,3 @@ module "elasticsearch_lb_rules" {
         elasticsearch = ["9200", "TCP", "9200"]
     }
 }
-

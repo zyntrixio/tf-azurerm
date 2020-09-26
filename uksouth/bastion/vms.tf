@@ -35,8 +35,8 @@ resource "azurerm_linux_virtual_machine" "bastion0" {
 
     source_image_reference {
         publisher = "Canonical"
-        offer = "UbuntuServer"
-        sku = "18.04-LTS"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
         version = "latest"
     }
 
@@ -49,7 +49,7 @@ resource "azurerm_linux_virtual_machine" "bastion0" {
         recreate_client = true
         user_name = "terraform"
         user_key = file("./chef.pem")
-        version = "15.9.17"
+        version = "16.5.64"
         ssl_verify_mode = ":verify_peer"
 
         connection {

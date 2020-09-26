@@ -153,7 +153,7 @@ resource "azurerm_linux_virtual_machine" "wireguard" {
         recreate_client = true
         user_name = "terraform"
         user_key = file("./chef.pem")
-        version = "16.4.41"
+        version = "16.5.64"
         ssl_verify_mode = ":verify_peer"
 
         connection {

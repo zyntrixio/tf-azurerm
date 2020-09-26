@@ -76,7 +76,7 @@ resource "azurerm_linux_virtual_machine" "xxxlarge-worker" {
         recreate_client = true
         user_name = "terraform"
         user_key = file("./chef.pem")
-        version = "15.9.17"
+        version = "16.5.64"
         ssl_verify_mode = ":verify_peer"
         secret_key = "7y0sKw2XMCudEQ3ljZOx/Dc8bfa3VS6QRzOyuZ7tFROiFQWkEburURDwN0gzo98dAoAbi+UW4Q2AWEBNrLkTpAvuFjAphXoE32jmifjVCR+7MxKkw/QLwSs1LlDHW9qkZJyfyXH7c1ZNy/r4k6UcgxJhlVLkIjlU07HVfQPVhHlT7PjjlkGlosfAQWsX1EzoCn5Sq/aK4mhVnsFVAKIevFMveH3LOBYJ+BzeL7YoGcePWTNrfme5BPkx1kHG8N4AIinM/YSnDFa8J6i18PbHC1JPhxve3ERoMrkgk5jE+N4Yz9M2+d3u8tTvMP+GWeYz1PhJ9Uc+3i7YdciCXuqeq/igAphuXQzyhs4fJnubOfWlYJeuzcoRa5vfemaVboc6/TE7+ZX8Fk+48Z56EFmmKv+RVMz8hd1BKULRfvPtfZ7Uznx7J3ybg0ooRedaY19E/w8UOH7L6g7ymgwC2X2RKpZCJHo6P35h/qbvEEfm7ZFu8yqKgrvSKf0a8lBba2tMwvAtlAV9CZBeoTWZrvLqJntcE0TJTvjFSygUy2xRtWKq85vP2JP7RgSwQrU6lBZFRWmqnmt+TWxwajtLQtNybpeSjJYT7xG9sMHRyX+8Y3FVlaDak2WqVus5OjZDpkeS0w3KzPJxsG6pfxoaDz8CTljEWV8r0wpfjZxjc4C0r3k="
 

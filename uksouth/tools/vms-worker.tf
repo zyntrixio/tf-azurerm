@@ -88,7 +88,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
         recreate_client = true
         user_name = "terraform"
         user_key = file("chef.pem")
-        version = "15.9.17"
+        version = "16.5.64"
         ssl_verify_mode = ":verify_peer"
         secret_key = commandpersistence_cmd.databag_secret.result.secret
 
