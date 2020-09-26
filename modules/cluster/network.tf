@@ -162,7 +162,7 @@ resource "azurerm_network_security_group" "worker_nsg" {
             access = "Allow"
         }
     }
-    
+
     dynamic "security_rule" {
         for_each = var.tcp_endpoint ? ["1"] : []
         content {
