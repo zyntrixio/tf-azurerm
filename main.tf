@@ -148,6 +148,7 @@ module "uksouth-firewall" {
     tools_vnet_id = module.uksouth-tools.vnet_id
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
+    sftp_ip_address = module.uksouth-sftp.ip_address
     tableau_ip_address = module.uksouth-tableau.ip_address
     secure_origins = local.secure_origins
     developer_ips = local.developer_ips
@@ -199,6 +200,21 @@ module "uksouth-elasticsearch" {
 
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
+}
+
+module "uksouth-sftp" {
+    source = "./uksouth/sftp"
+
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
+
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+    }
 }
 
 module "uksouth-mastercard" {

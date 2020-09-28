@@ -32,7 +32,7 @@ locals {
         # SFTP
         "sftpcluster" = "40.115.33.68",
         "sftp" = "178.238.141.18",
-        "sftp.gb" = "51.132.44.240",
+        "sftp.gb" = "51.132.44.255",
         "sftp.staging.gb" = "51.132.44.241",
 
         # Random

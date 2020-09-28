@@ -759,6 +759,24 @@ resource "azurerm_firewall_nat_rule_collection" "bastion" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "sftp" {
+    name = "sftp"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 125
+    action = "Dnat"
+
+    rule {
+        name = "ssh"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = var.sftp_ip_address
+        translated_port = "22"
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_nat_rule_collection" "chef" {
     name = "chef"
     azure_firewall_name = azurerm_firewall.firewall.name
