@@ -88,7 +88,6 @@ output "uksouth_prod_managedidentites" {
     sensitive = false
 }
 
-
 module "uksouth_prod_cluster_0" {
     source = "./modules/cluster"
     providers = {

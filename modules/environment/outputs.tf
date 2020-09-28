@@ -16,3 +16,7 @@ output "managedidentites" {
 output "postgres_servers" {
     value = { for server in azurerm_postgresql_server.pg : server.name => azurerm_resource_group.rg.name }
 }
+
+output "storage_accounts" {
+    value = { for account in azurerm_storage_account.storage : account.name => account.primary_blob_connection_string }
+}
