@@ -3,151 +3,129 @@ resource "azurerm_dns_zone" "bink-sh" {
     resource_group_name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_private_dns_zone" "uksouth-bink-sh" {
-    name = "uksouth.bink.sh"
-    resource_group_name = azurerm_resource_group.rg.name
+locals {
+    bink_sh = {
+        a_records = {
+            "prometheus.uksouth" = "51.132.44.251"
+            "ssh.uksouth" = "51.132.44.240"
+            "jeff" = "217.169.3.233"
+            "policies.uksouth" = "51.132.44.240" # ???????????????????????????????????
+            "sftp.dev.uksouth" = "51.132.44.242"
+            "chef.uksouth" = "51.132.44.240"
+            "wg.uksouth" = "51.132.44.249"
+            "starbug.uksouth" = "51.132.44.240"
+            "mcwallet.dev.k8s.uksouth" = "51.132.44.242"
+            "sentry.uksouth" = "51.132.44.254"
+            "sftp.staging.uksouth" = "51.132.44.241"
+            "sandbox.k8s.uksouth" = "51.132.44.243"
+            "wireguard.uksouth" = "20.49.163.188"
+            "tableau.uksouth" = "51.132.44.253"
+            "tools.k8s.uksouth" = "51.132.44.244"
+
+        }
+        cname_records = {
+            "kibana.uksouth" = "tools.k8s.uksouth.bink.sh"
+            "autodiscover" = "autodiscover.outlook.com"
+            "talkie-toaster.uksouth" = "tools.uksouth.bink.sh"
+            "oat.sandbox.k8s.uksouth" = "sandbox.k8s.uksouth.bink.sh"
+            "cluster-autodiscover.uksouth" = "tools.k8s.uksouth.bink.sh"
+            "grafana.tools" = "tools.k8s.uksouth.bink.sh"
+            "asset-register.tools" = "tools.k8s.uksouth.bink.sh"
+            "pypi.tools" = "tools.k8s.uksouth.bink.sh"
+            "tools.uksouth" = "tools.k8s.uksouth.bink.sh"
+            "aqua.uksouth" = "aqua0.uksouth.bink.sh"
+        }
+        mx_records = {
+            "@" = [
+                {
+                    preference = 0,
+                    exchange = "bink-sh.mail.protection.outlook.com",
+                }
+            ]
+        }
+        srv_records = {}
+        txt_records = {
+            "@" = [
+                "v=spf1 include:spf.protection.outlook.com -all",
+                "apple-domain-verification=bgPRnFWwsHMbqgEx",
+                "MS=ms96156124"
+            ]
+        }
+    }
 }
 
-resource "azurerm_private_dns_a_record" "sh-elasticsearch" {
-    name = "elasticsearch"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+resource "azurerm_dns_a_record" "bink_sh_a" {
+    for_each = local.bink_sh.a_records
+
+    name = each.key
+    zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
-    records = ["192.168.6.20"]
+    records = [each.value]
 }
 
-resource "azurerm_private_dns_a_record" "sh-gitlab" {
-    name = "gitlab"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+resource "azurerm_dns_cname_record" "bink_sh_cname" {
+    for_each = local.bink_sh.cname_records
+
+    name = each.key
+    zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
-    records = ["192.168.10.4"]
+    record = each.value
 }
 
-resource "azurerm_private_dns_a_record" "sh-chef" {
-    name = "chef"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+resource "azurerm_dns_mx_record" "bink_sh_mx" {
+    for_each = local.bink_sh.mx_records
+
+    name = each.key
+    zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
-    records = ["192.168.5.4"]
+
+    dynamic "record" {
+        for_each = [for i in each.value : {
+            preference = i["preference"]
+            exchange = i["exchange"]
+        }]
+
+        content {
+            preference = record.value.preference
+            exchange = record.value.exchange
+        }
+    }
 }
 
-resource "azurerm_private_dns_a_record" "sh-sentry" {
-    name = "sentry"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+resource "azurerm_dns_srv_record" "bink_sh_srv" {
+    for_each = local.bink_sh.srv_records
+
+    name = each.key
+    zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
-    records = ["192.168.2.5"]
+
+    record {
+        priority = each.value["priority"]
+        weight = each.value["weight"]
+        port = each.value["port"]
+        target = each.value["target"]
+    }
 }
 
-resource "azurerm_private_dns_a_record" "sh-kibana" {
-    name = "kibana"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["192.168.6.4"]
-}
+resource "azurerm_dns_txt_record" "bink_sh_txt" {
+    for_each = local.bink_sh.txt_records
 
-resource "azurerm_private_dns_a_record" "sh-tableau" {
-    name = "tableau"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    name = each.key
+    zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
-    records = ["192.168.7.4"]
-}
 
-resource "azurerm_private_dns_a_record" "sh-tools" {
-    name = "tools"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
+    dynamic "record" {
+        for_each = [for i in each.value : {
+            value = i
+        }]
 
-resource "azurerm_private_dns_a_record" "sh-tools-k8s" {
-    name = "tools.k8s"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-sandbox-k8s" {
-    name = "sandbox.k8s"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.3.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-dev-k8s" {
-    name = "dev.k8s"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.2.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-staging-k8s" {
-    name = "staging.k8s"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.1.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-prod-k8s" {
-    name = "prod.k8s"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.0.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-cluster-autodiscover" {
-    name = "cluster-autodiscover"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-aqua-gateway" {
-    name = "aqua-gateway"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-dev-sftp" {
-    name = "sftp.dev"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["192.168.25.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-staging-sftp" {
-    name = "sftp.staging"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["192.168.26.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-wireguard" {
-    name = "wireguard"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["20.49.163.188"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-aqua" {
-    name = "aqua"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.5.0.4"]
+        content {
+            value = record.value.value
+        }
+    }
 }
