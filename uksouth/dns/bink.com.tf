@@ -81,12 +81,9 @@ locals {
         # Zendesk
         "help" = "binkcx.zendesk.com",
         "zendesk1" = "mail1.zendesk.com",
-        "zendesk1" = "mail2.zendesk.com",
+        "zendesk2" = "mail2.zendesk.com",
         "zendesk3" = "mail3.zendesk.com",
         "zendesk4" = "mail4.zendesk.com",
-
-        # Mailgun
-        "email.uk" = "mailgun.org", # 99% sure this one is dead now, will check MyGravity Mailgun
 
         # Mailchimp
         "k1._domainkey" = "dkim.mcsv.net",
