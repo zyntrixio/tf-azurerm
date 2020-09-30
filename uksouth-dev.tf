@@ -29,7 +29,7 @@ module "uksouth_dev_environment" {
         common = {
             name = "bink-uksouth-dev-common",
             sku_name = "GP_Gen5_4",
-            storage_gb = 100,
+            storage_gb = 500,
             databases = ["*"]
         },
     }
