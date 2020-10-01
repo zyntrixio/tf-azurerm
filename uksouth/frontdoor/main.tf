@@ -189,12 +189,6 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     backend_pool {
         name = "policies-uksouth-bink-sh"
-        backend {
-            host_header = "policies.uksouth.bink.sh"
-            address = "policies.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
-        }
 
         dynamic "backend" {
             for_each = var.backends["prod-policies"]
@@ -333,12 +327,6 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     backend_pool {
         name = "policies-staging-uksouth-bink-sh"
-        backend {
-            host_header = "policies.staging.uksouth.bink.sh"
-            address = "policies.staging.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
-        }
 
         dynamic "backend" {
             for_each = var.backends["staging-policies"]

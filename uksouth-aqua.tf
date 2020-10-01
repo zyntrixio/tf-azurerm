@@ -30,7 +30,7 @@ module "uksouth_aqua_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.5.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.2.0"
+    bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
 
     worker_count = 2
