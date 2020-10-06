@@ -431,6 +431,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "apigateway.americanexpress.com",
             "api.americanexpress.com",
             "core.spreedly.com",
+            "status.spreedly.com",
             "api.visa.com",
             "cert.api.visa.com",
         ]
