@@ -213,7 +213,7 @@ module "uksouth-sftp" {
                     "id" : 4000,
                     "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEApo4pf1NWLWrcmRWqLvFKOvkzJKDyo8QkN/pil60x4YPs/j+8JUiO1UI9TeP4YSJ9C3nyFNkjqc0jorI5EnVUPdVCGRPweZCgr4Di4eu/2KgYobO9DzvRoBvZAzxIR3dlJDsnOa27FscQ6iZXWdgCvJcTPQaEot/8eKDifZ+eU3Rh2mpVCykiNH4qeYPUTJDws+aC1PfTQQ8bmcN8IWxcG+dVjkKzlM/NJ0lzsJiOQGRJc0ZuC66D8UwJXF0UEzsteWge9DDL394t9mHl5DFhhuLsZ+laNsqVstdppwFk+S9Hd63wy4Yrdu3Wz1obgXcBrdROESTyiZ5o4kaRwf48DQ==",
                     "upload" : {
-                        "conn_string" : "${module.uksouth_prod_environment.storage_accounts.binkuksouthprod}",
+                        "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
                         "container" : "harmonia-imports",
                         "slug" : "scheme/harvey-nichols",
                     }
@@ -223,7 +223,7 @@ module "uksouth-sftp" {
                     "id" : 4001,
                     "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlR8IrClW5vyU3utv+LTshjt49FWxdHnogNj1JesWvQZPla0nFze28Ohup3EPWLZUbVL4z3ay8PJeotszIEDHKc5K8P2/cwytdopOpdvdWJfxZcLzIIrKSMXjc+uXWLA+jvav9JIewEda/SsiM2ChYmR6BtpQirUtupcrbXXPXsjWoZ1BZdKZ6EmVT3uq1bGvMUZgr77QThtbcfR4x9B/3eVJSK5r1H8baohnkQx0cEcCt9KSkjU3gw5RXGKqJXAci+nR/ieCNw5znqKHaIEvsV06UKxqL9UYjuXdLI1bA24R3IKxhb4vrklTt0paisXPljp4YekDRAJ7j9BpgSve3w==",
                     "upload" : {
-                        "conn_string" : "${module.uksouth_prod_environment.storage_accounts.binkuksouthprod}",
+                        "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
                         "container" : "harmonia-imports",
                         "slug" : "scheme/iceland",
                     }

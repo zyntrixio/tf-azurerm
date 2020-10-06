@@ -34,7 +34,7 @@ resource "azurerm_network_interface" "worker" {
 
     dynamic "ip_configuration" {
         for_each = [for s in var.pod_ip_configs : {
-            name = "${format("pod-%02d", s)}"
+            name = format("pod-%02d", s)
         }]
 
         content {
