@@ -1025,6 +1025,13 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         destination_addresses = ["185.10.90.93/32"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "GitLab Runner to all"
+        source_addresses = ["192.168.10.5/32"]
+        destination_ports = ["80", "443"]
+        destination_addresses = ["*"]
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "tools" {
