@@ -368,6 +368,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "ping.cpressland.io"
+        source_addresses = ["*"]
+        target_fqdns = ["ping.cpressland.io"]
+        protocol {
+          port = "443"
+          type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
