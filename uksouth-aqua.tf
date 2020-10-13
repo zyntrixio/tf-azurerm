@@ -80,6 +80,13 @@ module "uksouth_aqua_cluster_0" {
             destination_ports = ["30002"]
             destination_addresses = [cidrhost(cidrsubnet("10.5.0.0/16", 2, 0), 4)]
             protocols = ["TCP"]
+        },
+        {
+            name = "gitlab-scanner"
+            source_addresses = ["192.168.10.5/32"]
+            destination_ports = ["30001"]
+            destination_addresses = [cidrhost(cidrsubnet("10.5.0.0/16", 2, 0), 4)]
+            protocols = ["TCP"]
         }
     ]
 
