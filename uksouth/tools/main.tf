@@ -34,6 +34,6 @@ resource "azurerm_role_definition" "prometheus_azure_vm_read" {
 
 resource "azurerm_role_assignment" "prometheus_azure_vm_read" {
     scope = data.azurerm_subscription.current.id
-    role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.id
+    role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.role_definition_resource_id
     principal_id = azurerm_user_assigned_identity.prometheus.principal_id
 }

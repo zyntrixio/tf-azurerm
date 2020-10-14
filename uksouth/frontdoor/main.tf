@@ -565,9 +565,9 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     timeouts {
-        update = "60m"
-        create = "60m"
-        delete = "60m"
+        update = "120m"
+        create = "120m"
+        delete = "120m"
     }
 }
 
