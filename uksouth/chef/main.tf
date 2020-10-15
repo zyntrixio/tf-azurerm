@@ -207,16 +207,23 @@ resource "azurerm_network_interface_backend_address_pool_association" "chef-bap-
     backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
 }
 
-module "chef_lb_rules" {
-    source = "../../modules/lb_rules"
-    loadbalancer_id = azurerm_lb.lb.id
-    backend_id = azurerm_lb_backend_address_pool.pools.0.id
+resource "azurerm_lb_probe" "https" {
     resource_group_name = azurerm_resource_group.rg.name
-    frontend_ip_configuration_name = "subnet-01"
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "https-probe"
+    port = 4444
+}
 
-    lb_port = {
-        chef_api = ["4444", "TCP", "4444"]
-    }
+resource "azurerm_lb_rule" "https" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "HTTPS"
+    protocol = "Tcp"
+    frontend_port = 4444
+    backend_port = 4444
+    frontend_ip_configuration_name = "subnet-01"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    probe_id = azurerm_lb_probe.https.id
 }
 
 resource "azurerm_virtual_machine" "chef" {
