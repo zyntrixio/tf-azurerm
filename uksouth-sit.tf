@@ -1,5 +1,5 @@
 module "uksouth_sit_environment" {
-    source = "./modules/environment"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.0"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -52,7 +52,7 @@ module "uksouth_sit_environment" {
 }
 
 module "uksouth_sit_cluster_0" {
-    source = "./modules/cluster"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm

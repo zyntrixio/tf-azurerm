@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "./modules/environment"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.0"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -89,7 +89,7 @@ output "uksouth_prod_managedidentites" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "./modules/cluster"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
