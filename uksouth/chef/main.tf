@@ -43,6 +43,62 @@ resource "azurerm_network_security_group" "nsg" {
     name = format("${var.environment}-subnet-%02d-nsg", count.index + 1)
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
+
+    security_rule {
+        name = "BlockEverything"
+        priority = 4096
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = "*"
+        access = "Deny"
+        direction = "Inbound"
+    }
+    security_rule {
+        name = "AllowLoadBalancer"
+        protocol = "*"
+        source_address_prefix = "AzureLoadBalancer"
+        source_port_range = "*"
+        destination_port_range = "*"
+        destination_address_prefix = "*"
+        priority = 4095
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowSSH"
+        priority = 500
+        protocol = "TCP"
+        destination_port_range = 22
+        source_port_range = "*"
+        destination_address_prefix = var.subnet_address_prefixes[0]
+        source_address_prefix = "192.168.4.0/24"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowHTTPS"
+        priority = 100
+        protocol = "TCP"
+        destination_port_range = 4444
+        source_port_range = "*"
+        destination_address_prefix = var.subnet_address_prefixes[0]
+        source_address_prefix = "*"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowToolsPrometheusNodeExporter"
+        priority = 110
+        protocol = "TCP"
+        destination_port_range = 9100
+        source_port_range = "*"
+        destination_address_prefix = var.subnet_address_prefixes[0]
+        source_address_prefix = "10.4.0.0/18"
+        direction = "Inbound"
+        access = "Allow"
+    }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nsg" {
@@ -202,45 +258,4 @@ resource "azurerm_virtual_machine" "chef" {
     }
 
     tags = var.tags
-}
-
-module "worker_nsg_rules" {
-    source = "../../modules/nsg_rules"
-    network_security_group_name = "${var.environment}-subnet-01-nsg"
-    resource_group_name = azurerm_resource_group.rg.name
-    rules = [
-        {
-            name = "BlockEverything"
-            priority = "4096"
-            access = "Deny"
-        },
-        {
-            name = "AllowLoadBalancer"
-            source_address_prefix = "AzureLoadBalancer"
-            priority = "4095"
-        },
-        {
-            name = "AllowSSH"
-            priority = "500"
-            protocol = "TCP"
-            destination_port_range = "22"
-            destination_address_prefix = var.subnet_address_prefixes[0]
-            source_address_prefix = "192.168.4.0/24"
-        },
-        {
-            name = "AllowHttpsTraffic"
-            priority = "100"
-            destination_port_range = "4444"
-            protocol = "TCP"
-            destination_address_prefix = var.subnet_address_prefixes[0]
-        },
-        {
-            name = "AllowToolsPrometheusNodeExporter"
-            priority = "110"
-            protocol = "TCP"
-            destination_port_range = "9100"
-            source_address_prefix = "10.4.0.0/18"
-            destination_address_prefix = var.subnet_address_prefixes[0]
-        }
-    ]
 }
