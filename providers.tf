@@ -1,7 +1,6 @@
 variable azurerm_terraform_client_id {}
 
 provider "azurerm" {
-    version = "~> 2.31.1"
     subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -11,7 +10,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_core"
-    version = "~> 2.31.1"
     subscription_id = "0add5c8e-50a6-4821-be0f-7a47c879b009"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -21,7 +19,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_production"
-    version = "~> 2.31.1"
     subscription_id = "79560fde-5831-481d-8c3c-e812ef5046e5"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -31,7 +28,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_preprod"
-    version = "~> 2.31.1"
     subscription_id = "6e685cd8-73f6-4aa6-857c-04ed9b21d17d"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -41,7 +37,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_staging"
-    version = "~> 2.31.1"
     subscription_id = "457b0db5-6680-480f-9e77-2dafb06bd9dc"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -51,7 +46,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_dev"
-    version = "~> 2.31.1"
     subscription_id = "794aa787-ec6a-40dd-ba82-0ad64ed51639"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id
@@ -61,7 +55,6 @@ provider "azurerm" {
 
 provider "azurerm" {
     alias = "uk_sandbox"
-    version = "~> 2.31.1"
     subscription_id = "957523d8-bbe2-4f68-8fae-95975157e91c"
     client_id = "204e5c70-3a77-4ba3-9714-af93352db62a"
     client_secret = var.azurerm_terraform_client_id

@@ -425,6 +425,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         target_fqdns = [
             "api.mailgun.net",
             "api.eu.mailgun.net",
+            "status.mailgun.com",
         ]
         protocol {
             port = "443"

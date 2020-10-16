@@ -45,6 +45,7 @@ terraform {
         }
         azurerm = {
             source = "hashicorp/azurerm"
+            version = "2.32.0"
         }
         chef = {
             source = "terraform-providers/chef"
