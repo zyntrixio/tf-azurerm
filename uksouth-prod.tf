@@ -83,10 +83,10 @@ module "uksouth_prod_environment" {
     }
 }
 
-output "uksouth_prod_managedidentites" {
-    value = module.uksouth_prod_environment.managedidentites
-    sensitive = false
-}
+# output "uksouth_prod_managedidentites" {
+#     value = module.uksouth_prod_environment.managedidentites
+#     sensitive = false
+# }
 
 module "uksouth_prod_cluster_0" {
     source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0"

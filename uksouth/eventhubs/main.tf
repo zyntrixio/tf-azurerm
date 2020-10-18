@@ -33,8 +33,9 @@ resource "azurerm_eventhub" "azurefrontdoor" {
     partition_count = 2
     message_retention = 1
 }
-resource "azurerm_eventhub" "azurefrontdoor_pre" {
-    name = "azurefrontdoor_pre"
+
+resource "azurerm_eventhub" "azurefrontdoorpre" {
+    name = "azurefrontdoorpre"
     namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
     resource_group_name = azurerm_resource_group.rg.name
     partition_count = 2
