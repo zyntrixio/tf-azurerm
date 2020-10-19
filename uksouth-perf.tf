@@ -68,7 +68,7 @@ module "uksouth_performance_cluster_0" {
     bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
 
-    worker_count = 5
+    worker_count = 0
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-performance.git"
