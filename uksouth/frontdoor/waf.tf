@@ -25,4 +25,24 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
             match_values = concat(var.secure_origins, var.secure_origins_v6)
         }
     }
+
+    custom_rule {
+        name = "HarmoniaAPI"
+        enabled = true
+        priority = 2
+        type = "MatchRule"
+        action = "Block"
+
+        match_condition {
+            match_variable = "RequestUri"
+            operator = "Contains"
+            match_values = ["/txm"]
+        }
+        match_condition {
+            match_variable = "RemoteAddr"
+            operator = "IPMatch"
+            negation_condition = true
+            match_values = concat(var.secure_origins, var.secure_origins_v6)
+        }
+    }
 }

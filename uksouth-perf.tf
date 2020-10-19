@@ -28,7 +28,7 @@ module "uksouth_performance_environment" {
     postgres_config = {
         common = {
             name = "bink-uksouth-perf-common",
-            sku_name = "GP_Gen5_32",
+            sku_name = "GP_Gen5_2",
             storage_gb = 3000,
             databases = ["*"]
         },
@@ -36,8 +36,8 @@ module "uksouth_performance_environment" {
     redis_config = {
         common = {
             name = "bink-uksouth-perf-common",
-            family = "P",
-            sku_name = "Premium",
+            family = "C",
+            sku_name = "Standard",
         },
     }
     redis_patch_schedule = {

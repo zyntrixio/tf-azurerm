@@ -40,6 +40,10 @@ resource "azurerm_eventhub" "azurefrontdoorpre" {
     resource_group_name = azurerm_resource_group.rg.name
     partition_count = 2
     message_retention = 1
+
+    lifecycle {
+        ignore_changes = [partition_count, partition_ids]
+    }
 }
 
 resource "azurerm_eventhub" "azurefirewall" {
