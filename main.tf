@@ -123,6 +123,12 @@ module "uksouth-frontdoor" {
         "staging-policies" : [
             module.uksouth_staging_cluster_0.frontdoor_backend_policies_pool
         ],
+        "sit" : [
+            module.uksouth_sit_cluster_0.frontdoor_backend_pool
+        ],
+        "oat" : [
+            module.uksouth_oat_cluster_0.frontdoor_backend_pool
+        ],
         "prod" : [
             module.uksouth_prod_cluster_0.frontdoor_backend_pool
         ],
