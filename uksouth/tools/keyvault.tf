@@ -30,3 +30,16 @@ resource "azurerm_key_vault_access_policy" "fakicorp" {
         "delete"
     ]
 }
+
+resource "azurerm_key_vault_access_policy" "confluence-macro" {
+    key_vault_id = module.kv.keyvault.id
+
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = "ce918d9f-5641-4798-b1d5-bf31d234921a"
+
+    secret_permissions = [
+        "get",
+        "list",
+        "set",
+    ]
+}

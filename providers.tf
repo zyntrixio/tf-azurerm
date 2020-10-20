@@ -81,6 +81,14 @@ resource "azurerm_role_assignment" "devops" {
     principal_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
 }
 
+resource "azurerm_role_assignment" "confluence-macro" {
+    for_each = local.subscriptions
+
+    scope = "/subscriptions/${each.value["id"]}"
+    role_definition_name = "Reader"
+    principal_id = "ce918d9f-5641-4798-b1d5-bf31d234921a"
+}
+
 resource "azurerm_role_assignment" "backend" {
     scope = data.azurerm_subscription.primary.id
     role_definition_name = "Reader"
