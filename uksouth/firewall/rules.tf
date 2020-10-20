@@ -607,75 +607,39 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     action = "Dnat"
 
     rule {
-        name = "prod_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.0.0.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prod_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.0.0.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "staging_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.1.ip_address]
-        translated_address = "10.1.0.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "staging_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.1.ip_address]
-        translated_address = "10.1.0.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "dev_http"
+        name = "sit_http"
         source_addresses = ["*"]
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-        translated_address = "10.2.0.4"
-        translated_port = "80"
+        translated_address = "10.187.0.4"
+        translated_port = "30000"
         protocols = ["TCP"]
     }
     rule {
-        name = "dev_https"
+        name = "sit_https"
         source_addresses = ["*"]
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-        translated_address = "10.2.0.4"
-        translated_port = "443"
+        translated_address = "10.187.0.4"
+        translated_port = "30001"
         protocols = ["TCP"]
     }
     rule {
-        name = "sandbox_http"
+        name = "oat_http"
         source_addresses = ["*"]
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.3.ip_address]
-        translated_address = "10.3.0.4"
-        translated_port = "80"
+        translated_address = "10.188.0.4"
+        translated_port = "30000"
         protocols = ["TCP"]
     }
     rule {
-        name = "sandbox_https"
+        name = "oat_https"
         source_addresses = ["*"]
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.3.ip_address]
-        translated_address = "10.3.0.4"
-        translated_port = "443"
+        translated_address = "10.188.0.4"
+        translated_port = "30001"
         protocols = ["TCP"]
     }
     rule {
