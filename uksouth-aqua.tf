@@ -33,6 +33,7 @@ module "uksouth_aqua_cluster_0" {
     bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
 
+    worker_vm_size = "Standard_D4s_v4"
     worker_count = 2
 
     # Gitops repo, Managed identity for syncing common secrets
