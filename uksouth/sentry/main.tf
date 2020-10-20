@@ -195,7 +195,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name = "sentry"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D2s_v3"
+    size = "Standard_D2s_v4"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [
@@ -246,5 +246,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
             bastion_user = "terraform"
             bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
         }
+    }
+
+    lifecycle {
+        ignore_changes = [source_image_reference]
     }
 }
