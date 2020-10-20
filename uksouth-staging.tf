@@ -65,7 +65,7 @@ module "uksouth_staging_cluster_0" {
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
-
+    worker_vm_size = "Standard_D4s_v4"
     worker_count = 4
 
     # Gitops repo, Managed identity for syncing common secrets
