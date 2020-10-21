@@ -74,9 +74,31 @@ resource "azurerm_linux_virtual_machine" "worker" {
 
     source_image_reference {
         publisher = "Canonical"
-        offer = "UbuntuServer"
-        sku = "16.04-LTS"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
         version = "latest"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "sudo reboot"
+        ]
+
+        on_failure = continue
+
+        connection {
+            type = "ssh"
+            user = "terraform"
+            host = self.private_ip_address
+            private_key = file("~/.ssh/id_bink_azure_terraform")
+            bastion_host = "ssh.uksouth.bink.sh"
+            bastion_user = "terraform"
+            bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
+        }
+    }
+
+    provisioner "local-exec" {
+        command = "echo 'Waiting for reboot' && sleep 60"
     }
 
     provisioner "chef" {
