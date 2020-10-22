@@ -217,7 +217,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Sentry"
         source_addresses = ["*"]
-        target_fqdns = ["sentry.bink.com"]
+        target_fqdns = ["sentry.bink.com", "hellobink.atlassian.net"]
         protocol {
             port = "443"
             type = "Https"
