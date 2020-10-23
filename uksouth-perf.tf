@@ -28,7 +28,7 @@ module "uksouth_performance_environment" {
     postgres_config = {
         common = {
             name = "bink-uksouth-perf-common",
-            sku_name = "GP_Gen5_8",
+            sku_name = "GP_Gen5_2",
             storage_gb = 3000,
             databases = ["*"]
         },
@@ -68,7 +68,7 @@ module "uksouth_performance_cluster_0" {
     bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
     worker_vm_size = "Standard_D4s_v4"
-    worker_count = 20
+    worker_count = 0
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-performance.git"
