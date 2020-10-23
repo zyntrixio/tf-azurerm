@@ -4,110 +4,110 @@ resource "azurerm_resource_group" "test" {
 }
 
 resource "azurerm_network_security_group" "test" {
-  name = "test-nsg"
-  location = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
+    name = "test-nsg"
+    location = azurerm_resource_group.test.location
+    resource_group_name = azurerm_resource_group.test.name
 
-  security_rule {
-    name = "ssh"
-    priority = 100
-    direction = "Inbound"
-    access = "Allow"
-    protocol = "Tcp"
-    source_port_range = "*"
-    destination_port_range = "22"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-  }
+    security_rule {
+        name = "ssh"
+        priority = 100
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_range = "22"
+        source_address_prefix = "*"
+        destination_address_prefix = "*"
+    }
 }
 
 resource "azurerm_virtual_network" "test" {
-  name = "vnet-test"
-  location = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  address_space = ["192.168.0.0/24"]
+    name = "vnet-test"
+    location = azurerm_resource_group.test.location
+    resource_group_name = azurerm_resource_group.test.name
+    address_space = ["192.168.0.0/24"]
 }
 
 resource "azurerm_subnet" "test" {
-  name = "test"
-  resource_group_name = azurerm_resource_group.test.name
-  virtual_network_name = azurerm_virtual_network.test.name
-  address_prefixes = ["192.168.0.0/24"]
+    name = "test"
+    resource_group_name = azurerm_resource_group.test.name
+    virtual_network_name = azurerm_virtual_network.test.name
+    address_prefixes = ["192.168.0.0/24"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "test" {
-  subnet_id = azurerm_subnet.test.id
-  network_security_group_id = azurerm_network_security_group.test.id
+    subnet_id = azurerm_subnet.test.id
+    network_security_group_id = azurerm_network_security_group.test.id
 }
 
 resource "azurerm_public_ip" "test" {
-  name = "test"
-  resource_group_name = azurerm_resource_group.test.name
-  location = azurerm_resource_group.test.location
-  allocation_method = "Static"
+    name = "test"
+    resource_group_name = azurerm_resource_group.test.name
+    location = azurerm_resource_group.test.location
+    allocation_method = "Static"
 }
 
 resource "azurerm_network_interface" "test" {
-  name = "test"
-  location = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-
-  ip_configuration {
     name = "test"
-    subnet_id = azurerm_subnet.test.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.test.id
-  }
+    location = azurerm_resource_group.test.location
+    resource_group_name = azurerm_resource_group.test.name
 
-  ip_configuration {
-      name = "1"
-      subnet_id = azurerm_subnet.test.id
-      private_ip_address_allocation = "Dynamic"
-  }
+    ip_configuration {
+        name = "test"
+        subnet_id = azurerm_subnet.test.id
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id = azurerm_public_ip.test.id
+    }
 
-  ip_configuration {
-      name = "2"
-      subnet_id = azurerm_subnet.test.id
-      private_ip_address_allocation = "Dynamic"
-  }
+    ip_configuration {
+        name = "1"
+        subnet_id = azurerm_subnet.test.id
+        private_ip_address_allocation = "Dynamic"
+    }
+
+    ip_configuration {
+        name = "2"
+        subnet_id = azurerm_subnet.test.id
+        private_ip_address_allocation = "Dynamic"
+    }
 
 }
 
 resource "azurerm_linux_virtual_machine" "test" {
-  name = "test"
-  resource_group_name = azurerm_resource_group.test.name
-  location = azurerm_resource_group.test.location
-  size = "Standard_D2s_v4"
-  admin_username = "terraform"
-  network_interface_ids = [
-    azurerm_network_interface.test.id,
-  ]
+    name = "test"
+    resource_group_name = azurerm_resource_group.test.name
+    location = azurerm_resource_group.test.location
+    size = "Standard_D2s_v4"
+    admin_username = "terraform"
+    network_interface_ids = [
+        azurerm_network_interface.test.id,
+    ]
 
-  custom_data = base64gzip(
-      templatefile(
-          "${path.root}/init.tmpl",
-          {
-              cinc_run_list = "{\\\"run_list\\\":[\\\"recipe[fury]\\\"]}",
-              cinc_data_secret = ""
-          }
-      )
-  )
+    custom_data = base64gzip(
+        templatefile(
+            "${path.root}/init.tmpl",
+            {
+                cinc_run_list = base64encode(jsonencode({ "run_list" : ["recipe[fury]"] })),
+                cinc_data_secret = ""
+            }
+        )
+    )
 
-  admin_ssh_key {
-    username = "terraform"
-    public_key = file("~/.ssh/id_bink_azure_terraform.pub")
-  }
+    admin_ssh_key {
+        username = "terraform"
+        public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+    }
 
-  os_disk {
-    caching = "ReadOnly"
-    storage_account_type = "StandardSSD_LRS"
-    disk_size_gb = 32
-  }
+    os_disk {
+        caching = "ReadOnly"
+        storage_account_type = "StandardSSD_LRS"
+        disk_size_gb = 32
+    }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer = "0001-com-ubuntu-server-focal"
-    sku = "20_04-lts"
-    version = "latest"
-  }
+    source_image_reference {
+        publisher = "Canonical"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
+        version = "latest"
+    }
 }

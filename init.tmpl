@@ -1,8 +1,8 @@
 #cloud-config
-chpasswd:
-  list: |
-    root:test1234
-  expire: False
+# chpasswd:
+#   list: |
+#     root:test1234
+#   expire: False
 
 write_files:
 - content: |
@@ -12,7 +12,7 @@ write_files:
     ### Config ###
     ##############
 
-    CINC_RUN_LIST="${cinc_run_list}"
+    CINC_RUN_LIST=$(echo "${cinc_run_list}" | base64 -d)
     CINC_DATA_SECRET="${cinc_data_secret}"
     CINC_PACKAGE="http://downloads.cinc.sh/files/stable/cinc/16.6.14/ubuntu/20.04/cinc_16.6.14-1_amd64.deb"
     CINC_SERVER="https://chef.uksouth.bink.sh:4444/organizations/bink/"
