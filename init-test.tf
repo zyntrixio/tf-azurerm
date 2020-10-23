@@ -58,6 +58,19 @@ resource "azurerm_network_interface" "test" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = azurerm_public_ip.test.id
   }
+
+  ip_configuration {
+      name = "1"
+      subnet_id = azurerm_subnet.test.id
+      private_ip_address_allocation = "Dynamic"
+  }
+
+  ip_configuration {
+      name = "2"
+      subnet_id = azurerm_subnet.test.id
+      private_ip_address_allocation = "Dynamic"
+  }
+
 }
 
 resource "azurerm_linux_virtual_machine" "test" {
@@ -65,14 +78,14 @@ resource "azurerm_linux_virtual_machine" "test" {
   resource_group_name = azurerm_resource_group.test.name
   location = azurerm_resource_group.test.location
   size = "Standard_D2s_v4"
-  admin_username = "laadmin"
+  admin_username = "terraform"
   network_interface_ids = [
     azurerm_network_interface.test.id,
   ]
 
   custom_data = base64gzip(
       templatefile(
-          "scripts/init/cloud.tmpl",
+          "${path.root}/init.tmpl",
           {
               cinc_run_list = "{\\\"run_list\\\":[\\\"recipe[fury]\\\"]}",
               cinc_data_secret = ""
@@ -81,7 +94,7 @@ resource "azurerm_linux_virtual_machine" "test" {
   )
 
   admin_ssh_key {
-    username = "laadmin"
+    username = "terraform"
     public_key = file("~/.ssh/id_bink_azure_terraform.pub")
   }
 
