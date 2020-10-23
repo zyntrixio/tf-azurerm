@@ -89,7 +89,7 @@ module "uksouth_prod_environment" {
 # }
 
 module "uksouth_prod_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0.1"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -103,6 +103,7 @@ module "uksouth_prod_cluster_0" {
 
     bifrost_version = "4.2.1"
     ubuntu_version = "20.04"
+    controller_vm_size = "Standard_D2s_v4"
     # worker_vm_size = "Standard_D4s_v4"
     worker_count = 10
 
