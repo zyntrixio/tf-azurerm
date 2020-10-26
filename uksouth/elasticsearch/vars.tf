@@ -12,4 +12,4 @@ variable "tags" {
     }
 }
 variable cluster_size { default = 3 }
-variable vm_size { default = "Standard_D4s_v3" }
+variable vm_size { default = "Standard_D4s_v4" }

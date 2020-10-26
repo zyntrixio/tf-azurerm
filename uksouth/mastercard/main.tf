@@ -73,7 +73,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     computer_name = "mastercard-vm"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D2s_v3"
+    size = "Standard_D2s_v4"
     admin_username = "laadmin"
     admin_password = "TFB2248hxq!!"
     network_interface_ids = [
@@ -91,5 +91,9 @@ resource "azurerm_windows_virtual_machine" "vm" {
         offer = "WindowsServer"
         sku = "2019-Datacenter"
         version = "latest"
+    }
+
+    lifecycle {
+        ignore_changes = [source_image_reference]
     }
 }
