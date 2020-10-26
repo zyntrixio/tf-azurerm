@@ -33,8 +33,7 @@ resource "azurerm_linux_virtual_machine" "elasticsearch" {
     name = format("${var.environment}-%02d", count.index)
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    # availability_set_id = azurerm_availability_set.elasticsearch.id # CP: I derped and forgot to remake the VMs with an availability set.
-    # Will fix this tomorrow. (Probably)
+    availability_set_id = azurerm_availability_set.elasticsearch.id
     size = var.vm_size
     admin_username = "terraform"
     tags = var.tags
