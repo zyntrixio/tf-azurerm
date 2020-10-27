@@ -17,7 +17,7 @@ variable "peers" { type = map(object({
     resource_group_name = string
 })) }
 
-variable "sftp_users" {
+variable "config" {
     type = map
     default = {}
 }
