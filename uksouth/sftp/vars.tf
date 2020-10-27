@@ -18,6 +18,5 @@ variable "peers" { type = map(object({
 })) }
 
 variable "config" {
-    type = map
     default = {}
 }
