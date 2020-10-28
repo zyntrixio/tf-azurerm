@@ -294,6 +294,12 @@ module "uksouth-mastercard" {
     source = "./uksouth/mastercard"
 }
 
+module "uksouth-redscan" {
+    source = "./uksouth/redscan"
+    bink_sh = module.uksouth-dns.bink-sh
+    dns_link = module.uksouth-dns.uksouth-bink-host
+}
+
 module "uksouth-wireguard" {
     source = "./uksouth/wireguard"
     secure_origins = local.secure_origins

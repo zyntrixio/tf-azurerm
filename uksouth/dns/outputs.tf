@@ -1,9 +1,9 @@
 output "bink-com" {
-    value = azurerm_dns_zone.bink-com.id
+    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-com.name]
 }
 
 output "bink-sh" {
-    value = azurerm_dns_zone.bink-sh.id
+    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-sh.name]
 }
 
 output "uksouth-bink-sh" {
@@ -11,7 +11,7 @@ output "uksouth-bink-sh" {
 }
 
 output "bink-host" {
-    value = azurerm_dns_zone.bink-host.id
+    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-host.name]
 }
 
 output "uksouth-bink-host" {
