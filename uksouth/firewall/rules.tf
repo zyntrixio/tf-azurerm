@@ -568,7 +568,8 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         name = "Harmonia HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
-            "tools.wasabi.atreemo.co.uk"
+            "tools.wasabi.atreemo.co.uk",
+            "wasabi.atreemo.co.uk",
         ]
         protocol {
             port = "443"
