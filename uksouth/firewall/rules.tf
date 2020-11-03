@@ -271,7 +271,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.oms.opinsights.azure.com",
             "*.blob.core.windows.net",
             "*.azure-automation.net",
-            "*.vault.azure.net"
+            "*.vault.azure.net",
+            "www.microsoft.com"  # For getting RSS feeds
         ]
         protocol {
             port = "443"
