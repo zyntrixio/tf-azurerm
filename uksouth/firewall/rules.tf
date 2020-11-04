@@ -144,6 +144,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Cinc"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "downloads.cinc.sh"
+        ]
+        protocol {
+            port = "80"
+            type = "Http"
+        }
+    }
+    rule {
         name = "python-pypi"
         source_addresses = ["*"]
         target_fqdns = [
