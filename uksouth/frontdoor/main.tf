@@ -579,8 +579,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     lifecycle {
-        ignore_changes = ["*"] # hack as Microsoft and Terraform are a joke when it comes to AFD
-    }
+        ignore_changes = all
+    } # hack as Microsoft and Terraform are a joke when it comes to AFD, you'll need to comment this out when we have a legit change
 }
 
 resource "azurerm_monitor_diagnostic_setting" "diags" {
