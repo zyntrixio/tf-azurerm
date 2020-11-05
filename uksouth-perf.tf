@@ -28,7 +28,7 @@ module "uksouth_performance_environment" {
     postgres_config = {
         common = {
             name = "bink-uksouth-perf-common",
-            sku_name = "GP_Gen5_2",
+            sku_name = "GP_Gen5_8",
             storage_gb = 3000,
             databases = ["*"]
         },

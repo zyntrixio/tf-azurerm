@@ -577,6 +577,10 @@ resource "azurerm_frontdoor" "frontdoor" {
         create = "120m"
         delete = "120m"
     }
+
+    lifecycle {
+        ignore_changes = ["*"] # hack as Microsoft and Terraform are a joke when it comes to AFD
+    }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "diags" {
