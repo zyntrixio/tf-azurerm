@@ -69,6 +69,10 @@ data "terraform_remote_state" "uksouth-common" {
 
 data "azurerm_subscription" "primary" {}
 
+module "uksouth-core" {
+    source = "./uksouth/core"
+}
+
 module "uksouth-bastion" {
     source = "./uksouth/bastion"
 
