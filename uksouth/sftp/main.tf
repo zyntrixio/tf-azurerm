@@ -100,6 +100,17 @@ resource "azurerm_network_security_group" "nsg" {
         direction = "Inbound"
         access = "Allow"
     }
+    security_rule {
+        name = "AllowNodeExporter"
+        priority = 510
+        protocol = "TCP"
+        destination_port_range = 9100
+        source_port_range = "*"
+        destination_address_prefix = azurerm_subnet.subnet.address_prefixes[0]
+        source_address_prefix = "*"
+        direction = "Inbound"
+        access = "Allow"
+    }
 
     tags = var.tags
 }
@@ -175,14 +186,24 @@ resource "azurerm_network_interface_backend_address_pool_association" "worker-ba
     ]
 }
 
+resource "azurerm_availability_set" "as" {
+    name = "${var.common_name}-as"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    platform_fault_domain_count = 2
+    managed = true
+    tags = var.tags
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
     count = 2
     name = format("${var.common_name}%d", count.index)
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_B1s"
+    size = "Standard_B2s"
     admin_username = "terraform"
     tags = var.tags
+    availability_set_id = azurerm_availability_set.as.id
     network_interface_ids = [
         element(azurerm_network_interface.nic.*.id, count.index),
     ]
