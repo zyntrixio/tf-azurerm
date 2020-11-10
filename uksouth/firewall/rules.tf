@@ -99,6 +99,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "management.azure.com",
             "graph.microsoft.com",
             "pkg.cfssl.org",
+            "ghcr.io",
         ]
         protocol {
             port = "443"
