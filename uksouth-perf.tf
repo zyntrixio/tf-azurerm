@@ -54,7 +54,7 @@ module "uksouth_performance_environment" {
 }
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=scaleset"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.1.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -69,8 +69,8 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_count = 0
     worker_scaleset_size = 2
+    use_scaleset = true
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-performance.git"
