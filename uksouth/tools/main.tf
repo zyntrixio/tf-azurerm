@@ -22,6 +22,7 @@ resource "azurerm_role_definition" "prometheus_azure_vm_read" {
     permissions {
         actions = [
             "Microsoft.Compute/virtualMachines/read",
+            "Microsoft.Compute/virtualMachineScaleSets/read",
             "Microsoft.Network/networkInterfaces/read"
         ]
         not_actions = []
