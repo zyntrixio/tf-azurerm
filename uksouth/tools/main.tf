@@ -22,8 +22,12 @@ resource "azurerm_role_definition" "prometheus_azure_vm_read" {
     permissions {
         actions = [
             "Microsoft.Compute/virtualMachines/read",
+            "Microsoft.Network/networkInterfaces/read",
             "Microsoft.Compute/virtualMachineScaleSets/read",
-            "Microsoft.Network/networkInterfaces/read"
+            "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/read",
+            "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/read",
+            "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipConfigurations/read",
+            "Microsoft.Compute/virtualMachineScaleSets/networkInterfaces/read",
         ]
         not_actions = []
     }
@@ -60,4 +64,8 @@ resource "azurerm_role_assignment" "prometheus_azure_vm_read_subs" {
     scope = each.value
     role_definition_id = azurerm_role_definition.prometheus_azure_vm_read.role_definition_resource_id
     principal_id = azurerm_user_assigned_identity.prometheus.principal_id
+
+    lifecycle {
+        ignore_changes = [role_definition_id]
+    }
 }
