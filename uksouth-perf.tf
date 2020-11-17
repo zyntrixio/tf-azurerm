@@ -21,8 +21,8 @@ module "uksouth_performance_environment" {
     }
 
     keyvault_users = {
-        ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
-        KashimAziz = { object_id = "b004c980-3e08-4237-b8e2-d6e65d2bef3f" },
+        Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
+        QA = { object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d" },
     }
 
     postgres_config = {
