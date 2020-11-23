@@ -67,7 +67,7 @@ module "uksouth_dev_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_count = 5
+    worker_count = 6
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-dev.git"
