@@ -14,6 +14,17 @@ resource "azurerm_storage_account" "binkuksouthlogs" {
     min_tls_version = "TLS1_2"
 }
 
+resource "azurerm_storage_account" "binkuksouthlogsredscan" {
+    name = "binkuksouthlogsredscan"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    account_kind = "BlobStorage"
+    account_tier = "Standard"
+    account_replication_type = "LRS"
+    enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
+}
+
 resource "azurerm_eventhub_namespace" "binkuksouthlogs" {
     name = "binkuksouthlogs"
     location = azurerm_resource_group.rg.location
