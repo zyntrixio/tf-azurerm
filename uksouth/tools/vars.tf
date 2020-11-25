@@ -19,7 +19,7 @@ variable subnet_address_prefixes {
 variable "tags" {
     type = map
     default = {
-        Environment = "Tools"
+        Environment = "Core"
     }
 }
 

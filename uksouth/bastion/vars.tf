@@ -13,7 +13,7 @@ variable "ip_range" { default = "192.168.4.0/24" }
 variable "tags" {
     type = map
     default = {
-        Environment = "Production"
+        Environment = "Core"
     }
 }
 
