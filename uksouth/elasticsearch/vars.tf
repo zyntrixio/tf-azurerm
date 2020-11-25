@@ -8,7 +8,7 @@ variable address_space { default = "192.168.3.0/24" }
 variable "tags" {
     type = map
     default = {
-        Environment = "Production"
+        Environment = "Core"
     }
 }
 variable cluster_size { default = 3 }

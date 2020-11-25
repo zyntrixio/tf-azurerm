@@ -6,7 +6,7 @@ module "uksouth_aqua_environment" {
     resource_group_name = "uksouth-aqua"
     location = "uksouth"
     tags = {
-        "Environment" = "Production",
+        "Environment" = "Core",
     }
 
     storage_config = {
