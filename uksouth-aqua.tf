@@ -96,6 +96,6 @@ module "uksouth_aqua_cluster_0" {
     postgres_servers = module.uksouth_aqua_environment.postgres_servers
 
     tags = {
-        "Environment" = "Production",
+        "Environment" = "Core",
     }
 }
