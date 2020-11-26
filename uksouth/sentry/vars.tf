@@ -6,7 +6,7 @@ variable environment { default = "sentry" }
 variable "tags" {
     type = map
     default = {
-        Environment = "Production"
+        Environment = "Core"
     }
 }
 
