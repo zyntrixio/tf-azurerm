@@ -12,6 +12,6 @@ variable subnet_address_prefixes {
 variable "tags" {
     type = map
     default = {
-        Environment = "Production"
+        Environment = "Core"
     }
 }
