@@ -94,6 +94,6 @@ resource "azurerm_windows_virtual_machine" "vm" {
     }
 
     lifecycle {
-        ignore_changes = [source_image_reference]
+        ignore_changes = [source_image_reference, patch_mode]
     }
 }
