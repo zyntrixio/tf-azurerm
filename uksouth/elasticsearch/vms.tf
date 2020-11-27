@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "elasticsearch" {
     os_disk {
         caching = "ReadOnly"
         storage_account_type = "StandardSSD_LRS"
-        disk_size_gb = 1024
+        disk_size_gb = 2048
     }
 
     # Canonical are being whimps and not pointing 20.04-LTS to an actual image as they're
