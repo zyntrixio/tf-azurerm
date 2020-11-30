@@ -69,7 +69,7 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 4
+    worker_scaleset_size = 20
     use_scaleset = true
 
     # Gitops repo, Managed identity for syncing common secrets
