@@ -382,9 +382,9 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "SpreedlyDocs"
+        name = "IPRangeSites" # For getting ip ranges
         source_addresses = ["*"]
-        target_fqdns = ["docs.spreedly.com"]  # For getting ip ranges
+        target_fqdns = ["docs.spreedly.com", "www.microsoft.com", "download.microsoft.com"]
         protocol {
             port = "443"
             type = "Https"
