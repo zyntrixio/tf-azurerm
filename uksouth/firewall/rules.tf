@@ -382,9 +382,9 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "ngrok"
+        name = "SpreedlyDocs"
         source_addresses = ["*"]
-        target_fqdns = ["*.ngrok.io"]
+        target_fqdns = ["docs.spreedly.com"]  # For getting ip ranges
         protocol {
             port = "443"
             type = "Https"
