@@ -821,22 +821,6 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     }
 }
 
-# resource "azurerm_firewall_network_rule_collection" "monitoring" {
-#     name = "Monitoring"
-#     azure_firewall_name = azurerm_firewall.firewall.name
-#     resource_group_name = azurerm_resource_group.rg.name
-#     priority = 110
-#     action = "Allow"
-
-#     rule {
-#         name = "prometheus-to-node-exporter"
-#         source_addresses = ["192.168.6.64/28"]
-#         destination_ports = ["9100"]
-#         destination_addresses = ["*"]
-#         protocols = ["TCP"]
-#     }
-# }
-
 resource "azurerm_firewall_network_rule_collection" "sentry" {
     name = "Sentry"
     azure_firewall_name = azurerm_firewall.firewall.name
