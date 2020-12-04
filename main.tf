@@ -301,12 +301,14 @@ module "uksouth-sftp" {
 
 module "uksouth-mastercard" {
     source = "./uksouth/mastercard"
+    secure_origins = local.secure_origins
 }
 
 module "uksouth-redscan" {
     source = "./uksouth/redscan"
     bink_sh = module.uksouth-dns.bink-sh
     dns_link = module.uksouth-dns.uksouth-bink-host
+    secure_origins = local.secure_origins
 }
 
 module "uksouth-wireguard" {

@@ -1,5 +1,6 @@
 variable "bink_sh" {}
 variable "dns_link" {}
+variable "secure_origins" {}
 
 resource "azurerm_resource_group" "rg" {
     name = "uksouth-redscan"
@@ -75,13 +76,7 @@ resource "azurerm_network_security_rule" "rdp" {
     protocol = "Tcp"
     source_port_range = "*"
     destination_port_range = "3389"
-    source_address_prefixes = [
-        "194.74.152.11/32", # Ascot Bink HQ
-        "217.169.3.233/32", # cpressland@bink.com
-        "81.2.99.144/29", # cpressland@bink.com
-        "82.13.29.15/32", # twinchester@bink.com
-        "82.24.92.107/32", # tcain@bink.com
-    ]
+    source_address_prefixes = var.secure_origins
     destination_address_prefixes = [azurerm_public_ip.ip.ip_address, azurerm_network_interface.nic.private_ip_address]
     resource_group_name = azurerm_resource_group.rg.name
     network_security_group_name = azurerm_network_security_group.nsg.name
