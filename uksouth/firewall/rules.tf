@@ -613,6 +613,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     }
 }
 
+# TODO remove when tools is proper 4th gen
 resource "azurerm_firewall_nat_rule_collection" "ingress" {
     name = "ingress"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -620,42 +621,6 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     priority = 100
     action = "Dnat"
 
-    rule {
-        name = "sit_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-        translated_address = "10.187.0.4"
-        translated_port = "30000"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "sit_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-        translated_address = "10.187.0.4"
-        translated_port = "30001"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "oat_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.3.ip_address]
-        translated_address = "10.188.0.4"
-        translated_port = "30000"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "oat_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.3.ip_address]
-        translated_address = "10.188.0.4"
-        translated_port = "30001"
-        protocols = ["TCP"]
-    }
     rule {
         name = "tools_http"
         source_addresses = ["*"]
@@ -676,48 +641,14 @@ resource "azurerm_firewall_nat_rule_collection" "ingress" {
     }
 }
 
+# TODO remove when tools is proper 4th gen
 resource "azurerm_firewall_nat_rule_collection" "kube" {
     name = "kube"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
     priority = 110
     action = "Dnat"
-    rule {
-        name = "prod_kube"
-        source_addresses = concat(var.secure_origins, var.developer_ips)
-        destination_ports = ["6443"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.0.64.4"
-        translated_port = "6443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "staging_kube"
-        source_addresses = concat(var.secure_origins, var.developer_ips)
-        destination_ports = ["6443"]
-        destination_addresses = [azurerm_public_ip.pips.1.ip_address]
-        translated_address = "10.1.64.4"
-        translated_port = "6443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "dev_kube"
-        source_addresses = concat(var.secure_origins, var.developer_ips)
-        destination_ports = ["6443"]
-        destination_addresses = [azurerm_public_ip.pips.2.ip_address]
-        translated_address = "10.2.64.4"
-        translated_port = "6443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "sandbox_kube"
-        source_addresses = concat(var.secure_origins, var.developer_ips)
-        destination_ports = ["6443"]
-        destination_addresses = [azurerm_public_ip.pips.3.ip_address]
-        translated_address = "10.3.64.4"
-        translated_port = "6443"
-        protocols = ["TCP"]
-    }
+
 
     rule {
         name = "tools_kube"
@@ -890,21 +821,21 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "monitoring" {
-    name = "Monitoring"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 110
-    action = "Allow"
+# resource "azurerm_firewall_network_rule_collection" "monitoring" {
+#     name = "Monitoring"
+#     azure_firewall_name = azurerm_firewall.firewall.name
+#     resource_group_name = azurerm_resource_group.rg.name
+#     priority = 110
+#     action = "Allow"
 
-    rule {
-        name = "prometheus-to-node-exporter"
-        source_addresses = ["192.168.6.64/28"]
-        destination_ports = ["9100"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-}
+#     rule {
+#         name = "prometheus-to-node-exporter"
+#         source_addresses = ["192.168.6.64/28"]
+#         destination_ports = ["9100"]
+#         destination_addresses = ["*"]
+#         protocols = ["TCP"]
+#     }
+# }
 
 resource "azurerm_firewall_network_rule_collection" "sentry" {
     name = "Sentry"
@@ -1057,23 +988,9 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         protocols = ["TCP"]
     }
     rule {
-        name = "gitlab-to-minio"
-        source_addresses = ["192.168.10.0/24"]
-        destination_ports = ["443"]
-        destination_addresses = ["10.4.0.0/18"]
-        protocols = ["TCP"]
-    }
-    rule {
         name = "allkube-to-toolshttps"
         source_addresses = ["10.0.0.0/8"]
         destination_ports = ["443"]
-        destination_addresses = ["10.4.0.4/32"]
-        protocols = ["TCP"]
-    }
-    rule {  // TEMP to test aqua
-        name = "allkube-to-toolshttpsalt"
-        source_addresses = ["10.0.0.0/8"]
-        destination_ports = ["8443"]
         destination_addresses = ["10.4.0.4/32"]
         protocols = ["TCP"]
     }

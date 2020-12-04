@@ -173,56 +173,11 @@ resource "azurerm_virtual_network_peering" "gitlab" {
     allow_forwarded_traffic = true
 }
 
-resource "azurerm_virtual_network_peering" "prod" {
-    name = "local-to-prod"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-prod/providers/Microsoft.Network/virtualNetworks/prod-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
-resource "azurerm_virtual_network_peering" "staging" {
-    name = "local-to-staging"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-staging/providers/Microsoft.Network/virtualNetworks/staging-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
-resource "azurerm_virtual_network_peering" "dev" {
-    name = "local-to-dev"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-dev/providers/Microsoft.Network/virtualNetworks/dev-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
-resource "azurerm_virtual_network_peering" "sandbox" {
-    name = "local-to-sandbox"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-sandbox/providers/Microsoft.Network/virtualNetworks/sandbox-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
 resource "azurerm_virtual_network_peering" "chef" {
     name = "local-to-chef"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
     remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-chef/providers/Microsoft.Network/virtualNetworks/chef-vnet"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
-
-resource "azurerm_virtual_network_peering" "monitoring" {
-    name = "local-to-monitoring"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-monitoring/providers/Microsoft.Network/virtualNetworks/monitoring-vnet"
     allow_virtual_network_access = true
     allow_forwarded_traffic = true
 }
@@ -254,6 +209,7 @@ resource "azurerm_virtual_network_peering" "tableau" {
     allow_forwarded_traffic = true
 }
 
+# TODO remove once tools is proper 4th gen
 resource "azurerm_virtual_network_peering" "tools" {
     name = "local-to-tools"
     resource_group_name = azurerm_resource_group.rg.name
