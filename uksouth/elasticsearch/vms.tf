@@ -135,7 +135,7 @@ module "elasticsearch_nsg_rules" {
             priority = "160"
             protocol = "TCP"
             destination_port_range = "9100"
-            source_address_prefix = "10.4.0.0/18"
+            source_address_prefix = "10.33.0.0/18"
             destination_address_prefix = var.address_space
         },
         {

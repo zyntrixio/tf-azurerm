@@ -81,7 +81,7 @@ module "uksouth_preprod_environment" {
 # }
 
 module "uksouth_preprod_cluster_1" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.0.1"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.0"
     providers = {
         azurerm = azurerm.uk_preprod
         azurerm.core = azurerm
@@ -98,6 +98,8 @@ module "uksouth_preprod_cluster_1" {
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
     worker_count = 5
+
+    prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-preprod.git"

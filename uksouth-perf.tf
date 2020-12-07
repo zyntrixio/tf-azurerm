@@ -54,7 +54,7 @@ module "uksouth_performance_environment" {
 }
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -71,6 +71,8 @@ module "uksouth_performance_cluster_0" {
     worker_vm_size = "Standard_D4s_v4"
     worker_scaleset_size = 4
     use_scaleset = true
+
+    prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-performance.git"

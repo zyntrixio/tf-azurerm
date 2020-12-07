@@ -95,7 +95,7 @@ resource "azurerm_network_security_group" "nsg" {
         destination_port_range = 9100
         source_port_range = "*"
         destination_address_prefix = var.subnet_address_prefixes[0]
-        source_address_prefix = "10.4.0.0/18"
+        source_address_prefix = "10.33.0.0/18"
         direction = "Inbound"
         access = "Allow"
     }

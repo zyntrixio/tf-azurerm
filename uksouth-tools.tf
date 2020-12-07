@@ -28,7 +28,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.3.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -46,6 +46,8 @@ module "uksouth_tools_cluster_0" {
     worker_vm_size = "Standard_D4s_v4"
     worker_scaleset_size = 3
     use_scaleset = true
+
+    prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-tools.git"

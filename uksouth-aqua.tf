@@ -19,7 +19,7 @@ module "uksouth_aqua_environment" {
 }
 
 module "uksouth_aqua_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -36,7 +36,8 @@ module "uksouth_aqua_cluster_0" {
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
     worker_count = 2
-    worker_scaleset_size = 0
+
+    prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
     gitops_repo = "git@git.bink.com:GitOps/uksouth-aqua.git"

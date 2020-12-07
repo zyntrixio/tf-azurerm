@@ -81,7 +81,7 @@ resource "azurerm_network_security_group" "nsg" {
         priority = 510
         direction = "Inbound"
         protocol = "TCP"
-        source_address_prefix = "10.4.0.0/18"
+        source_address_prefix = "10.33.0.0/18"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
         destination_port_ranges = [9100]
