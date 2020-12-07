@@ -51,14 +51,6 @@ resource "azurerm_private_dns_a_record" "sh-tableau" {
     records = ["192.168.7.4"]
 }
 
-resource "azurerm_private_dns_a_record" "sh-tools" {
-    name = "tools"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
-
 resource "azurerm_private_dns_a_record" "sh-tools-k8s" {
     name = "tools.k8s"
     zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
@@ -97,14 +89,6 @@ resource "azurerm_private_dns_a_record" "sh-prod-k8s" {
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
     records = ["10.0.64.4"]
-}
-
-resource "azurerm_private_dns_a_record" "sh-cluster-autodiscover" {
-    name = "cluster-autodiscover"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
 }
 
 resource "azurerm_private_dns_a_record" "sh-aqua-gateway" {
@@ -151,6 +135,22 @@ resource "azurerm_private_dns_a_record" "sh-aqua" {
 // Fix gitlab-runner: pypi.tools.bink.sh -> tools0.uksouth.bink.sh
 resource "azurerm_private_dns_a_record" "tools0" {
     name = "tools0"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["51.132.44.245"]
+}
+
+// Fix cluster autodiscover going to tools.uksouth.bink.sh
+resource "azurerm_private_dns_a_record" "sh-tools" {
+    name = "tools"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["51.132.44.245"]
+}
+resource "azurerm_private_dns_a_record" "sh-cluster-autodiscover" {
+    name = "cluster-autodiscover"
     zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
     ttl = 300
