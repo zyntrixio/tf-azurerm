@@ -107,12 +107,6 @@ resource "azurerm_role_assignment" "architecture" {
     principal_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
 }
 
-resource "azurerm_role_assignment" "john_rouffas" {
-    scope = data.azurerm_subscription.primary.id
-    role_definition_name = "Reader"
-    principal_id = "d04bb55a-9ca8-4115-9b00-54ec0d61a64c"
-}
-
 resource "azurerm_role_assignment" "jo_raine" {
     scope = data.azurerm_subscription.primary.id
     role_definition_name = "Billing Reader"
