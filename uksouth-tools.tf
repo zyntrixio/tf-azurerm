@@ -9,6 +9,15 @@ module "uksouth_tools_environment" {
         "Environment" = "Core",
     }
 
+    postgres_config = {
+        common = {
+            name = "bink-uksouth-tools-common",
+            sku_name = "GP_Gen5_2",
+            storage_gb = 500,
+            databases = ["*"]
+        },
+    }
+
     storage_config = {
         common = {
             name = "binkuksouthtools",
