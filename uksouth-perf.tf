@@ -54,7 +54,7 @@ module "uksouth_performance_environment" {
 }
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.1"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
