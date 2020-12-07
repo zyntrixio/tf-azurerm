@@ -35,7 +35,7 @@ module "uksouth_tools_cluster_0" {
 
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 1
+    worker_scaleset_size = 3
     use_scaleset = true
 
     # Gitops repo, Managed identity for syncing common secrets
