@@ -146,3 +146,13 @@ resource "azurerm_private_dns_a_record" "sh-aqua" {
     ttl = 300
     records = ["10.5.0.4"]
 }
+
+
+// Fix gitlab-runner: pypi.tools.bink.sh -> tools0.uksouth.bink.sh
+resource "azurerm_private_dns_a_record" "tools0" {
+    name = "tools0"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["51.132.44.245"]
+}
