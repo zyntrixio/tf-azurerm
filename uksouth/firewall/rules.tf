@@ -613,54 +613,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     }
 }
 
-# TODO remove when tools is proper 4th gen
-resource "azurerm_firewall_nat_rule_collection" "ingress" {
-    name = "ingress"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 100
-    action = "Dnat"
-
-    rule {
-        name = "tools_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.4.ip_address]
-        translated_address = "10.4.0.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "tools_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.4.ip_address]
-        translated_address = "10.4.0.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
-# TODO remove when tools is proper 4th gen
-resource "azurerm_firewall_nat_rule_collection" "kube" {
-    name = "kube"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 110
-    action = "Dnat"
-
-
-    rule {
-        name = "tools_kube"
-        source_addresses = concat(var.secure_origins, var.developer_ips)
-        destination_ports = ["6443"]
-        destination_addresses = [azurerm_public_ip.pips.4.ip_address]
-        translated_address = "10.4.64.4"
-        translated_port = "6443"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "bastion" {
     name = "bastion"
     azure_firewall_name = azurerm_firewall.firewall.name
