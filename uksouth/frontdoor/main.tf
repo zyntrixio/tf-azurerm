@@ -580,7 +580,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     lifecycle {
         ignore_changes = all
-    } # hack as Microsoft and Terraform are a joke when it comes to AFD, you'll need to comment this out when we have a legit change
+    } # Waiting on merge of https://github.com/terraform-providers/terraform-provider-azurerm/pull/9357
 }
 
 resource "azurerm_monitor_diagnostic_setting" "diags" {
