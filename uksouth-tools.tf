@@ -9,6 +9,10 @@ module "uksouth_tools_environment" {
         "Environment" = "Core",
     }
 
+    keyvault_users = {
+        Confluence = { object_id = "ce918d9f-5641-4798-b1d5-bf31d234921a" },
+    }
+
     postgres_config = {
         common = {
             name = "bink-uksouth-tools-common",

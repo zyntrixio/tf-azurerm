@@ -69,9 +69,7 @@ provider "chef" {
     key_material = file("~/.chef/user.pem")
 }
 
-provider "random" {
-    version = "~> 2.2"
-}
+provider "random" {}
 
 resource "azurerm_role_assignment" "devops" {
     for_each = local.subscriptions
