@@ -81,7 +81,7 @@ module "uksouth_preprod_environment" {
 # }
 
 module "uksouth_preprod_cluster_1" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.1"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.5.0"
     providers = {
         azurerm = azurerm.uk_preprod
         azurerm.core = azurerm

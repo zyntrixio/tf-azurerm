@@ -32,7 +32,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.4.1"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.5.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
