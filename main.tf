@@ -80,6 +80,8 @@ module "uksouth-bastion" {
     firewall_vnet_id = module.uksouth-firewall.vnet_id
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
+    eventhub_logs = module.uksouth-eventhubs.eventhubs
+
 }
 
 module "uksouth-gitlab" {
