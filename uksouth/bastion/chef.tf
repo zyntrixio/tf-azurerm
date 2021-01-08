@@ -1,7 +1,7 @@
 resource "chef_environment" "env" {
     name = azurerm_resource_group.rg.name
     cookbook_constraints = {
-        nebula = "= 2.1.0"
+        nebula = "= 2.2.0"
     }
 
     default_attributes_json = jsonencode({
