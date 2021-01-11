@@ -21,6 +21,7 @@ resource "azurerm_subnet" "subnet" {
     ]
     service_endpoints = [
         "Microsoft.Storage",
+        "Microsoft.EventHub",
     ]
 }
 

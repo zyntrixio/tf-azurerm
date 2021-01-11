@@ -69,7 +69,7 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 0
+    worker_scaleset_size = 10
     use_scaleset = true
 
     prometheus_subnet = "10.33.0.0/18"

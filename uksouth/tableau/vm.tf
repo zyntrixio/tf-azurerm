@@ -162,6 +162,7 @@ resource "azurerm_subnet" "subnet" {
         # "Microsoft.Storage",
         # "Microsoft.ContainerRegistry",
         "Microsoft.Sql",
+        "Microsoft.EventHub",
     ]
 }
 

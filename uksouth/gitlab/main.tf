@@ -164,6 +164,7 @@ resource "azurerm_subnet" "subnet0" {
 
     service_endpoints = [
         "Microsoft.ContainerRegistry",
+        "Microsoft.EventHub",
     ]
 }
 
