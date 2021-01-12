@@ -1,5 +1,6 @@
 variable "private_dns_link_bink_host" {}
 variable "private_dns_link_bink_sh" {}
+variable "eventhub_logs" {}
 
 variable environment { default = "elasticsearch" }
 variable resource_group_name { default = "uksouth-elasticsearch" }
