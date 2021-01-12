@@ -2,9 +2,8 @@ resource "chef_environment" "env" {
     name = var.resource_group_name
     cookbook_constraints = {
         manhattan = "= 2.0.3"
-        romanoff = ">= 2.0.2"
         fury = ">= 1.6.1"
-        nebula = "= 2.1.0"
+        nebula = ">= 2.2.0"
         jarvis = ">= 2.1.0"
     }
 
@@ -14,4 +13,15 @@ resource "chef_environment" "env" {
             "nodes" : ["elasticsearch-00", "elasticsearch-01", "elasticsearch-02"]
         }
     })
+}
+
+resource "chef_role" "role" {
+    name = "elasticsearch"
+    run_list = [
+        "recipe[fury]",
+        "recipe[jarvis]",
+        "recipe[nebula]",
+        "recipe[black_widow]",
+        "recipe[manhattan]",
+    ]
 }
