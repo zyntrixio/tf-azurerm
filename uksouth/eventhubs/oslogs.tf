@@ -2,7 +2,7 @@ resource "azurerm_eventhub" "oslogs" {
     name = "oslogs"
     namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
     resource_group_name = azurerm_resource_group.rg.name
-    partition_count = 2
+    partition_count = 4
     message_retention = 1
 }
 
