@@ -147,11 +147,11 @@ module "elasticsearch_nsg_rules" {
             destination_address_prefix = var.address_space
         },
         {
-            name = "AllowElasticsearchTrafficOLDElasticsearch"
+            name = "AllowElasticsearchTrafficToLB"
             priority = "190"
             destination_port_range = "9200"
             protocol = "TCP"
-            source_address_prefix = "192.168.6.0/24"
+            source_address_prefix = var.address_space
             destination_address_prefix = var.address_space
         },
     ]
