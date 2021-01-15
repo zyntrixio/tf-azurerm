@@ -131,6 +131,14 @@ module "elasticsearch_nsg_rules" {
             destination_address_prefix = var.address_space
         },
         {
+            name = "AllowElasticsearchTrafficFromAll2"
+            priority = "130"
+            destination_port_range = "9200"
+            protocol = "TCP"
+            source_address_prefix = "192.168.0.0/16"
+            destination_address_prefix = var.address_space
+        },
+        {
             name = "AllowHTTP_PrometheusNodeExporter"
             priority = "160"
             protocol = "TCP"
