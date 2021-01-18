@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.3.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.4.3"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -74,6 +74,7 @@ module "uksouth_prod_environment" {
         day_of_week = "Wednesday"
         start_hour_utc = 1
     }
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name = "binkuksouthprod",
@@ -82,11 +83,6 @@ module "uksouth_prod_environment" {
         },
     }
 }
-
-# output "uksouth_prod_managedidentites" {
-#     value = module.uksouth_prod_environment.managedidentites
-#     sensitive = false
-# }
 
 module "uksouth_prod_cluster_0" {
     source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=1.5.0"

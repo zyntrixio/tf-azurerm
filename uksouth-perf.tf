@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.3.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.4.3"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -44,6 +44,7 @@ module "uksouth_performance_environment" {
         day_of_week = "Monday"
         start_hour_utc = 1
     }
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name = "binkuksouthperf",
