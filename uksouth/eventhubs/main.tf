@@ -30,7 +30,7 @@ resource "azurerm_eventhub_namespace" "binkuksouthlogs" {
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     sku = "Standard"
-    capacity = 4
+    capacity = 2
     zone_redundant = true
 }
 
@@ -99,6 +99,22 @@ resource "azurerm_eventhub" "azurekeyvault" {
 
 resource "azurerm_eventhub" "defenderatp" {
     name = "defenderatp"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
+}
+
+resource "azurerm_eventhub" "azureservicebus" {
+    name = "azureservicebus"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
+}
+
+resource "azurerm_eventhub" "azurestorage" {
+    name = "azurestorage"
     namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
     resource_group_name = azurerm_resource_group.rg.name
     partition_count = 2
