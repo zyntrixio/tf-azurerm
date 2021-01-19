@@ -233,6 +233,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "sentry.bink.com",
             "hellobink.atlassian.net",
             "*.sentry.io",
+            "sentry.io",
         ]
         protocol {
             port = "443"
