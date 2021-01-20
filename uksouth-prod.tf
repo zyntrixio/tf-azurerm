@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.4.3"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.0"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -81,6 +81,12 @@ module "uksouth_prod_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
+    }
+
+    additional_managed_identities = {
+        wasabireport = {
+            keyvault_permissions = ["get"]
+        }
     }
 }
 
