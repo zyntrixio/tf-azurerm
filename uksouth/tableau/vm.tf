@@ -203,7 +203,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name = "tableau"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D8s_v3"
+    size = "Standard_D16s_v3"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [

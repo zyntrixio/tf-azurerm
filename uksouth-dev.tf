@@ -116,27 +116,32 @@ module "uksouth_dev_cluster_0" {
     }
 }
 
-# module "dwh" {
-#     source = "./dwh"
-#     providers = {
-#         azurerm = azurerm.uk_dev
-#     }
+module "uksouth_dev_datawarehouse" {
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=master"
+    providers = {
+        azurerm = azurerm.uk_dev
+    }
 
-#     resource_group_name = "uksouth-dev-dwh"
-#     location = "uksouth"
-#     environment = "dev"
-#     tags = {
-#         "Environment" = "Dev",
-#     }
+    resource_group_name = "uksouth-dev-dwh"
+    location = "uksouth"
+    environment = "dev"
+    tags = {
+        "Environment" = "Dev",
+    }
 
-#     resource_group_iam = {
-#         Architecture = {
-#             object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
-#             role = "Reader"
-#         }
-#         Backend = {
-#             object_id = "219194f6-b186-4146-9be7-34b731e19001",
-#             role = "Reader",
-#         }
-#     }
-# }
+    resource_group_iam = {
+        Architecture = {
+            object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
+            role = "Reader"
+        }
+        Backend = {
+            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            role = "Reader",
+        }
+    }
+    sql_admin = "34985102-e792-4f5c-ac22-4aa72fc721bf"  # dev datawarehouse group
+}
+
+output "test1" {
+  value = module.uksouth_dev_datawarehouse.synapse_identity
+}
