@@ -25,7 +25,7 @@ module "uksouth_dev_environment" {
         QA = { object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d" },
     }
     infra_keyvault_users = {
-        AzureSynapse = { object_id = module.uksouth_dev_datawarehouse.synapse_identity.principal_id, permissions = ["get"]}
+        AzureSynapse = { object_id = module.uksouth_dev_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
     }
 
     postgres_config = {
@@ -146,5 +146,5 @@ module "uksouth_dev_datawarehouse" {
 }
 
 output "test1" {
-  value = module.uksouth_dev_datawarehouse.synapse_identity
+    value = module.uksouth_dev_datawarehouse.synapse_identity
 }
