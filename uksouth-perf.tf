@@ -32,6 +32,12 @@ module "uksouth_performance_environment" {
             storage_gb = 3000,
             databases = ["*"]
         },
+        hermeshistory = {
+            name = "bink-uksouth-perf-hermeshistory",
+            sku_name = "GP_Gen5_4",
+            storage_gb = 500,
+            databases = ["hermeshistory"]
+        },
     }
     redis_config = {
         common = {
