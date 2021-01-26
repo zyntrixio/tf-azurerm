@@ -33,6 +33,9 @@ module "uksouth_prod_environment" {
         ChrisLatham = { object_id = "607482a3-07fa-4b24-8af0-5b84df6ca7c6" },
         ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
     }
+    infra_keyvault_users = {
+        AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
+    }
 
     postgres_config = {
         common = {
@@ -153,4 +156,26 @@ module "uksouth_prod_cluster_0" {
     tags = {
         "Environment" = "Production",
     }
+}
+
+module "uksouth_prod_datawarehouse" {
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.1.0"
+    providers = {
+        azurerm = azurerm.uk_production
+    }
+
+    resource_group_name = "uksouth-prod-dwh"
+    location = "uksouth"
+    environment = "prod"
+    tags = {
+        "Environment" = "Production",
+    }
+
+    resource_group_iam = {
+        Architecture = {
+            object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
+            role = "Reader"
+        }
+    }
+    sql_admin = "aac28b59-8ac3-4443-bccc-3fb820165a08"  # DevOps
 }
