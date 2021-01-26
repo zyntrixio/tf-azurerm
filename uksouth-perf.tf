@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.4.3"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.4"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
