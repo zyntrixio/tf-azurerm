@@ -53,6 +53,9 @@ terraform {
         random = {
             source = "hashicorp/random"
         }
+        checkly = {
+            source = "checkly/checkly"
+        }
     }
 }
 
