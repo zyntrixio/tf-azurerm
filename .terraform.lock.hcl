@@ -4,6 +4,7 @@
 provider "registry.terraform.io/checkly/checkly" {
   version = "0.8.0"
   hashes = [
+    "h1:gi7QnKmp2Jj9cQCex1ITeVBsFg1zJbDU5ODdeailSdg=",
     "h1:jD4lxC8hVUdPekUKhYXqfEWIxymCDByt30ABAAdfilA=",
     "zh:00f2975b730b47c961dd7692afa82a578cf18ea60c57944e3498f98ca690280d",
     "zh:0a142f575f3b8087c921d8faf3f46d64b892d991c45be64d387dd4cea781f5ca",
@@ -23,6 +24,7 @@ provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "2.42.0"
   constraints = "2.42.0"
   hashes = [
+    "h1:NUoZrII0xjSHsmlj/Uz1c6KNCWAztzYL8bEEUIeLTF4=",
     "h1:oxyi21Gz35Cup/JPqPaGtxunuqMuJHHYMBzBEieMhbw=",
     "zh:5b6d6b9d53efb09d1bff83fff019107ffaf2a79a68c9f59b9541098503c9d7a8",
     "zh:87886113155f25a9875e5b0812568953bf6a523b2c604ae0860054b464d1e2fe",
@@ -41,6 +43,7 @@ provider "registry.terraform.io/hashicorp/random" {
   version = "3.0.1"
   hashes = [
     "h1:0QaSbRBgBi8vI/8IRwec1INdOqBxXbgsSFElx1O4k4g=",
+    "h1:SzM8nt2wzLMI28A3CWAtW25g3ZCm1O4xD0h3Ps/rU1U=",
     "zh:0d4f683868324af056a9eb2b06306feef7c202c88dbbe6a4ad7517146a22fb50",
     "zh:4824b3c7914b77d41dfe90f6f333c7ac9860afb83e2a344d91fbe46e5dfbec26",
     "zh:4b82e43712f3cf0d0cbc95b2cbcd409ba8f0dc7848fdfb7c13633c27468ed04a",
@@ -57,6 +60,7 @@ provider "registry.terraform.io/hashicorp/random" {
 provider "registry.terraform.io/terraform-providers/chef" {
   version = "0.2.0"
   hashes = [
+    "h1:5eDkBX+pi55pMC82N4eymy7S6BCySiTpqRSsadeNesY=",
     "h1:88ejy2FZd2qyoS2rD1f1+LdLZBfdwA8/9JX4pdUjTf0=",
     "zh:1feacef1f7de3c819c1793421b04f8501db8ae7896dbacc341c62afeb1c9ba87",
     "zh:2902d88c13904b09cede5e426247c3473dafaaef75821e1759ac5c760da0bcdf",
@@ -77,6 +81,7 @@ provider "registry.terraform.io/terrycain/commandpersistence" {
   version     = "1.0.2"
   constraints = "1.0.2"
   hashes = [
+    "h1:FAEXzGCRxgf8Ttt7wB8EPCjpjeLgshLjiB54S/W6X0c=",
     "h1:xLXosTe8jHDWlAGKRZFuQTH1A0yK+PX/fM/iEV2EPAc=",
     "zh:0d9344f88dbb47e759860504f653869a5e3f4984759af2d94ee6bde8d188c644",
     "zh:2375115d6e3005badbfe1a05733192467c612c569ed100e50b2d340a4fb4b3b6",

@@ -145,6 +145,3 @@ module "uksouth_dev_datawarehouse" {
     sql_admin = "34985102-e792-4f5c-ac22-4aa72fc721bf"  # dev datawarehouse group
 }
 
-output "test1" {
-    value = module.uksouth_dev_datawarehouse.synapse_identity
-}

@@ -24,6 +24,7 @@ locals {
 
         }
         cname_records = {
+            "mobsf.uksouth" = "tools0.uksouth.bink.sh"
             "kibana.uksouth" = "tools.k8s.uksouth.bink.sh"
             "autodiscover" = "autodiscover.outlook.com"
             "talkie-toaster.uksouth" = "tools.uksouth.bink.sh"
