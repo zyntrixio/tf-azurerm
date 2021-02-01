@@ -81,7 +81,7 @@ resource "checkly_check_group" "env" {
     double_check = true
     alert_channel_subscription {
         channel_id = each.value["alert_channel_id"]
-        activated  = true
+        activated = true
     }
 }
 

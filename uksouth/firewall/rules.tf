@@ -33,33 +33,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Datadog HTTP"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "apt.datadoghq.com",
-            "trace.agent.datadoghq.com",
-            "process.datadoghq.com",
-            "agent-intake.logs.datadoghq.com",
-            "app.datadoghq.com",
-            "*.agent.datadoghq.com",
-        ]
-        protocol {
-            port = "80"
-            type = "Http"
-        }
-    }
-    rule {
-        name = "Datadog HTTPS"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "*.datadoghq.com"
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Hashicorp"
         source_addresses = ["192.168.1.0/25"]
         target_fqdns = ["releases.hashicorp.com"]
@@ -71,7 +44,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "GitHub"
         source_addresses = ["*"]
-        target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com"]
+        target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com", "*.githubusercontent.com"]
         protocol {
             port = "443"
             type = "Https"
@@ -822,13 +795,6 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     priority = 150
     action = "Allow"
 
-    rule {
-        name = "Datadog Logs"
-        source_addresses = ["*"]
-        destination_ports = ["10516"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
     rule {
         name = "GitLab SSH"
         source_addresses = ["*"]
