@@ -46,7 +46,7 @@ module "uksouth_prod_environment" {
         },
         hermes = {
             name = "bink-uksouth-prod-hermes",
-            sku_name = "GP_Gen5_4",
+            sku_name = "GP_Gen5_8",
             storage_gb = 500,
             databases = ["hermes"]
         },
