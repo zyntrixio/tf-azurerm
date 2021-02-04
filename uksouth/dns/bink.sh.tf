@@ -21,20 +21,22 @@ locals {
             "wireguard.uksouth" = "20.49.163.188"
             "tableau.uksouth" = "51.132.44.253"
             "tools.k8s.uksouth" = "51.132.44.244"
+            "redscan.uksouth" = "51.132.44.252"
 
         }
         cname_records = {
             "mobsf.uksouth" = "tools0.uksouth.bink.sh"
-            "kibana.uksouth" = "tools.k8s.uksouth.bink.sh"
+            "kibana.uksouth" = "tools0.uksouth.bink.sh"
             "autodiscover" = "autodiscover.outlook.com"
             "talkie-toaster.uksouth" = "tools.uksouth.bink.sh"
             "oat.sandbox.k8s.uksouth" = "sandbox.k8s.uksouth.bink.sh"
-            "cluster-autodiscover.uksouth" = "tools.k8s.uksouth.bink.sh"
-            "grafana.tools" = "tools.k8s.uksouth.bink.sh"
-            "asset-register.tools" = "tools.k8s.uksouth.bink.sh"
-            "pypi.tools" = "tools.k8s.uksouth.bink.sh"
-            "tools.uksouth" = "tools.k8s.uksouth.bink.sh"
+            "cluster-autodiscover.uksouth" = "tools0.uksouth.bink.sh"
+            "grafana.tools" = "tools0.uksouth.bink.sh"
+            "asset-register.tools" = "tools0.uksouth.bink.sh"
+            "pypi.tools" = "tools0.uksouth.bink.sh"
             "aqua.uksouth" = "aqua0.uksouth.bink.sh"
+            "bridge.uksouth" = "tools0.uksouth.bink.sh"
+            "confluence-macro.uksouth" = "tools0.uksouth.bink.sh"
         }
         mx_records = {
             "@" = [
