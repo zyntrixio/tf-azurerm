@@ -21,7 +21,7 @@ locals {
             "wireguard.uksouth" = "20.49.163.188"
             "tableau.uksouth" = "51.132.44.253"
             "tools.k8s.uksouth" = "51.132.44.244"
-            "redscan.uksouth" = "51.132.44.252"
+            "redscan.uksouth" = "51.132.249.209"
 
         }
         cname_records = {
