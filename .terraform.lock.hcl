@@ -2,21 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/checkly/checkly" {
-  version = "0.8.0"
+  version = "0.8.1"
   hashes = [
-    "h1:gi7QnKmp2Jj9cQCex1ITeVBsFg1zJbDU5ODdeailSdg=",
-    "h1:jD4lxC8hVUdPekUKhYXqfEWIxymCDByt30ABAAdfilA=",
-    "zh:00f2975b730b47c961dd7692afa82a578cf18ea60c57944e3498f98ca690280d",
-    "zh:0a142f575f3b8087c921d8faf3f46d64b892d991c45be64d387dd4cea781f5ca",
-    "zh:15312e55a4cb14b0e0ba89730e51dcff558df98db9f1da15b757de612c88ca45",
-    "zh:188aadae41047a389a94581a6be398e02e15b302588f338e06fd1bafdbc1e810",
-    "zh:5219c349409ee1a54a366ceddccbddd4a323f153ea96c3ee95747b92fce569b6",
-    "zh:7a2a006a258b21fa8ed944a6722625c8e8c1d0aefe518b8a27a5c8f101353ff8",
-    "zh:7e3a16e0032e3eabe977c2f051b521a1f61e3b7a33e0fdc9327c8d522acab5ac",
-    "zh:856ba17559addc46e1fd80232fe402e28d0e122ff677824aa2296d6cb3e8c16d",
-    "zh:9d388f8dd2cc7441463df10f7cb7d1f3d51855999b670c8cabde09b776208421",
-    "zh:b1ccef6bf76e65348134d2aa7a2dd0c04d20b3c5b61b6ab211f74058e576cfca",
-    "zh:ba2e69c3da4b12b9d8f9533b39f4064455302b3143d0dfd5d9bc9c00f6824eef",
+    "h1:4+W/bAmzA2d/En4117d0AN+OV06ihO9pWyWNJINciDE=",
+    "zh:06544ce04009ed425f0c16e13db548225f4490b31ed388141d202973a21471d0",
+    "zh:1eecc191ebe0aad7bb4a3a4ee9a284c24574d674015659813ab7b6add33dcbd6",
+    "zh:24ed6536aa55deceff749e39c13ee27ae2deed03c1370795c8f123471e876a7c",
+    "zh:2742a4cbf719bb7ff863d2a4ca5e74703f6067a85c434c5f3bb4f0fbd6f651d3",
+    "zh:321effaa3a67583de4c0af08d897bb1918e0ca5ad02d2aac4555e0b6a75e7da4",
+    "zh:504af14ec67b24425c898fe0857c1ccc98f268ee0e75b07540809faed09bd96f",
+    "zh:51fbbc542650106da57e2924cef7d33d9264360943868d74c7de55b9207f9b83",
+    "zh:534049e1135faf4b695b8bc54bae67cb545b0d5ce64eb1e3fb91cf7c98f70825",
+    "zh:5ab84804a755dd960e9c6fc7cad7d95aee3ab2634130d7afcd0cfddef0404d98",
+    "zh:65d39d7f2d278d61c4cd4227576ccc8375a035f9f5998c06c05e9a22d8579094",
+    "zh:bb55b649f7a587ec9d95236d08786621a6f1e4fb7380efd13fe0406f16c66268",
   ]
 }
 

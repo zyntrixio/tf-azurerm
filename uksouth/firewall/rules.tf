@@ -817,13 +817,6 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         protocols = ["TCP"]
     }
     rule {
-        name = "Azure Redis"
-        source_addresses = ["10.0.0.0/18", "10.1.0.0/18", "10.2.0.0/18", "10.3.0.0/18"]
-        destination_ports = ["6379", "6380"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-    rule {
         name = "CloudFlare DNS" # Workaround for Cert Manager bink.sh validation
         source_addresses = ["*"]
         destination_ports = ["53"]
