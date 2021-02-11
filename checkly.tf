@@ -120,6 +120,9 @@ resource "checkly_check" "prod" {
         follow_redirects = false
     }
     group_id = checkly_check_group.env["prod"].id
+    lifecycle {
+        ignore_changes = [ group_order ]
+    }
 }
 
 resource "checkly_check" "staging" {
@@ -140,6 +143,9 @@ resource "checkly_check" "staging" {
         follow_redirects = false
     }
     group_id = checkly_check_group.env["staging"].id
+    lifecycle {
+        ignore_changes = [ group_order ]
+    }
 }
 
 resource "checkly_check" "dev" {
@@ -160,4 +166,7 @@ resource "checkly_check" "dev" {
         follow_redirects = false
     }
     group_id = checkly_check_group.env["dev"].id
+    lifecycle {
+        ignore_changes = [ group_order ]
+    }
 }
