@@ -121,7 +121,7 @@ resource "checkly_check" "prod" {
     }
     group_id = checkly_check_group.env["prod"].id
     lifecycle {
-        ignore_changes = [ group_order ]
+        ignore_changes = [group_order]
     }
 }
 
@@ -144,7 +144,7 @@ resource "checkly_check" "staging" {
     }
     group_id = checkly_check_group.env["staging"].id
     lifecycle {
-        ignore_changes = [ group_order ]
+        ignore_changes = [group_order]
     }
 }
 
@@ -167,6 +167,6 @@ resource "checkly_check" "dev" {
     }
     group_id = checkly_check_group.env["dev"].id
     lifecycle {
-        ignore_changes = [ group_order ]
+        ignore_changes = [group_order]
     }
 }
