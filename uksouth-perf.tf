@@ -70,7 +70,7 @@ module "uksouth_performance_cluster_0" {
     bifrost_version = "4.6.2"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
-    worker_vm_size = "Standard_D32s_v4"
+    worker_vm_size = "Standard_D4s_v4"
     worker_scaleset_size = 20
     use_scaleset = true
 
