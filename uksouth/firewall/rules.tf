@@ -368,6 +368,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Checkly"
+        source_addresses = ["*"]
+        target_fqdns = ["api.checklyhq.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
