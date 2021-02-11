@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.5"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -28,7 +28,7 @@ module "uksouth_performance_environment" {
     postgres_config = {
         common = {
             name = "bink-uksouth-perf-common",
-            sku_name = "GP_Gen5_4",
+            sku_name = "GP_Gen5_32",
             storage_gb = 3000,
             databases = ["*"]
         },
@@ -52,6 +52,7 @@ module "uksouth_performance_environment" {
             account_tier = "Standard"
         },
     }
+    cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
 
 module "uksouth_performance_cluster_0" {
@@ -70,7 +71,7 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D32s_v4"
-    worker_scaleset_size = 0
+    worker_scaleset_size = 20
     use_scaleset = true
 
     prometheus_subnet = "10.33.0.0/18"

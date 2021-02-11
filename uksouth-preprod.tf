@@ -1,5 +1,5 @@
 module "uksouth_preprod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.5.5"
     providers = {
         azurerm = azurerm.uk_preprod
     }
@@ -74,6 +74,7 @@ module "uksouth_preprod_environment" {
             account_replication_type = "ZRS",
         },
     }
+    cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
 
 module "uksouth_preprod_cluster_1" {

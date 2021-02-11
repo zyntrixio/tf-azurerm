@@ -53,6 +53,7 @@ module "uksouth_dev_environment" {
             account_tier = "Standard"
         },
     }
+    cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
 
 module "uksouth_dev_cluster_0" {
