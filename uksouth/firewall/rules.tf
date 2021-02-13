@@ -826,11 +826,11 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         protocols = ["TCP"]
     }
     rule {
-        name = "CloudFlare DNS" # Workaround for Cert Manager bink.sh validation
+        name = "CloudFlare DNS TCP" # Workaround for Cert Manager bink.sh validation
         source_addresses = ["*"]
         destination_ports = ["53"]
         destination_addresses = ["1.1.1.1", "1.0.0.1"]
-        protocols = ["TCP"]
+        protocols = ["TCP", "UDP"]
     }
     rule {
         name = "Outbound SMTP" # We should log a helpdesk ticket with Mailgun to lock this down
