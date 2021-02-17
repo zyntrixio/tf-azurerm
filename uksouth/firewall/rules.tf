@@ -438,6 +438,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         target_fqdns = [
             "ws.mastercard.com",
             "api.qa.americanexpress.com",
+            "api.dev2s.americanexpress.com",
             "apigateway.americanexpress.com",
             "api.americanexpress.com",
             "core.spreedly.com",
