@@ -111,7 +111,7 @@ module "uksouth_prod_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_count = 10
+    worker_count = 12
 
     prometheus_subnet = "10.33.0.0/18"
 
