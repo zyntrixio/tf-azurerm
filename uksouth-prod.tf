@@ -66,6 +66,8 @@ module "uksouth_prod_environment" {
     redis_config = {
         common = {
             name = "bink-uksouth-prod-common",
+            family = "P",
+            sku_name = "Premium",
         },
         harmonia = {
             name = "bink-uksouth-prod-harmonia",

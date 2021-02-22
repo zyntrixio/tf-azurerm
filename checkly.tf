@@ -21,7 +21,7 @@ variable "checkly_groups" {
         "staging" = {
             name = "Staging",
             activated = true,
-            muted = false
+            muted = true
             tags = ["staging"]
             base_url = "https://api.staging.gb.bink.com"
             auth_token = "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJidW5kbGVfaWQiOiJjb20uYmluay53YWxsZXQiLCJ1c2VyX2lkIjoiY3ByZXNzbGFuZEBiaW5rLmNvbSIsInN1YiI6MTY0NSwiaWF0IjoxNjExOTQ1MDMyfQ.kSzpi_PbopD3Q6yrHqo0CQJRQmQ5DFfGXyQgjeWfCdk" # cpressland@bink.com
