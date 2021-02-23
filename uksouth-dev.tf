@@ -145,3 +145,24 @@ module "uksouth_dev_datawarehouse" {
     }
     sql_admin = "34985102-e792-4f5c-ac22-4aa72fc721bf"  # dev datawarehouse group
 }
+
+module "uksouth_dev_binkweb" {
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.0"
+    providers = {
+        azurerm = azurerm.uk_dev
+        azurerm.core = azurerm
+    }
+
+    resource_group_name = "uksouth-dev-web"
+    location = "uksouth"
+    environment = "dev"
+    
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    
+    binkweb_dns_record = "web.dev.gb"
+    public_dns_zone = module.uksouth-dns.public_dns.bink_com
+
+    tags = {
+        "Environment" = "Development",
+    }
+}

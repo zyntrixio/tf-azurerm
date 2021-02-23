@@ -38,6 +38,10 @@ output "public_dns" {
         "bink_sh" = {
             resource_group_name = azurerm_resource_group.rg.name
             dns_zone_name = azurerm_dns_zone.bink-sh.name
+        },
+        "bink_com" = {
+            resource_group_name = azurerm_resource_group.rg.name
+            dns_zone_name = azurerm_dns_zone.bink-com.name
         }
     }
 }

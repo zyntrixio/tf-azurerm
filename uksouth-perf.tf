@@ -67,11 +67,11 @@ module "uksouth_performance_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.43.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.6.2"
+    bifrost_version = "4.6.3"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 0
+    worker_scaleset_size = 10
     use_scaleset = true
 
     prometheus_subnet = "10.33.0.0/18"
