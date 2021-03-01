@@ -113,8 +113,8 @@ resource "checkly_check" "prod" {
         "eu-west-2",
         "eu-west-1"
     ]
-    degraded_response_time = 5000
-    max_response_time = 20000
+    degraded_response_time = 500
+    max_response_time = 2000
     request {
         url = each.value["url"]
         follow_redirects = false
@@ -136,8 +136,8 @@ resource "checkly_check" "staging" {
         "eu-west-2",
         "eu-west-1"
     ]
-    degraded_response_time = 5000
-    max_response_time = 20000
+    degraded_response_time = 500
+    max_response_time = 2000
     request {
         url = each.value["url"]
         follow_redirects = false
@@ -159,8 +159,8 @@ resource "checkly_check" "dev" {
         "eu-west-2",
         "eu-west-1"
     ]
-    degraded_response_time = 5000
-    max_response_time = 20000
+    degraded_response_time = 500
+    max_response_time = 2000
     request {
         url = each.value["url"]
         follow_redirects = false
