@@ -156,9 +156,9 @@ module "uksouth_dev_binkweb" {
     resource_group_name = "uksouth-dev-web"
     location = "uksouth"
     environment = "dev"
-    
+
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    
+
     binkweb_dns_record = "web.dev.gb"
     public_dns_zone = module.uksouth-dns.public_dns.bink_com
 
