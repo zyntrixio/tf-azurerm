@@ -154,6 +154,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Microsoft Teams"
         source_addresses = ["*"]
         target_fqdns = [
+            "hellobink.webhook.office.com",
             "outlook.office.com",
             "login.botframework.com",
             "smba.trafficmanager.net",
