@@ -162,7 +162,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.2.0"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -173,6 +173,7 @@ module "uksouth_prod_datawarehouse" {
     tags = {
         "Environment" = "Production",
     }
+    repo_name = "azure-synapse-prod"
 
     resource_group_iam = {
         Architecture = {

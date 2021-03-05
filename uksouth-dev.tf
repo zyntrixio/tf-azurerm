@@ -121,7 +121,7 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.2.0"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -132,6 +132,7 @@ module "uksouth_dev_datawarehouse" {
     tags = {
         "Environment" = "Dev",
     }
+    repo_name = "azure-synapse-dev"
 
     resource_group_iam = {
         Architecture = {
