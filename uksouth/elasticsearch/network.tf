@@ -194,5 +194,4 @@ resource "azurerm_private_dns_a_record" "lb" {
 resource "azurerm_lb_backend_address_pool" "pool" {
     name = "subnet-01"
     loadbalancer_id = azurerm_lb.lb.id
-    resource_group_name = azurerm_resource_group.rg.name
 }

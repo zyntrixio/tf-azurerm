@@ -183,7 +183,6 @@ resource "azurerm_lb_backend_address_pool" "pools" {
     count = length(var.subnet_address_prefixes)
     name = format("subnet-%02d", count.index + 1)
     loadbalancer_id = azurerm_lb.lb.id
-    resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_interface" "chef" {

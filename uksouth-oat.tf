@@ -54,7 +54,7 @@ module "uksouth_oat_environment" {
 }
 
 module "uksouth_oat_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.1.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
