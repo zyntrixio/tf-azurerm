@@ -116,3 +116,24 @@ module "uksouth_staging_cluster_0" {
         "Environment" = "Staging",
     }
 }
+
+module "uksouth_staging_binkweb" {
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.0.1"
+    providers = {
+        azurerm = azurerm.uk_staging
+        azurerm.core = azurerm
+    }
+
+    resource_group_name = "uksouth-staging-web"
+    location = "uksouth"
+    environment = "staging"
+
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    binkweb_dns_record = "web.staging.gb"
+    public_dns_zone = module.uksouth-dns.public_dns.bink_com
+
+    tags = {
+        "Environment" = "Staging",
+    }
+}
