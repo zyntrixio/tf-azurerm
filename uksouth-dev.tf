@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=remove_servicebus"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.2"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -33,6 +33,7 @@ module "uksouth_dev_environment" {
             name = "bink-uksouth-dev-common",
             sku_name = "GP_Gen5_4",
             storage_gb = 500,
+            public_access = true,
             databases = ["*"]
         },
     }
@@ -80,7 +81,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.2.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.3.0"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -137,6 +138,7 @@ module "uksouth_dev_cluster_0" {
     }
 
     postgres_servers = module.uksouth_dev_environment.postgres_servers
+    # private_links = module.uksouth_dev_environment.private_links
 
     tags = {
         "Environment" = "Development",

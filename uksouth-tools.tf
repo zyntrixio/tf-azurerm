@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.6.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.2"
     providers = {
         azurerm = azurerm
     }
@@ -18,6 +18,7 @@ module "uksouth_tools_environment" {
             name = "bink-uksouth-tools-common",
             sku_name = "GP_Gen5_2",
             storage_gb = 500,
+            public_access = false,
             databases = ["*"]
         },
     }
@@ -34,7 +35,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.3.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -125,6 +126,7 @@ module "uksouth_tools_cluster_0" {
     ]
 
     postgres_servers = module.uksouth_tools_environment.postgres_servers
+    private_links = module.uksouth_tools_environment.private_links
 
     tags = {
         "Environment" = "Core",
