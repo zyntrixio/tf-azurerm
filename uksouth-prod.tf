@@ -181,5 +181,5 @@ module "uksouth_prod_datawarehouse" {
             role = "Reader"
         }
     }
-    sql_admin = "aac28b59-8ac3-4443-bccc-3fb820165a08"  # DevOps
+    sql_admin = "34985102-e792-4f5c-ac22-4aa72fc721bf"
 }
