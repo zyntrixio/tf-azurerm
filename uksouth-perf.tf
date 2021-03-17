@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.3"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -79,7 +79,7 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 5
+    worker_scaleset_size = 10
     use_scaleset = true
 
     prometheus_subnet = "10.33.0.0/18"
@@ -122,7 +122,7 @@ module "uksouth_performance_cluster_0" {
     }
 
     postgres_servers = module.uksouth_performance_environment.postgres_servers
-    private_links = module.uksouth_dev_environment.private_links
+    private_links = module.uksouth_performance_environment.private_links
 
     tags = {
         "Environment" = "Performance",
