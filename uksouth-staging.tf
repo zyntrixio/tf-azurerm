@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.6.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.3"
     providers = {
         azurerm = azurerm.uk_staging
     }
@@ -30,6 +30,7 @@ module "uksouth_staging_environment" {
             name = "bink-uksouth-staging-common",
             sku_name = "GP_Gen5_4",
             storage_gb = 500,
+            public_access = true,
             databases = ["*"]
         },
     }

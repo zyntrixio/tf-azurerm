@@ -1,5 +1,5 @@
 module "uksouth_preprod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.6.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.3"
     providers = {
         azurerm = azurerm.uk_preprod
     }
@@ -37,24 +37,28 @@ module "uksouth_preprod_environment" {
             name = "bink-uksouth-preprod-common",
             sku_name = "GP_Gen5_2",
             storage_gb = 500,
+            public_access = true,
             databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
         },
         hermes = {
             name = "bink-uksouth-preprod-hermes",
             sku_name = "GP_Gen5_2",
             storage_gb = 500,
+            public_access = true,
             databases = ["hermes"]
         },
         hades = {
             name = "bink-uksouth-preprod-hades",
             sku_name = "GP_Gen5_2",
             storage_gb = 500,
+            public_access = true,
             databases = ["hades"]
         },
         harmonia = {
             name = "bink-uksouth-preprod-harmonia",
             sku_name = "GP_Gen5_4",
             storage_gb = 500,
+            public_access = true,
             databases = ["harmonia"]
         },
     }
