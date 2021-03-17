@@ -39,10 +39,6 @@ terraform {
     required_version = ">= 0.13"
 
     required_providers {
-        # commandpersistence = {
-        #     source = "terrycain/commandpersistence"
-        #     version = "1.1.0"
-        # }
         azurerm = {
             source = "hashicorp/azurerm"
             version = "2.51.0"

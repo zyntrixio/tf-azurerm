@@ -6,10 +6,6 @@ terraform {
         chef = {
             source = "terraform-providers/chef"
         }
-        commandpersistence = {
-            source = "terrycain/commandpersistence"
-            version = "1.0.2"
-        }
     }
     required_version = ">= 0.13"
 }
