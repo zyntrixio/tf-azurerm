@@ -4,7 +4,7 @@ terraform {
             source = "hashicorp/azurerm"
         }
         chef = {
-            source = "terraform-providers/chef"
+            source = "terrycain/chef"
         }
     }
     required_version = ">= 0.13"

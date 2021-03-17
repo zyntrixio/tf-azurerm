@@ -76,6 +76,25 @@ provider "registry.terraform.io/terraform-providers/chef" {
   ]
 }
 
+provider "registry.terraform.io/terrycain/chef" {
+  version = "0.3.0"
+  hashes = [
+    "h1:2xZ/BXfU21yrUXpMNgE8SMP2n0szUF+8HLiploCgMnI=",
+    "zh:04509cd9743fcf1e43efcfa02dc07cbf5558b1d746c25db5cc580e34d686d9a9",
+    "zh:1105be2f8859db3a92b94c429721c952a92657c710b1bdc51cfb0b2b14499f2e",
+    "zh:5459d28b0e1dbd5da5a9d308f828a3835a57f127b3a56f684d0a36bbcce10c7c",
+    "zh:5a5415356724ae50364d70b79f0228e877164a8a48ac19fd0f6523b0ca73c010",
+    "zh:8e289b7cb3c4ea5f1923bc0f00a3f63735897c870318f3a062eebf33b513f032",
+    "zh:98f8ccea652b245520eba257f94ac9aeaf31c3e168f4094445ca53731ad76ecd",
+    "zh:a2074b96b6385facf58d80187e74a655fdf1b07b5cabf4e870ebfa3894ca66e0",
+    "zh:b07ae085b04a05170ea61bc18baec6d47da529dba76c934db409d71a2766ed77",
+    "zh:c2fd50cb1f1af9c0ed91fc3c3487cc9666e89a5ec2bdc4a52b82dd2de7b98913",
+    "zh:c4a5c7781de1df3f1a37f1649fef13981cfbc9a5ff9937c20f244e03f49d7de0",
+    "zh:dcfaba1d57c32a7419fb37518356d43281d24e9415e98690530a319395de4f3d",
+    "zh:f7b3c7875ff7733b5f78229815cbbcb11d93047a7a90e7a0defb4ec4f0a2f763",
+  ]
+}
+
 provider "registry.terraform.io/terrycain/commandpersistence" {
   version     = "1.1.0"
   constraints = "1.1.0"

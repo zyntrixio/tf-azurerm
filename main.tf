@@ -44,7 +44,7 @@ terraform {
             version = "2.51.0"
         }
         chef = {
-            source = "terraform-providers/chef"
+            source = "terrycain/chef"
         }
         random = {
             source = "hashicorp/random"

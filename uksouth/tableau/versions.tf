@@ -4,7 +4,7 @@ terraform {
             source = "hashicorp/azurerm"
         }
         chef = {
-            source = "terraform-providers/chef"
+            source = "terrycain/chef"
         }
         random = {
             source = "hashicorp/random"
