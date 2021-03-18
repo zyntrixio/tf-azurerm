@@ -173,7 +173,7 @@ module "uksouth_dev_datawarehouse" {
 }
 
 module "uksouth_dev_binkweb" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.0.3"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.0.4"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
