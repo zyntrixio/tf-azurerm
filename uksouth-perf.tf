@@ -63,6 +63,30 @@ module "uksouth_performance_environment" {
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
 
+module "uksouth_performance_rabbit" {
+    source = "./uksouth/rabbitmq"
+    providers = {
+        azurerm = azurerm.uk_sandbox
+        azurerm.core = azurerm
+    }
+
+    resource_group_name = "uksouth-perf-rabbitmq"
+    location = "uksouth"
+    tags = {
+        "Environment" = "Performance",
+    }
+
+    base_name = "perf-rabbitmq"
+    vnet_cidr = "192.168.21.0/24"
+
+    peering_remote_id = module.uksouth-firewall.vnet_id
+    peering_remote_rg = module.uksouth-firewall.resource_group_name
+    peering_remote_name = module.uksouth-firewall.vnet_name
+
+    dns = module.uksouth-dns.private_dns
+}
+
+
 module "uksouth_performance_cluster_0" {
     source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.3.2"
     providers = {

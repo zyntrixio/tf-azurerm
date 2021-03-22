@@ -49,3 +49,12 @@ resource "chef_role" "sftp" {
         "recipe[jarvis]"
     ]
 }
+
+resource "chef_role" "rabbitmq" {
+    name = "rabbitmq"
+    run_list = [
+        "recipe[fury]",
+        "recipe[jarvis]",
+        "recipe[wanda]"
+    ]
+}

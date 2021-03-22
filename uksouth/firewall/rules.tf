@@ -254,6 +254,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "RabbitMQ"
+        source_addresses = ["*"]
+        target_fqdns = ["dl.bintray.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Azure Endpoints"
         source_addresses = ["*"]
         # From https://docs.microsoft.com/en-us/azure/azure-monitor/platform/om-agents#network
