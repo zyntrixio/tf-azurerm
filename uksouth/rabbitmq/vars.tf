@@ -8,3 +8,4 @@ variable "peering_remote_id" {}
 variable "peering_remote_rg" {}
 variable "peering_remote_name" {}
 variable "dns" {}
+variable "cluster_cidrs" { type = list }

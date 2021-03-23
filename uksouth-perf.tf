@@ -84,6 +84,8 @@ module "uksouth_performance_rabbit" {
     peering_remote_name = module.uksouth-firewall.vnet_name
 
     dns = module.uksouth-dns.private_dns
+
+    cluster_cidrs = ["10.43.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
 }
 
 

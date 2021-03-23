@@ -27,6 +27,71 @@ resource "azurerm_subnet" "i" {
     address_prefixes = [var.vnet_cidr]
 }
 
+resource "azurerm_network_security_group" "i" {
+    name = "${var.resource_group_name}-nsg"
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
+
+    tags = var.tags
+
+    security_rule {
+        name = "Allow_LB"
+        description = "Allow Healthchecks from Load Balancer"
+        access = "Allow"
+        priority = 100
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "AzureLoadBalancer"
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_ranges = [5671, 15671]
+    }
+
+    security_rule {
+        name = "Allow_Clustering"
+        description = "Allow RabbitMQ nodes to talk to each other"
+        access = "Allow"
+        priority = 110
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = var.vnet_cidr
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_ranges = [4369, 5671, 15671, 25672, "35672-35682"]
+    }
+
+    security_rule {
+        name = "Allow_Clients"
+        description = "Allow RabbitMQ Clients to connect to RabbitMQ Server"
+        access = "Allow"
+        priority = 120
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefixes = var.cluster_cidrs
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_ranges = [5671, 15671]
+    }
+
+    security_rule {
+        name = "BlockEverything"
+        description = "Default Block All Rule"
+        access = "Deny"
+        priority = 4096
+        direction = "Inbound"
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_address_prefix = "*"
+        destination_port_range = "*"
+    }
+}
+
+resource "azurerm_subnet_network_security_group_association" "i" {
+  subnet_id = azurerm_subnet.i.id
+  network_security_group_id = azurerm_network_security_group.i.id
+}
+
 resource "azurerm_route_table" "i" {
     name = "${azurerm_resource_group.i.name}-routes"
     location = azurerm_resource_group.i.location
@@ -114,7 +179,7 @@ resource "azurerm_lb_probe" "amqp" {
     resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "amqp"
-    port = 5672
+    port = 5671
 }
 
 resource "azurerm_lb_rule" "ampq" {
@@ -122,8 +187,27 @@ resource "azurerm_lb_rule" "ampq" {
     loadbalancer_id = azurerm_lb.i.id
     name = "amqp"
     protocol = "Tcp"
-    frontend_port = 5672
-    backend_port = 5672
+    frontend_port = 5671
+    backend_port = 5671
+    frontend_ip_configuration_name = "frontend"
+    backend_address_pool_id = azurerm_lb_backend_address_pool.i.id
+    probe_id = azurerm_lb_probe.amqp.id
+}
+
+resource "azurerm_lb_probe" "webui" {
+    resource_group_name = azurerm_resource_group.i.name
+    loadbalancer_id = azurerm_lb.i.id
+    name = "webui"
+    port = 15671
+}
+
+resource "azurerm_lb_rule" "webui" {
+    resource_group_name = azurerm_resource_group.i.name
+    loadbalancer_id = azurerm_lb.i.id
+    name = "webui"
+    protocol = "Tcp"
+    frontend_port = 15671
+    backend_port = 15671
     frontend_ip_configuration_name = "frontend"
     backend_address_pool_id = azurerm_lb_backend_address_pool.i.id
     probe_id = azurerm_lb_probe.amqp.id
