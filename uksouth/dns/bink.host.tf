@@ -8,6 +8,14 @@ resource "azurerm_private_dns_zone" "uksouth-bink-host" {
     resource_group_name = azurerm_resource_group.rg.name
 }
 
+resource "azurerm_private_dns_a_record" "aqua-uksouth-bink-host" {
+    name = "aqua"
+    zone_name = azurerm_private_dns_zone.uksouth-bink-host.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+    records = ["10.5.0.4"]
+}
+
 locals {
     bink_host = {
         cname_records = {
