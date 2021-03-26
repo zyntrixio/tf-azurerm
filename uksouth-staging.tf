@@ -51,6 +51,28 @@ module "uksouth_staging_environment" {
             account_tier = "Standard"
         },
     }
+    storage_management_policy_config = {
+        common = [
+            {
+                name = "backupshourly",
+                enabled = true,
+                prefix_match = ["backups/hourly"],
+                delete_after_days = 30
+            },
+            {
+                name = "backupsweekly",
+                enabled = true,
+                prefix_match = ["backups/weekly"],
+                delete_after_days = 90
+            },
+            {
+                name = "backupsyearly",
+                enabled = true,
+                prefix_match = ["backups/yearly"],
+                delete_after_days = 1095
+            }
+        ]
+    }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
 
