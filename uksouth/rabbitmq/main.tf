@@ -88,8 +88,8 @@ resource "azurerm_network_security_group" "i" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "i" {
-  subnet_id = azurerm_subnet.i.id
-  network_security_group_id = azurerm_network_security_group.i.id
+    subnet_id = azurerm_subnet.i.id
+    network_security_group_id = azurerm_network_security_group.i.id
 }
 
 resource "azurerm_route_table" "i" {
@@ -270,9 +270,9 @@ resource "azurerm_linux_virtual_machine" "i" {
 
     source_image_reference {
         publisher = "Canonical"
-        offer     = "0001-com-ubuntu-server-focal"
-        sku       = "20_04-lts"
-        version   = "latest"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
+        version = "latest"
     }
 
     custom_data = base64gzip(
