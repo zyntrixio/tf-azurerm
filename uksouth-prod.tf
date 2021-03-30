@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.3"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.4"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -116,6 +116,12 @@ module "uksouth_prod_environment" {
                 enabled = true,
                 prefix_match = ["backups/yearly"],
                 delete_after_days = 1095
+            },
+            {
+                name = "bridge",
+                enabled = true,
+                prefix_match = ["bridge"],
+                delete_after_days = 14
             }
         ]
     }
