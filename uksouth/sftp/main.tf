@@ -116,6 +116,30 @@ resource "azurerm_network_security_group" "nsg" {
     tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "nsg" {
+    name = "binkuksouthlogs"
+    target_resource_id = azurerm_network_security_group.nsg.id
+    eventhub_name = "azurensg"
+    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+    log {
+        category = "NetworkSecurityGroupEvent"
+        enabled = true
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    log {
+        category = "NetworkSecurityGroupRuleCounter"
+        enabled = true
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+}
+
 resource "azurerm_subnet_network_security_group_association" "nsg-assoc" {
     subnet_id = azurerm_subnet.subnet.id
     network_security_group_id = azurerm_network_security_group.nsg.id

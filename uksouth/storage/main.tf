@@ -69,61 +69,6 @@ resource "azurerm_storage_account" "binkopsreportssandboxoat" {
     min_tls_version = "TLS1_2"
 }
 
-resource "azurerm_storage_account" "binkbackupsdev" {
-    name = "binkbackupsdev"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_kind = "BlobStorage"
-    account_tier = "Standard"
-    account_replication_type = "LRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}
-
-resource "azurerm_storage_account" "binkbackupsstaging" {
-    name = "binkbackupsstaging"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_kind = "BlobStorage"
-    account_tier = "Standard"
-    account_replication_type = "LRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}
-
-resource "azurerm_storage_account" "binkbackupspreprod" {
-    name = "binkbackupspreprod"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_kind = "BlobStorage"
-    account_tier = "Standard"
-    account_replication_type = "GRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}
-
-resource "azurerm_storage_account" "binkbackupsprod" {
-    name = "binkbackupsprod"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_kind = "BlobStorage"
-    account_tier = "Standard"
-    account_replication_type = "GRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}
-
-resource "azurerm_storage_account" "binkgitlabbackups" {
-    name = "binkgitlabbackups"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_kind = "BlobStorage"
-    account_tier = "Standard"
-    account_replication_type = "RAGRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}
-
 resource "azurerm_storage_account" "bink" {
     name = "bink"
     resource_group_name = azurerm_resource_group.rg.name
