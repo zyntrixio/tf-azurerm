@@ -9,6 +9,15 @@ provider "checkly" {
 
 variable "checkly_groups" {
     default = {
+        "prod-afd-bypass" = {
+            name = "Production - Front Door Bypass",
+            activated = true,
+            muted = true
+            tags = ["prod"]
+            base_url = "https://api.prod0.uksouth.bink.sh:4000"
+            auth_token = "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJidW5kbGVfaWQiOiJjb20uYmluay53YWxsZXQiLCJ1c2VyX2lkIjoiZGV2b3BzQGJpbmsuY29tIiwic3ViIjoxMzgxNjIsImlhdCI6MTU5MTg2ODU2MX0.tqmHG_ajuXAk6MogbmWSYsr7qrlGBjVrcJdvnxPMTCM" # devops@bink.com
+            alert_channel_id = 8509
+        },
         "prod" = {
             name = "Production",
             activated = true,
@@ -47,8 +56,7 @@ resource "checkly_check_group" "env" {
     tags = each.value["tags"]
     concurrency = 1
     locations = [
-        "eu-west-2",
-        "eu-west-1"
+        "eu-west-2"
     ]
     api_check_defaults {
         url = each.value["base_url"]
@@ -98,6 +106,10 @@ variable "checkly_checks" {
         membership_plans = {
             name = "/membership_plans",
             url = "{{GROUP_BASE_URL}}/ubiquity/membership_plans",
+        },
+        healthz = {
+            name = "/healthz",
+            url = "{{GROUP_BASE_URL}}/healthz",
         }
     }
 }
@@ -111,7 +123,6 @@ resource "checkly_check" "prod" {
     tags = ["dashboard"]
     locations = [
         "eu-west-2",
-        "eu-west-1"
     ]
     degraded_response_time = 500
     max_response_time = 2000
@@ -120,6 +131,27 @@ resource "checkly_check" "prod" {
         follow_redirects = false
     }
     group_id = checkly_check_group.env["prod"].id
+    lifecycle {
+        ignore_changes = [group_order]
+    }
+}
+
+resource "checkly_check" "prod-afd" {
+    for_each = var.checkly_checks
+    name = each.value["name"]
+    type = "API"
+    activated = true
+    frequency = 1
+    locations = [
+        "eu-west-2",
+    ]
+    degraded_response_time = 500
+    max_response_time = 2000
+    request {
+        url = each.value["url"]
+        follow_redirects = false
+    }
+    group_id = checkly_check_group.env["prod-afd-bypass"].id
     lifecycle {
         ignore_changes = [group_order]
     }
@@ -134,7 +166,6 @@ resource "checkly_check" "staging" {
     tags = []
     locations = [
         "eu-west-2",
-        "eu-west-1"
     ]
     degraded_response_time = 500
     max_response_time = 2000
@@ -157,7 +188,6 @@ resource "checkly_check" "dev" {
     tags = []
     locations = [
         "eu-west-2",
-        "eu-west-1"
     ]
     degraded_response_time = 500
     max_response_time = 2000

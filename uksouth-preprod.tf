@@ -61,6 +61,13 @@ module "uksouth_preprod_environment" {
             public_access = true,
             databases = ["harmonia"]
         },
+        polaris = {
+            name = "bink-uksouth-preprod-polaris",
+            sku_name = "GP_Gen5_4",
+            storage_gb = 500,
+            public_access = true,
+            databases = ["polaris"]
+        },
     }
     redis_config = {
         common = {
