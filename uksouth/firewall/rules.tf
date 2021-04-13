@@ -387,6 +387,18 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Google Cloud HTTPS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "secretmanager.googleapis.com",
+            "oauth2.googleapis.com"
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
