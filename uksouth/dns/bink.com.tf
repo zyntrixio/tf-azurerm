@@ -12,9 +12,6 @@ resource "azurerm_dns_zone" "bink-com" {
 locals {
     bink_com = {
         a_records = {
-            # Apex
-            "@" = "35.230.130.143",
-
             # South Africa
             "api.za" = "127.0.0.1",
             "api.dev.za" = "127.0.0.1"
@@ -47,12 +44,11 @@ locals {
         cname_records = {
 
             # API/Front Door
-            "policies" = "bink-frontdoor.azurefd.net",
+            "afdverify" = "afdverify.bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net"
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
             "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "mcwallet.dev.gb" = "bink-frontdoor.azurefd.net",
-            "api" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
             "api.preprod.gb" = "bink-frontdoor.azurefd.net",
             "api.staging.gb" = "bink-frontdoor.azurefd.net",
@@ -60,10 +56,6 @@ locals {
             "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
-            "starbug.gb" = "bink-frontdoor.azurefd.net",
-
-            # Website
-            "www" = "binkdev.wpengine.com",
 
             # Office 365
             "enterpriseregistration.teams" = "enterpriseregistration.windows.net",

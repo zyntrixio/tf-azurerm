@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.6"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
     providers = {
         azurerm = azurerm.uk_staging
     }
@@ -77,7 +77,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.3.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -88,7 +88,7 @@ module "uksouth_staging_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.128.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.7.1"
+    bifrost_version = "4.7.2"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
@@ -141,7 +141,7 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.0.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.1.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm

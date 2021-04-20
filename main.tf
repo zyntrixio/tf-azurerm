@@ -41,7 +41,7 @@ terraform {
     required_providers {
         azurerm = {
             source = "hashicorp/azurerm"
-            version = "2.55.0"
+            version = "2.58.0"
         }
         chef = {
             source = "terrycain/chef"
@@ -303,4 +303,10 @@ module "uksouth-redscan" {
 module "uksouth-wireguard" {
     source = "./uksouth/wireguard"
     secure_origins = local.secure_origins
+}
+
+module "uksouth_wordpress" {
+    source = "./uksouth/wordpress"
+    secure_origins = local.secure_origins
+    dns_zone = module.uksouth-dns.public_dns
 }

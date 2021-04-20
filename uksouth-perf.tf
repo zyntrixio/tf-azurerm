@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.6"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -42,11 +42,7 @@ module "uksouth_performance_environment" {
         },
     }
 
-    redis_enterprise_config = {
-        common = {
-            name = "bink-uksouth-perf-common"
-        },
-    }
+    redis_enterprise_config = {}
 
     redis_patch_schedule = {
         day_of_week = "Monday"
@@ -90,7 +86,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.3.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -101,11 +97,11 @@ module "uksouth_performance_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.43.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.7.1"
+    bifrost_version = "4.7.2"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 10
+    worker_scaleset_size = 5
     use_scaleset = true
 
     prometheus_subnet = "10.33.0.0/18"

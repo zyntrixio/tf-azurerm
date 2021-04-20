@@ -34,6 +34,15 @@ resource "azurerm_eventhub_namespace" "binkuksouthlogs" {
     zone_redundant = true
 }
 
+resource "azurerm_eventhub_namespace" "binkuksouthlogs2" {  #  Is 10 eventhubs per namespace :/
+    name = "binkuksouthlogs2"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+    sku = "Standard"
+    capacity = 2
+    zone_redundant = true
+}
+
 # Couldnt add auth rules in TF due to: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7310
 
 
@@ -116,6 +125,22 @@ resource "azurerm_eventhub" "azureservicebus" {
 resource "azurerm_eventhub" "azurestorage" {
     name = "azurestorage"
     namespace_name = azurerm_eventhub_namespace.binkuksouthlogs.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
+}
+
+resource "azurerm_eventhub" "azuresynapse" {
+    name = "azuresynapse"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs2.name
+    resource_group_name = azurerm_resource_group.rg.name
+    partition_count = 2
+    message_retention = 1
+}
+
+resource "azurerm_eventhub" "azuresql" {
+    name = "azuresql"
+    namespace_name = azurerm_eventhub_namespace.binkuksouthlogs2.name
     resource_group_name = azurerm_resource_group.rg.name
     partition_count = 2
     message_retention = 1
