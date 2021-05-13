@@ -32,7 +32,7 @@ resource "azurerm_dns_caa_record" "pip" {
     record {
         flags = 0
         tag = "issue"
-        value = "wordpress.uksouth.bink.sh"
+        value = "letsencrypt.org"
     }
 
     record {
