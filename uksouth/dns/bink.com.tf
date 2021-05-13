@@ -45,7 +45,8 @@ locals {
 
             # API/Front Door
             "afdverify" = "afdverify.bink-frontdoor.azurefd.net",
-            "policies.gb" = "bink-frontdoor.azurefd.net"
+            "link.gb" = "bink-frontdoor.azurefd.net",
+            "policies.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
             "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "mcwallet.dev.gb" = "bink-frontdoor.azurefd.net",

@@ -139,6 +139,9 @@ module "uksouth-frontdoor" {
         "prod-policies" : [
             module.uksouth_prod_cluster_0.frontdoor_backend_policies_pool
         ],
+        "prod-link" : [
+            module.uksouth_prod_cluster_0.frontdoor_backend_link_pool
+        ],
         "preprod" : [
             module.uksouth_preprod_cluster_1.frontdoor_backend_pool
         ],

@@ -449,6 +449,40 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    frontend_endpoint {
+        name = "link-gb-bink-com"
+        host_name = "link.gb.bink.com"
+    }
+
+    backend_pool {
+        name = "link-uksouth-bink-sh"
+
+        dynamic "backend" {
+            for_each = var.backends["prod-link"]
+            content {
+                host_header = backend.value["host_header"]
+                address = backend.value["address"]
+                http_port = backend.value["http_port"]
+                https_port = backend.value["https_port"]
+            }
+        }
+
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "link-uksouth-bink-sh"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["link-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "link-uksouth-bink-sh"
+            cache_enabled = false
+        }
+    }
+
     timeouts {
         update = "120m"
         create = "120m"
@@ -520,6 +554,23 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["policies-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "link_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["link-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {

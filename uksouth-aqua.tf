@@ -21,7 +21,7 @@ module "uksouth_aqua_environment" {
 }
 
 module "uksouth_aqua_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.1"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
