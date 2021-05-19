@@ -89,6 +89,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "trenette-co-uk"
+        host_name = "trenette.co.uk"
+    }
+
+    frontend_endpoint {
         name = "bink-com"
         host_name = "bink.com"
     }
@@ -267,7 +272,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "api-staging-uksouth-bink-sh"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-staging-gb-bink-com"]
+        frontend_endpoints = ["api-staging-gb-bink-com", "trenette-co-uk"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "api-staging-uksouth-bink-sh"
@@ -518,6 +523,23 @@ resource "azurerm_frontdoor_custom_https_configuration" "bink_com" {
     }
 }
 
+resource "azurerm_frontdoor_custom_https_configuration" "trenette_co_uk" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["trenette-co-uk"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "trenette"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
 resource "azurerm_frontdoor_custom_https_configuration" "www_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["www-bink-com"]
     custom_https_provisioning_enabled = true
@@ -534,6 +556,8 @@ resource "azurerm_frontdoor_custom_https_configuration" "www_bink_com" {
         delete = "120m"
     }
 }
+
+
 
 resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["api-gb-bink-com"]
