@@ -90,7 +90,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     frontend_endpoint {
         name = "trenette-co-uk"
-        host_name = "trenette-co-uk"
+        host_name = "trenette.co.uk"
     }
 
     frontend_endpoint {
@@ -524,7 +524,7 @@ resource "azurerm_frontdoor_custom_https_configuration" "bink_com" {
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "trenette_co_uk" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["trenette_co_uk"]
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["trenette-co-uk"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
