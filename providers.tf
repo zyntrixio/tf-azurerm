@@ -130,3 +130,4 @@ resource "azurerm_role_assignment" "azure_frontdoor" {
     role_definition_name = "Contributor"
     principal_id = "f0222751-c786-45ca-bbfb-66037b63c4ac"
 }
+

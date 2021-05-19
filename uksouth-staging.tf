@@ -49,7 +49,7 @@ module "uksouth_staging_environment" {
             name = "binkuksouthstaging",
             account_replication_type = "ZRS",
             account_tier = "Standard"
-        },
+        }
     }
     storage_management_policy_config = {
         common = [
@@ -160,3 +160,4 @@ module "uksouth_staging_binkweb" {
         "Environment" = "Staging",
     }
 }
+
