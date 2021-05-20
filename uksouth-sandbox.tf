@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.8.0"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -21,9 +21,14 @@ module "uksouth_sandbox_environment" {
     }
 
     keyvault_users = {
-        ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
-        KashimAziz = { object_id = "b004c980-3e08-4237-b8e2-d6e65d2bef3f" },
+        ChristianPrior = "ae282437-d730-4342-8914-c936e8289cdc"
+        KashimAziz = "b004c980-3e08-4237-b8e2-d6e65d2bef3f"
     }
+
+    additional_keyvaults = [
+        "bink-uksouth-sandbox-sit",
+        "bink-uksouth-sandbox-oat"
+    ]
 
     postgres_config = {
         common = {
@@ -34,6 +39,7 @@ module "uksouth_sandbox_environment" {
             databases = ["*"]
         },
     }
+    secret_namespaces = "default,sit,oat,monitoring"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
