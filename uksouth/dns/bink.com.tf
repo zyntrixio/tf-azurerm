@@ -56,6 +56,7 @@ locals {
             "api.dev.gb" = "bink-frontdoor.azurefd.net",
             "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
 
             # Office 365

@@ -24,25 +24,6 @@ module "uksouth_oat_environment" {
         ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
         KashimAziz = { object_id = "b004c980-3e08-4237-b8e2-d6e65d2bef3f" },
     }
-
-    postgres_config = {
-        common = {
-            name = "bink-uksouth-oat-common",
-            sku_name = "GP_Gen5_4",
-            storage_gb = 1000,
-            public_access = true,
-            databases = ["*"]
-        },
-    }
-    redis_config = {
-        common = {
-            name = "bink-uksouth-oat-common",
-        },
-    }
-    redis_patch_schedule = {
-        day_of_week = "Wednesday"
-        start_hour_utc = 1
-    }
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
@@ -52,68 +33,4 @@ module "uksouth_oat_environment" {
         },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
-}
-
-module "uksouth_oat_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.2"
-    providers = {
-        azurerm = azurerm.uk_sandbox
-        azurerm.core = azurerm
-    }
-
-    resource_group_name = "uksouth-oat-k0"
-    cluster_name = "oat0"
-    location = "uksouth"
-    vnet_cidr = "10.188.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.7.2"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2s_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_count = 4
-
-    prometheus_subnet = "10.33.0.0/18"
-
-    # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/uksouth-oat.git"
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns = module.uksouth-dns.public_dns
-
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-        elasticsearch = {
-            vnet_id = module.uksouth-elasticsearch.vnet_id
-            vnet_name = module.uksouth-elasticsearch.vnet_name
-            resource_group_name = module.uksouth-elasticsearch.resource_group_name
-        }
-    }
-
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1190
-        rule_priority = 1190
-        public_ip = module.uksouth-firewall.public_ips.4.ip_address
-        secure_origins = local.secure_origins
-        developer_ips = local.developer_ips
-        ingress_source = "*"
-        ingress_http = 8090
-        ingress_https = 4090
-        ingress_controller = 6090
-    }
-
-    postgres_servers = module.uksouth_oat_environment.postgres_servers
-
-    tags = {
-        "Environment" = "Barclays OAT",
-    }
 }
