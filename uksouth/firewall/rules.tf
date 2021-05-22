@@ -97,6 +97,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "mcr.microsoft.com",
             "*.data.mcr.microsoft.com",
             "*.cdn.mscr.io",
+            "cr.l5d.io",
         ]
         protocol {
             port = "443"
