@@ -47,6 +47,16 @@ module "uksouth_sandbox_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
+        sit = {
+            name = "binkuksouthsandboxsit",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
+        },
+        oat = {
+            name = "binkuksouthsandboxoat",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
+        },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 }
