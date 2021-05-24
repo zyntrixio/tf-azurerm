@@ -9,7 +9,9 @@ resource "azurerm_container_registry" "binkcore" {
     location = azurerm_resource_group.rg.location
     sku = "Premium"
     admin_enabled = true
-    georeplication_locations = ["ukwest"]
+    georeplications {
+      location = "ukwest"
+    }
 }
 
 resource "azurerm_container_registry" "binkext" {
@@ -18,5 +20,7 @@ resource "azurerm_container_registry" "binkext" {
     location = azurerm_resource_group.rg.location
     sku = "Premium"
     admin_enabled = true
-    georeplication_locations = ["ukwest"]
+    georeplications {
+      location = "ukwest"
+    }
 }
