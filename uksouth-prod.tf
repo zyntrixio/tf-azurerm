@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -29,9 +29,9 @@ module "uksouth_prod_environment" {
     }
 
     keyvault_users = {
-        MickLatham = { object_id = "343299d4-0a39-4109-adce-973ad29d0183" },
-        ChrisLatham = { object_id = "607482a3-07fa-4b24-8af0-5b84df6ca7c6" },
-        ChristianPrior = { object_id = "ae282437-d730-4342-8914-c936e8289cdc" },
+        MickLatham = "343299d4-0a39-4109-adce-973ad29d0183",
+        ChrisLatham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6",
+        ChristianPrior = "ae282437-d730-4342-8914-c936e8289cdc",
     }
     infra_keyvault_users = {
         AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
@@ -91,12 +91,6 @@ module "uksouth_prod_environment" {
             account_tier = "Standard"
         },
     }
-
-    additional_managed_identities = {
-        wasabireport = {
-            keyvault_permissions = ["get"]
-        }
-    }
     storage_management_policy_config = {
         common = [
             {
@@ -126,6 +120,8 @@ module "uksouth_prod_environment" {
         ]
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    managed_identities = merge(local.managed_identities, {wasabireport={ kv_access = "ro" }})
 }
 
 module "uksouth_prod_rabbit" {
