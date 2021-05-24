@@ -121,7 +121,7 @@ module "uksouth_prod_environment" {
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
-    managed_identities = merge(local.managed_identities, {wasabireport={ kv_access = "ro" }})
+    managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
 }
 
 module "uksouth_prod_rabbit" {
