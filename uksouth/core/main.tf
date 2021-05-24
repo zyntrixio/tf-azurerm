@@ -10,7 +10,7 @@ resource "azurerm_container_registry" "binkcore" {
     sku = "Premium"
     admin_enabled = true
     georeplications {
-      location = "ukwest"
+        location = "ukwest"
     }
 }
 
@@ -21,6 +21,6 @@ resource "azurerm_container_registry" "binkext" {
     sku = "Premium"
     admin_enabled = true
     georeplications {
-      location = "ukwest"
+        location = "ukwest"
     }
 }
