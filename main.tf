@@ -26,6 +26,20 @@ locals {
         "86.150.164.212/32", # sperrygrove@bink.com
         "92.0.40.250/32",    # njames@bink.com
     ]
+    managed_identities = {
+        fakicorp = { kv_access = "rw" },
+        europa = { kv_access = "ro" },
+        harmonia = { kv_access = "ro" },
+        hermes = { kv_access = "ro" },
+        polaris = { kv_access = "ro" },
+        event-horizon = { kv_access = "ro" },
+        metis = { kv_access = "ro" },
+        midas = { kv_access = "ro" },
+        azuregcpvaultsync = { kv_access = "ro" },
+        pyqa = { kv_access = "ro" },
+        vela = { kv_access = "ro" },
+        zephyrus = { kv_access = "ro" },
+    }
 }
 
 terraform {

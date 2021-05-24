@@ -1,5 +1,5 @@
 module "uksouth_aqua_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm
     }
@@ -18,6 +18,9 @@ module "uksouth_aqua_environment" {
         },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    # TODO remove olympus ones
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_aqua_cluster_0" {

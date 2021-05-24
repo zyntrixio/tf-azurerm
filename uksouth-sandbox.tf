@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.8.1"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -59,6 +59,8 @@ module "uksouth_sandbox_environment" {
         },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_sandbox_cluster_0" {

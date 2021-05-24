@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -21,8 +21,8 @@ module "uksouth_performance_environment" {
     }
 
     keyvault_users = {
-        Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
-        QA = { object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d" },
+        Backend = "219194f6-b186-4146-9be7-34b731e19001",
+        QA = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
     }
 
     postgres_config = {
@@ -57,6 +57,8 @@ module "uksouth_performance_environment" {
         },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_performance_rabbit" {

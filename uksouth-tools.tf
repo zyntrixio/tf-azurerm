@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm
     }
@@ -10,7 +10,7 @@ module "uksouth_tools_environment" {
     }
 
     keyvault_users = {
-        Confluence = { object_id = "ce918d9f-5641-4798-b1d5-bf31d234921a" },
+        Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
     }
 
     postgres_config = {
@@ -32,6 +32,8 @@ module "uksouth_tools_environment" {
         },
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_tools_cluster_0" {

@@ -1,5 +1,5 @@
 module "uksouth_preprod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=1.7.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
     providers = {
         azurerm = azurerm.uk_preprod
     }
@@ -29,7 +29,7 @@ module "uksouth_preprod_environment" {
     }
 
     keyvault_users = {
-        Backend = { object_id = "219194f6-b186-4146-9be7-34b731e19001" },
+        Backend = "219194f6-b186-4146-9be7-34b731e19001",
     }
 
     postgres_config = {
@@ -108,6 +108,8 @@ module "uksouth_preprod_environment" {
         ]
     }
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_preprod_cluster_1" {
