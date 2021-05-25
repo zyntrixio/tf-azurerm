@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.1.0"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -77,6 +77,22 @@ module "uksouth_dev_environment" {
             }
         ]
     }
+
+    eventhubs = {
+        bink-uksouth-dev-loyalty = {
+            name = "loyalty"  # => loyalty-history for kube secret name
+            sku = "Standard"
+            capacity = 2
+
+            eventhubs = {
+                history = {
+                    partition_count = 2
+                    message_retention = 4
+                }
+            }
+        }
+    }
+
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
     managed_identities = local.managed_identities
