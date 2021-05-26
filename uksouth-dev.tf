@@ -114,7 +114,7 @@ module "uksouth_dev_cluster_0" {
     flux_environment = "uksouth-dev"
 
     # Gitops repo, Managed identity for syncing common secrets
-    
+
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
