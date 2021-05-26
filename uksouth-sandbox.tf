@@ -79,7 +79,7 @@ module "uksouth_sandbox_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 10
+    worker_scaleset_size = 2
     use_scaleset = true
     max_pods_per_host = 100
 
