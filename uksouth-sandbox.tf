@@ -75,13 +75,13 @@ module "uksouth_sandbox_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.189.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.8.1"
+    bifrost_version = "4.8.3"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 5
+    worker_scaleset_size = 10
     use_scaleset = true
-    # max_pods_per_host = 100
+    max_pods_per_host = 100
 
     prometheus_subnet = "10.33.0.0/18"
 
