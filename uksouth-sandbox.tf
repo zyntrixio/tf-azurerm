@@ -64,7 +64,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.3"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.4"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -81,6 +81,7 @@ module "uksouth_sandbox_cluster_0" {
     worker_vm_size = "Standard_D4s_v4"
     worker_scaleset_size = 5
     use_scaleset = true
+    # max_pods_per_host = 100
 
     prometheus_subnet = "10.33.0.0/18"
 
