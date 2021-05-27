@@ -70,7 +70,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.4"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.5"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
