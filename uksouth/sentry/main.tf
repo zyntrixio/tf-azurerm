@@ -229,30 +229,18 @@ resource "azurerm_linux_virtual_machine" "vm" {
         version = "latest"
     }
 
-    provisioner "chef" {
-        environment = "uksouth-sentry"
-        client_options = ["chef_license 'accept'"]
-        run_list = ["role[sentry]"]
-        node_name = self.name
-        server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        recreate_client = true
-        user_name = "terraform"
-        user_key = file("./chef.pem")
-        version = "16.5.64"
-        ssl_verify_mode = ":verify_peer"
-
-        connection {
-            type = "ssh"
-            user = "terraform"
-            host = self.private_ip_address
-            private_key = file("~/.ssh/id_bink_azure_terraform")
-            bastion_host = "ssh.uksouth.bink.sh"
-            bastion_user = "terraform"
-            bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
-        }
-    }
+    custom_data = base64gzip(
+        templatefile(
+            "${path.root}/init.tmpl",
+            {
+                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[sentry]"] })),
+                cinc_environment = "uksouth-sentry"
+                cinc_data_secret = ""
+            }
+        )
+    )
 
     lifecycle {
-        ignore_changes = [source_image_reference]
+        ignore_changes = [custom_data, source_image_reference]
     }
 }

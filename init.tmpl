@@ -66,7 +66,7 @@ write_files:
         fi
 
         if [ ! "$CINC_DATA_SECRET" == "" ]; then
-            echo "$CINC_DATA_SECRET" | base64 --decode > /etc/cinc/encrypted_data_bag_secret
+            echo "$CINC_DATA_SECRET" > /etc/cinc/encrypted_data_bag_secret
             chmod 600 /etc/cinc/encrypted_data_bag_secret
         fi
 

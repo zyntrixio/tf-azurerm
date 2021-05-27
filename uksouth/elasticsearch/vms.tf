@@ -62,32 +62,19 @@ resource "azurerm_linux_virtual_machine" "elasticsearch" {
         version = "latest"
     }
 
-    provisioner "chef" {
-        environment = chef_environment.env.name
-        client_options = ["chef_license 'accept'"]
-        run_list = ["role[elasticsearch]"]
-        node_name = self.name
-        server_url = "https://chef.uksouth.bink.sh:4444/organizations/bink"
-        recreate_client = true
-        user_name = "terraform"
-        user_key = file("chef.pem")
-        version = "16.5.64"
-        ssl_verify_mode = ":verify_peer"
-        secret_key = "l/iAhIHQeM4UtimiQQrX+EtECAvfEfw9zgpadPrzhmhlbHB3eLhwGdXPsKVlbOpPn/b7XGECtQaodKdaMVdpJ9qyT6v3X3AD8XzliI6Z0wgHT8ZHN9RaOveLSpeAZt/XXG6RJcCGQEyqTM9RYckz6d7VSuKdeP2XyuU3i7o2BvlMTw8txaB9eCCAWYKAx7aPiimeVZQ3FnlNgMoORvS8NvtifCG/5TC6Y4Wv8ZM4cqD+RfUjHfjFzNI7gla6/XLcXCX25UbROOFBckL+FRn8FIubSQv8JSGUYUiS4TAadyMQAs+Qjg+vENNVbB85tCyOE714WdlhSN5h1VoLoc1MqKqj4VS+s58bc6tQn1hYHLeLd0bXHzUUVTpijkyRGH9RbVeJqMMXIVR/mpF8sNYhAzLiLjKx92LQUuxCltzEUDm6f0VS1AIlnIcNgSLI4+rKhpq+osZfe9R6vmmnK7w24v6Fpiag5ShKmkCy1AwYfIEzf+0s0zCBc5kpPpkTls7pPu85vDz9sPWqUb7SX2yurNkzJlqYcmChMgj3PG/QKx0STXF4y7E+g+yX5LrMWuGWhJ/rzAn8ug29BaKeKOfuThZx01vNz3iymDT90W2oz4kIwa+FNc5dZcSHn+kgv213KR7KMrCvRw2MYyjxfpcj1zkZ5MTacPBemYn/j3No2BY="
-
-        connection {
-            type = "ssh"
-            user = "terraform"
-            host = self.private_ip_address
-            private_key = file("~/.ssh/id_bink_azure_terraform")
-            bastion_host = "ssh.uksouth.bink.sh"
-            bastion_user = "terraform"
-            bastion_private_key = file("~/.ssh/id_bink_azure_terraform")
-        }
-    }
+    custom_data = base64gzip(
+        templatefile(
+            "${path.root}/init.tmpl",
+            {
+                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[elasticsearch]"] })),
+                cinc_environment = chef_environment.env.name
+                cinc_data_secret = "l/iAhIHQeM4UtimiQQrX+EtECAvfEfw9zgpadPrzhmhlbHB3eLhwGdXPsKVlbOpPn/b7XGECtQaodKdaMVdpJ9qyT6v3X3AD8XzliI6Z0wgHT8ZHN9RaOveLSpeAZt/XXG6RJcCGQEyqTM9RYckz6d7VSuKdeP2XyuU3i7o2BvlMTw8txaB9eCCAWYKAx7aPiimeVZQ3FnlNgMoORvS8NvtifCG/5TC6Y4Wv8ZM4cqD+RfUjHfjFzNI7gla6/XLcXCX25UbROOFBckL+FRn8FIubSQv8JSGUYUiS4TAadyMQAs+Qjg+vENNVbB85tCyOE714WdlhSN5h1VoLoc1MqKqj4VS+s58bc6tQn1hYHLeLd0bXHzUUVTpijkyRGH9RbVeJqMMXIVR/mpF8sNYhAzLiLjKx92LQUuxCltzEUDm6f0VS1AIlnIcNgSLI4+rKhpq+osZfe9R6vmmnK7w24v6Fpiag5ShKmkCy1AwYfIEzf+0s0zCBc5kpPpkTls7pPu85vDz9sPWqUb7SX2yurNkzJlqYcmChMgj3PG/QKx0STXF4y7E+g+yX5LrMWuGWhJ/rzAn8ug29BaKeKOfuThZx01vNz3iymDT90W2oz4kIwa+FNc5dZcSHn+kgv213KR7KMrCvRw2MYyjxfpcj1zkZ5MTacPBemYn/j3No2BY="
+            }
+        )
+    )
 
     lifecycle {
-        ignore_changes = [source_image_reference]
+        ignore_changes = [source_image_reference, custom_data]
     }
 }
 
