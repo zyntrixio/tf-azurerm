@@ -74,6 +74,19 @@ resource "azurerm_network_security_group" "i" {
     }
 
     security_rule {
+        name = "Allow_SSH"
+        description = "Allow SSH Connections from Bastion Hosts"
+        access = "Allow"
+        priority = 130
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "192.168.4.0/24"
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_range = 22
+    }
+
+    security_rule {
         name = "BlockEverything"
         description = "Default Block All Rule"
         access = "Deny"
@@ -182,7 +195,7 @@ resource "azurerm_lb_probe" "amqp" {
     port = 5671
 }
 
-resource "azurerm_lb_rule" "ampq" {
+resource "azurerm_lb_rule" "amqp" {
     resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "amqp"
@@ -251,7 +264,7 @@ resource "azurerm_linux_virtual_machine" "i" {
     resource_group_name = azurerm_resource_group.i.name
     location = azurerm_resource_group.i.location
     availability_set_id = azurerm_availability_set.i.id
-    size = "Standard_D4s_v4"
+    size = "Standard_D4as_v4"
     admin_username = "terraform"
     network_interface_ids = [
         element(azurerm_network_interface.i.*.id, count.index),

@@ -88,7 +88,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.5"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.6"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -103,7 +103,7 @@ module "uksouth_performance_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 2
+    worker_scaleset_size = 3
     use_scaleset = true
     max_pods_per_host = 100
 
@@ -130,6 +130,13 @@ module "uksouth_performance_cluster_0" {
             vnet_id = module.uksouth-elasticsearch.vnet_id
             vnet_name = module.uksouth-elasticsearch.vnet_name
             resource_group_name = module.uksouth-elasticsearch.resource_group_name
+        }
+    }
+    subscription_peers = {
+        rabbitmq = {
+            vnet_id = module.uksouth_performance_rabbit.peering["vnet_id"]
+            vnet_name = module.uksouth_performance_rabbit.peering["vnet_name"]
+            resource_group_name = module.uksouth_performance_rabbit.peering["resource_group_name"]
         }
     }
 

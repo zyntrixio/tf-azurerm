@@ -150,7 +150,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.6"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -167,11 +167,13 @@ module "uksouth_prod_cluster_0" {
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
     worker_count = 12
+    max_pods_per_host = 30
 
     prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/uksouth-prod.git"
+    flux_environment = "uksouth-prod"
+
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
@@ -190,6 +192,13 @@ module "uksouth_prod_cluster_0" {
             vnet_id = module.uksouth-elasticsearch.vnet_id
             vnet_name = module.uksouth-elasticsearch.vnet_name
             resource_group_name = module.uksouth-elasticsearch.resource_group_name
+        }
+    }
+    subscription_peers = {
+        rabbitmq = {
+            vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
+            vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
+            resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
         }
     }
 
