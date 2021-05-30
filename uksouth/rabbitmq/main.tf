@@ -176,7 +176,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "i" {
 
 resource "azurerm_private_dns_a_record" "i" {
     provider = azurerm.core
-    name = "${var.base_name}.uksouth"
+    name = var.base_name
     zone_name = var.dns["uksouth_host"].private_dns_zone_name
     resource_group_name = var.dns["uksouth_host"].resource_group_name
     ttl = 300
