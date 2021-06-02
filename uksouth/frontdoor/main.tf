@@ -81,13 +81,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         interval_in_seconds = 120
     }
 
-    backend_pool_health_probe {
-        name = "grafana"
-        path = "/api/health"
-        protocol = "Https"
-        interval_in_seconds = 120
-    }
-
     frontend_endpoint {
         name = "trenette-co-uk"
         host_name = "trenette.co.uk"
@@ -137,14 +130,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "api-prod-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["prod"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "api.prod0.uksouth.bink.sh"
+            address = "api.prod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -184,14 +174,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "policies-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["prod-policies"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "policies.prod0.uksouth.bink.sh"
+            address = "policies.prod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -219,14 +206,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "api-preprod-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["preprod"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "api.preprod0.uksouth.bink.sh"
+            address = "api.preprod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -254,14 +238,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "api-staging-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["staging"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "api.staging0.uksouth.bink.sh"
+            address = "api.staging0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -288,14 +269,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "policies-staging-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["staging-policies"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "policies.staging0.uksouth.bink.sh"
+            address = "policies.staging0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -323,14 +301,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "api-dev-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["dev"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "api.dev0.uksouth.bink.sh"
+            address = "api.dev0.uksouth.bink.sh"
+            http_port = 8050
+            https_port = 4050
         }
 
         load_balancing_name = "standard"
@@ -364,14 +339,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "performance-sandbox-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["performance"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "api.perf0.uksouth.bink.sh"
+            address = "api.perf0.uksouth.bink.sh"
+            http_port = 8050
+            https_port = 4050
         }
 
         load_balancing_name = "standard"
@@ -404,14 +376,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "link-uksouth-bink-sh"
 
-        dynamic "backend" {
-            for_each = var.backends["prod-link"]
-            content {
-                host_header = backend.value["host_header"]
-                address = backend.value["address"]
-                http_port = backend.value["http_port"]
-                https_port = backend.value["https_port"]
-            }
+        backend {
+            host_header = "link.prod0.uksouth.bink.sh"
+            address = "link.prod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -455,7 +424,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
-
     backend_pool {
         name = "sit-sandbox-uksouth-bink-sh"
         backend {
@@ -487,6 +455,35 @@ resource "azurerm_frontdoor" "frontdoor" {
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
+    frontend_endpoint {
+        name = "web-gb-bink-com"
+        host_name = "web.gb.bink.com"
+    }
+
+    routing_rule {
+        name = "web-prod-blobstorage"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["web-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "web-prod-blobstorage"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "web-prod-blobstorage"
+        backend {
+            host_header = "binkuksouthprodweb.z33.web.core.windows.net"
+            address = "binkuksouthprodweb.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
 
     timeouts {
         update = "120m"
@@ -557,10 +554,25 @@ resource "azurerm_frontdoor_custom_https_configuration" "www_bink_com" {
     }
 }
 
-
-
 resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["api-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "web_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["web-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {

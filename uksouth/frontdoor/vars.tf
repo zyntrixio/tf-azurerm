@@ -8,15 +8,6 @@ variable "tags" {
     }
 }
 
-variable backends {
-    type = map(list(object({
-        host_header = string
-        address = string
-        http_port = number
-        https_port = number
-    })))
-}
-
 variable "secure_origins" {
     type = list
     default = []

@@ -134,35 +134,6 @@ module "uksouth-frontdoor" {
 
     secure_origins = local.secure_origins
     secure_origins_v6 = local.secure_origins_v6
-    backends = {
-        "staging" : [
-            module.uksouth_staging_cluster_0.frontdoor_backend_pool
-        ],
-        "staging-policies" : [
-            module.uksouth_staging_cluster_0.frontdoor_backend_policies_pool
-        ],
-        "prod" : [
-            module.uksouth_prod_cluster_0.frontdoor_backend_pool
-        ],
-        "sandbox" : [
-            module.uksouth_sandbox_cluster_0.frontdoor_backend_pool
-        ],
-        "prod-policies" : [
-            module.uksouth_prod_cluster_0.frontdoor_backend_policies_pool
-        ],
-        "prod-link" : [
-            module.uksouth_prod_cluster_0.frontdoor_backend_link_pool
-        ],
-        "preprod" : [
-            module.uksouth_preprod_cluster_1.frontdoor_backend_pool
-        ],
-        "dev" : [
-            module.uksouth_dev_cluster_0.frontdoor_backend_pool
-        ],
-        "performance" : [
-            module.uksouth_performance_cluster_0.frontdoor_backend_pool
-        ],
-    }
 }
 
 module "uksouth-firewall" {
