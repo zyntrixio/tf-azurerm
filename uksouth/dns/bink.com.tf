@@ -74,6 +74,9 @@ locals {
             "lyncdiscover.teams" = "webdir.online.lync.com",
             "msoid.teams" = "clientconfig.microsoftonline-p.net"
 
+            # test Office 365
+            "autodiscover.test" = "autodiscover.outlook.com",
+
             # Zendesk
             "help" = "binkcx.zendesk.com",
             "zendesk1" = "mail1.zendesk.com",
@@ -105,6 +108,12 @@ locals {
                 {
                     preference = 10,
                     exchange = "mxb.mailgun.org",
+                }
+            ]
+            "test" = [
+                {
+                    preference = 0,
+                    exchange = "test-bink-com.mail.protection.outlook.com",
                 }
             ]
         }
@@ -157,6 +166,9 @@ locals {
             ]
             "uk" = [
                 "v=spf1 include:mailgun.org ~all",
+            ]
+            "test" = [
+                "v=spf1 include:spf.protection.outlook.com -all",
             ]
         }
     }
