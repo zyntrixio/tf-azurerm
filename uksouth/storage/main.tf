@@ -59,7 +59,12 @@ resource "azurerm_container_registry" "binkops" {
     location = "westeurope"
     sku = "Premium"
     admin_enabled = true
-    georeplication_locations = ["UK South", "UK West"]
+    georeplications {
+        location = "uksouth"
+    }
+    georeplications {
+        location = "ukwest"
+    }
 }
 
 resource "azurerm_container_registry" "olympus" {
@@ -68,5 +73,10 @@ resource "azurerm_container_registry" "olympus" {
     location = "westeurope"
     sku = "Premium"
     admin_enabled = true
-    georeplication_locations = ["UK South", "UK West"]
+    georeplications {
+        location = "uksouth"
+    }
+    georeplications {
+        location = "ukwest"
+    }
 }
