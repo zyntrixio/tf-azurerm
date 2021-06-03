@@ -224,7 +224,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.2.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.7"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -232,6 +232,7 @@ module "uksouth_prod_datawarehouse" {
     resource_group_name = "uksouth-prod-dwh"
     location = "uksouth"
     environment = "prod"
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs2/authorizationRules/RootManageSharedAccessKey"
     tags = {
         "Environment" = "Production",
     }
