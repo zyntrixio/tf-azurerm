@@ -875,7 +875,7 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
         name = "Wasabi SFTP"
         source_addresses = ["*"]
         destination_ports = ["22"]
-        destination_addresses = ["185.10.90.93/32"]
+        destination_addresses = ["185.113.19.116/32"]
         protocols = ["TCP"]
     }
     rule {
