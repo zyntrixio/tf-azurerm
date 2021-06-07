@@ -74,8 +74,8 @@ locals {
             "lyncdiscover.teams" = "webdir.online.lync.com",
             "msoid.teams" = "clientconfig.microsoftonline-p.net"
 
-            # test Office 365
-            "autodiscover.test" = "autodiscover.outlook.com",
+            # e2e Office 365
+            "autodiscover.e2e" = "autodiscover.outlook.com",
 
             # Zendesk
             "help" = "binkcx.zendesk.com",
@@ -110,10 +110,10 @@ locals {
                     exchange = "mxb.mailgun.org",
                 }
             ]
-            "test" = [
+            "e2e" = [
                 {
                     preference = 0,
-                    exchange = "test-bink-com.mail.protection.outlook.com",
+                    exchange = "e2e-bink-com.mail.protection.outlook.com",
                 }
             ]
         }
@@ -167,7 +167,7 @@ locals {
             "uk" = [
                 "v=spf1 include:mailgun.org ~all",
             ]
-            "test" = [
+            "e2e" = [
                 "v=spf1 include:spf.protection.outlook.com -all",
             ]
         }
