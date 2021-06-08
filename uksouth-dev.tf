@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.0"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -9,12 +9,32 @@ module "uksouth_dev_environment" {
         "Environment" = "Dev",
     }
 
-    resource_group_iam = {
+    # postgres_iam = {
+    #     ChrisSterritt = {
+    #         object_id = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5",
+    #         role = "Contributor",
+    #     }
+    # }
+
+    keyvault_iam = {
         Backend = {
+            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            role = "Reader",
+        },
+        QA = {
+            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            role = "Reader",
+        },
+    }
+
+    storage_iam = {
+        Backend = {
+            storage_id = "common",
             object_id = "219194f6-b186-4146-9be7-34b731e19001",
             role = "Contributor",
         },
         QA = {
+            storage_id = "common",
             object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
             role = "Contributor",
         },
