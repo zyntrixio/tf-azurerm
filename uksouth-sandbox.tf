@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.1"
     providers = {
         azurerm = azurerm.uk_sandbox
     }
@@ -9,21 +9,60 @@ module "uksouth_sandbox_environment" {
         "Environment" = "Sandbox",
     }
 
-    resource_group_iam = {
+    postgres_iam = {
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
+        }
+    }
+
+    keyvault_iam = {
         Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
             role = "Reader",
         },
         QA = {
-            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            object_id = local.aad_group.qa,
             role = "Reader",
         },
     }
 
+    storage_iam = {
+        Common-Backend = {
+            storage_id = "common",
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        Sit-Backend = {
+            storage_id = "sit",
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        Oat-Backend = {
+            storage_id = "oat",
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        Common-QA = {
+            storage_id = "common",
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
+        Sit-QA = {
+            storage_id = "sit",
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
+        Oat-QA = {
+            storage_id = "oat",
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
+    }
+
     keyvault_users = {
-        ChristianPrior = "ae282437-d730-4342-8914-c936e8289cdc"
-        MartinMarsh = "3c92809d-91a4-456f-a161-a8b9df4c01e1"
-        KashimAziz = "b004c980-3e08-4237-b8e2-d6e65d2bef3f"
+        Backend = local.aad_group.backend,
+        QA = local.aad_group.qa,
     }
 
     additional_keyvaults = [
