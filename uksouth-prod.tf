@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.1"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -9,30 +9,59 @@ module "uksouth_prod_environment" {
         "Environment" = "Production",
     }
 
-    resource_group_iam = {
-        Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+    postgres_iam = {
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Reader",
+        }
+    }
+
+    keyvault_iam = {
+        MickLatham = {
+            object_id = local.aad_user.mick_latham,
             role = "Reader",
         },
-        MickLatham = {
-            object_id = "343299d4-0a39-4109-adce-973ad29d0183",
+        chris_latham = {
+            object_id = local.aad_user.chris_latham,
+            role = "Reader",
+        },
+        christian_prior = {
+            object_id = local.aad_user.christian_prior,
+            role = "Reader",
+        },
+    }
+
+    storage_iam = {
+        mick_latham = {
+            storage_id = "common",
+            object_id = local.aad_user.mick_latham,
             role = "Contributor",
         },
-        ChrisLatham = {
-            object_id = "607482a3-07fa-4b24-8af0-5b84df6ca7c6",
+        chris_latham = {
+            storage_id = "common",
+            object_id = local.aad_user.chris_latham,
             role = "Contributor",
         },
-        ChristianPrior = {
-            object_id = "ae282437-d730-4342-8914-c936e8289cdc",
+        christian_prior = {
+            storage_id = "common",
+            object_id = local.aad_user.christian_prior,
             role = "Contributor",
         },
     }
 
-    keyvault_users = {
-        MickLatham = "343299d4-0a39-4109-adce-973ad29d0183",
-        ChrisLatham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6",
-        ChristianPrior = "ae282437-d730-4342-8914-c936e8289cdc",
+    redis_iam = {
+        chris_latham = {
+            object_id = local.aad_user.chris_latham,
+            role = "Reader",
+        }
     }
+
+    keyvault_users = {
+        mick_latham = local.aad_user.mick_latham,
+        chris_latham = local.aad_user.chris_latham,
+        christian_prior = local.aad_user.christian_prior,
+    }
+
     infra_keyvault_users = {
         AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
     }
