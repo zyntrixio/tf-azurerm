@@ -180,7 +180,7 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.8"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -195,17 +195,19 @@ module "uksouth_dev_datawarehouse" {
     repo_name = "azure-synapse-dev"
 
     resource_group_iam = {
-        Architecture = {
-            object_id = local.aad_group.architecture,
-            role = "Reader"
-        }
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Reader",
-        }
         ChrisSterritt = {
             object_id = local.aad_user.chris_sterritt,
             role = "Reader",
+        }
+    }
+    storage_iam = {
+        Architecture = {
+            object_id = local.aad_group.architecture,
+            role = "Contributor"
+        }
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
         }
     }
     sql_admin = local.aad_group.data_warehouse_admins  # Data Warehouse Admins group

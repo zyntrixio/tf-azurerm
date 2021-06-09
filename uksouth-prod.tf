@@ -253,7 +253,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.7"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.8"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -268,13 +268,19 @@ module "uksouth_prod_datawarehouse" {
     repo_name = "azure-synapse-prod"
 
     resource_group_iam = {
-        Architecture = {
-            object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
-            role = "Reader"
-        }
         ChrisSterritt = {
             object_id = local.aad_user.chris_sterritt,
             role = "Reader",
+        }
+    }
+    storage_iam = {
+        Architecture = {
+            object_id = local.aad_group.architecture,
+            role = "Contributor"
+        }
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
         }
     }
     sql_admin = local.aad_group.data_warehouse_admins
