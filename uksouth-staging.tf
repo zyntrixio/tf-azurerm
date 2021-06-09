@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.1"
     providers = {
         azurerm = azurerm.uk_staging
     }
@@ -9,20 +9,40 @@ module "uksouth_staging_environment" {
         "Environment" = "Staging",
     }
 
-    resource_group_iam = {
+    postgres_iam = {
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
+        }
+    }
+
+    keyvault_iam = {
         Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
+            role = "Reader",
+        },
+        QA = {
+            object_id = local.aad_group.qa,
+            role = "Reader",
+        },
+    }
+
+    storage_iam = {
+        Backend = {
+            storage_id = "common",
+            object_id = local.aad_group.backend,
             role = "Contributor",
         },
         QA = {
-            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            storage_id = "common",
+            object_id = local.aad_group.qa,
             role = "Contributor",
         },
     }
 
     keyvault_users = {
-        Backend = "219194f6-b186-4146-9be7-34b731e19001",
-        QA = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+        Backend = local.aad_group.backend,
+        QA = local.aad_group.qa,
     }
 
     postgres_config = {
