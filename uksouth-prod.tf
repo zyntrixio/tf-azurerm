@@ -272,6 +272,10 @@ module "uksouth_prod_datawarehouse" {
             object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
             role = "Reader"
         }
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Reader",
+        }
     }
     sql_admin = local.aad_group.data_warehouse_admins
 }

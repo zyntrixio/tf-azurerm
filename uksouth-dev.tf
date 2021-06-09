@@ -203,6 +203,10 @@ module "uksouth_dev_datawarehouse" {
             object_id = local.aad_group.backend,
             role = "Reader",
         }
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Reader",
+        }
     }
     sql_admin = local.aad_group.data_warehouse_admins  # Data Warehouse Admins group
 }
