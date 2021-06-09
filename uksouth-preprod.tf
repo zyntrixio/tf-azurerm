@@ -1,5 +1,5 @@
 module "uksouth_preprod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.1"
     providers = {
         azurerm = azurerm.uk_preprod
     }
@@ -9,27 +9,30 @@ module "uksouth_preprod_environment" {
         "Environment" = "Pre-Production",
     }
 
-    resource_group_iam = {
+    postgres_iam = {
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
+        }
+    }
+
+    keyvault_iam = {
         Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
             role = "Reader",
         },
-        MickLatham = {
-            object_id = "343299d4-0a39-4109-adce-973ad29d0183",
-            role = "Contributor",
-        },
-        ChrisLatham = {
-            object_id = "607482a3-07fa-4b24-8af0-5b84df6ca7c6",
-            role = "Contributor",
-        },
-        ChristianPrior = {
-            object_id = "ae282437-d730-4342-8914-c936e8289cdc",
+    }
+
+    storage_iam = {
+        Backend = {
+            storage_id = "common",
+            object_id = local.aad_group.backend,
             role = "Contributor",
         },
     }
 
     keyvault_users = {
-        Backend = "219194f6-b186-4146-9be7-34b731e19001",
+        Backend = local.aad_group.backend,
     }
 
     # postgres_config = {
