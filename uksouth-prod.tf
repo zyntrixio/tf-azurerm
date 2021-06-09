@@ -244,5 +244,5 @@ module "uksouth_prod_datawarehouse" {
             role = "Reader"
         }
     }
-    sql_admin = "8596acbd-b840-4124-9ec6-b6c0918ac247"
+    sql_admin = local.aad_group.data_warehouse_admins
 }

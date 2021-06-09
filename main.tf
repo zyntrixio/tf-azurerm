@@ -28,7 +28,7 @@ locals {
     ]
     managed_identities = {
         fakicorp = { kv_access = "rw" },
-        europa = { kv_access = "ro" },
+        europa = { kv_access = "rw" },
         harmonia = { kv_access = "ro" },
         hermes = { kv_access = "ro" },
         polaris = { kv_access = "ro" },
@@ -39,6 +39,23 @@ locals {
         pyqa = { kv_access = "ro" },
         vela = { kv_access = "ro" },
         zephyrus = { kv_access = "ro" },
+    }
+
+    aad_group = {
+        architecture = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
+        qa = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
+        cyber_sec = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
+        devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+        backend = "219194f6-b186-4146-9be7-34b731e19001"
+        data_warehouse_admins = "8596acbd-b840-4124-9ec6-b6c0918ac247"
+    }
+    aad_user = {
+        jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
+        chris_sterritt = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5"
+    }
+    aad_apps = {
+        confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"
+        kubernetes_sso = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
     }
 }
 

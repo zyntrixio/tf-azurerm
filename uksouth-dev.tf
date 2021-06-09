@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.1"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -9,20 +9,20 @@ module "uksouth_dev_environment" {
         "Environment" = "Dev",
     }
 
-    # postgres_iam = {
-    #     ChrisSterritt = {
-    #         object_id = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5",
-    #         role = "Contributor",
-    #     }
-    # }
+    postgres_iam = {
+        ChrisSterritt = {
+            object_id = local.aad_user.chris_sterritt,
+            role = "Contributor",
+        }
+    }
 
     keyvault_iam = {
         Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
             role = "Reader",
         },
         QA = {
-            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            object_id = local.aad_group.qa,
             role = "Reader",
         },
     }
@@ -30,20 +30,21 @@ module "uksouth_dev_environment" {
     storage_iam = {
         Backend = {
             storage_id = "common",
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
             role = "Contributor",
         },
         QA = {
             storage_id = "common",
-            object_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+            object_id = local.aad_group.qa,
             role = "Contributor",
         },
     }
 
     keyvault_users = {
-        Backend = "219194f6-b186-4146-9be7-34b731e19001",
-        QA = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d",
+        Backend = local.aad_group.backend,
+        QA = local.aad_group.qa,
     }
+
     infra_keyvault_users = {
         AzureSynapse = { object_id = module.uksouth_dev_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
     }
@@ -195,15 +196,15 @@ module "uksouth_dev_datawarehouse" {
 
     resource_group_iam = {
         Architecture = {
-            object_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1",
+            object_id = local.aad_group.architecture,
             role = "Reader"
         }
         Backend = {
-            object_id = "219194f6-b186-4146-9be7-34b731e19001",
+            object_id = local.aad_group.backend,
             role = "Reader",
         }
     }
-    sql_admin = "8596acbd-b840-4124-9ec6-b6c0918ac247"  # Data Warehouse Admins group
+    sql_admin = local.aad_group.data_warehouse_admins  # Data Warehouse Admins group
 }
 
 module "uksouth_dev_binkweb" {

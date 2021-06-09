@@ -76,7 +76,7 @@ resource "azurerm_role_assignment" "devops" {
 
     scope = "/subscriptions/${each.value["id"]}"
     role_definition_name = "Owner"
-    principal_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+    principal_id = local.aad_group.devops
 }
 
 resource "azurerm_role_assignment" "devsecops" {
@@ -84,7 +84,7 @@ resource "azurerm_role_assignment" "devsecops" {
 
     scope = "/subscriptions/${each.value["id"]}"
     role_definition_name = "Reader"
-    principal_id = "13e033e8-4bfe-4bef-b41e-1344690c8373"
+    principal_id = local.aad_group.cyber_sec
 }
 
 resource "azurerm_role_assignment" "confluence-macro" {
@@ -92,37 +92,25 @@ resource "azurerm_role_assignment" "confluence-macro" {
 
     scope = "/subscriptions/${each.value["id"]}"
     role_definition_name = "Reader"
-    principal_id = "ce918d9f-5641-4798-b1d5-bf31d234921a"
-}
-
-resource "azurerm_role_assignment" "backend" {
-    scope = data.azurerm_subscription.primary.id
-    role_definition_name = "Reader"
-    principal_id = "219194f6-b186-4146-9be7-34b731e19001"
+    principal_id = local.aad_apps.confluence_macro
 }
 
 resource "azurerm_role_assignment" "qa" {
     scope = data.azurerm_subscription.primary.id
     role_definition_name = "Reader"
-    principal_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
-}
-
-resource "azurerm_role_assignment" "architecture" {
-    scope = data.azurerm_subscription.primary.id
-    role_definition_name = "Reader"
-    principal_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
+    principal_id = local.aad_group.qa
 }
 
 resource "azurerm_role_assignment" "jo_raine" {
     scope = data.azurerm_subscription.primary.id
     role_definition_name = "Billing Reader"
-    principal_id = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
+    principal_id = local.aad_user.jo_raine
 }
 
 resource "azurerm_role_assignment" "kubernetes_sso" {
     scope = data.azurerm_subscription.primary.id
     role_definition_name = "Contributor"
-    principal_id = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
+    principal_id = local.aad_apps.kubernetes_sso
 }
 
 resource "azurerm_role_assignment" "azure_frontdoor" {
@@ -131,3 +119,10 @@ resource "azurerm_role_assignment" "azure_frontdoor" {
     principal_id = "f0222751-c786-45ca-bbfb-66037b63c4ac"
 }
 
+resource "azurerm_role_assignment" "architecture" {
+    for_each = local.subscriptions
+
+    scope = "/subscriptions/${each.value["id"]}"
+    role_definition_name = "Reader"
+    principal_id = local.aad_group.architecture
+}
