@@ -13,7 +13,15 @@ module "uksouth_performance_environment" {
         ChrisSterritt = {
             object_id = local.aad_user.chris_sterritt,
             role = "Contributor",
-        }
+        },
+        Backend = {
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        QA = {
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
     }
 
     keyvault_iam = {

@@ -12,16 +12,8 @@ module "uksouth_sandbox_environment" {
     postgres_iam = {
         ChrisSterritt = {
             object_id = local.aad_user.chris_sterritt,
-            role = "Contributor",
+            role = "Reader",
         }
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        QA = {
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
     }
 
     keyvault_iam = {
