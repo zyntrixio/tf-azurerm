@@ -116,7 +116,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.6"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.5.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -187,5 +187,16 @@ module "uksouth_performance_cluster_0" {
 
     tags = {
         "Environment" = "Performance",
+    }
+
+    vmss_iam = {
+        Backend = {
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        QA = {
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
     }
 }
