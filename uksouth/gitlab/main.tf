@@ -5,6 +5,22 @@ resource "azurerm_resource_group" "rg" {
     tags = var.tags
 }
 
+resource "azurerm_storage_account" "gitlab" {
+    name = "binkgitlab"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    account_tier = "Standard"
+    account_replication_type = "ZRS"
+    enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
+}
+
+resource "azurerm_role_assignment" "cl" {
+  scope = azurerm_storage_account.gitlab.id
+  role_definition_name = "Contributor"
+  principal_id = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
+}
+
 resource "azurerm_virtual_network" "vnet" {
     name = "${var.environment}-vnet"
     location = azurerm_resource_group.rg.location
