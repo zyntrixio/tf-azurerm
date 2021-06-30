@@ -84,6 +84,22 @@ module "uksouth_staging_environment" {
             }
         ]
     }
+
+    eventhubs = {
+        bink-uksouth-staging-loyalty = {
+            name = "loyalty"  # => loyalty-history for kube secret name
+            sku = "Standard"
+            capacity = 2
+
+            eventhubs = {
+                history = {
+                    partition_count = 2
+                    message_retention = 4
+                }
+            }
+        }
+    }
+
     cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
     managed_identities = local.managed_identities
