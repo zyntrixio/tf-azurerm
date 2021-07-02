@@ -132,7 +132,7 @@ module "uksouth_prod_environment" {
                 name = "backupsweekly",
                 enabled = true,
                 prefix_match = ["backups/weekly"],
-                delete_after_days = 90
+                delete_after_days = 180
             },
             {
                 name = "backupsyearly",
