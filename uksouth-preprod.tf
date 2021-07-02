@@ -128,7 +128,7 @@ module "uksouth_preprod_environment" {
 #     vnet_cidr = "10.69.0.0/16"
 #     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-#     bifrost_version = "4.8.4"
+#     bifrost_version = "4.8.5"
 #     ubuntu_version = "20.04"
 #     controller_vm_size = "Standard_D2as_v4"
 #     worker_vm_size = "Standard_D4s_v4"
