@@ -37,7 +37,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.6"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -48,18 +48,19 @@ module "uksouth_tools_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.33.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.7.2"
+    bifrost_version = "4.8.5"
     ubuntu_version = "20.04"
 
     controller_vm_size = "Standard_D2s_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 3
+    worker_scaleset_size = 2
     use_scaleset = true
+    max_pods_per_host = 100
 
     prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/uksouth-tools.git"
+    flux_environment = "uksouth-tools"
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
@@ -80,6 +81,7 @@ module "uksouth_tools_cluster_0" {
             resource_group_name = module.uksouth-elasticsearch.resource_group_name
         }
     }
+    subscription_peers = {}
 
     firewall = {
         firewall_name = module.uksouth-firewall.firewall_name
