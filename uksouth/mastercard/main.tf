@@ -12,6 +12,13 @@ resource "azurerm_public_ip" "ip" {
     allocation_method = "Static"
 }
 
+resource "azurerm_public_ip" "scheduler" {
+    name = "${azurerm_resource_group.rg.name}-scheduler"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    allocation_method = "Static"
+}
+
 resource "azurerm_network_security_group" "nsg" {
     name = "${azurerm_resource_group.rg.name}-nsg"
     location = azurerm_resource_group.rg.location
@@ -74,6 +81,19 @@ resource "azurerm_network_interface" "nic" {
     }
 }
 
+resource "azurerm_network_interface" "scheduler" {
+    name = "${azurerm_resource_group.rg.name}-scheduler"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+
+    ip_configuration {
+        name = "internal"
+        subnet_id = azurerm_subnet.subnet.id
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id = azurerm_public_ip.scheduler.id
+    }
+}
+
 resource "azurerm_network_security_rule" "rdp" {
     name = "Remote Desktop"
     priority = 100
@@ -83,7 +103,12 @@ resource "azurerm_network_security_rule" "rdp" {
     source_port_range = "*"
     destination_port_range = "3389"
     source_address_prefixes = var.secure_origins
-    destination_address_prefixes = [azurerm_public_ip.ip.ip_address, azurerm_network_interface.nic.private_ip_address]
+    destination_address_prefixes = [
+        azurerm_public_ip.ip.ip_address,
+        azurerm_public_ip.scheduler.ip_address,
+        azurerm_network_interface.nic.private_ip_address,
+        azurerm_network_interface.scheduler.private_ip_address
+    ]
     resource_group_name = azurerm_resource_group.rg.name
     network_security_group_name = azurerm_network_security_group.nsg.name
 }
@@ -98,6 +123,36 @@ resource "azurerm_windows_virtual_machine" "vm" {
     admin_password = "TFB2248hxq!!"
     network_interface_ids = [
         azurerm_network_interface.nic.id,
+    ]
+
+    os_disk {
+        caching = "ReadWrite"
+        storage_account_type = "StandardSSD_LRS"
+        disk_size_gb = 128
+    }
+
+    source_image_reference {
+        publisher = "MicrosoftWindowsServer"
+        offer = "WindowsServer"
+        sku = "2019-Datacenter"
+        version = "latest"
+    }
+
+    lifecycle {
+        ignore_changes = [source_image_reference, patch_mode]
+    }
+}
+
+resource "azurerm_windows_virtual_machine" "scheduler" {
+    name = "${azurerm_resource_group.rg.name}-scheduler"
+    computer_name = "scheduler"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    size = "Standard_D2s_v4"
+    admin_username = "laadmin"
+    admin_password = "TFB2248hxq!!"
+    network_interface_ids = [
+        azurerm_network_interface.scheduler.id,
     ]
 
     os_disk {
