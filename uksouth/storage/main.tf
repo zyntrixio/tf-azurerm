@@ -36,10 +36,15 @@ resource "azurerm_storage_account" "bink" {
     min_tls_version = "TLS1_2"
 }
 
-resource "azurerm_role_assignment" "bink_iam_sperrygrove" {
-    scope = azurerm_storage_account.bink.id
-    role_definition_name = "Contributor"
-    principal_id = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
+resource "azurerm_storage_account" "binkarchives" {
+    name = "binkarchives"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    account_kind = "BlobStorage"
+    account_tier = "Standard"
+    account_replication_type = "LRS"
+    enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
 }
 
 resource "azurerm_storage_account" "mids" {
