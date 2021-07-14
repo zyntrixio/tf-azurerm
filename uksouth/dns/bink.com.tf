@@ -60,6 +60,11 @@ locals {
             "kibana.gb" = "bink-frontdoor.azurefd.net",
             "web.gb" = "bink-frontdoor.azurefd.net",
 
+            #Statuspage
+            "spg._domainkey.bink.com" = "spg.domainkey.u12618875.wl126.sendgrid.net",
+            "spg2._domainkey.bink.com" = "spg2.domainkey.u12618875.wl126.sendgrid.net",
+            "statuspage-notifications.bink.com" = "u12618875.wl126.sendgrid.net",
+
             # Office 365
             "enterpriseregistration.teams" = "enterpriseregistration.windows.net",
             "enterpriseenrollment.teams" = "enterpriseenrollment.manage.microsoft.com",
@@ -147,7 +152,7 @@ locals {
             "@" = [
                 "atlassian-domain-verification=mqUsdFedKn6vro+U8Cacg/cxjaFFF3CWSE5Jbww0PwYRNdDs5xfJlkiluMUKZrn4",
                 "google-site-verification=TkTtMyGRzTV8pXap0aQo980_lNSfYa9E2__r1kI6Djo",
-                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org ?all",
+                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:stspg-customer.com ?all",
                 "MS=ms26724008",
                 "apple-domain-verification=jOvmiNhPlgoqmBOx",
                 "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
@@ -169,6 +174,9 @@ locals {
             ]
             "e2e" = [
                 "v=spf1 include:spf.protection.outlook.com -all",
+            ]
+            "statuspage" = [
+                "status-page-domain-verification=2ymxl519fl8r"
             ]
         }
     }
