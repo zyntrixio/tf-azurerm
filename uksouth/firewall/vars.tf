@@ -5,7 +5,6 @@ variable "tags" {
     }
 }
 
-variable "sentry_vnet_id" {}
 variable "tableau_vnet_id" {}
 variable "sentry_ip_address" {}
 variable "tableau_ip_address" {}

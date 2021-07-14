@@ -157,7 +157,6 @@ module "uksouth-frontdoor" {
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
-    sentry_vnet_id = module.uksouth-sentry.vnet_id
     tableau_vnet_id = module.uksouth-tableau.vnet_id
     sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
@@ -188,14 +187,6 @@ module "uksouth-tableau" {
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
     wireguard_ip = module.uksouth-wireguard.public_ip
-}
-
-module "uksouth-sentry" {
-    source = "./uksouth/sentry"
-
-    firewall_vnet_id = module.uksouth-firewall.vnet_id
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-elasticsearch" {

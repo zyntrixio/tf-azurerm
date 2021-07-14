@@ -21,27 +21,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Debian APT Repos"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "deb.debian.org",
-            "security.debian.org",
-        ]
-        protocol {
-            port = "80"
-            type = "Http"
-        }
-    }
-    rule {
-        name = "Hashicorp"
-        source_addresses = ["192.168.1.0/25"]
-        target_fqdns = ["releases.hashicorp.com"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "GitHub"
         source_addresses = ["*"]
         target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com", "*.githubusercontent.com"]
@@ -143,15 +122,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Intercom"
-        source_addresses = ["*"]
-        target_fqdns = ["api.intercom.io"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Microsoft Teams"
         source_addresses = ["*"]
         target_fqdns = [
@@ -184,15 +154,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Flux CD"
-        source_addresses = ["*"]
-        target_fqdns = ["checkpoint-api.weave.works"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Linkerd"
         source_addresses = ["*"]
         target_fqdns = ["versioncheck.linkerd.io"]
@@ -205,7 +166,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Sentry"
         source_addresses = ["*"]
         target_fqdns = [
-            "sentry.bink.com",
             "hellobink.atlassian.net",
             "*.sentry.io",
             "sentry.io",
@@ -213,15 +173,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         protocol {
             port = "443"
             type = "Https"
-        }
-    }
-    rule {
-        name = "ifconfig.co"
-        source_addresses = ["*"]
-        target_fqdns = ["ifconfig.co"]
-        protocol {
-            port = "80"
-            type = "Http"
         }
     }
     rule {
@@ -274,17 +225,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.azure-automation.net",
             "*.vault.azure.net",
             "www.microsoft.com"  # For getting RSS feeds
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Qualys"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "*.qualys.eu"
         ]
         protocol {
             port = "443"
@@ -413,13 +353,11 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         name = "Bink HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
-            "api.bink.com",
             "api.gb.bink.com",
             "api.preprod.gb.bink.com",
             "api.staging.gb.bink.com",
             "api.dev.gb.bink.com",
             "api.sandbox.gb.bink.com",
-            "*.bink-sandbox.com",
             "*.bink.sh",
             "bink.com"
         ]
@@ -483,7 +421,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "account.theclub.macdonaldhotels.co.uk",
             "accounts.eurostar.com",
             "api.avios.com",
-            "api.bink-dev.com",
             "api.loyalty.marksandspencer.services",
             "api.bink.membership.coop.co.uk",
             "api.membership.coop.co.uk",
@@ -614,15 +551,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             type = "Https"
         }
     }
-    rule {
-        name = "Aphrodite HTTPS"
-        source_addresses = ["*"]
-        target_fqdns = ["aphrodite.blob.core.windows.net"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
 }
 
 resource "azurerm_firewall_nat_rule_collection" "bastion" {
@@ -675,33 +603,6 @@ resource "azurerm_firewall_nat_rule_collection" "chef" {
         destination_addresses = [azurerm_public_ip.pips.0.ip_address]
         translated_address = "192.168.5.4"
         translated_port = "4444"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "sentry" {
-    name = "sentry"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 170
-    action = "Dnat"
-
-    rule {
-        name = "sentry_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
-        translated_address = var.sentry_ip_address
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "sentry_https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.14.ip_address]
-        translated_address = var.sentry_ip_address
-        translated_port = "443"
         protocols = ["TCP"]
     }
 }
@@ -781,43 +682,6 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
         destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "sentry" {
-    name = "Sentry"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 120
-    action = "Allow"
-
-    rule {
-        name = "production-to-sentry"
-        source_addresses = ["10.0.0.0/16"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["${var.sentry_ip_address}/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "staging-to-sentry"
-        source_addresses = ["10.1.0.0/16"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["${var.sentry_ip_address}/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "dev-to-sentry"
-        source_addresses = ["10.2.0.0/16"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["${var.sentry_ip_address}/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "sandbox-to-sentry"
-        source_addresses = ["10.3.0.0/16"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["${var.sentry_ip_address}/32"]
         protocols = ["TCP"]
     }
 }
@@ -906,19 +770,6 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         source_addresses = ["10.0.0.0/8"]
         destination_ports = ["9100", "9586"]
         destination_addresses = ["20.49.163.188/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prometheus-to-kube-api"
-        source_addresses = ["10.4.0.0/18"]
-        destination_ports = ["6443"]
-        destination_addresses = [
-            "10.0.64.4/32",  # Prod
-            "10.1.64.4/32",  # Staging
-            "10.2.64.4/32",  # Dev
-            "10.3.64.4/32",   # Sandbox
-            "10.0.0.0/8"  # Everywhere :/
-        ]
         protocols = ["TCP"]
     }
     rule {
