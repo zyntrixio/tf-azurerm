@@ -87,41 +87,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
-        name = "bink-com"
-        host_name = "bink.com"
-    }
-
-    frontend_endpoint {
-        name = "www-bink-com"
-        host_name = "www.bink.com"
-    }
-
-    backend_pool {
-        name = "wordpress-uksouth-bink-sh"
-        backend {
-            host_header = "wordpress.uksouth.bink.sh"
-            address = "wordpress.uksouth.bink.sh"
-            http_port = 80
-            https_port = 443
-        }
-
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "wordpress-uksouth-bink-sh"
-        accepted_protocols = ["Http", "Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["default", "bink-com", "www-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "wordpress-uksouth-bink-sh"
-            cache_enabled = false
-        }
-    }
-
-    frontend_endpoint {
         name = "api-gb-bink-com"
         host_name = "api.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
@@ -503,23 +468,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "custom_https_default" {
     }
 }
 
-resource "azurerm_frontdoor_custom_https_configuration" "bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "bink-com"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
-}
-
 resource "azurerm_frontdoor_custom_https_configuration" "trenette_co_uk" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["trenette-co-uk"]
     custom_https_provisioning_enabled = true
@@ -528,23 +476,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "trenette_co_uk" {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "trenette"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "www_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["www-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "bink-com"
     }
 
     timeouts {

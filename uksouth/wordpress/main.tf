@@ -9,24 +9,28 @@ resource "azurerm_public_ip" "pip" {
     name = "${var.environment}-pip"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
+    ip_version = "IPv4"
     allocation_method = "Static"
     sku = "Standard"
 
     tags = var.tags
 }
 
-resource "azurerm_dns_a_record" "pip" {
-    name = "wordpress.uksouth"
-    zone_name = var.dns_zone.bink_sh.dns_zone_name
-    resource_group_name = var.dns_zone.bink_sh.resource_group_name
-    ttl = 300
-    target_resource_id = azurerm_public_ip.pip.id
+resource "azurerm_public_ip" "pip6" {
+    name = "${var.environment}-pip6"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    ip_version = "IPv6"
+    allocation_method = "Static"
+    sku = "Standard"
+
+    tags = var.tags
 }
 
-resource "azurerm_dns_caa_record" "pip" {
-    name = "wordpress.uksouth"
-    zone_name = var.dns_zone.bink_sh.dns_zone_name
-    resource_group_name = var.dns_zone.bink_sh.resource_group_name
+resource "azurerm_dns_caa_record" "apex" {
+    name = "@"
+    zone_name = var.dns_zone.bink_com.dns_zone_name
+    resource_group_name = var.dns_zone.bink_com.resource_group_name
     ttl = 300
 
     record {
@@ -37,8 +41,21 @@ resource "azurerm_dns_caa_record" "pip" {
 
     record {
         flags = 0
-        tag = "issuewild"
-        value = ";"
+        tag = "iodef"
+        value = "mailto:devops@bink.com"
+    }
+}
+
+resource "azurerm_dns_caa_record" "www" {
+    name = "www"
+    zone_name = var.dns_zone.bink_com.dns_zone_name
+    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    ttl = 300
+
+    record {
+        flags = 0
+        tag = "issue"
+        value = "letsencrypt.org"
     }
 
     record {
@@ -48,27 +65,43 @@ resource "azurerm_dns_caa_record" "pip" {
     }
 }
 
-resource "azurerm_dns_a_record" "apex_afd" {
+resource "azurerm_dns_a_record" "apex" {
     name = "@"
     zone_name = var.dns_zone.bink_com.dns_zone_name
     resource_group_name = var.dns_zone.bink_com.resource_group_name
     ttl = 300
-    target_resource_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/frontdoor/providers/Microsoft.Network/frontdoors/bink-frontdoor"
+    records = [azurerm_public_ip.pip.ip_address]
 }
 
-resource "azurerm_dns_cname_record" "www_afd" {
+resource "azurerm_dns_aaaa_record" "apex" {
+    name = "@"
+    zone_name = var.dns_zone.bink_com.dns_zone_name
+    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    ttl = 300
+    records = [azurerm_public_ip.pip6.ip_address]
+}
+
+resource "azurerm_dns_a_record" "www" {
     name = "www"
     zone_name = var.dns_zone.bink_com.dns_zone_name
     resource_group_name = var.dns_zone.bink_com.resource_group_name
     ttl = 300
-    record = "bink-frontdoor.azurefd.net"
+    records = [azurerm_public_ip.pip.ip_address]
+}
+
+resource "azurerm_dns_aaaa_record" "www" {
+    name = "www"
+    zone_name = var.dns_zone.bink_com.dns_zone_name
+    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    ttl = 300
+    records = [azurerm_public_ip.pip6.ip_address]
 }
 
 resource "azurerm_virtual_network" "vnet" {
     name = "${var.environment}-vnet"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
-    address_space = ["192.168.0.0/24"] # Using a common range to prevent it being added to Azure Front Door
+    address_space = ["192.168.0.0/24", "ace:cab:deca:deed::/64"]
 
     tags = var.tags
 }
@@ -118,19 +151,6 @@ resource "azurerm_network_security_group" "nsg" {
         destination_address_prefix = "*"
         destination_port_range = "22"
     }
-
-    security_rule {
-        name = "BlockEverything"
-        description = "Default Block All Rule"
-        access = "Deny"
-        priority = 4096
-        direction = "Inbound"
-        protocol = "*"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "*"
-    }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nsg" {
@@ -161,7 +181,7 @@ resource "azurerm_subnet" "subnet0" {
     name = "subnet0"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefixes = ["192.168.0.0/24"]
+    address_prefixes = ["192.168.0.0/24", "ace:cab:deca:deed::/64"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
@@ -181,6 +201,15 @@ resource "azurerm_network_interface" "nic" {
         private_ip_address_allocation = "Static"
         private_ip_address = "192.168.0.4"
         public_ip_address_id = azurerm_public_ip.pip.id
+    }
+
+    ip_configuration {
+        name = "IPv6"
+        subnet_id = azurerm_subnet.subnet0.id
+        private_ip_address_allocation = "Static"
+        private_ip_address = "ace:cab:deca:deed::4"
+        private_ip_address_version = "IPv6"
+        public_ip_address_id = azurerm_public_ip.pip6.id
     }
 }
 
