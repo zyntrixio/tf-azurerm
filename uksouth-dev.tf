@@ -111,7 +111,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.5"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.6.0"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -122,7 +122,7 @@ module "uksouth_dev_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.99.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.8.5"
+    bifrost_version = "4.9.0"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
@@ -156,6 +156,7 @@ module "uksouth_dev_cluster_0" {
             resource_group_name = module.uksouth-elasticsearch.resource_group_name
         }
     }
+    subscription_peers = {}
 
     firewall = {
         firewall_name = module.uksouth-firewall.firewall_name
