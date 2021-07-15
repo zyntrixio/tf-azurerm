@@ -158,7 +158,6 @@ module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
     tableau_vnet_id = module.uksouth-tableau.vnet_id
-    sentry_ip_address = module.uksouth-sentry.ip_address
     bastion_ip_address = module.uksouth-bastion.ip_address
     sftp_ip_address = module.uksouth-sftp.ip_address
     tableau_ip_address = module.uksouth-tableau.ip_address
