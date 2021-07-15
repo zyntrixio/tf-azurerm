@@ -87,6 +87,19 @@ resource "azurerm_network_security_group" "i" {
     }
 
     security_rule {
+        name = "AllowNodeExporterAccess"
+        description = "Tools Prometheus -> Node Exporter"
+        access = "Allow"
+        priority = 140
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefix = "10.33.0.0/18"
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_range = 9100
+    }
+
+    security_rule {
         name = "BlockEverything"
         description = "Default Block All Rule"
         access = "Deny"
