@@ -60,9 +60,9 @@ locals {
             "web.gb" = "bink-frontdoor.azurefd.net",
 
             #Statuspage
-            "spg._domainkey.bink.com" = "spg.domainkey.u12618875.wl126.sendgrid.net",
-            "spg2._domainkey.bink.com" = "spg2.domainkey.u12618875.wl126.sendgrid.net",
-            "statuspage-notifications.bink.com" = "u12618875.wl126.sendgrid.net",
+            "spg._domainkey" = "spg.domainkey.u12618875.wl126.sendgrid.net",
+            "spg2._domainkey" = "spg2.domainkey.u12618875.wl126.sendgrid.net",
+            "statuspage-notifications" = "u12618875.wl126.sendgrid.net",
 
             # Office 365
             "enterpriseregistration.teams" = "enterpriseregistration.windows.net",
