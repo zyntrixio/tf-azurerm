@@ -72,7 +72,7 @@ module "uksouth_prod_environment" {
             sku_name = "GP_Gen5_2",
             storage_gb = 500,
             public_access = true,
-            databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
+            databases = ["atlas", "europa", "eos", "pontus", "thanatos", "zagreus"]
         },
         hermes = {
             name = "bink-uksouth-prod-hermes",
