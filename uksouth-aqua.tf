@@ -1,5 +1,5 @@
 module "uksouth_aqua_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.2"
     providers = {
         azurerm = azurerm
     }
@@ -24,7 +24,7 @@ module "uksouth_aqua_environment" {
 }
 
 module "uksouth_aqua_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.4.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.6.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -45,7 +45,8 @@ module "uksouth_aqua_cluster_0" {
     prometheus_subnet = "10.33.0.0/18"
 
     # Gitops repo, Managed identity for syncing common secrets
-    gitops_repo = "git@git.bink.com:GitOps/uksouth-aqua.git"
+    flux_environment = "uksouth-aqua"
+    subscription_peers = {}
     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
