@@ -179,7 +179,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.6.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.7.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
