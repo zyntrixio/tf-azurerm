@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.0"
     providers = {
         azurerm = azurerm.uk_staging
     }
@@ -106,7 +106,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.7.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -174,7 +174,7 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.1.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.1"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm

@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.0.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.0"
     providers = {
         azurerm = azurerm
     }
@@ -37,7 +37,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.7.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm

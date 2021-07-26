@@ -1,5 +1,15 @@
-provider "azurerm" {
-    alias = "core"
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 2.69.0"
+      configuration_aliases = [ azurerm.core ]
+    }
+    chef = {
+      source = "terrycain/chef"
+    }
+  }
+  required_version = ">= 0.13"
 }
 
 resource "chef_environment" "i" {

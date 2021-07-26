@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.2.2"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.0"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -179,7 +179,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.7.0"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -253,7 +253,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.3.8"
+    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.4.0"
     providers = {
         azurerm = azurerm.uk_production
     }
