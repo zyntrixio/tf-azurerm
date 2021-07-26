@@ -31,6 +31,7 @@ locals {
     europa            = { kv_access = "rw" },
     harmonia          = { kv_access = "ro" },
     hermes            = { kv_access = "ro" },
+    eos               = { kv_access = "ro" },
     polaris           = { kv_access = "ro" },
     event-horizon     = { kv_access = "ro" },
     metis             = { kv_access = "ro" },

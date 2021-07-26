@@ -26,6 +26,12 @@ resource "azurerm_lb" "lb" {
         public_ip_address_id = azurerm_public_ip.ip.id
         private_ip_address_version = "IPv4"
     }
+
+    # https://github.com/terraform-providers/terraform-provider-azurerm/issues/12396
+    # Ignoring private_ip_address_version as the Azure API is poo
+    lifecycle {
+        ignore_changes = [frontend_ip_configuration[0].private_ip_address_version]
+    }
 }
 
 resource "azurerm_lb_backend_address_pool" "linux" {
