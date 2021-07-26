@@ -1,118 +1,118 @@
 module "uksouth_preprod_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.0"
-    providers = {
-        azurerm = azurerm.uk_preprod
-    }
-    resource_group_name = "uksouth-preprod"
-    location = "uksouth"
-    tags = {
-        "Environment" = "Pre-Production",
-    }
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.0"
+  providers = {
+    azurerm = azurerm.uk_preprod
+  }
+  resource_group_name = "uksouth-preprod"
+  location            = "uksouth"
+  tags = {
+    "Environment" = "Pre-Production",
+  }
 
-    postgres_iam = {
-        ChrisSterritt = {
-            object_id = local.aad_user.chris_sterritt,
-            role = "Contributor",
-        }
+  postgres_iam = {
+    ChrisSterritt = {
+      object_id = local.aad_user.chris_sterritt,
+      role      = "Contributor",
     }
+  }
 
-    keyvault_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Reader",
-        },
-    }
+  keyvault_iam = {
+    Backend = {
+      object_id = local.aad_group.backend,
+      role      = "Reader",
+    },
+  }
 
-    storage_iam = {
-        Backend = {
-            storage_id = "common",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-    }
+  storage_iam = {
+    Backend = {
+      storage_id = "common",
+      object_id  = local.aad_group.backend,
+      role       = "Contributor",
+    },
+  }
 
-    keyvault_users = {
-        Backend = local.aad_group.backend,
-    }
+  keyvault_users = {
+    Backend = local.aad_group.backend,
+  }
 
-    # postgres_config = {
-    #     common = {
-    #         name = "bink-uksouth-preprod-common",
-    #         sku_name = "GP_Gen5_2",
-    #         storage_gb = 500,
-    #         public_access = true,
-    #         databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
-    #     },
-    #     hermes = {
-    #         name = "bink-uksouth-preprod-hermes",
-    #         sku_name = "GP_Gen5_2",
-    #         storage_gb = 500,
-    #         public_access = true,
-    #         databases = ["hermes"]
-    #     },
-    #     hades = {
-    #         name = "bink-uksouth-preprod-hades",
-    #         sku_name = "GP_Gen5_2",
-    #         storage_gb = 500,
-    #         public_access = true,
-    #         databases = ["hades"]
-    #     },
-    #     harmonia = {
-    #         name = "bink-uksouth-preprod-harmonia",
-    #         sku_name = "GP_Gen5_4",
-    #         storage_gb = 500,
-    #         public_access = true,
-    #         databases = ["harmonia"]
-    #     },
-    #     polaris = {
-    #         name = "bink-uksouth-preprod-polaris",
-    #         sku_name = "GP_Gen5_4",
-    #         storage_gb = 500,
-    #         public_access = true,
-    #         databases = ["polaris"]
-    #     },
-    # }
-    # redis_config = {
-    #     common = {
-    #         name = "bink-uksouth-preprod-common",
-    #     },
-    # }
-    # redis_patch_schedule = {
-    #     day_of_week = "Wednesday"
-    #     start_hour_utc = 1
-    # }
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    storage_config = {
-        common = {
-            name = "binkuksouthpreprod",
-            account_replication_type = "ZRS",
-        },
-    }
-    storage_management_policy_config = {
-        common = [
-            {
-                name = "backupshourly",
-                enabled = true,
-                prefix_match = ["backups/hourly"],
-                delete_after_days = 30
-            },
-            {
-                name = "backupsweekly",
-                enabled = true,
-                prefix_match = ["backups/weekly"],
-                delete_after_days = 90
-            },
-            {
-                name = "backupsyearly",
-                enabled = true,
-                prefix_match = ["backups/yearly"],
-                delete_after_days = 1095
-            }
-        ]
-    }
-    cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+  # postgres_config = {
+  #     common = {
+  #         name = "bink-uksouth-preprod-common",
+  #         sku_name = "GP_Gen5_2",
+  #         storage_gb = 500,
+  #         public_access = true,
+  #         databases = ["atlas", "europa", "pontus", "thanatos", "zagreus"]
+  #     },
+  #     hermes = {
+  #         name = "bink-uksouth-preprod-hermes",
+  #         sku_name = "GP_Gen5_2",
+  #         storage_gb = 500,
+  #         public_access = true,
+  #         databases = ["hermes"]
+  #     },
+  #     hades = {
+  #         name = "bink-uksouth-preprod-hades",
+  #         sku_name = "GP_Gen5_2",
+  #         storage_gb = 500,
+  #         public_access = true,
+  #         databases = ["hades"]
+  #     },
+  #     harmonia = {
+  #         name = "bink-uksouth-preprod-harmonia",
+  #         sku_name = "GP_Gen5_4",
+  #         storage_gb = 500,
+  #         public_access = true,
+  #         databases = ["harmonia"]
+  #     },
+  #     polaris = {
+  #         name = "bink-uksouth-preprod-polaris",
+  #         sku_name = "GP_Gen5_4",
+  #         storage_gb = 500,
+  #         public_access = true,
+  #         databases = ["polaris"]
+  #     },
+  # }
+  # redis_config = {
+  #     common = {
+  #         name = "bink-uksouth-preprod-common",
+  #     },
+  # }
+  # redis_patch_schedule = {
+  #     day_of_week = "Wednesday"
+  #     start_hour_utc = 1
+  # }
+  eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+  storage_config = {
+    common = {
+      name                     = "binkuksouthpreprod",
+      account_replication_type = "ZRS",
+    },
+  }
+  storage_management_policy_config = {
+    common = [
+      {
+        name              = "backupshourly",
+        enabled           = true,
+        prefix_match      = ["backups/hourly"],
+        delete_after_days = 30
+      },
+      {
+        name              = "backupsweekly",
+        enabled           = true,
+        prefix_match      = ["backups/weekly"],
+        delete_after_days = 90
+      },
+      {
+        name              = "backupsyearly",
+        enabled           = true,
+        prefix_match      = ["backups/yearly"],
+        delete_after_days = 1095
+      }
+    ]
+  }
+  cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
-    managed_identities = local.managed_identities
+  managed_identities = local.managed_identities
 }
 
 # module "uksouth_preprod_cluster_0" {
