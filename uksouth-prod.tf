@@ -252,6 +252,89 @@ module "uksouth_prod_cluster_0" {
   }
 }
 
+module "uksouth_prod_cluster_1" {
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
+  providers = {
+    azurerm      = azurerm.uk_production
+    azurerm.core = azurerm
+  }
+
+  resource_group_name = "uksouth-prod-k1"
+  cluster_name        = "prod1"
+  location            = "uksouth"
+  vnet_cidr           = "10.170.0.0/16"
+  eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+
+  bifrost_version      = "4.9.0"
+  ubuntu_version       = "20.04"
+  controller_vm_size   = "Standard_D2as_v4"
+  worker_vm_size       = "Standard_D4s_v4"
+  worker_scaleset_size = 6
+  use_scaleset         = true
+  max_pods_per_host    = 100
+
+  prometheus_subnet = "10.33.0.0/18"
+
+  # Gitops repo, Managed identity for syncing common secrets
+  flux_environment = "uksouth-prod"
+
+  common_keyvault               = data.terraform_remote_state.uksouth-common.outputs.keyvault
+  common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+
+  # DNS zones
+  private_dns = module.uksouth-dns.private_dns
+  public_dns  = module.uksouth-dns.public_dns
+
+  # Peers    
+  peers = {
+    firewall = {
+      vnet_id             = module.uksouth-firewall.vnet_id
+      vnet_name           = module.uksouth-firewall.vnet_name
+      resource_group_name = module.uksouth-firewall.resource_group_name
+    }
+    elasticsearch = {
+      vnet_id             = module.uksouth-elasticsearch.vnet_id
+      vnet_name           = module.uksouth-elasticsearch.vnet_name
+      resource_group_name = module.uksouth-elasticsearch.resource_group_name
+    }
+  }
+  subscription_peers = {
+    rabbitmq = {
+      vnet_id             = module.uksouth_prod_rabbit.peering["vnet_id"]
+      vnet_name           = module.uksouth_prod_rabbit.peering["vnet_name"]
+      resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
+    }
+  }
+
+  firewall = {
+    firewall_name       = module.uksouth-firewall.firewall_name
+    resource_group_name = module.uksouth-firewall.resource_group_name
+    ingress_priority    = 901
+    rule_priority       = 901
+    public_ip           = module.uksouth-firewall.public_ips.0.ip_address
+    secure_origins      = local.secure_origins
+    developer_ips       = local.developer_ips
+    ingress_source      = "*"
+    ingress_http        = 8001
+    ingress_https       = 4001
+    ingress_controller  = 6001
+  }
+
+  postgres_servers = module.uksouth_prod_environment.postgres_servers
+
+  tags = {
+    "Environment" = "Production",
+  }
+}
+
+
+
+
+
+
+
+
+
 module "uksouth_prod_datawarehouse" {
   source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.4.0"
   providers = {
