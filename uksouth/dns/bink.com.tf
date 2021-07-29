@@ -155,6 +155,7 @@ locals {
                 "MS=ms26724008",
                 "apple-domain-verification=jOvmiNhPlgoqmBOx",
                 "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
+                "status-page-domain-verification=2ymxl519fl8r",
             ]
             "teams" = [
                 "v=spf1 include:spf.protection.outlook.com -all",
@@ -173,9 +174,6 @@ locals {
             ]
             "e2e" = [
                 "v=spf1 include:spf.protection.outlook.com -all",
-            ]
-            "statuspage" = [
-                "status-page-domain-verification=2ymxl519fl8r"
             ]
         }
     }
