@@ -175,7 +175,7 @@ module "uksouth_prod_rabbit" {
 
   dns = module.uksouth-dns.private_dns
 
-  cluster_cidrs = ["10.169.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
+  cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
 }
 
 module "uksouth_prod_cluster_0" {
@@ -326,14 +326,6 @@ module "uksouth_prod_cluster_1" {
     "Environment" = "Production",
   }
 }
-
-
-
-
-
-
-
-
 
 module "uksouth_prod_datawarehouse" {
   source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.4.0"
