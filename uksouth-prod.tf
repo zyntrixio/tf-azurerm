@@ -234,8 +234,8 @@ module "uksouth_prod_cluster_0" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 900
-    rule_priority       = 900
+    ingress_priority    = 1000
+    rule_priority       = 1000
     public_ip           = module.uksouth-firewall.public_ips.0.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips
@@ -309,8 +309,8 @@ module "uksouth_prod_cluster_1" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 901
-    rule_priority       = 901
+    ingress_priority    = 1001
+    rule_priority       = 1001
     public_ip           = module.uksouth-firewall.public_ips.0.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips

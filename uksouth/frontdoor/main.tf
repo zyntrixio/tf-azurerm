@@ -269,8 +269,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         backend {
             host_header = "api.dev0.uksouth.bink.sh"
             address = "api.dev0.uksouth.bink.sh"
-            http_port = 8050
-            https_port = 4050
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -307,8 +307,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         backend {
             host_header = "api.perf0.uksouth.bink.sh"
             address = "api.perf0.uksouth.bink.sh"
-            http_port = 8050
-            https_port = 4050
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -369,8 +369,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         backend {
             host_header = "oat.sandbox0.uksouth.bink.sh"
             address = "oat.sandbox0.uksouth.bink.sh"
-            http_port = 8070
-            https_port = 4070
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"
@@ -394,8 +394,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         backend {
             host_header = "sit.sandbox0.uksouth.bink.sh"
             address = "sit.sandbox0.uksouth.bink.sh"
-            http_port = 8070
-            https_port = 4070
+            http_port = 8000
+            https_port = 4000
         }
 
         load_balancing_name = "standard"

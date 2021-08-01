@@ -2,7 +2,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     name = "Software"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 150
+    priority = 100
     action = "Allow"
 
     rule {
@@ -346,7 +346,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     name = "Olympus"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 250
+    priority = 200
     action = "Allow"
 
     rule {
@@ -557,7 +557,7 @@ resource "azurerm_firewall_nat_rule_collection" "bastion" {
     name = "bastion"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 120
+    priority = 100
     action = "Dnat"
 
     rule {
@@ -575,7 +575,7 @@ resource "azurerm_firewall_nat_rule_collection" "sftp" {
     name = "sftp"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 125
+    priority = 110
     action = "Dnat"
 
     rule {
@@ -593,7 +593,7 @@ resource "azurerm_firewall_nat_rule_collection" "chef" {
     name = "chef"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 130
+    priority = 120
     action = "Dnat"
 
     rule {
@@ -611,7 +611,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 180
+    priority = 130
     action = "Dnat"
 
     rule {
@@ -638,7 +638,7 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     name = "gitlab"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 230
+    priority = 140
     action = "Dnat"
 
     rule {
@@ -670,8 +670,8 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "ssh" {
-    name = "bastion-to-hosts"
+resource "azurerm_firewall_network_rule_collection" "bastion" {
+    name = "bastion"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
     priority = 100
@@ -686,64 +686,85 @@ resource "azurerm_firewall_network_rule_collection" "ssh" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "egress" {
-    name = "Egress"
+resource "azurerm_firewall_network_rule_collection" "ntp" {
+    name = "ntp"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 150
+    priority = 110
     action = "Allow"
 
     rule {
-        name = "GitLab SSH"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = ["${azurerm_public_ip.pips.8.ip_address}/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "NTP Time Sync"
+        name = "ntp"
         source_addresses = ["*"]
         destination_ports = ["123"]
         destination_addresses = ["*"]
         protocols = ["UDP"]
     }
+}
+
+resource "azurerm_firewall_network_rule_collection" "sftp" {
+    name = "sftp"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 120
+    action = "Allow"
+
     rule {
-        name = "Ecrebo SFTP"
+        name = "ecrebo"
         source_addresses = ["*"]
         destination_ports = ["22"]
         destination_addresses = ["52.213.204.110/32"]
         protocols = ["TCP"]
     }
     rule {
-        name = "CloudFlare DNS TCP" # Workaround for Cert Manager bink.sh validation
-        source_addresses = ["*"]
-        destination_ports = ["53"]
-        destination_addresses = ["1.1.1.1", "1.0.0.1"]
-        protocols = ["TCP", "UDP"]
-    }
-    rule {
-        name = "Outbound SMTP" # We should log a helpdesk ticket with Mailgun to lock this down
-        source_addresses = ["*"]
-        destination_ports = ["587"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "Amex SFTP"
+        name = "amex"
         source_addresses = ["*"]
         destination_ports = ["22"]
         destination_addresses = ["148.173.107.23"]
         protocols = ["TCP"]
     }
     rule {
-        name = "Wasabi SFTP"
+        name = "wasabi"
         source_addresses = ["*"]
         destination_ports = ["22"]
         destination_addresses = ["185.113.19.116/32"]
         protocols = ["TCP"]
     }
+}
+
+resource "azurerm_firewall_network_rule_collection" "cloudflare" {
+    name = "cloudflare"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 130
+    action = "Allow"
+
     rule {
-        name = "GitLab Runner to all"
+        name = "dns" # Workaround for Cert Manager bink.sh validation
+        source_addresses = ["*"]
+        destination_ports = ["53"]
+        destination_addresses = ["1.1.1.1", "1.0.0.1"]
+        protocols = ["TCP", "UDP"]
+    }
+}
+
+
+resource "azurerm_firewall_network_rule_collection" "gitlab" {
+    name = "gitlab"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 140
+    action = "Allow"
+
+    rule {
+        name = "all-to-gitlab-ssh"
+        source_addresses = ["*"]
+        destination_ports = ["22"]
+        destination_addresses = ["${azurerm_public_ip.pips.8.ip_address}/32"]
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "gitlab-runner-outbound-http-https"
         source_addresses = ["192.168.10.5/32"]
         destination_ports = ["80", "443"]
         destination_addresses = ["*"]
@@ -751,32 +772,18 @@ resource "azurerm_firewall_network_rule_collection" "egress" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "tools" {
-    name = "Tools"
+resource "azurerm_firewall_network_rule_collection" "smtp" {
+    name = "smtp"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 160
+    priority = 150
     action = "Allow"
 
     rule {
-        name = "prometheus-to-node-exporter"
-        source_addresses = ["10.4.0.0/18"]
-        destination_ports = ["9100"]
+        name = "smtp" # We should log a helpdesk ticket with Mailgun to lock this down
+        source_addresses = ["*"]
+        destination_ports = ["587"]
         destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prometheus-to-wireguard"
-        source_addresses = ["10.0.0.0/8"]
-        destination_ports = ["9100", "9586"]
-        destination_addresses = ["20.49.163.188/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "allkube-to-toolshttps"
-        source_addresses = ["10.0.0.0/8"]
-        destination_ports = ["443"]
-        destination_addresses = ["10.4.0.4/32"]
         protocols = ["TCP"]
     }
 }

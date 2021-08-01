@@ -71,9 +71,9 @@ module "uksouth_aqua_cluster_0" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 1000
-    rule_priority       = 1000
-    public_ip           = module.uksouth-firewall.public_ips.12.ip_address
+    ingress_priority    = 1700
+    rule_priority       = 1700
+    public_ip           = module.uksouth-firewall.public_ips.7.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips
     ingress_source      = "*"

@@ -161,15 +161,15 @@ module "uksouth_dev_cluster_0" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 500
-    rule_priority       = 500
-    public_ip           = module.uksouth-firewall.public_ips.2.ip_address
+    ingress_priority    = 1300
+    rule_priority       = 1300
+    public_ip           = module.uksouth-firewall.public_ips.3.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips
     ingress_source      = "*"
-    ingress_http        = 8050
-    ingress_https       = 4050
-    ingress_controller  = 6050
+    ingress_http        = 8000
+    ingress_https       = 4000
+    ingress_controller  = 6000
   }
 
   postgres_servers = module.uksouth_dev_environment.postgres_servers

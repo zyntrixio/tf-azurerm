@@ -152,15 +152,15 @@ module "uksouth_sandbox_cluster_0" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 1170
-    rule_priority       = 1170
+    ingress_priority    = 1400
+    rule_priority       = 1400
     public_ip           = module.uksouth-firewall.public_ips.4.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips
     ingress_source      = "*"
-    ingress_http        = 8070
-    ingress_https       = 4070
-    ingress_controller  = 6070
+    ingress_http        = 8000
+    ingress_https       = 4000
+    ingress_controller  = 6000
   }
 
   postgres_servers = module.uksouth_sandbox_environment.postgres_servers

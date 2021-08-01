@@ -155,9 +155,9 @@ module "uksouth_staging_cluster_0" {
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
     resource_group_name = module.uksouth-firewall.resource_group_name
-    ingress_priority    = 600
-    rule_priority       = 600
-    public_ip           = module.uksouth-firewall.public_ips.1.ip_address
+    ingress_priority    = 1200
+    rule_priority       = 1200
+    public_ip           = module.uksouth-firewall.public_ips.2.ip_address
     secure_origins      = local.secure_origins
     developer_ips       = local.developer_ips
     ingress_source      = "*"
