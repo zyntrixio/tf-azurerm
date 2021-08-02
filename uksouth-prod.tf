@@ -29,6 +29,10 @@ module "uksouth_prod_environment" {
       object_id = local.aad_user.christian_prior,
       role      = "Reader",
     },
+    qa = {
+      object_id = local.aad_group.qa,
+      role      = "Reader",
+    },
   }
 
   storage_iam = {
@@ -60,6 +64,7 @@ module "uksouth_prod_environment" {
     mick_latham     = local.aad_user.mick_latham,
     chris_latham    = local.aad_user.chris_latham,
     christian_prior = local.aad_user.christian_prior,
+    qa              = local.aad_group.qa,
   }
 
   infra_keyvault_users = {
