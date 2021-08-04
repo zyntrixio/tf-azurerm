@@ -102,6 +102,13 @@ resource "azurerm_frontdoor" "frontdoor" {
             https_port = 4000
         }
 
+        backend {
+            host_header = "api.prod1.uksouth.bink.sh"
+            address = "api.prod1.uksouth.bink.sh"
+            http_port = 8001
+            https_port = 4001
+        }
+
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
@@ -144,6 +151,13 @@ resource "azurerm_frontdoor" "frontdoor" {
             address = "policies.prod0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
+        }
+
+        backend {
+            host_header = "policies.prod1.uksouth.bink.sh"
+            address = "policies.prod1.uksouth.bink.sh"
+            http_port = 8001
+            https_port = 4001
         }
 
         load_balancing_name = "standard"
@@ -346,6 +360,13 @@ resource "azurerm_frontdoor" "frontdoor" {
             address = "link.prod0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
+        }
+
+        backend {
+            host_header = "link.prod1.uksouth.bink.sh"
+            address = "link.prod1.uksouth.bink.sh"
+            http_port = 8001
+            https_port = 4001
         }
 
         load_balancing_name = "standard"
