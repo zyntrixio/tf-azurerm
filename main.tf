@@ -309,3 +309,9 @@ module "uksouth_wordpress" {
   secure_origins = local.secure_origins
   dns_zone       = module.uksouth-dns.public_dns
 }
+
+module "uksouth_nextdns" {
+  source         = "./uksouth/nextdns"
+  secure_origins = local.secure_origins
+#   dns_zone       = module.uksouth-dns.public_dns
+}
