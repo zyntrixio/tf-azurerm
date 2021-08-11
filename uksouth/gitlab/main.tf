@@ -115,7 +115,7 @@ resource "azurerm_network_security_group" "nsg" {
         source_address_prefix = "10.33.0.0/18"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
-        destination_port_ranges = [9100]
+        destination_port_ranges = [9100, 9101]
     }
 
     security_rule {
