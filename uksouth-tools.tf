@@ -102,7 +102,7 @@ module "uksouth_tools_cluster_0" {
     { # Every node should listen with node-exporter on 9100
       name                  = "prometheus-to-node-exporter"
       source_addresses      = ["10.33.0.0/18"]
-      destination_ports     = ["9100"]
+      destination_ports     = ["9100", "9101"]
       destination_addresses = ["10.0.0.0/8", "192.168.0.0/16"]
       protocols             = ["TCP"]
     },
