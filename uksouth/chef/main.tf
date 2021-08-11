@@ -22,14 +22,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "host" {
     registration_enabled = true
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "sh" {
-    name = "${azurerm_virtual_network.vnet.name}-uksouth-sh"
-    resource_group_name = var.private_dns_link_bink_sh[0]
-    private_dns_zone_name = var.private_dns_link_bink_sh[1]
-    virtual_network_id = azurerm_virtual_network.vnet.id
-    registration_enabled = false
-}
-
 resource "azurerm_subnet" "subnet" {
     count = length(var.subnet_address_prefixes)
     name = format("subnet-%02d", count.index + 1)

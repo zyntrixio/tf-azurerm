@@ -2,7 +2,6 @@
 variable "firewall_vnet_id" {}
 variable "firewall_route_ip" {}
 variable "private_dns_link_bink_host" {}
-variable "private_dns_link_bink_sh" {}
 
 # Defaults:
 

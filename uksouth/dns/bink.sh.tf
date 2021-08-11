@@ -35,6 +35,7 @@ locals {
             "aqua.uksouth" = "aqua0.uksouth.bink.sh"
             "bridge.uksouth" = "tools0.uksouth.bink.sh"
             "confluence-macro.uksouth" = "tools0.uksouth.bink.sh"
+            "tools.uksouth" = "tools0.uksouth.bink.sh"
             "oat.sandbox0.uksouth" = "api.sandbox0.uksouth.bink.sh"
             "sit.sandbox0.uksouth" = "api.sandbox0.uksouth.bink.sh"
         }

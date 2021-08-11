@@ -111,8 +111,6 @@ module "uksouth-bastion" {
   firewall_route_ip          = module.uksouth-firewall.firewall_ip
   firewall_vnet_id           = module.uksouth-firewall.vnet_id
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  private_dns_link_bink_sh   = module.uksouth-dns.uksouth-bink-sh
-
 }
 
 module "uksouth-gitlab" {
@@ -121,7 +119,6 @@ module "uksouth-gitlab" {
   firewall_route_ip          = module.uksouth-firewall.firewall_ip
   firewall_vnet_id           = module.uksouth-firewall.vnet_id
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  private_dns_link_bink_sh   = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-dns" {
@@ -145,7 +142,6 @@ module "uksouth-chef" {
   source = "./uksouth/chef"
 
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  private_dns_link_bink_sh   = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-frontdoor" {
@@ -185,7 +181,6 @@ module "uksouth-tableau" {
   worker_subnet              = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod-k0/providers/Microsoft.Network/virtualNetworks/prod0-vnet/subnets/worker"
   firewall_vnet_id           = module.uksouth-firewall.vnet_id
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  private_dns_link_bink_sh   = module.uksouth-dns.uksouth-bink-sh
   wireguard_ip               = module.uksouth-wireguard.public_ip
 }
 

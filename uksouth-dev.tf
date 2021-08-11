@@ -140,7 +140,7 @@ module "uksouth_dev_cluster_0" {
   common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
   # DNS zones
-  private_dns = module.uksouth-dns.private_dns_temp
+  private_dns = module.uksouth-dns.private_dns
   public_dns  = module.uksouth-dns.public_dns
 
   # Peers    
