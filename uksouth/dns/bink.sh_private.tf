@@ -12,25 +12,6 @@ resource "azurerm_private_dns_a_record" "sh-chef" {
     records = ["192.168.5.4"]
 }
 
-// Needed for aqua enforcers to do the needful
-resource "azurerm_private_dns_a_record" "sh-aqua-gateway" {
-    name = "aqua-gateway"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.4.0.4"]
-}
-
-// Possibly used by aqua
-resource "azurerm_private_dns_a_record" "sh-aqua" {
-    name = "aqua"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-sh.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.5.0.4"]
-}
-
-
 // Fix gitlab-runner: pypi.tools.bink.sh -> tools0.uksouth.bink.sh
 // prometheus creds -> tools
 resource "azurerm_private_dns_a_record" "tools0" {

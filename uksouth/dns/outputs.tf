@@ -33,6 +33,16 @@ output "private_dns" {
     }
 }
 
+output "private_dns_temp" {
+    value = {
+        "uksouth_host" = {
+            resource_group_name = azurerm_resource_group.rg.name
+            private_dns_zone_name = azurerm_private_dns_zone.uksouth-bink-host.name
+            should_register = true
+        }
+    }
+}
+
 output "public_dns" {
     value = {
         "bink_sh" = {
