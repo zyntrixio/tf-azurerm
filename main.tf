@@ -77,7 +77,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.70.0"
+      version = "2.72.0"
     }
     chef = {
       source = "terrycain/chef"
@@ -188,7 +188,6 @@ module "uksouth-elasticsearch" {
   source = "./uksouth/elasticsearch"
 
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  private_dns_link_bink_sh   = module.uksouth-dns.uksouth-bink-sh
 }
 
 module "uksouth-sftp" {
