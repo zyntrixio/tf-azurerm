@@ -36,6 +36,17 @@ resource "azurerm_storage_account" "bink" {
     min_tls_version = "TLS1_2"
 }
 
+resource "azurerm_storage_account" "binkpublic" {
+    name = "binkpublic"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = "uksouth"
+    account_tier = "Standard"
+    account_replication_type = "ZRS"
+    enable_https_traffic_only = true
+    allow_blob_public_access = true
+    min_tls_version = "TLS1_2"
+}
+
 resource "azurerm_storage_account" "binkarchives" {
     name = "binkarchives"
     resource_group_name = azurerm_resource_group.rg.name
