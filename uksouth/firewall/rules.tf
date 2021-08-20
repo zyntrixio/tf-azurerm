@@ -402,6 +402,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "api.dev2s.americanexpress.com",
             "api.qa2s.americanexpress.com",
             "apigateway.americanexpress.com",
+            "apigateway2s.americanexpress.com",
             "api.americanexpress.com",
             "core.spreedly.com",
             "status.spreedly.com",
