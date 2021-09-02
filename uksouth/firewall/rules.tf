@@ -788,3 +788,18 @@ resource "azurerm_firewall_network_rule_collection" "smtp" {
         protocols = ["TCP"]
     }
 }
+resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
+    name = "outbound_sftp"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 160
+    action = "Allow"
+
+    rule {
+        name = "barclays"
+        source_addresses = ["*"]
+        destination_ports = ["10023"]
+        destination_addresses = ["157.83.104.20"]
+        protocols = ["TCP"]
+    }
+}
