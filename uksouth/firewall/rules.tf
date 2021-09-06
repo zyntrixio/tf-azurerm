@@ -30,6 +30,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "AWS"
+        source_addresses = ["*"]
+        target_fqdns = ["*.amazonaws.com"]  # AWS ECR is nested deeply under amazonaws.com
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Gitlab"
         source_addresses = ["*"]
         target_fqdns = ["git.bink.com"]
