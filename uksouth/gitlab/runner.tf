@@ -16,7 +16,7 @@ resource "azurerm_linux_virtual_machine" "runner" {
     name = "gitlab-runner"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D8s_v4"
+    size = "Standard_D16s_v4"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [
@@ -31,7 +31,7 @@ resource "azurerm_linux_virtual_machine" "runner" {
     os_disk {
         caching = "ReadOnly"
         storage_account_type = "StandardSSD_LRS"
-        disk_size_gb = 256
+        disk_size_gb = 1024
     }
 
     source_image_reference {
