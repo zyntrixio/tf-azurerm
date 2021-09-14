@@ -14,6 +14,10 @@ module "uksouth_prod_environment" {
       object_id = local.aad_user.chris_sterritt,
       role      = "Reader",
     }
+    ChrisLatham = {
+      object_id = local.aad_user.chris_latham,
+      role      = "Reader",
+    }
   }
 
   keyvault_iam = {
