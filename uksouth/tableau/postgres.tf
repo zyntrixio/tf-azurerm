@@ -14,7 +14,7 @@ resource "azurerm_postgresql_server" "postgres" {
 
     sku_name = "GP_Gen5_4"
     version = "11"
-    storage_mb = 262144
+    storage_mb = 524288
 
     backup_retention_days = 7
     geo_redundant_backup_enabled = false
@@ -22,7 +22,7 @@ resource "azurerm_postgresql_server" "postgres" {
 
     public_network_access_enabled = true
     ssl_enforcement_enabled = true
-    ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
+    ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
 resource "azurerm_postgresql_firewall_rule" "binkhq" {
