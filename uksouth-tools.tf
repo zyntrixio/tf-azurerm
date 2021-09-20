@@ -53,7 +53,7 @@ module "uksouth_tools_cluster_0" {
 
   controller_vm_size   = "Standard_D2s_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 3
+  worker_scaleset_size = 4
   use_scaleset         = true
   max_pods_per_host    = 100
 
