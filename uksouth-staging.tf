@@ -174,7 +174,7 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.2"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm
@@ -188,6 +188,14 @@ module "uksouth_staging_binkweb" {
 
   binkweb_dns_record = "web.staging.gb"
   public_dns_zone    = module.uksouth-dns.public_dns.bink_com
+
+  ip_whitelist = [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16",
+    "20.49.163.188",
+    "51.132.44.240/28",
+  ]
 
   tags = {
     "Environment" = "Staging",
