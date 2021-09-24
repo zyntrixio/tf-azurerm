@@ -171,7 +171,7 @@ module "uksouth_sandbox_cluster_0" {
 }
 
 module "uksouth_sandbox_binkweb" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.2"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -185,6 +185,10 @@ module "uksouth_sandbox_binkweb" {
 
   binkweb_dns_record = "web.sandbox.gb"
   public_dns_zone    = module.uksouth-dns.public_dns.bink_com
+
+  ip_whitelist = [
+    "0.0.0.0/0",
+  ]
 
   tags = {
     "Environment" = "Sandbox",
