@@ -165,7 +165,10 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Linkerd"
         source_addresses = ["*"]
-        target_fqdns = ["versioncheck.linkerd.io"]
+        target_fqdns = [
+            "versioncheck.linkerd.io",
+            "api.buoyant.cloud"
+        ]
         protocol {
             port = "443"
             type = "Https"
