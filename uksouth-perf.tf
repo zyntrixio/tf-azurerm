@@ -116,7 +116,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -131,9 +131,11 @@ module "uksouth_performance_cluster_0" {
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 4
+  worker_scaleset_size = 10
   use_scaleset         = true
   max_pods_per_host    = 100
+
+  cluster_ingress_subdomains = [ "api" ]
 
   prometheus_subnet = "10.33.0.0/18"
 

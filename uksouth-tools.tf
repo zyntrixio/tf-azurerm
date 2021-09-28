@@ -37,7 +37,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
@@ -53,7 +53,7 @@ module "uksouth_tools_cluster_0" {
 
   controller_vm_size   = "Standard_D2s_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 4
+  worker_scaleset_size = 3
   use_scaleset         = true
   max_pods_per_host    = 100
 

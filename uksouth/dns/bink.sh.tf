@@ -26,18 +26,11 @@ locals {
             "mobsf.uksouth" = "tools0.uksouth.bink.sh"
             "kibana.uksouth" = "tools0.uksouth.bink.sh"
             "autodiscover" = "autodiscover.outlook.com"
-            "talkie-toaster.uksouth" = "tools.uksouth.bink.sh"
-            "oat.sandbox.k8s.uksouth" = "sandbox.k8s.uksouth.bink.sh"
             "cluster-autodiscover.uksouth" = "tools0.uksouth.bink.sh"
             "grafana.tools" = "tools0.uksouth.bink.sh"
             "asset-register.tools" = "tools0.uksouth.bink.sh"
-            "pypi.tools" = "tools0.uksouth.bink.sh"
-            "aqua.uksouth" = "aqua0.uksouth.bink.sh"
             "bridge.uksouth" = "tools0.uksouth.bink.sh"
-            "confluence-macro.uksouth" = "tools0.uksouth.bink.sh"
             "tools.uksouth" = "tools0.uksouth.bink.sh"
-            "oat.sandbox0.uksouth" = "api.sandbox0.uksouth.bink.sh"
-            "sit.sandbox0.uksouth" = "api.sandbox0.uksouth.bink.sh"
         }
         mx_records = {
             "@" = [

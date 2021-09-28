@@ -188,7 +188,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -207,6 +207,8 @@ module "uksouth_prod_cluster_0" {
   worker_scaleset_size = 6
   use_scaleset         = true
   max_pods_per_host    = 100
+
+  cluster_ingress_subdomains = [ "api", "policies", "link" ]
 
   prometheus_subnet = "10.33.0.0/18"
 
@@ -263,7 +265,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.8.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -282,6 +284,8 @@ module "uksouth_prod_cluster_1" {
   worker_scaleset_size = 6
   use_scaleset         = true
   max_pods_per_host    = 100
+
+  cluster_ingress_subdomains = [ "api", "policies", "link" ]
 
   prometheus_subnet = "10.33.0.0/18"
 
