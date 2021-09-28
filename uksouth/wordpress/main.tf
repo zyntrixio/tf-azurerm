@@ -217,7 +217,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name = var.environment
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_B2ms"
+    size = "Standard_B2s"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [
