@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.0"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -8,6 +8,8 @@ module "uksouth_performance_environment" {
   tags = {
     "Environment" = "Performance",
   }
+
+  vnet_cidr = "192.168.100.0/24"
 
   postgres_iam = {
     ChrisSterritt = {
@@ -116,7 +118,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -168,6 +170,11 @@ module "uksouth_performance_cluster_0" {
       vnet_name           = module.uksouth_performance_rabbit.peering["vnet_name"]
       resource_group_name = module.uksouth_performance_rabbit.peering["resource_group_name"]
     }
+    environment = {
+      vnet_id = module.uksouth_performance_environment.peering.vnet_id
+      vnet_name = module.uksouth_performance_environment.peering.vnet_name
+      resource_group_name = module.uksouth_performance_environment.peering.resource_group_name
+    }
   }
 
   firewall = {
@@ -186,6 +193,7 @@ module "uksouth_performance_cluster_0" {
 
   postgres_servers = module.uksouth_performance_environment.postgres_servers
   private_links    = module.uksouth_performance_environment.private_links
+  postgres_flexible_server_dns_link = module.uksouth_performance_environment.postgres_flexible_server_dns_link
 
   tags = {
     "Environment" = "Performance",

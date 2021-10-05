@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.0"
   providers = {
     azurerm = azurerm
   }
@@ -8,6 +8,8 @@ module "uksouth_tools_environment" {
   tags = {
     "Environment" = "Core",
   }
+
+  vnet_cidr = "192.168.100.0/24"
 
   keyvault_users = {
     Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
@@ -37,7 +39,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
@@ -81,7 +83,13 @@ module "uksouth_tools_cluster_0" {
       resource_group_name = module.uksouth-elasticsearch.resource_group_name
     }
   }
-  subscription_peers = {}
+  subscription_peers = {
+    environment = {
+      vnet_id = module.uksouth_tools_environment.peering.vnet_id
+      vnet_name = module.uksouth_tools_environment.peering.vnet_name
+      resource_group_name = module.uksouth_tools_environment.peering.resource_group_name
+    }
+  }
 
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
@@ -131,6 +139,7 @@ module "uksouth_tools_cluster_0" {
 
   postgres_servers = module.uksouth_tools_environment.postgres_servers
   private_links    = module.uksouth_tools_environment.private_links
+  postgres_flexible_server_dns_link = module.uksouth_tools_environment.postgres_flexible_server_dns_link
 
   tags = {
     "Environment" = "Core",
@@ -152,26 +161,6 @@ resource "azurerm_storage_account" "tools" {
     "Environment" = "Core",
   }
 }
-
-# CBA to figure out the import
-# resource "azurerm_storage_container" "pypi" {
-#     name = "pypi"
-#     storage_account_name = azurerm_storage_account.tools.name
-#     container_access_type = "private"
-# }
-
-# resource "azurerm_key_vault_access_policy" "confluence-macro" {
-#     key_vault_id = module.kv.keyvault.id
-
-#     tenant_id = data.azurerm_client_config.current.tenant_id
-#     object_id = "ce918d9f-5641-4798-b1d5-bf31d234921a"
-
-#     secret_permissions = [
-#         "get",
-#         "list",
-#         "set",
-#     ]
-# }
 
 data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}

@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.0"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -8,6 +8,8 @@ module "uksouth_sandbox_environment" {
   tags = {
     "Environment" = "Sandbox",
   }
+
+  vnet_cidr = "192.168.100.0/24"
 
   postgres_iam = {
     ChrisSterritt = {
@@ -104,7 +106,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -149,7 +151,13 @@ module "uksouth_sandbox_cluster_0" {
       resource_group_name = module.uksouth-elasticsearch.resource_group_name
     }
   }
-  subscription_peers = {}
+  subscription_peers = {
+    environment = {
+      vnet_id = module.uksouth_sandbox_environment.peering.vnet_id
+      vnet_name = module.uksouth_sandbox_environment.peering.vnet_name
+      resource_group_name = module.uksouth_sandbox_environment.peering.resource_group_name
+    }
+  }
 
   firewall = {
     firewall_name       = module.uksouth-firewall.firewall_name
@@ -166,6 +174,7 @@ module "uksouth_sandbox_cluster_0" {
   }
 
   postgres_servers = module.uksouth_sandbox_environment.postgres_servers
+  postgres_flexible_server_dns_link = module.uksouth_sandbox_environment.postgres_flexible_server_dns_link
 
   tags = {
     "Environment" = "Sandbox",

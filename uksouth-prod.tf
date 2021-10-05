@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.3.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.0"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -8,6 +8,8 @@ module "uksouth_prod_environment" {
   tags = {
     "Environment" = "Production",
   }
+
+  vnet_cidr = "192.168.100.0/24"
 
   postgres_iam = {
     ChrisSterritt = {
@@ -188,7 +190,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -241,6 +243,11 @@ module "uksouth_prod_cluster_0" {
       vnet_name           = module.uksouth_prod_rabbit.peering["vnet_name"]
       resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
     }
+    environment = {
+      vnet_id = module.uksouth_prod_environment.peering.vnet_id
+      vnet_name = module.uksouth_prod_environment.peering.vnet_name
+      resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    }
   }
 
   firewall = {
@@ -258,6 +265,7 @@ module "uksouth_prod_cluster_0" {
   }
 
   postgres_servers = module.uksouth_prod_environment.postgres_servers
+  postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
 
   tags = {
     "Environment" = "Production",
@@ -265,7 +273,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.9.1"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -318,6 +326,11 @@ module "uksouth_prod_cluster_1" {
       vnet_name           = module.uksouth_prod_rabbit.peering["vnet_name"]
       resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
     }
+    environment = {
+      vnet_id = module.uksouth_prod_environment.peering.vnet_id
+      vnet_name = module.uksouth_prod_environment.peering.vnet_name
+      resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    }
   }
 
   firewall = {
@@ -335,6 +348,7 @@ module "uksouth_prod_cluster_1" {
   }
 
   postgres_servers = module.uksouth_prod_environment.postgres_servers
+  postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
 
   tags = {
     "Environment" = "Production",
