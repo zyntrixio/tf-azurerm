@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.0"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.1"
   providers = {
     azurerm = azurerm.uk_staging
   }
