@@ -55,6 +55,19 @@ module "uksouth_performance_environment" {
     QA      = local.aad_group.qa,
   }
 
+    postgres_flexible_config = {
+        common = {
+            name = "bink-uksouth-perf"
+            version = "13"
+            sku_name = "GP_Standard_D4s_v3"
+            storage_mb = 1048576
+            databases = [
+                "hermes",
+                "postgres",
+            ]
+        }
+    }
+
   postgres_config = {
     common = {
       name          = "bink-uksouth-perf-common",
@@ -118,7 +131,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -133,7 +146,7 @@ module "uksouth_performance_cluster_0" {
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 3
+  worker_scaleset_size = 10
   use_scaleset         = true
   max_pods_per_host    = 100
 
