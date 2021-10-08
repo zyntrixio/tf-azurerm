@@ -190,7 +190,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -202,7 +202,7 @@ module "uksouth_prod_cluster_0" {
   vnet_cidr           = "10.169.0.0/16"
   eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-  bifrost_version      = "4.12.2"
+  bifrost_version      = "4.12.3"
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
@@ -273,7 +273,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.0"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -285,7 +285,7 @@ module "uksouth_prod_cluster_1" {
   vnet_cidr           = "10.170.0.0/16"
   eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-  bifrost_version      = "4.12.2"
+  bifrost_version      = "4.12.3"
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
