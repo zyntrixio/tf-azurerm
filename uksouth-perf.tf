@@ -62,6 +62,10 @@ module "uksouth_performance_environment" {
             sku_name = "GP_Standard_D4s_v3"
             storage_mb = 1048576
             databases = [
+                "atlas",
+                "europa",
+                "hades",
+                "harmonia",
                 "hermes",
                 "postgres",
             ]

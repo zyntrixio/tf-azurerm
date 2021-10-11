@@ -164,6 +164,14 @@ module "uksouth_prod_environment" {
   managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
 }
 
+module "uksouth_datawarehouse" {
+    source = "./uksouth/datawarehouse"
+    providers = {
+        azurerm = azurerm.uk_production
+    }
+    sql_admin = local.aad_group.data_warehouse_admins
+}
+
 module "uksouth_prod_rabbit" {
   source = "./uksouth/rabbitmq"
   providers = {
