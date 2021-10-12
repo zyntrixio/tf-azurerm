@@ -76,3 +76,16 @@ resource "azurerm_synapse_firewall_rule" "wireguard" {
     start_ip_address = "20.49.163.188"
     end_ip_address = "20.49.163.188"
 }
+
+resource "azurerm_synapse_firewall_rule" "cp_home" {
+    name = "cp_home"
+    synapse_workspace_id = azurerm_synapse_workspace.i.id
+    start_ip_address = "217.169.3.233"
+    end_ip_address = "217.169.3.233"
+}
+
+resource "azurerm_synapse_role_assignment" "devops_admin" {
+    synapse_workspace_id = azurerm_synapse_workspace.i.id
+    role_name = "Synapse Administrator"
+    principal_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"  # DevOps
+}

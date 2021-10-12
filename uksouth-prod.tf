@@ -77,6 +77,26 @@ module "uksouth_prod_environment" {
     AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
   }
 
+    postgres_flexible_config = {
+        common = {
+            name = "bink-uksouth-prod"
+            version = "13"
+            sku_name = "GP_Standard_D8s_v3"
+            storage_mb = 131072
+            databases = [
+                "atlas",
+                "eos",
+                "europa",
+                "hades",
+                "harmonia",
+                "hermes",
+                "midas",
+                "pontus",
+                "postgres",
+            ]
+        }
+    }
+
   postgres_config = {
     common = {
       name          = "bink-uksouth-prod-common",
