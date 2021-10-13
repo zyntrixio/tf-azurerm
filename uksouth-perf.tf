@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.2"
+  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.3"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -61,6 +61,7 @@ module "uksouth_performance_environment" {
             version = "13"
             sku_name = "GP_Standard_D4s_v3"
             storage_mb = 1048576
+            high_availability = false
             databases = [
                 "atlas",
                 "europa",
