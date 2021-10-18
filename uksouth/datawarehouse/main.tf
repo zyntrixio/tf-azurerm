@@ -22,6 +22,12 @@ resource "azurerm_storage_account" "i" {
     is_hns_enabled = "true"
 }
 
+resource "azurerm_role_assignment" "susanne" {
+  scope = azurerm_storage_account.i.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id = "1813380e-e0e3-4963-8668-2d538c20481f"
+}
+
 resource "azurerm_storage_data_lake_gen2_filesystem" "i" {
     name = "binkuksouthdatalake"
     storage_account_id = azurerm_storage_account.i.id
