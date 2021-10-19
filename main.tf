@@ -12,7 +12,6 @@ locals {
     "217.169.3.233/32", # cpressland@bink.com
     "81.2.99.144/29",   # cpressland@bink.com
     "86.27.219.192/32", # twinchester@bink.com
-    "86.5.50.186/32",   # tcain@bink.com
     "${module.uksouth-wireguard.public_ip}/32",
   ]
   secure_origins_v6 = [
@@ -24,7 +23,6 @@ locals {
     "92.232.43.170/32",  # akhan@bink.com
     "92.233.6.15/32",    # kaziz@bink.com
     "86.150.164.212/32", # sperrygrove@bink.com
-    "92.0.40.250/32",    # njames@bink.com
   ]
   managed_identities = {
     fakicorp          = { kv_access = "rw" },
@@ -77,7 +75,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.79.1"
+      version = "2.81.0"
     }
     chef = {
       source = "terrycain/chef"
@@ -302,10 +300,4 @@ module "uksouth_wordpress" {
   source         = "./uksouth/wordpress"
   secure_origins = local.secure_origins
   dns_zone       = module.uksouth-dns.public_dns
-}
-
-module "uksouth_nextdns" {
-  source         = "./uksouth/nextdns"
-  secure_origins = local.secure_origins
-#   dns_zone       = module.uksouth-dns.public_dns
 }
