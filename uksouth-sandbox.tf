@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -11,12 +11,7 @@ module "uksouth_sandbox_environment" {
 
   vnet_cidr = "192.168.100.0/24"
 
-  postgres_iam = {
-    ChrisSterritt = {
-      object_id = local.aad_user.chris_sterritt,
-      role      = "Reader",
-    }
-  }
+  postgres_iam = {}
 
   keyvault_iam = {
     Backend = {
@@ -88,16 +83,19 @@ module "uksouth_sandbox_environment" {
       name                     = "binkuksouthsandbox",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "api.sandbox.gb.bink.com/content"
     },
     sit = {
       name                     = "binkuksouthsandboxsit",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "sit.sandbox.gb.bink.com/content"
     },
     oat = {
       name                     = "binkuksouthsandboxoat",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "oat.sandbox.gb.bink.com/content"
     },
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
@@ -106,7 +104,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -182,7 +180,7 @@ module "uksouth_sandbox_cluster_0" {
 }
 
 module "uksouth_sandbox_binkweb" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.2"
+  source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm

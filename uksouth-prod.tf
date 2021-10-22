@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -12,10 +12,6 @@ module "uksouth_prod_environment" {
   vnet_cidr = "192.168.100.0/24"
 
   postgres_iam = {
-    ChrisSterritt = {
-      object_id = local.aad_user.chris_sterritt,
-      role      = "Reader",
-    }
     ChrisLatham = {
       object_id = local.aad_user.chris_latham,
       role      = "Reader",
@@ -77,26 +73,26 @@ module "uksouth_prod_environment" {
     AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
   }
 
-    postgres_flexible_config = {
-        common = {
-            name = "bink-uksouth-prod"
-            version = "13"
-            sku_name = "GP_Standard_D8s_v3"
-            storage_mb = 1048576
-            high_availability = true
-            databases = [
-                "atlas",
-                "eos",
-                "europa",
-                "hades",
-                "harmonia",
-                "hermes",
-                "midas",
-                "pontus",
-                "postgres",
-            ]
-        }
-    }
+    # postgres_flexible_config = {
+    #     common = {
+    #         name = "bink-uksouth-prod"
+    #         version = "13"
+    #         sku_name = "GP_Standard_D8s_v3"
+    #         storage_mb = 1048576
+    #         high_availability = true
+    #         databases = [
+    #             "atlas",
+    #             "eos",
+    #             "europa",
+    #             "hades",
+    #             "harmonia",
+    #             "hermes",
+    #             "midas",
+    #             "pontus",
+    #             "postgres",
+    #         ]
+    #     }
+    # }
 
   postgres_config = {
     common = {
@@ -150,6 +146,7 @@ module "uksouth_prod_environment" {
       name                     = "binkuksouthprod",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "api.gb.bink.com/content"
     },
   }
   storage_management_policy_config = {
@@ -219,7 +216,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -302,7 +299,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -385,7 +382,7 @@ module "uksouth_prod_cluster_1" {
 }
 
 module "uksouth_prod_datawarehouse" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.4.0"
+  source = "github.com/binkhq/tf-azurerm_datawarehouse?ref=0.4.0"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -399,20 +396,11 @@ module "uksouth_prod_datawarehouse" {
   }
   repo_name = "azure-synapse-prod"
 
-  resource_group_iam = {
-    ChrisSterritt = {
-      object_id = local.aad_user.chris_sterritt,
-      role      = "Reader",
-    }
-  }
+  resource_group_iam = {}
   storage_iam = {
     Architecture = {
       object_id = local.aad_group.architecture,
       role      = "Contributor"
-    }
-    ChrisSterritt = {
-      object_id = local.aad_user.chris_sterritt,
-      role      = "Contributor",
     }
   }
   sql_admin = local.aad_group.data_warehouse_admins

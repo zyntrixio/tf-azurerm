@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -12,10 +12,6 @@ module "uksouth_dev_environment" {
     vnet_cidr = "192.168.100.0/24"
 
     postgres_iam = {
-        ChrisSterritt = {
-            object_id = local.aad_user.chris_sterritt,
-            role = "Contributor",
-        },
         Backend = {
             object_id = local.aad_group.backend,
             role = "Reader",
@@ -98,6 +94,7 @@ module "uksouth_dev_environment" {
             name                     = "binkuksouthdev",
             account_replication_type = "ZRS",
             account_tier             = "Standard"
+            blob_endpoint            = "api.dev.gb.bink.com/content"
         },
     }
     storage_management_policy_config = {
@@ -144,7 +141,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm
@@ -223,7 +220,7 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_datawarehouse" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_datawarehouse.git?ref=0.4.0"
+    source = "github.com/binkhq/tf-azurerm_datawarehouse?ref=0.4.0"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -237,27 +234,17 @@ module "uksouth_dev_datawarehouse" {
     }
     repo_name = "azure-synapse-dev"
 
-    resource_group_iam = {
-        ChrisSterritt = {
-        object_id = local.aad_user.chris_sterritt,
-        role = "Reader",
-        }
-    }
     storage_iam = {
         Architecture = {
-        object_id = local.aad_group.architecture,
-        role = "Contributor"
-        }
-        ChrisSterritt = {
-        object_id = local.aad_user.chris_sterritt,
-        role = "Contributor",
+            object_id = local.aad_group.architecture,
+            role = "Contributor"
         }
     }
     sql_admin = local.aad_group.data_warehouse_admins # Data Warehouse Admins group
 }
 
 module "uksouth_dev_binkweb" {
-    source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.2"
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm

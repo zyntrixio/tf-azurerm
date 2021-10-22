@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
   providers = {
     azurerm = azurerm
   }
@@ -31,6 +31,7 @@ module "uksouth_tools_environment" {
       name                     = "binkuksouthtools",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "api.gb.bink.com/content"
     },
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
@@ -39,7 +40,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm

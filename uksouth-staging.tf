@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_environment.git?ref=2.4.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
   providers = {
     azurerm = azurerm.uk_staging
   }
@@ -11,12 +11,7 @@ module "uksouth_staging_environment" {
 
   vnet_cidr = "192.168.100.0/24"
 
-  postgres_iam = {
-    ChrisSterritt = {
-      object_id = local.aad_user.chris_sterritt,
-      role      = "Contributor",
-    }
-  }
+  postgres_iam = {}
 
   keyvault_iam = {
     Backend = {
@@ -62,6 +57,7 @@ module "uksouth_staging_environment" {
       name                     = "binkuksouthstaging",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
+      blob_endpoint            = "api.staging.gb.bink.com/content"
     }
   }
   storage_management_policy_config = {
@@ -108,7 +104,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_cluster.git?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm
@@ -184,7 +180,7 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-  source = "git::ssh://git@git.bink.com/Terraform/azurerm_binkweb.git?ref=1.2.2"
+  source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm
