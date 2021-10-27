@@ -236,7 +236,7 @@ module "uksouth_prod_cluster_0" {
   use_scaleset         = true
   max_pods_per_host    = 100
 
-  cluster_ingress_subdomains = [ "api", "policies", "link" ]
+  cluster_ingress_subdomains = [ "api", "policies", "link", "data" ]
 
   prometheus_subnet = "10.33.0.0/18"
 
@@ -319,7 +319,7 @@ module "uksouth_prod_cluster_1" {
   use_scaleset         = true
   max_pods_per_host    = 100
 
-  cluster_ingress_subdomains = [ "api", "policies", "link" ]
+  cluster_ingress_subdomains = [ "api", "policies", "link", "data" ]
 
   prometheus_subnet = "10.33.0.0/18"
 

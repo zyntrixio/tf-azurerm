@@ -45,10 +45,10 @@ locals {
 
             # API/Front Door
             "link.gb" = "bink-frontdoor.azurefd.net",
+            "data.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
             "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
-            "mcwallet.dev.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
             "api.preprod.gb" = "bink-frontdoor.azurefd.net",
             "api.staging.gb" = "bink-frontdoor.azurefd.net",
@@ -176,6 +176,9 @@ locals {
             ]
             "e2e" = [
                 "v=spf1 include:spf.protection.outlook.com -all",
+            ]
+            "_github-challenge-binkhq.bink.com" = [
+                "515a6a7363"
             ]
         }
     }

@@ -14,7 +14,6 @@ locals {
             "chef.uksouth" = "51.132.44.240"
             "wg.uksouth" = "51.132.44.249"
             "starbug.uksouth" = "51.132.44.240"
-            "mcwallet.dev.k8s.uksouth" = "51.132.44.242"
             "sentry.uksouth" = "51.132.44.254"
             "sftp.staging.uksouth" = "51.132.44.241"
             "sandbox.k8s.uksouth" = "51.132.44.243"
