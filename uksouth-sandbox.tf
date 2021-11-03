@@ -76,12 +76,24 @@ module "uksouth_sandbox_environment" {
       high_availability = false
         databases = [
           "postgres",
-          "lbg_atlas",
-          "lbg_europa",
-          "lbg_hades",
-          "lbg_hermes",
-          "lbg_midas",
-          "lbg_pontus",
+          "sit_lbg_atlas",
+          "sit_lbg_europa",
+          "sit_lbg_hades",
+          "sit_lbg_hermes",
+          "sit_lbg_midas",
+          "sit_lbg_pontus",
+          "sit_barclays_atlas",
+          "sit_barclays_europa",
+          "sit_barclays_hades",
+          "sit_barclays_hermes",
+          "sit_barclays_midas",
+          "sit_barclays_pontus",
+          "oat_barclays_atlas",
+          "oat_barclays_europa",
+          "oat_barclays_hades",
+          "oat_barclays_hermes",
+          "oat_barclays_midas",
+          "oat_barclays_pontus",
         ]
     }
   }
