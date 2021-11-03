@@ -64,6 +64,7 @@ module "uksouth_sandbox_environment" {
 
   additional_keyvaults = [
     "bink-uksouth-sandbox-sit",
+    "bink-uksouth-sandbox-lbg", # non-ideal-name, 24 character limit
     "bink-uksouth-sandbox-oat"
   ]
 
