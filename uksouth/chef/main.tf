@@ -213,7 +213,7 @@ resource "azurerm_lb_rule" "https" {
     frontend_port = 4444
     backend_port = 4444
     frontend_ip_configuration_name = "subnet-01"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.pools.0.id ]
     probe_id = azurerm_lb_probe.https.id
 }
 

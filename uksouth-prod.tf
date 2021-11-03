@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -67,10 +67,6 @@ module "uksouth_prod_environment" {
     chris_latham    = local.aad_user.chris_latham,
     christian_prior = local.aad_user.christian_prior,
     qa              = local.aad_group.qa,
-  }
-
-  infra_keyvault_users = {
-    AzureSynapse = { object_id = module.uksouth_prod_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
   }
 
     # postgres_flexible_config = {
@@ -182,14 +178,6 @@ module "uksouth_prod_environment" {
   managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
 }
 
-module "uksouth_datawarehouse" {
-    source = "./uksouth/datawarehouse"
-    providers = {
-        azurerm = azurerm.uk_production
-    }
-    sql_admin = local.aad_group.data_warehouse_admins
-}
-
 module "uksouth_prod_rabbit" {
   source = "./uksouth/rabbitmq"
   providers = {
@@ -216,7 +204,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -299,7 +287,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -379,29 +367,4 @@ module "uksouth_prod_cluster_1" {
   tags = {
     "Environment" = "Production",
   }
-}
-
-module "uksouth_prod_datawarehouse" {
-  source = "github.com/binkhq/tf-azurerm_datawarehouse?ref=0.4.0"
-  providers = {
-    azurerm = azurerm.uk_production
-  }
-
-  resource_group_name = "uksouth-prod-dwh"
-  location            = "uksouth"
-  environment         = "prod"
-  eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs2/authorizationRules/RootManageSharedAccessKey"
-  tags = {
-    "Environment" = "Production",
-  }
-  repo_name = "azure-synapse-prod"
-
-  resource_group_iam = {}
-  storage_iam = {
-    Architecture = {
-      object_id = local.aad_group.architecture,
-      role      = "Contributor"
-    }
-  }
-  sql_admin = local.aad_group.data_warehouse_admins
 }

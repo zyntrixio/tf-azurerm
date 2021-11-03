@@ -66,7 +66,7 @@ resource "azurerm_lb_rule" "ssh" {
     frontend_port = 22
     backend_port = 22
     frontend_ip_configuration_name = "PublicIPAddress"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.linux.id
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.linux.id ]
     probe_id = azurerm_lb_probe.ssh.id
 }
 
@@ -78,7 +78,7 @@ resource "azurerm_lb_rule" "rdp" {
     frontend_port = 3389
     backend_port = 3389
     frontend_ip_configuration_name = "PublicIPAddress"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.windows.id
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.windows.id ]
     probe_id = azurerm_lb_probe.rdp.id
 }
 

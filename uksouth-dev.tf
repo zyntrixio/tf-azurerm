@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -47,10 +47,6 @@ module "uksouth_dev_environment" {
         QA = local.aad_group.qa,
     }
 
-    infra_keyvault_users = {
-        AzureSynapse = { object_id = module.uksouth_dev_datawarehouse.synapse_identity.principal_id, permissions = ["get"] }
-    }
-
     postgres_flexible_config = {
         common = {
             name = "bink-uksouth-dev"
@@ -76,16 +72,6 @@ module "uksouth_dev_environment" {
                 "zagreus",
             ]
         }
-    }
-
-    postgres_config = {
-        common = {
-            name = "bink-uksouth-dev-common",
-            sku_name = "GP_Gen5_4",
-            storage_gb = 500,
-            public_access = true,
-            databases = ["*"]
-        },
     }
 
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
@@ -141,7 +127,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm
@@ -217,30 +203,6 @@ module "uksouth_dev_cluster_0" {
     tags = {
         "Environment" = "Development",
     }
-}
-
-module "uksouth_dev_datawarehouse" {
-    source = "github.com/binkhq/tf-azurerm_datawarehouse?ref=0.4.0"
-    providers = {
-        azurerm = azurerm.uk_dev
-    }
-
-    resource_group_name = "uksouth-dev-dwh"
-    location            = "uksouth"
-    environment         = "dev"
-    eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs2/authorizationRules/RootManageSharedAccessKey"
-    tags = {
-        "Environment" = "Dev",
-    }
-    repo_name = "azure-synapse-dev"
-
-    storage_iam = {
-        Architecture = {
-            object_id = local.aad_group.architecture,
-            role = "Contributor"
-        }
-    }
-    sql_admin = local.aad_group.data_warehouse_admins # Data Warehouse Admins group
 }
 
 module "uksouth_dev_binkweb" {

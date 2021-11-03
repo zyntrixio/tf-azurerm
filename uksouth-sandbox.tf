@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.2"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -67,6 +67,25 @@ module "uksouth_sandbox_environment" {
     "bink-uksouth-sandbox-oat"
   ]
 
+  postgres_flexible_config = {
+    common = {
+      name = "bink-uksouth-sandbox"
+      version = "13"
+      sku_name = "GP_Standard_D2s_v3"
+      storage_mb = 131072
+      high_availability = false
+        databases = [
+          "postgres",
+          "lbg_atlas",
+          "lbg_europa",
+          "lbg_hades",
+          "lbg_hermes",
+          "lbg_midas",
+          "lbg_pontus",
+        ]
+    }
+  }
+
   postgres_config = {
     common = {
       name          = "bink-uksouth-sandbox-common",
@@ -76,7 +95,8 @@ module "uksouth_sandbox_environment" {
       databases     = ["*"]
     },
   }
-  secret_namespaces = "default,sit,oat,monitoring"
+
+  secret_namespaces = "default,sit,oat,lbg_sit,monitoring"
   eventhub_authid   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   storage_config = {
     common = {
@@ -104,7 +124,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.1"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm

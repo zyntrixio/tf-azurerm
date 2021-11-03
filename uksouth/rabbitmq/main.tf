@@ -226,7 +226,7 @@ resource "azurerm_lb_rule" "amqp" {
     frontend_port = 5671
     backend_port = 5671
     frontend_ip_configuration_name = "frontend"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.i.id
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.i.id ]
     probe_id = azurerm_lb_probe.amqp.id
 }
 
@@ -245,7 +245,7 @@ resource "azurerm_lb_rule" "webui" {
     frontend_port = 15671
     backend_port = 15671
     frontend_ip_configuration_name = "frontend"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.i.id
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.i.id ]
     probe_id = azurerm_lb_probe.amqp.id
 }
 
