@@ -96,7 +96,7 @@ module "uksouth_sandbox_environment" {
     },
   }
 
-  secret_namespaces = "default,sit,oat,lbg_sit,monitoring"
+  secret_namespaces = "default,oat,sit-barclays,sit-lbg,monitoring"
   eventhub_authid   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   storage_config = {
     common = {
@@ -114,8 +114,8 @@ module "uksouth_sandbox_environment" {
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
-    lbgsit = {
-      name                     = "binkuksouthsandboxlbgsit",
+    sit-lbg = {
+      name                     = "binkuksouthsandboxsitlbg",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
