@@ -94,7 +94,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "api-prod-uksouth-bink-sh"
+        name = "uksouth-prod-api"
 
         backend {
             host_header = "api.prod0.uksouth.bink.sh"
@@ -115,25 +115,25 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "api-prod-uksouth-bink-sh"
+        name = "uksouth-prod-api"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["api-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "api-prod-uksouth-bink-sh"
+            backend_pool_name = "uksouth-prod-api"
             cache_enabled = false
         }
     }
 
     routing_rule {
-        name = "api-prod-uksouth-bink-sh-content"
+        name = "uksouth-prod-content"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/content/*"]
         frontend_endpoints = ["api-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "api-prod-uksouth-bink-sh"
+            backend_pool_name = "uksouth-prod-api"
             cache_enabled = true
             cache_query_parameter_strip_directive = "StripNone"
         }
@@ -145,7 +145,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "policies-uksouth-bink-sh"
+        name = "uksouth-prod-policies"
 
         backend {
             host_header = "policies.prod0.uksouth.bink.sh"
@@ -166,13 +166,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "policies-uksouth-bink-sh"
+        name = "uksouth-prod-policies"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["policies-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "policies-uksouth-bink-sh"
+            backend_pool_name = "uksouth-prod-policies"
             cache_enabled = false
         }
     }
@@ -183,32 +183,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
-    backend_pool {
-        name = "api-preprod-uksouth-bink-sh"
-
-        backend {
-            host_header = "api.preprod0.uksouth.bink.sh"
-            address = "api.preprod0.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "api-preprod-uksouth-bink-sh"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-preprod-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "api-preprod-uksouth-bink-sh"
-            cache_enabled = false
-        }
-    }
-
     frontend_endpoint {
         name = "api-staging-gb-bink-com"
         host_name = "api.staging.gb.bink.com"
@@ -216,7 +190,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "api-staging-uksouth-bink-sh"
+        name = "uksouth-staging-api"
 
         backend {
             host_header = "api.staging0.uksouth.bink.sh"
@@ -230,13 +204,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "api-staging-uksouth-bink-sh"
+        name = "uksouth-staging-api"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["api-staging-gb-bink-com", "trenette-co-uk"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "api-staging-uksouth-bink-sh"
+            backend_pool_name = "uksouth-staging-api"
             cache_enabled = false
         }
     }
@@ -248,7 +222,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "reflector-staging-uksouth-bink-sh"
+        name = "uksouth-staging-api-reflector"
 
         backend {
             host_header = "reflector.staging0.uksouth.bink.sh"
@@ -262,13 +236,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "reflector-staging-uksouth-bink-sh"
+        name = "uksouth-staging-api-reflector"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["reflector-staging-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "reflector-staging-uksouth-bink-sh"
+            backend_pool_name = "uksouth-staging-api-reflector"
             cache_enabled = false
         }
     }
@@ -279,7 +253,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "policies-staging-uksouth-bink-sh"
+        name = "uksouth-staging-policies"
 
         backend {
             host_header = "policies.staging0.uksouth.bink.sh"
@@ -293,13 +267,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "policies-staging-uksouth-bink-sh"
+        name = "uksouth-staging-policies"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["policies-staging-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "policies-staging-uksouth-bink-sh"
+            backend_pool_name = "uksouth-staging-policies"
             cache_enabled = false
         }
     }
@@ -311,7 +285,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "api-dev-uksouth-bink-sh"
+        name = "uksouth-dev-api"
 
         backend {
             host_header = "api.dev0.uksouth.bink.sh"
@@ -325,13 +299,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "api-dev-uksouth-bink-sh"
+        name = "uksouth-dev-api"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["api-dev-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "api-dev-uksouth-bink-sh"
+            backend_pool_name = "uksouth-dev-api"
             cache_enabled = false
         }
     }
@@ -343,7 +317,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "reflector-dev-uksouth-bink-sh"
+        name = "uksouth-dev-reflector"
 
         backend {
             host_header = "reflector.dev0.uksouth.bink.sh"
@@ -357,13 +331,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "reflector-dev-uksouth-bink-sh"
+        name = "uksouth-dev-reflector"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["reflector-dev-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "reflector-dev-uksouth-bink-sh"
+            backend_pool_name = "uksouth-dev-reflector"
             cache_enabled = false
         }
     }
@@ -381,7 +355,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "performance-sandbox-uksouth-bink-sh"
+        name = "uksouth-perf-api"
 
         backend {
             host_header = "api.perf0.uksouth.bink.sh"
@@ -395,13 +369,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "performance-sandbox-uksouth-bink-sh"
+        name = "uksouth-perf-api"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["performance-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "performance-sandbox-uksouth-bink-sh"
+            backend_pool_name = "uksouth-perf-api"
             cache_enabled = false
         }
     }
@@ -419,7 +393,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "data-uksouth-bink-sh"
+        name = "uksouth-prod-data"
 
         backend {
             host_header = "data.prod0.uksouth.bink.sh"
@@ -440,13 +414,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "data-uksouth-bink-sh"
+        name = "uksouth-prod-data"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["data-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "data-uksouth-bink-sh"
+            backend_pool_name = "uksouth-prod-data"
             cache_enabled = false
         }
     }
@@ -457,7 +431,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "link-uksouth-bink-sh"
+        name = "uksouth-prod-link"
 
         backend {
             host_header = "link.prod0.uksouth.bink.sh"
@@ -472,69 +446,90 @@ resource "azurerm_frontdoor" "frontdoor" {
             http_port = 8001
             https_port = 4001
         }
-
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
 
     routing_rule {
-        name = "link-uksouth-bink-sh"
+        name = "uksouth-prod-link"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["link-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "link-uksouth-bink-sh"
+            backend_pool_name = "uksouth-prod-link"
             cache_enabled = false
         }
     }
 
     backend_pool {
-        name = "oat-sandbox-uksouth-bink-sh"
+        name = "uksouth-sandbox-oat"
         backend {
             host_header = "oat.sandbox0.uksouth.bink.sh"
             address = "oat.sandbox0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
-
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
 
     routing_rule {
-        name = "oat-sandbox-uksouth-bink-sh"
+        name = "uksouth-sandbox-oat"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["oat-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "oat-sandbox-uksouth-bink-sh"
+            backend_pool_name = "uksouth-sandbox-oat"
             cache_enabled = false
         }
     }
 
     backend_pool {
-        name = "sit-sandbox-uksouth-bink-sh"
+        name = "uksouth-sandbox-sit-barclays"
         backend {
-            host_header = "sit.sandbox0.uksouth.bink.sh"
-            address = "sit.sandbox0.uksouth.bink.sh"
+            host_header = "sit-barclays.sandbox0.uksouth.bink.sh"
+            address = "sit-barclays.sandbox0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
-
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
 
     routing_rule {
-        name = "sit-sandbox-uksouth-bink-sh"
+        name = "uksouth-sandbox-sit-barclays"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["sit-sandbox-gb-bink-com", "api-sandbox-gb-bink-com"]
+        frontend_endpoints = ["api-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "sit-sandbox-uksouth-bink-sh"
+            backend_pool_name = "uksouth-sandbox-sit-barclays"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-sit-lbg"
+        backend {
+            host_header = "sit-lbg.sandbox0.uksouth.bink.sh"
+            address = "sit-lbg.sandbox0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-sit-lbg"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["sit-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-sit-lbg"
             cache_enabled = false
         }
     }
@@ -551,19 +546,19 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     routing_rule {
-        name = "web-prod-blobstorage"
+        name = "uksouth-prod-web"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["web-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "web-prod-blobstorage"
+            backend_pool_name = "uksouth-prod-web"
             cache_enabled = false
         }
     }
 
     backend_pool {
-        name = "web-prod-blobstorage"
+        name = "uksouth-prod-web"
         backend {
             host_header = "binkuksouthprodweb.z33.web.core.windows.net"
             address = "binkuksouthprodweb.z33.web.core.windows.net"
