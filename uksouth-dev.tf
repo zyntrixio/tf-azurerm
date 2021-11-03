@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.0"
     providers = {
         azurerm = azurerm.uk_dev
     }

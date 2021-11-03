@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.0"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -122,14 +122,16 @@ module "uksouth_prod_environment" {
   }
   redis_config = {
     common = {
-      name     = "bink-uksouth-prod-common",
-      family   = "P",
-      sku_name = "Premium",
+        name = "bink-uksouth-prod-common",
+        redis_version = 4
+        public_network_access_enabled = true
+        subnet_id = null
     },
     harmonia = {
-      name     = "bink-uksouth-prod-harmonia",
-      family   = "P",
-      sku_name = "Premium",
+        name = "bink-uksouth-prod-harmonia",
+        redis_version = 4
+        public_network_access_enabled = true
+        subnet_id = null
     },
   }
   redis_patch_schedule = {
