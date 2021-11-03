@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
   providers = {
     azurerm = azurerm
   }
@@ -31,7 +31,6 @@ module "uksouth_tools_environment" {
       name                     = "binkuksouthtools",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
-      blob_endpoint            = "api.gb.bink.com/content"
     },
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]

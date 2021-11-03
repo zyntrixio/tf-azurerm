@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -108,7 +108,6 @@ module "uksouth_performance_environment" {
       name                     = "binkuksouthperf",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
-      blob_endpoint            = "performance.sandbox.gb.bink.com/content"
     },
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]

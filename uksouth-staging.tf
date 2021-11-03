@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
   providers = {
     azurerm = azurerm.uk_staging
   }
@@ -57,7 +57,6 @@ module "uksouth_staging_environment" {
       name                     = "binkuksouthstaging",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
-      blob_endpoint            = "api.staging.gb.bink.com/content"
     }
   }
   storage_management_policy_config = {

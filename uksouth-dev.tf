@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.5.5"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -80,7 +80,6 @@ module "uksouth_dev_environment" {
             name                     = "binkuksouthdev",
             account_replication_type = "ZRS",
             account_tier             = "Standard"
-            blob_endpoint            = "api.dev.gb.bink.com/content"
         },
     }
     storage_management_policy_config = {
