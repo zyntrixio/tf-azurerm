@@ -98,8 +98,7 @@ module "uksouth_performance_environment" {
       subnet_id = null
     },
     vnet = {
-      name = "bink-uksouth-perf-vnet",
-      public_network_access_enabled = false
+      name = "bink-uksouth-perf",
     },
   }
 

@@ -42,15 +42,34 @@ module "uksouth_staging_environment" {
     QA      = local.aad_group.qa,
   }
 
-  postgres_config = {
-    common = {
-      name          = "bink-uksouth-staging-common",
-      sku_name      = "GP_Gen5_4",
-      storage_gb    = 500,
-      public_access = true,
-      databases     = ["*"]
-    },
-  }
+    postgres_flexible_config = {
+        common = {
+            name = "bink-uksouth-staging"
+            version = "13"
+            sku_name = "GP_Standard_D2s_v3"
+            storage_mb = 131072
+            high_availability = false
+            databases = [
+                "api_reflector",
+                "atlas",
+                "carina",
+                "eos",
+                "europa",
+                "hades",
+                "harmonia",
+                "hermes",
+                "midas",
+                "momus",
+                "polaris",
+                "pontus",
+                "postgres",
+                "thanatos",
+                "vela",
+                "zagreus",
+            ]
+        }
+    }
+
   eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   storage_config = {
     common = {

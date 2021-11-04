@@ -133,6 +133,9 @@ module "uksouth_prod_environment" {
         public_network_access_enabled = true
         subnet_id = null
     },
+    vnet = {
+        name = "bink-uksouth-prod",
+    }
   }
   redis_patch_schedule = {
     day_of_week    = "Wednesday"
