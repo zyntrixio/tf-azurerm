@@ -126,7 +126,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm

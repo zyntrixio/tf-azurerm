@@ -89,14 +89,6 @@ module "uksouth_performance_environment" {
     },
   }
   redis_config = {
-    common = {
-      name = "bink-uksouth-perf-common",
-      redis_version = 4
-      family = "C",
-      sku_name = "Standard",
-      public_network_access_enabled = true
-      subnet_id = null
-    },
     vnet = {
       name = "bink-uksouth-perf",
     },
@@ -148,7 +140,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm

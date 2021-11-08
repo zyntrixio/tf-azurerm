@@ -121,18 +121,6 @@ module "uksouth_prod_environment" {
     },
   }
   redis_config = {
-    common = {
-        name = "bink-uksouth-prod-common",
-        redis_version = 4
-        public_network_access_enabled = true
-        subnet_id = null
-    },
-    harmonia = {
-        name = "bink-uksouth-prod-harmonia",
-        redis_version = 4
-        public_network_access_enabled = true
-        subnet_id = null
-    },
     vnet = {
         name = "bink-uksouth-prod",
     }
@@ -208,7 +196,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -291,7 +279,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.10.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
