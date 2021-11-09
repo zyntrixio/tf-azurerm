@@ -106,15 +106,15 @@ module "uksouth_dev_environment" {
     }
 
     eventhubs = {
-        bink-uksouth-dev-loyalty = {
-            name = "loyalty" # => loyalty-history for kube secret name
+        bink-uksouth-dev = {
+            name = "common"
             sku = "Standard"
             capacity = 2
 
             eventhubs = {
-                history = {
+                harmonia = {
                     partition_count = 2
-                    message_retention = 4
+                    message_retention = 7
                 }
             }
         }
