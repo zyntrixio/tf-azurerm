@@ -122,7 +122,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm
@@ -182,7 +182,6 @@ module "uksouth_staging_cluster_0" {
     rule_priority       = 1200
     public_ip           = module.uksouth-firewall.public_ips.2.ip_address
     secure_origins      = local.secure_origins
-    developer_ips       = local.developer_ips
     ingress_source      = "*"
     ingress_http        = 8000
     ingress_https       = 4000

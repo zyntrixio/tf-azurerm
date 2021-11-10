@@ -17,13 +17,6 @@ locals {
   secure_origins_v6 = [
     "2001:8b0:b130:a52d::/64", # cpressland@bink.com
   ]
-  developer_ips = [
-    "82.22.136.116/32",  # ml@bink.com
-    "82.14.237.4/32",    # cl@bink.com
-    "92.232.43.170/32",  # akhan@bink.com
-    "92.233.6.15/32",    # kaziz@bink.com
-    "86.150.164.212/32", # sperrygrove@bink.com
-  ]
   managed_identities = {
     fakicorp          = { kv_access = "rw" },
     europa            = { kv_access = "rw" },
@@ -157,7 +150,6 @@ module "uksouth-firewall" {
   sftp_ip_address    = module.uksouth-sftp.ip_address
   tableau_ip_address = module.uksouth-tableau.ip_address
   secure_origins     = local.secure_origins
-  developer_ips      = local.developer_ips
 }
 
 # module "uksouth-sandbox" {

@@ -139,7 +139,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -199,7 +199,6 @@ module "uksouth_sandbox_cluster_0" {
     rule_priority       = 1400
     public_ip           = module.uksouth-firewall.public_ips.4.ip_address
     secure_origins      = local.secure_origins
-    developer_ips       = local.developer_ips
     ingress_source      = "*"
     ingress_http        = 8000
     ingress_https       = 4000

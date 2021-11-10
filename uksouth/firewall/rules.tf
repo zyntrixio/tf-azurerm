@@ -629,7 +629,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
 
     rule {
         name = "tableau_http"
-        source_addresses = ["*"]
+        source_addresses = var.secure_origins
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address
@@ -638,7 +638,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
     rule {
         name = "tableau_https"
-        source_addresses = ["*"]
+        source_addresses = var.secure_origins
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address

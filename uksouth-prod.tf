@@ -196,7 +196,7 @@ module "uksouth_prod_rabbit" {
 }
 
 module "uksouth_prod_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -263,7 +263,6 @@ module "uksouth_prod_cluster_0" {
     rule_priority       = 1000
     public_ip           = module.uksouth-firewall.public_ips.0.ip_address
     secure_origins      = local.secure_origins
-    developer_ips       = local.developer_ips
     ingress_source      = "*"
     ingress_http        = 8000
     ingress_https       = 4000
@@ -279,7 +278,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
   providers = {
     azurerm      = azurerm.uk_production
     azurerm.core = azurerm
@@ -346,7 +345,6 @@ module "uksouth_prod_cluster_1" {
     rule_priority       = 1001
     public_ip           = module.uksouth-firewall.public_ips.0.ip_address
     secure_origins      = local.secure_origins
-    developer_ips       = local.developer_ips
     ingress_source      = "*"
     ingress_http        = 8001
     ingress_https       = 4001
