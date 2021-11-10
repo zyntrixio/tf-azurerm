@@ -420,7 +420,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "status.spreedly.com",
             "api.visa.com",
             "*.api.visa.com",
-            "cert.api.visa.com",
         ]
         protocol {
             port = "443"
