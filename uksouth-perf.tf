@@ -110,7 +110,7 @@ module "uksouth_performance_environment" {
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
-  managed_identities = local.managed_identities
+  managed_identities = merge(local.managed_identities, {locust={kv_access="ro"}})
 }
 
 module "uksouth_performance_rabbit" {
