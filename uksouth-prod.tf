@@ -162,12 +162,20 @@ module "uksouth_prod_environment" {
         enabled           = true,
         prefix_match      = ["bridge"],
         delete_after_days = 14
-      }
+      },
+      {
+        name              = "data-management",
+        enabled           = true,
+        prefix_match      = ["data-management"],
+        delete_after_days = 1
+      },
     ]
   }
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
   managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
+
+  secret_namespaces = "default,monitoring,datamanagement"
 }
 
 module "uksouth_prod_rabbit" {
