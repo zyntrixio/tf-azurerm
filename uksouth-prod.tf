@@ -69,26 +69,26 @@ module "uksouth_prod_environment" {
     qa              = local.aad_group.qa,
   }
 
-    # postgres_flexible_config = {
-    #     common = {
-    #         name = "bink-uksouth-prod"
-    #         version = "13"
-    #         sku_name = "GP_Standard_D8s_v3"
-    #         storage_mb = 1048576
-    #         high_availability = true
-    #         databases = [
-    #             "atlas",
-    #             "eos",
-    #             "europa",
-    #             "hades",
-    #             "harmonia",
-    #             "hermes",
-    #             "midas",
-    #             "pontus",
-    #             "postgres",
-    #         ]
-    #     }
-    # }
+    postgres_flexible_config = {
+        common = {
+            name = "bink-uksouth-prod"
+            version = "13"
+            sku_name = "GP_Standard_D2ds_v4"
+            storage_mb = 1048576
+            high_availability = true
+            databases = [
+                "atlas",
+                "eos",
+                "europa",
+                "hades",
+                "harmonia",
+                "hermes",
+                "midas",
+                "pontus",
+                "postgres",
+            ]
+        }
+    }
 
   postgres_config = {
     common = {

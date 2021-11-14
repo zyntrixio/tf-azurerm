@@ -70,7 +70,7 @@ module "uksouth_performance_environment" {
         archive = {
             name = "bink-uksouth-perf-archive"
             version = "13"
-            sku_name = "GP_Standard_D8s_v3"
+            sku_name = "GP_Standard_D4ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [
