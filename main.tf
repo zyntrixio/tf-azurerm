@@ -19,6 +19,7 @@ locals {
   ]
   managed_identities = {
     fakicorp          = { kv_access = "rw" },
+    angelia           = { kv_access = "ro" },
     europa            = { kv_access = "rw" },
     harmonia          = { kv_access = "ro" },
     hermes            = { kv_access = "ro" },
