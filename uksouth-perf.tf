@@ -55,7 +55,7 @@ module "uksouth_performance_environment" {
         common = {
             name = "bink-uksouth-perf"
             version = "13"
-            sku_name = "GP_Standard_D4s_v3"
+            sku_name = "GP_Standard_D4ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [

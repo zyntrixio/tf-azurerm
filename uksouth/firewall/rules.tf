@@ -508,6 +508,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "wwws-uk1.givex.com",
             "wwws-uk2.givex.com",
             "virtserver.swaggerhub.com",
+            "sm-uk.azure-api.net",
         ]
         protocol {
             port = "443"
