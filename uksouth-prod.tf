@@ -92,26 +92,12 @@ module "uksouth_prod_environment" {
     }
 
   postgres_config = {
-    common = {
-      name          = "bink-uksouth-prod-common",
-      sku_name      = "GP_Gen5_2",
-      storage_gb    = 500,
-      public_access = true,
-      databases     = ["atlas", "europa", "eos", "pontus", "thanatos", "zagreus"]
-    },
     hermes = {
       name          = "bink-uksouth-prod-hermes",
       sku_name      = "GP_Gen5_8",
       storage_gb    = 500,
       public_access = true,
       databases     = ["hermes"]
-    },
-    hades = {
-      name          = "bink-uksouth-prod-hades",
-      sku_name      = "GP_Gen5_4",
-      storage_gb    = 500,
-      public_access = true,
-      databases     = ["hades"]
     },
     harmonia = {
       name          = "bink-uksouth-prod-harmonia",
@@ -176,7 +162,7 @@ module "uksouth_prod_environment" {
 
   managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
 
-  secret_namespaces = "default,monitoring,datamanagement"
+  secret_namespaces = "default,monitoring,datamanagement,backups"
 }
 
 module "uksouth_prod_rabbit" {
