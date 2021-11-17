@@ -162,7 +162,7 @@ module "uksouth_prod_environment" {
 
   managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
 
-  secret_namespaces = "default,monitoring,datamanagement,backups"
+  secret_namespaces = "default,monitoring,datamanagement,backups,tableau"
 }
 
 module "uksouth_prod_rabbit" {
