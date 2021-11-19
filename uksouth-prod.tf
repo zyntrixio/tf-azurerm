@@ -99,13 +99,6 @@ module "uksouth_prod_environment" {
       public_access = true,
       databases     = ["hermes"]
     },
-    harmonia = {
-      name          = "bink-uksouth-prod-harmonia",
-      sku_name      = "GP_Gen5_4",
-      storage_gb    = 500,
-      public_access = true,
-      databases     = ["harmonia"]
-    },
   }
   redis_config = {
     vnet = {
