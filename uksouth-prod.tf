@@ -168,6 +168,26 @@ module "uksouth_prod_environment" {
   secret_namespaces = "default,monitoring,datamanagement,backups,tableau"
 }
 
+module "uksouth_prod_tableau" {
+    source = "./uksouth/tableau2"
+    providers = {
+        azurerm = azurerm.uk_production
+        azurerm.core = azurerm
+    }
+
+    firewall = {
+        vnet_id = module.uksouth-firewall.vnet_id,
+        vnet_name = module.uksouth-firewall.vnet_name,
+        resource_group_name = module.uksouth-firewall.resource_group_name,
+    }
+    environment = {
+        vnet_id = module.uksouth_prod_environment.peering.vnet_id
+        vnet_name = module.uksouth_prod_environment.peering.vnet_name
+        resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    }
+    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+}
+
 module "uksouth_prod_rabbit" {
   source = "./uksouth/rabbitmq"
   providers = {
