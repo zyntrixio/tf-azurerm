@@ -158,7 +158,7 @@ module "uksouth_sandbox_cluster_0" {
   use_scaleset         = true
   max_pods_per_host    = 100
 
-  cluster_ingress_subdomains = [ "oat", "sit-barclays", "sit-lbg", "web" ]
+  cluster_ingress_subdomains = [ "oat", "sit-barclays", "sit-lbg", "web", "api2-docs" ]
 
   prometheus_subnet = "10.33.0.0/18"
 

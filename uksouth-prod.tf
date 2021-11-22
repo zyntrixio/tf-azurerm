@@ -88,7 +88,17 @@ module "uksouth_prod_environment" {
                 "postgres",
                 "zagreus",
             ]
-        }
+        },
+        tableau = {
+            name = "bink-uksouth-tableau"
+            version = "13"
+            sku_name = "GP_Standard_D4ds_v4"
+            storage_mb = 1048576
+            high_availability = false
+            databases = [
+                "postgres",
+            ]
+        },
     }
 
   postgres_config = {
@@ -204,7 +214,7 @@ module "uksouth_prod_cluster_0" {
   use_scaleset         = true
   max_pods_per_host    = 100
 
-  cluster_ingress_subdomains = [ "api", "policies", "link", "data" ]
+  cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
   prometheus_subnet = "10.33.0.0/18"
 
@@ -286,7 +296,7 @@ module "uksouth_prod_cluster_1" {
   use_scaleset         = true
   max_pods_per_host    = 100
 
-  cluster_ingress_subdomains = [ "api", "policies", "link", "data" ]
+  cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
   prometheus_subnet = "10.33.0.0/18"
 

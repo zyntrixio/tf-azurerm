@@ -54,6 +54,8 @@ locals {
     confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"
     kubernetes_sso   = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
   }
+
+  prod_cluster_ingress_subdomains = [ "api", "policies", "link", "data", "api2-docs" ]
 }
 
 terraform {
