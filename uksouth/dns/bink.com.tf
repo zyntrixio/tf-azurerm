@@ -54,6 +54,7 @@ locals {
             "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "docs.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
             "web.gb" = "bink-frontdoor.azurefd.net",
 

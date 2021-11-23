@@ -47,8 +47,8 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
     }
 }
 
-resource "azurerm_frontdoor_firewall_policy" "reflector" {
-    name = "reflector"
+resource "azurerm_frontdoor_firewall_policy" "secure_origins" {
+    name = "secureorigins"
     resource_group_name = azurerm_resource_group.rg.name
     enabled = true
     mode = "Prevention"
