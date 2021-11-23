@@ -34,12 +34,8 @@ locals {
             "sftp.staging.gb" = "51.132.44.241",
 
             # Random
-            "rep1" = "178.238.141.23", # can go away after we turn off UKFast
-            "chef" = "13.95.9.172", # not convinced we're using this, this might be the OG Amazon AWS instance
-            "controller" = "137.117.246.94", # no idea what this is
-            "docs" = "104.40.220.129", # can probably go away,
-            "filewave" = "51.136.16.203",
             "git" = "51.132.44.248",
+            "tableau.gb" = "51.132.44.252"
         }
         cname_records = {
 

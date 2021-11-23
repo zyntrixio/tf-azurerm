@@ -50,4 +50,6 @@ resource "azurerm_linux_virtual_machine" "bastion0" {
             }
         )
     )
+
+    lifecycle { ignore_changes = [custom_data] }
 }

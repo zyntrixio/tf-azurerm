@@ -5,12 +5,24 @@ terraform {
             version = ">= 2.83.0"
             configuration_aliases = [ azurerm.core ]
         }
+        chef = {
+            source = "terrycain/chef"
+        }
     }
 }
 
 resource "azurerm_resource_group" "rg" {
     name = "uksouth-tableau"
     location = "uksouth"
+}
+
+resource "chef_environment" "env" {
+    name = "${azurerm_resource_group.rg.name}-prod"
+    cookbook_constraints = {
+        jarvis = ">= 2.1.0"
+        fury = ">= 2.2.0"
+        nebula = ">= 2.1.0"
+    }
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -96,6 +108,20 @@ resource "azurerm_network_security_group" "nsg" {
         destination_port_ranges = [80, 443]
     }
     security_rule {
+        name = "AllowPsql"
+        description = "Postgres Access"
+        access = "Allow"
+        priority = 110
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefixes = [
+            "192.168.0.0/24", # Azure Firewall for Ingress
+        ]
+        source_port_range = "*"
+        destination_address_prefix = "192.168.101.0/24"
+        destination_port_ranges = [5432]
+    }
+    security_rule {
         name = "AllowSSH"
         description = "Allow SSH Access from Bastion Subnet"
         access = "Allow"
@@ -119,18 +145,18 @@ resource "azurerm_network_security_group" "nsg" {
         destination_address_prefix = "192.168.101.0/24"
         destination_port_ranges = [9100]
     }
-    # security_rule {
-    #     name = "BlockEverything"
-    #     description = "Default Block All Rule"
-    #     access = "Deny"
-    #     priority = 4096
-    #     direction = "Inbound"
-    #     protocol = "*"
-    #     source_address_prefix = "*"
-    #     source_port_range = "*"
-    #     destination_address_prefix = "*"
-    #     destination_port_range = "*"
-    # }
+    security_rule {
+        name = "BlockEverything"
+        description = "Default Block All Rule"
+        access = "Deny"
+        priority = 4096
+        direction = "Inbound"
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_address_prefix = "*"
+        destination_port_range = "*"
+    }
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
@@ -186,8 +212,23 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
     source_image_reference {
         publisher = "Canonical"
-        offer = "0001-com-ubuntu-server-focal"
-        sku = "20_04-lts"
+        offer = "UbuntuServer"
+        sku = "18.04-LTS"
         version = "latest"
     }
+
+    custom_data = base64gzip(
+        templatefile(
+            "${path.root}/init.tmpl",
+            {
+                cinc_run_list = base64encode(jsonencode(
+                    { "run_list" : ["recipe[fury]", "recipe[nebula]", "recipe[jarvis]"] }
+                )),
+                cinc_environment = chef_environment.env.name
+                cinc_data_secret = ""
+            }
+        )
+    )
+
+    lifecycle { ignore_changes = [custom_data] }
 }

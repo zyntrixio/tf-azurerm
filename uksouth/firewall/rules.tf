@@ -21,6 +21,18 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Ubuntu Snap Repos"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "api.snapcraft.io",
+            "*.cdn.snapcraftcontent.com",
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "GitHub"
         source_addresses = ["*"]
         target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com", "*.githubusercontent.com"]
@@ -263,6 +275,9 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.mapbox.com",
             "tableau.internal.cloudapp.net",
             "licensing.tableau.com",
+            "apt.postgresql.org",
+            "www.postgresql.org",
+            "nginx.org",
         ]
         protocol {
             port = "443"
@@ -644,6 +659,33 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         destination_addresses = [azurerm_public_ip.pips.13.ip_address]
         translated_address = var.tableau_ip_address
         translated_port = "443"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_prod_http"
+        source_addresses = ["*"]
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.101.4"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_prod_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.101.4"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_prod_psql"
+        source_addresses = var.secure_origins
+        destination_ports = ["5432"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.101.4"
+        translated_port = "5432"
         protocols = ["TCP"]
     }
 }
