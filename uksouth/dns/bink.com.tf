@@ -89,6 +89,14 @@ locals {
 
             # Mailchimp
             "k1._domainkey" = "dkim.mcsv.net",
+
+            # Atlassian
+            "s1._domainkey" = "s1._domainkey.atlassian.net",
+            "s2._domainkey" = "s2._domainkey.atlassian.net",
+
+            # Office 365
+            "selector1._domainkey" = "selector1-bink-com._domainkey.hellobink.onmicrosoft.com",
+            "selector2._domainkey" = "selector2-bink-com._domainkey.hellobink.onmicrosoft.com",
         }
         mx_records = {
             "@" = [
@@ -150,7 +158,7 @@ locals {
             "@" = [
                 "atlassian-domain-verification=mqUsdFedKn6vro+U8Cacg/cxjaFFF3CWSE5Jbww0PwYRNdDs5xfJlkiluMUKZrn4",
                 "google-site-verification=TkTtMyGRzTV8pXap0aQo980_lNSfYa9E2__r1kI6Djo",
-                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:stspg-customer.com ~all",
+                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:_spf.atlassian.net include:stspg-customer.com ~all",
                 "MS=ms26724008",
                 "apple-domain-verification=jOvmiNhPlgoqmBOx",
                 "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
