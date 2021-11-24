@@ -256,4 +256,7 @@ resource "azurerm_virtual_machine" "chef" {
     }
 
     tags = var.tags
+
+    lifecycle { ignore_changes = all }
+
 }
