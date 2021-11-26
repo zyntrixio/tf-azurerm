@@ -278,6 +278,36 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    backend_pool {
+        name = "uksouth-staging-docs"
+        backend {
+            host_header = "api2-docs.staging0.uksouth.bink.sh"
+            address = "api2-docs.staging0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-staging-docs"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/", "/healthz"]
+        frontend_endpoints = ["docs-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-staging-docs"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "docs-staging-gb-bink-com"
+        host_name = "docs.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
+    }
+
     frontend_endpoint {
         name = "api-dev-gb-bink-com"
         host_name = "api.dev.gb.bink.com"
@@ -340,6 +370,36 @@ resource "azurerm_frontdoor" "frontdoor" {
             backend_pool_name = "uksouth-dev-reflector"
             cache_enabled = false
         }
+    }
+
+    backend_pool {
+        name = "uksouth-dev-docs"
+        backend {
+            host_header = "api2-docs.dev0.uksouth.bink.sh"
+            address = "api2-docs.dev0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-dev-docs"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/", "/healthz"]
+        frontend_endpoints = ["docs-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-dev-docs"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "docs-dev-gb-bink-com"
+        host_name = "docs.dev.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
@@ -788,6 +848,24 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_staging_gb_bin
     }
 }
 
+resource "azurerm_frontdoor_custom_https_configuration" "docs_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["docs-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
 resource "azurerm_frontdoor_custom_https_configuration" "api_dev_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["api-dev-gb-bink-com"]
     custom_https_provisioning_enabled = true
@@ -813,6 +891,24 @@ resource "azurerm_frontdoor_custom_https_configuration" "reflector_dev_gb_bink_c
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "docs_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["docs-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
     }
 
     timeouts {
