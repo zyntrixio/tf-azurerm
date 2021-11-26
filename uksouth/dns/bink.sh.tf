@@ -30,6 +30,7 @@ locals {
             "asset-register.tools" = "tools0.uksouth.bink.sh"
             "bridge.uksouth" = "tools0.uksouth.bink.sh"
             "tools.uksouth" = "tools0.uksouth.bink.sh"
+            "pypi.uksouth" = "tools0.uksouth.bink.sh"
         }
         mx_records = {
             "@" = [
