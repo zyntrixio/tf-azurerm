@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.0"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.3"
   providers = {
     azurerm = azurerm.uk_sandbox
   }

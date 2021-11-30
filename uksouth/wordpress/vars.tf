@@ -14,3 +14,7 @@ variable "secure_origins" {
 
 variable "dns_zone" { default = {} }
 variable "frontdoor_id" { default = {} }
+
+variable "loganalytics_id" {
+    type = string
+}

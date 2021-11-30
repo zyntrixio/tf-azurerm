@@ -14,3 +14,7 @@ variable "tags" {
         Environment = "Core"
     }
 }
+
+variable "loganalytics_id" {
+    type = string
+}

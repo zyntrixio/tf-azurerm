@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.0"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.3"
   providers = {
     azurerm = azurerm.uk_production
   }
@@ -186,6 +186,7 @@ module "uksouth_prod_tableau" {
         resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
     }
     postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+    loganalytics_id                   = module.uksouth_loganalytics.loganalytics_id
 }
 
 module "uksouth_prod_rabbit" {

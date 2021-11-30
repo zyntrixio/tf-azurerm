@@ -25,6 +25,8 @@ resource "azurerm_monitor_diagnostic_setting" "storage" {
     target_resource_id = "${azurerm_storage_account.binkwebprod.id}/blobServices/default"
     eventhub_name = "azurestorage"
     eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    log_analytics_workspace_id = var.loganalytics_id
+    log_analytics_destination_type = "AzureDiagnostics"
 
     log {
         category = "StorageRead"

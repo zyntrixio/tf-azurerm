@@ -27,44 +27,6 @@ resource "azurerm_public_ip" "pip6" {
     tags = var.tags
 }
 
-resource "azurerm_dns_caa_record" "apex" {
-    name = "@"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
-    ttl = 300
-
-    record {
-        flags = 0
-        tag = "issue"
-        value = "letsencrypt.org"
-    }
-
-    record {
-        flags = 0
-        tag = "iodef"
-        value = "mailto:devops@bink.com"
-    }
-}
-
-resource "azurerm_dns_caa_record" "www" {
-    name = "www"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
-    ttl = 300
-
-    record {
-        flags = 0
-        tag = "issue"
-        value = "letsencrypt.org"
-    }
-
-    record {
-        flags = 0
-        tag = "iodef"
-        value = "mailto:devops@bink.com"
-    }
-}
-
 resource "azurerm_dns_a_record" "apex" {
     name = "@"
     zone_name = var.dns_zone.bink_com.dns_zone_name
@@ -158,6 +120,8 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
     target_resource_id = azurerm_network_security_group.nsg.id
     eventhub_name = "azurensg"
     eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    log_analytics_workspace_id = var.loganalytics_id
+    log_analytics_destination_type = "AzureDiagnostics"
 
     log {
         category = "NetworkSecurityGroupEvent"

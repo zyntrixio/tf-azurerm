@@ -192,6 +192,50 @@ locals {
     }
 }
 
+resource "azurerm_dns_caa_record" "apex" {
+    name = "@"
+    zone_name = azurerm_dns_zone.bink-com.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+
+    record {
+        flags = 0
+        tag = "issue"
+        value = "letsencrypt.org"
+    }
+
+    record {
+        flags = 0
+        tag = "issue"
+        value = "sectigo.com"
+    }
+
+    record {
+        flags = 0
+        tag = "iodef"
+        value = "mailto:devops@bink.com"
+    }
+}
+
+resource "azurerm_dns_caa_record" "www" {
+    name = "www"
+    zone_name = azurerm_dns_zone.bink-com.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+
+    record {
+        flags = 0
+        tag = "issue"
+        value = "letsencrypt.org"
+    }
+
+    record {
+        flags = 0
+        tag = "iodef"
+        value = "mailto:devops@bink.com"
+    }
+}
+
 resource "azurerm_dns_a_record" "bink_com_a" {
     for_each = local.bink_com.a_records
 

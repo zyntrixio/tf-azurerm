@@ -16,3 +16,6 @@ variable "tags" {
     }
 }
 
+variable "loganalytics_id" {
+    type = string
+}

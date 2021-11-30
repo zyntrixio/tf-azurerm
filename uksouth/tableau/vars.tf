@@ -13,3 +13,7 @@ variable "tags" {
         Environment = "Tableau"
     }
 }
+
+variable "loganalytics_id" {
+    type = string
+}

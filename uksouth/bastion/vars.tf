@@ -17,3 +17,7 @@ variable "tags" {
 }
 
 variable bastion_vm_size { default = "Standard_B2s" }
+
+variable "loganalytics_id" {
+    type = string
+}

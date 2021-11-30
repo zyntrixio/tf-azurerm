@@ -23,6 +23,8 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     target_resource_id = azurerm_key_vault.tools.id
     eventhub_name = var.eventhub_name
     eventhub_authorization_rule_id = var.eventhub_auth
+    log_analytics_workspace_id = var.loganalytics_id
+    log_analytics_destination_type = "AzureDiagnostics"
 
     log {
         category = "AuditEvent"

@@ -18,3 +18,7 @@ variable "prometheus_origin" {
     type = list
     default = ["51.132.44.240/28"]
 }
+
+variable "loganalytics_id" {
+    type = string
+}

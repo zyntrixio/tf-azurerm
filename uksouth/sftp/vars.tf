@@ -20,3 +20,7 @@ variable "peers" { type = map(object({
 variable "config" {
     default = {}
 }
+
+variable "loganalytics_id" {
+    type = string
+}

@@ -17,3 +17,7 @@ variable "secure_origins_v6" {
     type = list
     default = []
 }
+
+variable "loganalytics_id" {
+    type = string
+}
