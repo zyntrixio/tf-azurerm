@@ -99,21 +99,6 @@ module "uksouth_staging_environment" {
     ]
   }
 
-    eventhubs = {
-        bink-uksouth-staging = {
-            name = "common"
-            sku = "Standard"
-            capacity = 2
-
-            eventhubs = {
-                harmonia = {
-                    partition_count = 2
-                    message_retention = 7
-                }
-            }
-        }
-    }
-
   cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
 
   managed_identities = local.managed_identities
