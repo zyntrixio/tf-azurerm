@@ -101,15 +101,6 @@ module "uksouth_prod_environment" {
         },
     }
 
-  postgres_config = {
-    hermes = {
-      name          = "bink-uksouth-prod-hermes",
-      sku_name      = "GP_Gen5_8",
-      storage_gb    = 500,
-      public_access = true,
-      databases     = ["hermes"]
-    },
-  }
   redis_config = {
     vnet = {
         name = "bink-uksouth-prod",

@@ -25,6 +25,22 @@ module "uksouth_tools_environment" {
     },
   }
 
+    postgres_flexible_config = {
+        common = {
+            name = "bink-uksouth-tools"
+            version = "13"
+            sku_name = "GP_Standard_D2ds_v4"
+            storage_mb = 131072
+            high_availability = false
+            databases = [
+                "asset_register",
+                "mobsf",
+                "postgres",
+                "rss2teams",
+            ]
+        }
+    }
+
   eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   storage_config = {
     common = {
