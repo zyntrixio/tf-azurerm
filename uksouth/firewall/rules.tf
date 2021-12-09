@@ -232,6 +232,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "OpsGenie"
+        source_addresses = ["*"]
+        target_fqdns = ["api.opsgenie.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Elasticsearch"
         source_addresses = ["*"]
         target_fqdns = ["artifacts.elastic.co"]
