@@ -45,6 +45,7 @@ module "uksouth_dev_environment" {
     keyvault_users = {
         Backend = local.aad_group.backend,
         QA = local.aad_group.qa,
+        Architecture = local.aad_group.architecture
     }
 
     postgres_flexible_config = {
