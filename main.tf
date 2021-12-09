@@ -8,7 +8,8 @@ locals {
     uk_sandbox    = { id = "957523d8-bbe2-4f68-8fae-95975157e91c" },
   }
   secure_origins = [
-    "194.74.152.11/32", # Ascot Bink HQ
+    "194.74.152.8/29", # Ascot Bink HQ
+    "89.38.121.228/30", # London Bink Scrub Office
     "217.169.3.233/32", # cpressland@bink.com
     "81.2.99.144/29",   # cpressland@bink.com
     "86.27.219.192/32", # twinchester@bink.com
