@@ -197,13 +197,12 @@ module "uksouth_staging_binkweb" {
   binkweb_dns_record = "web.staging.gb"
   public_dns_zone    = module.uksouth-dns.public_dns.bink_com
 
-  ip_whitelist = [
-    "10.0.0.0/8",
-    "172.16.0.0/12",
-    "192.168.0.0/16",
-    "20.49.163.188",
-    "51.132.44.240/28",
-  ]
+    ip_whitelist = concat([
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "51.132.44.240/28",
+    ], local.secure_origins)
 
   tags = {
     "Environment" = "Staging",
