@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.6.4"
   providers = {
     azurerm = azurerm
   }
@@ -13,16 +13,6 @@ module "uksouth_tools_environment" {
 
   keyvault_users = {
     Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
-  }
-
-  postgres_config = {
-    common = {
-      name          = "bink-uksouth-tools-common",
-      sku_name      = "GP_Gen5_2",
-      storage_gb    = 500,
-      public_access = false,
-      databases     = ["*"]
-    },
   }
 
     postgres_flexible_config = {
