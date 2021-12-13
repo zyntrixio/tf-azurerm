@@ -807,6 +807,20 @@ resource "azurerm_firewall_network_rule_collection" "sftp" {
         destination_addresses = ["185.113.19.116/32"]
         protocols = ["TCP"]
     }
+    rule {
+        name = "mtf.files.mastercard.com"
+        source_addresses = ["*"]
+        destination_ports = ["16022"]
+        destination_addresses = ["216.119.218.19/32"]
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "files.mastercard.com"
+        source_addresses = ["*"]
+        destination_ports = ["16022"]
+        destination_addresses = ["216.119.219.66/32"]
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "cloudflare" {
