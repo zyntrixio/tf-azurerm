@@ -34,6 +34,7 @@ locals {
     vela              = { kv_access = "ro" },
     zephyrus          = { kv_access = "ro" },
     carina            = { kv_access = "ro" },
+    styx              = { kv_access = "ro" },
   }
 
   aad_group = {
