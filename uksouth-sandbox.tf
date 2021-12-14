@@ -22,6 +22,10 @@ module "uksouth_sandbox_environment" {
       object_id = local.aad_group.qa,
       role      = "Reader",
     },
+    Architecture = {
+      object_id = local.aad_group.architecture,
+      role      = "Reader"
+    }
   }
 
   storage_iam = {
@@ -60,6 +64,7 @@ module "uksouth_sandbox_environment" {
   keyvault_users = {
     Backend = local.aad_group.backend,
     QA      = local.aad_group.qa,
+    Architecture = local.aad_group.architecture,
   }
 
   additional_keyvaults = [
