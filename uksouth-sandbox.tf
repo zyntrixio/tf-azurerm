@@ -59,11 +59,6 @@ module "uksouth_sandbox_environment" {
       object_id  = local.aad_group.qa,
       role       = "Contributor",
     },
-    Sit-Architecture = {
-      storage_id = "sit",
-      object_id  = local.aad_group.architecture,
-      role       = "Contributor",
-    }
   }
 
   keyvault_users = {
