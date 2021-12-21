@@ -366,3 +366,28 @@ module "uksouth_prod_cluster_1" {
         "Environment" = "Production",
     }
 }
+
+module "uksouth_prod_binkweb" {
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.0.0"
+    providers = {
+        azurerm = azurerm.uk_production
+    }
+    resource_group_name = "uksouth-prod"
+    location = "uksouth"
+    environment = "Production"
+
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+
+    storage_accounts = {
+        wallet = {
+            name = "binkwebprodbink"
+        }
+        wasabi = {
+            name = "binkwebprodwasabi"
+        }
+        fatface = {
+            name = "binkwebprodfatface"
+        }
+    }
+}

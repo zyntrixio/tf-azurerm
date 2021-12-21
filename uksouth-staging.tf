@@ -182,29 +182,26 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-  source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
-  providers = {
-    azurerm      = azurerm.uk_staging
-    azurerm.core = azurerm
-  }
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.0.0"
+    providers = {
+        azurerm = azurerm.uk_staging
+    }
+    resource_group_name = "uksouth-staging"
+    location = "uksouth"
+    environment = "Staging"
 
-  resource_group_name = "uksouth-staging-web"
-  location            = "uksouth"
-  environment         = "staging"
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    loganalytics_id = module.uksouth_loganalytics.loganalytics_id
 
-  eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-
-  binkweb_dns_record = "web.staging.gb"
-  public_dns_zone    = module.uksouth-dns.public_dns.bink_com
-
-    ip_whitelist = concat([
-        "10.0.0.0/8",
-        "172.16.0.0/12",
-        "192.168.0.0/16",
-        "51.132.44.240/28",
-    ], local.secure_origins)
-
-  tags = {
-    "Environment" = "Staging",
-  }
+    storage_accounts = {
+        wallet = {
+            name = "binkwebstagingbink"
+        }
+        wasabi = {
+            name = "binkwebstagingwasabi"
+        }
+        fatface = {
+            name = "binkwebstagingfatface"
+        }
+    }
 }

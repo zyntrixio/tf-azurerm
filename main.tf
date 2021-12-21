@@ -12,7 +12,6 @@ locals {
     "89.38.121.228/30", # London Bink Scrub Office
     "217.169.3.233/32", # cpressland@bink.com
     "81.2.99.144/29",   # cpressland@bink.com
-    "86.27.219.192/32", # twinchester@bink.com
     "${module.uksouth-wireguard.public_ip}/32",
   ]
   secure_origins_v6 = [
@@ -46,11 +45,12 @@ locals {
     data_warehouse_admins = "8596acbd-b840-4124-9ec6-b6c0918ac247"
   }
   aad_user = {
-    jo_raine        = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
-    chris_sterritt  = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5"
-    mick_latham     = "343299d4-0a39-4109-adce-973ad29d0183",
-    chris_latham    = "607482a3-07fa-4b24-8af0-5b84df6ca7c6",
-    christian_prior = "ae282437-d730-4342-8914-c936e8289cdc",
+    jo_raine          = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
+    chris_sterritt    = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5"
+    mick_latham       = "343299d4-0a39-4109-adce-973ad29d0183"
+    chris_latham      = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
+    christian_prior   = "ae282437-d730-4342-8914-c936e8289cdc"
+    charlie_bricknell = "2ef70efe-8675-419d-97cb-4775828383cd"
   }
   aad_apps = {
     confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"
@@ -73,7 +73,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.89.0"
+      version = "2.90.0"
     }
     chef = {
       source = "terrycain/chef"

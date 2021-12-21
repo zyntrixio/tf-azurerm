@@ -192,29 +192,26 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.0.0"
     providers = {
-        azurerm      = azurerm.uk_dev
-        azurerm.core = azurerm
+        azurerm = azurerm.uk_dev
     }
-
-    resource_group_name = "uksouth-dev-web"
+    resource_group_name = "uksouth-dev"
     location = "uksouth"
-    environment = "dev"
+    environment = "Development"
 
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    loganalytics_id = module.uksouth_loganalytics.loganalytics_id
 
-    binkweb_dns_record = "web.dev.gb"
-    public_dns_zone = module.uksouth-dns.public_dns.bink_com
-
-    ip_whitelist = concat([
-        "10.0.0.0/8",
-        "172.16.0.0/12",
-        "192.168.0.0/16",
-        "51.132.44.240/28",
-    ], local.secure_origins)
-
-    tags = {
-        "Environment" = "Development",
+    storage_accounts = {
+        wallet = {
+            name = "binkwebdevbink"
+        }
+        wasabi = {
+            name = "binkwebdevwasabi"
+        }
+        fatface = {
+            name = "binkwebdevfatface"
+        }
     }
 }

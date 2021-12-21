@@ -660,35 +660,292 @@ resource "azurerm_frontdoor" "frontdoor" {
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
+### Bink Web
+
     frontend_endpoint {
-        name = "web-gb-bink-com"
-        host_name = "web.gb.bink.com"
+        name = "wallet-gb-bink-com"
+        host_name = "wallet.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "wasabi-gb-bink-com"
+        host_name = "wasabi.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "fatface-gb-bink-com"
+        host_name = "fatface.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "wallet-staging-gb-bink-com"
+        host_name = "wallet.staging.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "wasabi-staging-gb-bink-com"
+        host_name = "wasabi.staging.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "fatface-staging-gb-bink-com"
+        host_name = "fatface.staging.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "wallet-dev-gb-bink-com"
+        host_name = "wallet.dev.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "wasabi-dev-gb-bink-com"
+        host_name = "wasabi.dev.gb.bink.com"
+    }
+
+    frontend_endpoint {
+        name = "fatface-dev-gb-bink-com"
+        host_name = "fatface.dev.gb.bink.com"
+    }
+
+    backend_pool {
+        name = "production-binkweb-bink"
+        backend {
+            host_header = "binkwebprodbink.z33.web.core.windows.net"
+            address = "binkwebprodbink.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
     }
 
     routing_rule {
-        name = "uksouth-prod-web"
+        name = "production-binkweb-bink"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["web-gb-bink-com"]
+        frontend_endpoints = ["wallet-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-prod-web"
+            backend_pool_name = "production-binkweb-bink"
             cache_enabled = false
         }
     }
 
     backend_pool {
-        name = "uksouth-prod-web"
+        name = "production-binkweb-fatface"
         backend {
-            host_header = "binkuksouthprodweb.z33.web.core.windows.net"
-            address = "binkuksouthprodweb.z33.web.core.windows.net"
+            host_header = "binkwebprodfatface.z33.web.core.windows.net"
+            address = "binkwebprodfatface.z33.web.core.windows.net"
             http_port = 80
             https_port = 443
         }
-
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
+
+    routing_rule {
+        name = "production-binkweb-fatface"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["fatface-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "production-binkweb-fatface"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "production-binkweb-wasabi"
+        backend {
+            host_header = "binkwebprodwasabi.z33.web.core.windows.net"
+            address = "binkwebprodwasabi.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "production-binkweb-wasabi"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wasabi-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "production-binkweb-wasabi"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "binkweb-http-to-https"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = [
+            "wallet-gb-bink-com",
+            "wasabi-gb-bink-com",
+            "fatface-gb-bink-com",
+            "wallet-staging-gb-bink-com",
+            "wasabi-staging-gb-bink-com",
+            "fatface-staging-gb-bink-com",
+            "wallet-dev-gb-bink-com",
+            "wasabi-dev-gb-bink-com",
+            "fatface-dev-gb-bink-com",
+        ]
+        redirect_configuration {
+            redirect_protocol = "HttpsOnly"
+            redirect_type = "Found"
+        }
+    }
+
+    backend_pool {
+        name = "staging-binkweb-bink"
+        backend {
+            host_header = "binkwebstagingbink.z33.web.core.windows.net"
+            address = "binkwebstagingbink.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "staging-binkweb-bink"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wallet-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "staging-binkweb-bink"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "staging-binkweb-fatface"
+        backend {
+            host_header = "binkwebstagingfatface.z33.web.core.windows.net"
+            address = "binkwebstagingfatface.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "staging-binkweb-fatface"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["fatface-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "staging-binkweb-fatface"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "staging-binkweb-wasabi"
+        backend {
+            host_header = "binkwebstagingwasabi.z33.web.core.windows.net"
+            address = "binkwebstagingwasabi.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "staging-binkweb-wasabi"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wasabi-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "staging-binkweb-wasabi"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "dev-binkweb-bink"
+        backend {
+            host_header = "binkwebdevbink.z33.web.core.windows.net"
+            address = "binkwebdevbink.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "dev-binkweb-bink"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wallet-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "dev-binkweb-bink"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "dev-binkweb-fatface"
+        backend {
+            host_header = "binkwebdevfatface.z33.web.core.windows.net"
+            address = "binkwebdevfatface.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "dev-binkweb-fatface"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["fatface-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "dev-binkweb-fatface"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "dev-binkweb-wasabi"
+        backend {
+            host_header = "binkwebdevwasabi.z33.web.core.windows.net"
+            address = "binkwebdevwasabi.z33.web.core.windows.net"
+            http_port = 80
+            https_port = 443
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "dev-binkweb-wasabi"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wasabi-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "dev-binkweb-wasabi"
+            cache_enabled = false
+        }
+    }
+
+# ---
+
 
     timeouts {
         update = "120m"
@@ -727,23 +984,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "trenette_co_uk" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["api-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "web_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["web-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
@@ -1043,6 +1283,168 @@ resource "azurerm_frontdoor_custom_https_configuration" "oat_sandbox_gb_bink_com
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wallet_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wallet-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wasabi_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wasabi-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "fatface_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["fatface-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wallet_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wallet-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wasabi_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wasabi-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "fatface_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["fatface-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wallet_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wallet-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "wasabi_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wasabi-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "fatface_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["fatface-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_version = "6b79a45e4e6e4c3d9ac2585466e7c94d"
     }
 
     timeouts {

@@ -41,6 +41,9 @@ locals {
 
             # API/Front Door
             "link.gb" = "bink-frontdoor.azurefd.net",
+            "wallet.gb" = "bink-frontdoor.azurefd.net",
+            "wasabi.gb" = "bink-frontdoor.azurefd.net",
+            "fatface.gb" = "bink-frontdoor.azurefd.net",
             "data.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
@@ -48,10 +51,16 @@ locals {
             "api.gb" = "bink-frontdoor.azurefd.net",
             "api.preprod.gb" = "bink-frontdoor.azurefd.net",
             "api.staging.gb" = "bink-frontdoor.azurefd.net",
+            "wallet.staging.gb" = "bink-frontdoor.azurefd.net",
+            "wasabi.staging.gb" = "bink-frontdoor.azurefd.net",
+            "fatface.staging.gb" = "bink-frontdoor.azurefd.net",
             "docs.staging.gb" = "bink-frontdoor.azurefd.net",
             "link.staging.gb" = "bink-frontdoor.azurefd.net",
             "reflector.staging.gb" = "bink-frontdoor.azurefd.net",
             "api.dev.gb" = "bink-frontdoor.azurefd.net",
+            "wallet.dev.gb" = "bink-frontdoor.azurefd.net",
+            "wasabi.dev.gb" = "bink-frontdoor.azurefd.net",
+            "fatface.dev.gb" = "bink-frontdoor.azurefd.net",
             "reflector.dev.gb" = "bink-frontdoor.azurefd.net",
             "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
@@ -60,7 +69,6 @@ locals {
             "docs.dev.gb" = "bink-frontdoor.azurefd.net",
             "docs.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
-            "web.gb" = "bink-frontdoor.azurefd.net",
 
             #Statuspage
             "spg._domainkey" = "spg.domainkey.u12618875.wl126.sendgrid.net",

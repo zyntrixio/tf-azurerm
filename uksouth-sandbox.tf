@@ -217,28 +217,3 @@ module "uksouth_sandbox_cluster_0" {
     "Environment" = "Sandbox",
   }
 }
-
-module "uksouth_sandbox_binkweb" {
-  source = "github.com/binkhq/tf-azurerm_binkweb?ref=1.2.2"
-  providers = {
-    azurerm      = azurerm.uk_sandbox
-    azurerm.core = azurerm
-  }
-
-  resource_group_name = "uksouth-sandbox-web"
-  location            = "uksouth"
-  environment         = "sandbox"
-
-  eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-
-  binkweb_dns_record = "web.sandbox.gb"
-  public_dns_zone    = module.uksouth-dns.public_dns.bink_com
-
-  ip_whitelist = [
-    "0.0.0.0/0",
-  ]
-
-  tags = {
-    "Environment" = "Sandbox",
-  }
-}
