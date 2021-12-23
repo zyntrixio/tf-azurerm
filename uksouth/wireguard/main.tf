@@ -15,6 +15,22 @@ resource "azurerm_public_ip" "pip" {
     tags = var.tags
 }
 
+resource "azurerm_storage_account" "i" {
+    name = "binkuksouthwireguard"
+    resource_group_name = azurerm_resource_group.rg.name
+    location = azurerm_resource_group.rg.location
+    account_tier = "Standard"
+    account_replication_type = "ZRS"
+
+    tags = var.tags
+}
+
+resource "azurerm_storage_share" "users" {
+  name = "users"
+  storage_account_name = azurerm_storage_account.i.name
+  quota = 50
+}
+
 output "public_ip" {
     value = azurerm_public_ip.pip.ip_address
 }
