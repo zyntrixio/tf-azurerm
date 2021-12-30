@@ -131,7 +131,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.12.2"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm

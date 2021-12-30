@@ -107,7 +107,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.12.2"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm

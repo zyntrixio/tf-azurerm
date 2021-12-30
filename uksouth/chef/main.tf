@@ -23,16 +23,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "host" {
 }
 
 resource "azurerm_subnet" "subnet" {
-    count = length(var.subnet_address_prefixes)
-    name = format("subnet-%02d", count.index + 1)
+    name = "subnet-01"
     resource_group_name = azurerm_resource_group.rg.name
     virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefixes = [element(var.subnet_address_prefixes, count.index)]
+    address_prefixes = ["192.168.5.0/24"]
 }
 
 resource "azurerm_network_security_group" "nsg" {
-    count = length(var.subnet_address_prefixes)
-    name = format("${var.environment}-subnet-%02d-nsg", count.index + 1)
+    name = "chef-nsg"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 
@@ -64,7 +62,7 @@ resource "azurerm_network_security_group" "nsg" {
         protocol = "TCP"
         destination_port_range = 22
         source_port_range = "*"
-        destination_address_prefix = var.subnet_address_prefixes[0]
+        destination_address_prefix = "192.168.5.0/24"
         source_address_prefix = "192.168.4.0/24"
         direction = "Inbound"
         access = "Allow"
@@ -73,20 +71,31 @@ resource "azurerm_network_security_group" "nsg" {
         name = "AllowHTTPS"
         priority = 100
         protocol = "TCP"
-        destination_port_range = 4444
+        destination_port_range = 443
         source_port_range = "*"
-        destination_address_prefix = var.subnet_address_prefixes[0]
+        destination_address_prefix = "192.168.5.0/24"
+        source_address_prefix = "*"
+        direction = "Inbound"
+        access = "Allow"
+    }
+    security_rule {
+        name = "AllowHTTP"
+        priority = 110
+        protocol = "TCP"
+        destination_port_range = 80
+        source_port_range = "*"
+        destination_address_prefix = "192.168.5.0/24"
         source_address_prefix = "*"
         direction = "Inbound"
         access = "Allow"
     }
     security_rule {
         name = "AllowToolsPrometheusNodeExporter"
-        priority = 110
+        priority = 130
         protocol = "TCP"
         destination_port_range = 9100
         source_port_range = "*"
-        destination_address_prefix = var.subnet_address_prefixes[0]
+        destination_address_prefix = "192.168.5.0/24"
         source_address_prefix = "10.33.0.0/18"
         direction = "Inbound"
         access = "Allow"
@@ -94,9 +103,8 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nsg" {
-    count = length(var.subnet_address_prefixes)
     name = "binkuksouthlogs"
-    target_resource_id = element(azurerm_network_security_group.nsg.*.id, count.index)
+    target_resource_id = azurerm_network_security_group.nsg.id
     eventhub_name = "azurensg"
     eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     log_analytics_workspace_id = var.loganalytics_id
@@ -120,15 +128,8 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
-    count = length(var.subnet_address_prefixes)
-    subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
-    network_security_group_id = element(azurerm_network_security_group.nsg.*.id, count.index)
-}
-
-resource "azurerm_subnet_route_table_association" "rt_assoc" {
-    count = length(var.subnet_address_prefixes)
-    subnet_id = element(azurerm_subnet.subnet.*.id, count.index)
-    route_table_id = azurerm_route_table.rt.id
+    subnet_id = azurerm_subnet.subnet.id
+    network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_route_table" "rt" {
@@ -145,6 +146,11 @@ resource "azurerm_route_table" "rt" {
     }
 
     tags = var.tags
+}
+
+resource "azurerm_subnet_route_table_association" "rt_assoc" {
+    subnet_id = azurerm_subnet.subnet.id
+    route_table_id = azurerm_route_table.rt.id
 }
 
 resource "azurerm_virtual_network_peering" "peer" {
@@ -165,21 +171,58 @@ resource "azurerm_lb" "lb" {
     frontend_ip_configuration {
         name = "subnet-01"
         private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.subnet_address_prefixes[0], 4)
-        subnet_id = azurerm_subnet.subnet.0.id
+        private_ip_address = "192.168.5.4"
+        subnet_id = azurerm_subnet.subnet.id
     }
 
     tags = var.tags
 }
 
-resource "azurerm_lb_backend_address_pool" "pools" {
-    count = length(var.subnet_address_prefixes)
-    name = format("subnet-%02d", count.index + 1)
+resource "azurerm_lb_backend_address_pool" "i" {
+    name = "backend"
     loadbalancer_id = azurerm_lb.lb.id
 }
 
-resource "azurerm_network_interface" "chef" {
-    name = "chef-01-nic"
+resource "azurerm_lb_probe" "http" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "http"
+    port = 80
+}
+
+resource "azurerm_lb_probe" "https" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "https"
+    port = 443
+}
+
+resource "azurerm_lb_rule" "http" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "http"
+    protocol = "Tcp"
+    frontend_port = 80
+    backend_port = 80
+    frontend_ip_configuration_name = "subnet-01"
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.i.id ]
+    probe_id = azurerm_lb_probe.http.id
+}
+
+resource "azurerm_lb_rule" "https" {
+    resource_group_name = azurerm_resource_group.rg.name
+    loadbalancer_id = azurerm_lb.lb.id
+    name = "https"
+    protocol = "Tcp"
+    frontend_port = 443
+    backend_port = 443
+    frontend_ip_configuration_name = "subnet-01"
+    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.i.id ]
+    probe_id = azurerm_lb_probe.https.id
+}
+
+resource "azurerm_network_interface" "i" {
+    name = "chef-nic"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
     enable_accelerated_networking = false
@@ -187,77 +230,43 @@ resource "azurerm_network_interface" "chef" {
 
     ip_configuration {
         name = "primary"
-        subnet_id = azurerm_subnet.subnet.0.id
+        subnet_id = azurerm_subnet.subnet.id
         private_ip_address_allocation = "Dynamic"
         primary = true
     }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "chef-bap-assoc" {
-    network_interface_id = azurerm_network_interface.chef.id
+resource "azurerm_network_interface_backend_address_pool_association" "i" {
+    network_interface_id = azurerm_network_interface.i.id
     ip_configuration_name = "primary"
-    backend_address_pool_id = azurerm_lb_backend_address_pool.pools.0.id
+    backend_address_pool_id = azurerm_lb_backend_address_pool.i.id
 }
 
-resource "azurerm_lb_probe" "https" {
+resource "azurerm_linux_virtual_machine" "i" {
+    name = "chef"
     resource_group_name = azurerm_resource_group.rg.name
-    loadbalancer_id = azurerm_lb.lb.id
-    name = "https-probe"
-    port = 4444
-}
-
-resource "azurerm_lb_rule" "https" {
-    resource_group_name = azurerm_resource_group.rg.name
-    loadbalancer_id = azurerm_lb.lb.id
-    name = "HTTPS"
-    protocol = "Tcp"
-    frontend_port = 4444
-    backend_port = 4444
-    frontend_ip_configuration_name = "subnet-01"
-    backend_address_pool_ids = [ azurerm_lb_backend_address_pool.pools.0.id ]
-    probe_id = azurerm_lb_probe.https.id
-}
-
-resource "azurerm_virtual_machine" "chef" {
-    name = "chef-01"
     location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
-    network_interface_ids = [azurerm_network_interface.chef.id]
+    size = "Standard_B2s"
+    admin_username = "terraform"
+    network_interface_ids = [
+        azurerm_network_interface.i.id,
+    ]
 
-    vm_size = "Standard_B2s"
-    delete_os_disk_on_termination = true
-    delete_data_disks_on_termination = false
+    admin_ssh_key {
+        username   = "terraform"
+        public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+    }
 
-    storage_image_reference {
+    os_disk {
+        caching = "ReadOnly"
+        storage_account_type = "StandardSSD_LRS"
+        disk_size_gb = 32
+    }
+
+    source_image_reference {
         publisher = "Canonical"
-        offer = "UbuntuServer"
-        sku = "18.04-LTS"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
         version = "latest"
     }
-
-    storage_os_disk {
-        name = "chef-01-disk"
-        disk_size_gb = "32"
-        caching = "ReadOnly"
-        create_option = "FromImage"
-        managed_disk_type = "StandardSSD_LRS"
-    }
-
-    os_profile {
-        computer_name = "chef-01"
-        admin_username = "terraform"
-    }
-
-    os_profile_linux_config {
-        disable_password_authentication = true
-        ssh_keys {
-            path = "/home/terraform/.ssh/authorized_keys"
-            key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrdSta+Sv3YWupzHk4U1VS7jvUvkQgmWexanDnGHLx7YjBKxi1tuhE0WgzgkbB3WqDNLrj5dXdv9la8S9VvrL1L1r4YG+5N0f6Ri1xE+cGei6aFAm57eLPnGhAY6lxiPSx79x+cfmW0YdZHI/6rb4Gix+KoH4BOPZnshxjoyL5MJpel2/5LZHWuazT3ihzWXemhMQ11mXJGot+tuVRB3tkVg+vi//YyRo5vKQSjpvirrP8MgQY76jk0RzxhwsP1d+7lkeAcedPilNpmhP72rfWMTxkrbO7XQrZMpIeL7qywdaOb0tPEB0n9KscUwiMvM4oOLVizsgzKoUOZ91rkxhb id_bink_azure_terraform"
-        }
-    }
-
-    tags = var.tags
-
-    lifecycle { ignore_changes = all }
-
 }

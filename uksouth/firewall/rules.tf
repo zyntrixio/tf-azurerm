@@ -647,12 +647,21 @@ resource "azurerm_firewall_nat_rule_collection" "chef" {
     action = "Dnat"
 
     rule {
-        name = "chef"
+        name = "http"
         source_addresses = ["*"]
-        destination_ports = ["4444"]
+        destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.0.ip_address]
         translated_address = "192.168.5.4"
-        translated_port = "4444"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "https"
+        source_addresses = ["*"]
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
+        translated_address = "192.168.5.4"
+        translated_port = "443"
         protocols = ["TCP"]
     }
 }
