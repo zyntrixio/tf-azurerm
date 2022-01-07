@@ -581,7 +581,8 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         target_fqdns = [
             "tools.wasabi.atreemo.co.uk",
             "wasabi.atreemo.co.uk",
-            "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal
+            "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal Dev
+            "uk-bink-transactions.azurewebsites.net", # Squaremeal Prod
         ]
         protocol {
             port = "443"
