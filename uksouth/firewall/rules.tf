@@ -279,7 +279,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Healthchecks.io"
         source_addresses = ["*"]
         target_fqdns = [
-            "hchk.io"
+            "hchk.io",
+            "hc-ping.com",
         ]
         protocol {
             port = "443"
@@ -946,7 +947,7 @@ resource "azurerm_firewall_network_rule_collection" "smtp" {
     rule {
         name = "smtp" # We should log a helpdesk ticket with Mailgun to lock this down
         source_addresses = ["*"]
-        destination_ports = ["587"]
+        destination_ports = ["465", "587"]
         destination_addresses = ["*"]
         protocols = ["TCP"]
     }
