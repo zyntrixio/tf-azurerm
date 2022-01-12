@@ -627,7 +627,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "docs-sandbox-gb-bink-com"
         host_name = "docs.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
