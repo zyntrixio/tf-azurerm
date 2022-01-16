@@ -223,7 +223,7 @@ resource "azurerm_linux_virtual_machine" "gitlab" {
     name = "gitlab"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D4s_v4"
+    size = "Standard_D2s_v4"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [

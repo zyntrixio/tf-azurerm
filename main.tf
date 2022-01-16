@@ -107,7 +107,7 @@ module "uksouth-bastion" {
   firewall_route_ip          = module.uksouth-firewall.firewall_ip
   firewall_vnet_id           = module.uksouth-firewall.vnet_id
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  loganalytics_id            = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id            = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-gitlab" {
@@ -116,7 +116,7 @@ module "uksouth-gitlab" {
   firewall_route_ip          = module.uksouth-firewall.firewall_ip
   firewall_vnet_id           = module.uksouth-firewall.vnet_id
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  loganalytics_id            = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id            = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-dns" {
@@ -127,11 +127,6 @@ module "uksouth-alerts" {
   source = "./uksouth/alerts"
 }
 
-# Blocked until https://github.com/terraform-providers/terraform-provider-azuread/issues/173
-# module "uksouth-azuread-apps" {
-#     source = "./uksouth/azuread_applications"
-# }
-
 module "uksouth-eventhubs" {
   source = "./uksouth/eventhubs"
 }
@@ -140,7 +135,7 @@ module "uksouth-chef" {
   source = "./uksouth/chef"
 
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  loganalytics_id            = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id            = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-frontdoor" {
@@ -148,17 +143,15 @@ module "uksouth-frontdoor" {
 
   secure_origins    = local.secure_origins
   secure_origins_v6 = local.secure_origins_v6
-  loganalytics_id   = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id   = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-firewall" {
   source = "./uksouth/firewall"
 
-  tableau_vnet_id    = module.uksouth-tableau.vnet_id
   bastion_ip_address = module.uksouth-bastion.ip_address
   sftp_ip_address    = module.uksouth-sftp.ip_address
-  tableau_ip_address = module.uksouth-tableau.ip_address
-  loganalytics_id    = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id    = module.uksouth_loganalytics.loganalytics_core_id
   secure_origins     = local.secure_origins
 }
 
@@ -173,24 +166,14 @@ module "uksouth-firewall" {
 
 module "uksouth-storage" {
   source          = "./uksouth/storage"
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
-}
-
-module "uksouth-tableau" {
-  source = "./uksouth/tableau"
-
-  worker_subnet              = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod-k0/providers/Microsoft.Network/virtualNetworks/prod0-vnet/subnets/worker"
-  firewall_vnet_id           = module.uksouth-firewall.vnet_id
-  private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  wireguard_ip               = module.uksouth-wireguard.public_ip
-  loganalytics_id            = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-elasticsearch" {
   source = "./uksouth/elasticsearch"
 
   private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  loganalytics_id            = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id            = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-sftp" {
@@ -282,13 +265,7 @@ module "uksouth-sftp" {
       resource_group_name = module.uksouth-firewall.resource_group_name
     }
   }
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
-}
-
-module "uksouth-mastercard" {
-  source          = "./uksouth/mastercard"
-  secure_origins  = local.secure_origins
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth_loganalytics" {
@@ -300,18 +277,18 @@ module "uksouth-redscan" {
   bink_sh         = module.uksouth-dns.bink-sh
   dns_link        = module.uksouth-dns.uksouth-bink-host
   secure_origins  = local.secure_origins
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth-wireguard" {
   source          = "./uksouth/wireguard"
   secure_origins  = local.secure_origins
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id = module.uksouth_loganalytics.loganalytics_core_id
 }
 
 module "uksouth_wordpress" {
   source          = "./uksouth/wordpress"
   secure_origins  = local.secure_origins
   dns_zone        = module.uksouth-dns.public_dns
-  loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+  loganalytics_id = module.uksouth_loganalytics.loganalytics_core_id
 }

@@ -679,8 +679,8 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         name = "tableau_http"
         source_addresses = ["*"]
         destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
-        translated_address = var.tableau_ip_address
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.101.4"
         translated_port = "80"
         protocols = ["TCP"]
     }
@@ -688,31 +688,13 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         name = "tableau_https"
         source_addresses = var.secure_origins
         destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
-        translated_address = var.tableau_ip_address
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "tableau_prod_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.101.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "tableau_prod_https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "192.168.101.4"
         translated_port = "443"
         protocols = ["TCP"]
     }
     rule {
-        name = "tableau_prod_psql"
+        name = "tableau_psql"
         source_addresses = var.secure_origins
         destination_ports = ["5432"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]

@@ -5,8 +5,6 @@ variable "tags" {
     }
 }
 
-variable "tableau_vnet_id" {}
-variable "tableau_ip_address" {}
 variable "bastion_ip_address" {}
 variable "sftp_ip_address" {}
 

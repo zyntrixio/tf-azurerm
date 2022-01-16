@@ -192,12 +192,3 @@ resource "azurerm_virtual_network_peering" "elasticsearch" {
     allow_virtual_network_access = true
     allow_forwarded_traffic = false
 }
-
-resource "azurerm_virtual_network_peering" "tableau" {
-    name = "local-to-tableau"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    remote_virtual_network_id = var.tableau_vnet_id
-    allow_virtual_network_access = true
-    allow_forwarded_traffic = true
-}
