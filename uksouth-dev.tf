@@ -133,7 +133,7 @@ module "uksouth_dev_cluster_0" {
     use_scaleset = true
     max_pods_per_host = 100
 
-    cluster_ingress_subdomains = [ "api", "web", "reflector", "api2-docs" ]
+    cluster_ingress_subdomains = [ "api", "web", "reflector", "api2-docs" , "aperture" ]
 
     prometheus_subnet = "10.33.0.0/18"
 
