@@ -373,6 +373,36 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
+        name = "uksouth-dev-aperture"
+        backend {
+            host_header = "aperture.dev0.uksouth.bink.sh"
+            address = "aperture.dev0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-dev-portal"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/", "/healthz"]
+        frontend_endpoints = ["portal-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-dev-aperture"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "portal-dev-gb-bink-com"
+        host_name = "portal.dev.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
+    }
+
+    backend_pool {
         name = "uksouth-dev-docs"
         backend {
             host_header = "api2-docs.dev0.uksouth.bink.sh"
@@ -1173,6 +1203,24 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_dev_gb_bink_com" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "reflector_dev_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["reflector-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+        azure_key_vault_certificate_secret_version = "b9e83b96adf94ea48f3952150ff063d8"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "portal_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["portal-dev-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
