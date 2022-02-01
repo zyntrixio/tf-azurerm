@@ -387,7 +387,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     routing_rule {
         name = "uksouth-dev-portal"
         accepted_protocols = ["Https"]
-        patterns_to_match = ["/", "/healthz"]
+        patterns_to_match = ["/*"]
         frontend_endpoints = ["portal-dev-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
