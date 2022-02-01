@@ -751,7 +751,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     routing_rule {
         name = "production-binkweb-bink"
         accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
+        patterns_to_match = ["/healthz"] # was ["/*"]
         frontend_endpoints = ["wallet-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
@@ -775,7 +775,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     routing_rule {
         name = "production-binkweb-fatface"
         accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
+        patterns_to_match = ["/healthz"] # was ["/*"]
         frontend_endpoints = ["fatface-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
@@ -799,7 +799,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     routing_rule {
         name = "production-binkweb-wasabi"
         accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
+        patterns_to_match = ["/healthz"] # was ["/*"]
         frontend_endpoints = ["wasabi-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"

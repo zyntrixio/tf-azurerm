@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.7.2"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.8.0"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -99,7 +99,9 @@ module "uksouth_performance_environment" {
       account_tier             = "Standard"
     },
   }
-  cert_manager_zone_id = module.uksouth-dns.bink-sh[2]
+
+  bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
+  bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
   managed_identities = merge(local.managed_identities, {locust={kv_access="ro"}})
 }
