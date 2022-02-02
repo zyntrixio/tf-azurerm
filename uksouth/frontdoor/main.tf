@@ -593,7 +593,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
-    
+
     routing_rule {
         name = "uksouth-staging-portal"
         accepted_protocols = ["Https"]
@@ -1464,6 +1464,24 @@ resource "azurerm_frontdoor_custom_https_configuration" "wasabi_staging_gb_bink_
 
 resource "azurerm_frontdoor_custom_https_configuration" "fatface_staging_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["fatface-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+        azure_key_vault_certificate_secret_version = "b9e83b96adf94ea48f3952150ff063d8"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "portal_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["portal-staging-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
