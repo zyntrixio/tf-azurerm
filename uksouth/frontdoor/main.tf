@@ -593,19 +593,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
-
-    routing_rule {
-        name = "uksouth-staging-portal"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["portal-staging-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-staging-aperture"
-            cache_enabled = false
-        }
-    }
-
+    
     routing_rule {
         name = "uksouth-staging-portal"
         accepted_protocols = ["Https"]
