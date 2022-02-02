@@ -583,6 +583,36 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
+        name = "uksouth-staging-aperture"
+        backend {
+            host_header = "aperture.staging0.uksouth.bink.sh"
+            address = "aperture.staging0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-staging-portal"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["portal-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-staging-aperture"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "portal-staging-gb-bink-com"
+        host_name = "portal.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
+    }
+
+    backend_pool {
         name = "uksouth-sandbox-oat"
         backend {
             host_header = "oat.sandbox0.uksouth.bink.sh"
@@ -1434,6 +1464,24 @@ resource "azurerm_frontdoor_custom_https_configuration" "wasabi_staging_gb_bink_
 
 resource "azurerm_frontdoor_custom_https_configuration" "fatface_staging_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["fatface-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+        azure_key_vault_certificate_secret_version = "b9e83b96adf94ea48f3952150ff063d8"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "portal_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["portal-staging-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
