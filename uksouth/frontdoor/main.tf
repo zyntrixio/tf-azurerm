@@ -582,7 +582,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
-        backend_pool {
+    backend_pool {
         name = "uksouth-staging-aperture"
         backend {
             host_header = "aperture.staging0.uksouth.bink.sh"
@@ -604,6 +604,24 @@ resource "azurerm_frontdoor" "frontdoor" {
             backend_pool_name = "uksouth-staging-aperture"
             cache_enabled = false
         }
+    }
+
+    routing_rule {
+        name = "uksouth-staging-portal"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["portal-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-staging-aperture"
+            cache_enabled = false
+        }
+    }
+
+    frontend_endpoint {
+        name = "portal-staging-gb-bink-com"
+        host_name = "portal.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
