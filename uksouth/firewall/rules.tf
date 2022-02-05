@@ -33,6 +33,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Clickhouse apt repo"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "repo.clickhouse.com",
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Ubuntu Changelogs"
         source_addresses = ["*"]
         target_fqdns = [
