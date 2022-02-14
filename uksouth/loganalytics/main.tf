@@ -9,14 +9,6 @@ resource "azurerm_role_assignment" "charlie" {
   principal_id         = "2ef70efe-8675-419d-97cb-4775828383cd"
 }
 
-resource "azurerm_log_analytics_workspace" "i" {
-    name = azurerm_resource_group.i.name
-    location = azurerm_resource_group.i.location
-    resource_group_name = azurerm_resource_group.i.name
-    sku = "PerGB2018"
-    retention_in_days = 90
-}
-
 resource "azurerm_log_analytics_workspace" "core" {
     name = "uksouth-core"
     location = azurerm_resource_group.i.location
@@ -53,10 +45,6 @@ resource "azurerm_role_assignment" "architecture" {
     scope = azurerm_log_analytics_workspace.core.id
     role_definition_name = "Contributor"
     principal_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
-}
-
-output "loganalytics_id" {
-    value = azurerm_log_analytics_workspace.i.id
 }
 
 output "loganalytics_core_id" {

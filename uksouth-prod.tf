@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.9.3"
     providers = {
         azurerm = azurerm.uk_production
     }
@@ -176,7 +176,7 @@ module "uksouth_prod_tableau" {
         resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
     }
     postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-    loganalytics_id                   = module.uksouth_loganalytics.loganalytics_id
+    loganalytics_id = module.uksouth_prod_environment.log_analytics_id
 }
 
 module "uksouth_prod_rabbit" {
@@ -247,6 +247,7 @@ module "uksouth_prod_cluster_0" {
     worker_scaleset_size = 6
     use_scaleset = true
     max_pods_per_host = 100
+    # log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
 
     cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
@@ -334,6 +335,7 @@ module "uksouth_prod_cluster_1" {
     worker_scaleset_size = 6
     use_scaleset = true
     max_pods_per_host = 100
+    # log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
 
     cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
@@ -411,7 +413,7 @@ module "uksouth_prod_binkweb" {
     environment = "Production"
 
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+    loganalytics_id = module.uksouth_prod_environment.log_analytics_id
 
     storage_accounts = {
         wallet = {

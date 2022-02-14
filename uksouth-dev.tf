@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.9.3"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -115,7 +115,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.12.2"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm
@@ -133,6 +133,7 @@ module "uksouth_dev_cluster_0" {
     worker_scaleset_size = 3
     use_scaleset = true
     max_pods_per_host = 100
+    log_analytics_workspace_id = module.uksouth_dev_environment.log_analytics_id
 
     cluster_ingress_subdomains = [ "api", "web", "reflector", "api2-docs" , "aperture" ]
 
@@ -202,7 +203,7 @@ module "uksouth_dev_binkweb" {
     environment = "Development"
 
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_loganalytics.loganalytics_id
+    loganalytics_id = module.uksouth_dev_environment.log_analytics_id
 
     storage_accounts = {
         wallet = {

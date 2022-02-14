@@ -1,5 +1,5 @@
 module "uksouth_performance_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.8.0"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.9.3"
   providers = {
     azurerm = azurerm.uk_sandbox
   }
@@ -133,7 +133,7 @@ module "uksouth_performance_rabbit" {
 
 
 module "uksouth_performance_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.12.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -151,6 +151,7 @@ module "uksouth_performance_cluster_0" {
   worker_scaleset_size = 10
   use_scaleset         = true
   max_pods_per_host    = 100
+  log_analytics_workspace_id = module.uksouth_performance_environment.log_analytics_id
 
   cluster_ingress_subdomains = [ "api" ]
 
