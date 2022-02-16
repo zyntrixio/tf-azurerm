@@ -25,8 +25,8 @@ serviceaccount_key, stderr = serviceaccount_key_proc.communicate()
 if serviceaccount_key_proc.returncode != 0:
     print('Failed to generate service account key: ', stderr)
     sys.exit(1)
-if not serviceaccount_key.startswith(b'-----BEGIN RSA PRIVATE KEY'):
-    print('Service account key does not start with -----BEGIN RSA PRIVATE KEY')
+if not serviceaccount_key.startswith(b'-----BEGIN PRIVATE KEY'):
+    print('Service account key does not start with -----BEGIN PRIVATE KEY')
     sys.exit(1)
 
 result['kube_serviceaccount_key'] = base64.b64encode(serviceaccount_key).decode()

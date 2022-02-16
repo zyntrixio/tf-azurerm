@@ -115,7 +115,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.14.0"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm
@@ -126,7 +126,7 @@ module "uksouth_dev_cluster_0" {
     location = "uksouth"
     vnet_cidr = "10.99.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.20.0"
+    bifrost_version = "4.21.0"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
@@ -134,6 +134,7 @@ module "uksouth_dev_cluster_0" {
     use_scaleset = true
     max_pods_per_host = 100
     log_analytics_workspace_id = module.uksouth_dev_environment.log_analytics_id
+    controller_storage_type = "StandardSSD_LRS"
 
     cluster_ingress_subdomains = [ "api", "web", "reflector", "api2-docs" , "aperture" ]
 
