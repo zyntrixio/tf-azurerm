@@ -240,7 +240,7 @@ module "uksouth_prod_cluster_0" {
     vnet_cidr = "10.169.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-    bifrost_version = "4.20.0"
+    bifrost_version = "4.21.0"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
@@ -316,7 +316,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.11.3"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.14.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -328,14 +328,15 @@ module "uksouth_prod_cluster_1" {
     vnet_cidr = "10.170.0.0/16"
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-    bifrost_version = "4.20.0"
+    bifrost_version = "4.21.0"
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
     worker_scaleset_size = 6
     use_scaleset = true
     max_pods_per_host = 100
-    # log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
+    log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
+    controller_storage_type = "StandardSSD_LRS"
 
     cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
@@ -403,94 +404,94 @@ module "uksouth_prod_cluster_1" {
     }
 }
 
-module "uksouth_prod_cluster_2" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.14.0"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
+# module "uksouth_prod_cluster_2" {
+#     source = "github.com/binkhq/tf-azurerm_cluster?ref=2.14.0"
+#     providers = {
+#         azurerm = azurerm.uk_production
+#         azurerm.core = azurerm
+#     }
 
-    resource_group_name = "uksouth-prod-k2"
-    cluster_name = "prod2"
-    location = "uksouth"
-    vnet_cidr = "10.171.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+#     resource_group_name = "uksouth-prod-k2"
+#     cluster_name = "prod2"
+#     location = "uksouth"
+#     vnet_cidr = "10.171.0.0/16"
+#     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
-    bifrost_version = "4.21.0"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2as_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 6
-    use_scaleset = true
-    max_pods_per_host = 100
-    log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
-    controller_storage_type = "StandardSSD_LRS"
+#     bifrost_version = "4.21.0"
+#     ubuntu_version = "20.04"
+#     controller_vm_size = "Standard_D2as_v4"
+#     worker_vm_size = "Standard_D4s_v4"
+#     worker_scaleset_size = 6
+#     use_scaleset = true
+#     max_pods_per_host = 100
+#     log_analytics_workspace_id = module.uksouth_prod_environment.log_analytics_id
+#     controller_storage_type = "StandardSSD_LRS"
 
-    cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
+#     cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
 
-    prometheus_subnet = "10.33.0.0/18"
+#     prometheus_subnet = "10.33.0.0/18"
 
-    # Gitops repo, Managed identity for syncing common secrets
-    flux_environment = "uksouth-prod"
+#     # Gitops repo, Managed identity for syncing common secrets
+#     flux_environment = "uksouth-prod"
 
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
+#     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
+#     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns  = module.uksouth-dns.public_dns
+#     # DNS zones
+#     private_dns = module.uksouth-dns.private_dns
+#     public_dns  = module.uksouth-dns.public_dns
 
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-        elasticsearch = {
-            vnet_id = module.uksouth-elasticsearch.vnet_id
-            vnet_name = module.uksouth-elasticsearch.vnet_name
-            resource_group_name = module.uksouth-elasticsearch.resource_group_name
-        }
-    }
-    subscription_peers = {
-        rabbitmq = {
-            vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
-        }
-        clickhouse = {
-            vnet_id = module.uksouth_prod_clickhouse.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_clickhouse.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_clickhouse.peering["resource_group_name"]
-        }
-        environment = {
-            vnet_id = module.uksouth_prod_environment.peering.vnet_id
-            vnet_name = module.uksouth_prod_environment.peering.vnet_name
-            resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
-        }
-    }
+#     # Peers    
+#     peers = {
+#         firewall = {
+#             vnet_id = module.uksouth-firewall.vnet_id
+#             vnet_name = module.uksouth-firewall.vnet_name
+#             resource_group_name = module.uksouth-firewall.resource_group_name
+#         }
+#         elasticsearch = {
+#             vnet_id = module.uksouth-elasticsearch.vnet_id
+#             vnet_name = module.uksouth-elasticsearch.vnet_name
+#             resource_group_name = module.uksouth-elasticsearch.resource_group_name
+#         }
+#     }
+#     subscription_peers = {
+#         rabbitmq = {
+#             vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
+#             vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
+#             resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
+#         }
+#         clickhouse = {
+#             vnet_id = module.uksouth_prod_clickhouse.peering["vnet_id"]
+#             vnet_name = module.uksouth_prod_clickhouse.peering["vnet_name"]
+#             resource_group_name = module.uksouth_prod_clickhouse.peering["resource_group_name"]
+#         }
+#         environment = {
+#             vnet_id = module.uksouth_prod_environment.peering.vnet_id
+#             vnet_name = module.uksouth_prod_environment.peering.vnet_name
+#             resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+#         }
+#     }
 
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1002
-        rule_priority = 1002
-        public_ip = module.uksouth-firewall.public_ips.0.ip_address
-        secure_origins = local.secure_origins
-        ingress_source = "*"
-        ingress_http = 8002
-        ingress_https = 4002
-        ingress_controller = 6002
-    }
+#     firewall = {
+#         firewall_name = module.uksouth-firewall.firewall_name
+#         resource_group_name = module.uksouth-firewall.resource_group_name
+#         ingress_priority = 1002
+#         rule_priority = 1002
+#         public_ip = module.uksouth-firewall.public_ips.0.ip_address
+#         secure_origins = local.secure_origins
+#         ingress_source = "*"
+#         ingress_http = 8002
+#         ingress_https = 4002
+#         ingress_controller = 6002
+#     }
 
-    postgres_servers = module.uksouth_prod_environment.postgres_servers
-    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+#     postgres_servers = module.uksouth_prod_environment.postgres_servers
+#     postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
 
-    tags = {
-        "Environment" = "Production",
-    }
-}
+#     tags = {
+#         "Environment" = "Production",
+#     }
+# }
 
 module "uksouth_prod_binkweb" {
     source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.0.0"
