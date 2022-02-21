@@ -538,6 +538,24 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "barclays-oat-sandbox-gb-bink-com"
+        host_name = "barclays-oat.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
+        name = "barclays-sit-sandbox-gb-bink-com"
+        host_name = "barclays-sit.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
+        name = "lloyds-sit-sandbox-gb-bink-com"
+        host_name = "lloyds-sit.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
         name = "performance-sandbox-gb-bink-com"
         host_name = "performance.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
@@ -770,8 +788,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-oat"
         backend {
-            host_header = "oat.sandbox0.uksouth.bink.sh"
-            address = "oat.sandbox0.uksouth.bink.sh"
+            host_header = "barclays-oat.sandbox0.uksouth.bink.sh"
+            address = "barclays-oat.sandbox0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -783,7 +801,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-oat"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["oat-sandbox-gb-bink-com"]
+        frontend_endpoints = ["oat-sandbox-gb-bink-com", "barclays-oat-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "uksouth-sandbox-oat"
@@ -795,7 +813,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-oat-http"
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["oat-sandbox-gb-bink-com"]
+        frontend_endpoints = ["oat-sandbox-gb-bink-com", "barclays-oat-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
@@ -805,8 +823,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-sit-barclays"
         backend {
-            host_header = "sit-barclays.sandbox0.uksouth.bink.sh"
-            address = "sit-barclays.sandbox0.uksouth.bink.sh"
+            host_header = "barclays-sit.sandbox0.uksouth.bink.sh"
+            address = "barclays-sit.sandbox0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -818,7 +836,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-sit-barclays"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-sandbox-gb-bink-com"]
+        frontend_endpoints = ["api-sandbox-gb-bink-com", "barclays-sit-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "uksouth-sandbox-sit-barclays"
@@ -830,7 +848,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-sit-barclays-http"
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-sandbox-gb-bink-com"]
+        frontend_endpoints = ["api-sandbox-gb-bink-com", "barclays-sit-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
@@ -880,8 +898,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-sit-lbg"
         backend {
-            host_header = "sit-lbg.sandbox0.uksouth.bink.sh"
-            address = "sit-lbg.sandbox0.uksouth.bink.sh"
+            host_header = "lloyds-sit.sandbox0.uksouth.bink.sh"
+            address = "lloyds-sit.sandbox0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -893,7 +911,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-sit-lbg"
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["sit-sandbox-gb-bink-com"]
+        frontend_endpoints = ["sit-sandbox-gb-bink-com", "lloyds-sit-sandbox-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "uksouth-sandbox-sit-lbg"
@@ -905,7 +923,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-sit-lbg-http"
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["sit-sandbox-gb-bink-com"]
+        frontend_endpoints = ["sit-sandbox-gb-bink-com", "lloyds-sit-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"

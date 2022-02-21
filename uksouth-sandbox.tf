@@ -29,36 +29,47 @@ module "uksouth_sandbox_environment" {
   }
 
   storage_iam = {
-    Common-Backend = {
+    common-backend = {
       storage_id = "common",
       object_id  = local.aad_group.backend,
       role       = "Contributor",
     },
-    Sit-Backend = {
-      storage_id = "sit",
-      object_id  = local.aad_group.backend,
-      role       = "Contributor",
-    },
-    Oat-Backend = {
-      storage_id = "oat",
-      object_id  = local.aad_group.backend,
-      role       = "Contributor",
-    },
-    Common-QA = {
+    common-qa = {
       storage_id = "common",
       object_id  = local.aad_group.qa,
       role       = "Contributor",
     },
-    Sit-QA = {
-      storage_id = "sit",
+    barclays-sit-backend = {
+      storage_id = "barclays-sit",
+      object_id  = local.aad_group.backend,
+      role       = "Contributor",
+    },
+    barclays-oat-backend = {
+      storage_id = "barclays-oat",
+      object_id  = local.aad_group.backend,
+      role       = "Contributor",
+    },
+    lloyds-sit-backend = {
+      storage_id = "lloyds-sit",
+      object_id  = local.aad_group.backend,
+      role       = "Contributor",
+    },
+    barclays-sit-qa = {
+      storage_id = "barclays-sit",
       object_id  = local.aad_group.qa,
       role       = "Contributor",
     },
-    Oat-QA = {
-      storage_id = "oat",
+    barclays-oat-qa = {
+      storage_id = "barclays-oat",
       object_id  = local.aad_group.qa,
       role       = "Contributor",
     },
+    lloyds-sit-qa = {
+      storage_id = "lloyds-sit",
+      object_id  = local.aad_group.qa,
+      role       = "Contributor",
+    },
+
   }
 
   keyvault_users = {
@@ -68,9 +79,9 @@ module "uksouth_sandbox_environment" {
   }
 
   additional_keyvaults = [
-    "bink-uksouth-sandbox-sit",
-    "bink-uksouth-sandbox-lbg", # non-ideal-name, 24 character limit
-    "bink-uksouth-sandbox-oat"
+    "bink-uksouth-barclay-sit",
+    "bink-uksouth-barclay-oat",
+    "bink-uksouth-lloyds-sit",
   ]
 
   postgres_flexible_config = {
@@ -82,29 +93,29 @@ module "uksouth_sandbox_environment" {
       high_availability = false
         databases = [
           "postgres",
-          "sit_lbg_atlas",
-          "sit_lbg_europa",
-          "sit_lbg_hades",
-          "sit_lbg_hermes",
-          "sit_lbg_midas",
-          "sit_lbg_pontus",
-          "sit_barclays_atlas",
-          "sit_barclays_europa",
-          "sit_barclays_hades",
-          "sit_barclays_hermes",
-          "sit_barclays_midas",
-          "sit_barclays_pontus",
-          "oat_barclays_atlas",
-          "oat_barclays_europa",
-          "oat_barclays_hades",
-          "oat_barclays_hermes",
-          "oat_barclays_midas",
-          "oat_barclays_pontus",
+          "lloyds_sit_atlas",
+          "lloyds_sit_europa",
+          "lloyds_sit_hades",
+          "lloyds_sit_hermes",
+          "lloyds_sit_midas",
+          "lloyds_sit_pontus",
+          "barclays_sit_atlas",
+          "barclays_sit_europa",
+          "barclays_sit_hades",
+          "barclays_sit_hermes",
+          "barclays_sit_midas",
+          "barclays_sit_pontus",
+          "barclays_oat_atlas",
+          "barclays_oat_europa",
+          "barclays_oat_hades",
+          "barclays_oat_hermes",
+          "barclays_oat_midas",
+          "barclays_oat_pontus",
         ]
     }
   }
 
-  secret_namespaces = "default,oat,sit-barclays,sit-lbg,monitoring"
+  secret_namespaces = "default,barclays-oat,barclays-sit,lloyds-sit,monitoring"
   eventhub_authid   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   storage_config = {
     common = {
@@ -112,18 +123,18 @@ module "uksouth_sandbox_environment" {
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
-    sit = {
-      name                     = "binkuksouthsandboxsit",
+    barclays-sit = {
+      name                     = "binkuksouthbarclayssit",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
-    oat = {
-      name                     = "binkuksouthsandboxoat",
+    barclays-oat = {
+      name                     = "binkuksouthbarclaysoat",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
-    sit-lbg = {
-      name                     = "binkuksouthsandboxsitlbg",
+    lloyds-sit = {
+      name                     = "binkuksouthlloydssit",
       account_replication_type = "ZRS",
       account_tier             = "Standard"
     },
@@ -135,7 +146,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.14.0"
   providers = {
     azurerm      = azurerm.uk_sandbox
     azurerm.core = azurerm
@@ -146,7 +157,7 @@ module "uksouth_sandbox_cluster_0" {
   location             = "uksouth"
   vnet_cidr            = "10.189.0.0/16"
   eventhub_authid      = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-  bifrost_version      = "4.20.0"
+  bifrost_version      = "4.21.1"
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
@@ -154,8 +165,9 @@ module "uksouth_sandbox_cluster_0" {
   use_scaleset         = true
   max_pods_per_host    = 100
   log_analytics_workspace_id = module.uksouth_sandbox_environment.log_analytics_id
+  controller_storage_type = "StandardSSD_LRS"
 
-  cluster_ingress_subdomains = [ "oat", "sit-barclays", "sit-lbg", "web", "api2-docs" ]
+  cluster_ingress_subdomains = [ "barclays-oat", "barclays-sit", "lloyds-sit", "api2-docs" ]
 
   prometheus_subnet = "10.33.0.0/18"
 
