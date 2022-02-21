@@ -58,7 +58,7 @@ module "uksouth_tools_cluster_0" {
   location            = "uksouth"
   vnet_cidr           = "10.33.0.0/16"
   eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-  bifrost_version     = "4.20.0"
+  bifrost_version     = "4.22.0"
   ubuntu_version      = "20.04"
 
   controller_vm_size   = "Standard_D2s_v4"
