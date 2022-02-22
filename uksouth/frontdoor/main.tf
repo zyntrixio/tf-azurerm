@@ -1245,7 +1245,7 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
     custom_https_configuration {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
 
     timeouts {
@@ -1262,7 +1262,7 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
     custom_https_configuration {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com"
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
 
     timeouts {
