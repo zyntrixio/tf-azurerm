@@ -13,6 +13,7 @@ module "uksouth_tools_environment" {
 
   keyvault_users = {
     Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
+    SecOps = local.aad_group.cyber_sec,
   }
 
     postgres_flexible_config = {

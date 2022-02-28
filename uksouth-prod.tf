@@ -67,6 +67,7 @@ module "uksouth_prod_environment" {
         chris_latham = local.aad_user.chris_latham,
         christian_prior = local.aad_user.christian_prior,
         qa = local.aad_group.qa,
+        SecOps = local.aad_group.cyber_sec,
     }
 
     postgres_flexible_config = {

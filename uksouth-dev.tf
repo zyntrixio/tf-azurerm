@@ -46,6 +46,7 @@ module "uksouth_dev_environment" {
         Backend = local.aad_group.backend,
         QA = local.aad_group.qa,
         Architecture = local.aad_group.architecture
+        SecOps = local.aad_group.cyber_sec,
     }
 
     postgres_flexible_config = {

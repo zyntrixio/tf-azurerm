@@ -49,6 +49,7 @@ module "uksouth_performance_environment" {
   keyvault_users = {
     Backend = local.aad_group.backend,
     QA      = local.aad_group.qa,
+    SecOps = local.aad_group.cyber_sec,
   }
 
     postgres_flexible_config = {
