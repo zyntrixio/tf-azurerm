@@ -1,5 +1,5 @@
 resource "azurerm_dns_zone" "bink-status" {
-    name = "bink.status"
+    name = "binkstatus.com"
     resource_group_name = azurerm_resource_group.rg.name
 }
 
@@ -10,20 +10,13 @@ locals {
         cname_records = {
         }
         mx_records = {
-            "@" = [
-                {
-                    preference = 0,
-                    exchange = "bink-status.mail.protection.outlook.com",
-                }
-            ]
+
         }
-        srv_records = {}
+        srv_records = {
+
+        }
         txt_records = {
-            "@" = [
-                "v=spf1 include:spf.protection.outlook.com -all",
-                "apple-domain-verification=bgPRnFWwsHMbqgEx",
-                "MS=ms96156124"
-            ]
+            
         }
     }
 }
