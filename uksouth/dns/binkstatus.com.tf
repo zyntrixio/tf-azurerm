@@ -8,6 +8,7 @@ locals {
         a_records = {
         }
         cname_records = {
+            "binkstatus.com": "wx6qpqvzjkw1.stspg-customer.com"
         }
         mx_records = {
 
