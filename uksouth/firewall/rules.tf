@@ -243,9 +243,12 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "OpsGenie"
+        name = "Atlassian"
         source_addresses = ["*"]
-        target_fqdns = ["api.opsgenie.com"]
+        target_fqdns = [
+            "api.opsgenie.com",
+            "api.statuspage.io",
+        ]
         protocol {
             port = "443"
             type = "Https"
