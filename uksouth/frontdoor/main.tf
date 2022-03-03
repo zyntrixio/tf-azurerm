@@ -379,6 +379,13 @@ resource "azurerm_frontdoor" "frontdoor" {
             https_port = 4000
         }
 
+        backend {
+            host_header = "api.dev1.uksouth.bink.sh"
+            address = "api.dev1.uksouth.bink.sh"
+            http_port = 8001
+            https_port = 4001
+        }
+
         load_balancing_name = "standard"
         health_probe_name = "healthz"
     }
