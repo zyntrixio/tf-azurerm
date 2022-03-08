@@ -74,7 +74,6 @@ module "uksouth_prod_environment" {
         common = {
             name = "bink-uksouth-prod"
             version = "13"
-            # sku_name = "GP_Standard_D8s_v3"
             sku_name = "GP_Standard_D8ds_v4"
             storage_mb = 1048576
             high_availability = true
