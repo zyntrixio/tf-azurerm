@@ -175,6 +175,12 @@ module "uksouth_sandbox_environment" {
         }
     }
 
+    redis_config = {
+        vnet = {
+            name = "bink-uksouth-perf-txm",
+        },
+    }
+
     secret_namespaces = "default,barclays-oat,barclays-sit,lloyds-sit,monitoring,perf-api-v1,perf-api-v2,perf-bpl,perf-txm"
     eventhub_authid   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
@@ -241,7 +247,7 @@ module "uksouth_sandbox_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 3
+    worker_scaleset_size = 10
     use_scaleset = true
     max_pods_per_host = 100
     log_analytics_workspace_id = module.uksouth_sandbox_environment.log_analytics_id
