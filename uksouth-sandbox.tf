@@ -130,11 +130,11 @@ module "uksouth_sandbox_environment" {
 
     postgres_flexible_config = {
         common = {
-        name = "bink-uksouth-sandbox"
-        version = "13"
-        sku_name = "GP_Standard_D2ds_v4"
-        storage_mb = 131072
-        high_availability = false
+            name = "bink-uksouth-sandbox"
+            version = "13"
+            sku_name = "GP_Standard_D8ds_v4"
+            storage_mb = 1048576
+            high_availability = false
             databases = [
                 "postgres",
                 "lloyds_sit_atlas",
@@ -172,7 +172,17 @@ module "uksouth_sandbox_environment" {
                 "perf_bpl_polaris",
                 "perf_bpl_vela",
             ]
-        }
+        },
+        archive = {
+            name = "bink-uksouth-sandbox-archive"
+            version = "13"
+            sku_name = "GP_Standard_D2ds_v4"
+            storage_mb = 1048576
+            high_availability = false
+            databases = [
+                "postgres",
+            ]
+        },
     }
 
     redis_config = {
