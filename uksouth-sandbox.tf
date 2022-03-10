@@ -186,7 +186,7 @@ module "uksouth_sandbox_environment" {
     }
 
     redis_config = {
-        vnet = {
+        txm = {
             name = "bink-uksouth-perf-txm",
         },
     }
@@ -263,7 +263,10 @@ module "uksouth_sandbox_cluster_0" {
     log_analytics_workspace_id = module.uksouth_sandbox_environment.log_analytics_id
     controller_storage_type = "StandardSSD_LRS"
 
-    cluster_ingress_subdomains = [ "barclays-oat", "barclays-sit", "lloyds-sit", "api2-docs" ]
+    cluster_ingress_subdomains = [
+        "barclays-oat", "barclays-sit", "lloyds-sit", "api2-docs",
+        "api2-docs", "perf-api-v1", "perf-api-v2", "perf-bpl", "perf-txm",
+    ]
 
     prometheus_subnet = "10.33.0.0/18"
 
