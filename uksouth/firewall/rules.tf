@@ -266,7 +266,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "RabbitMQ"
         source_addresses = ["*"]
-        target_fqdns = ["dl.bintray.com"]
+        target_fqdns = ["dl.cloudsmith.io"]
         protocol {
             port = "443"
             type = "Https"
