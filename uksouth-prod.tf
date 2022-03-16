@@ -88,6 +88,9 @@ module "uksouth_prod_environment" {
                 "pontus",
                 "postgres",
                 "zagreus",
+                "carina",
+                "polaris",
+                "vela",
             ]
         },
         tableau = {
