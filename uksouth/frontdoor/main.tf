@@ -145,6 +145,39 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    backend_pool {
+        name = "uksouth-prod-bpl"
+
+        backend {
+            host_header = "bpl.prod0.uksouth.bink.sh"
+            address = "bpl.prod0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+
+        backend {
+            host_header = "bpl.prod1.uksouth.bink.sh"
+            address = "bpl.prod1.uksouth.bink.sh"
+            http_port = 8001
+            https_port = 4001
+        }
+
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-prod-bpl"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/bpl/*"]
+        frontend_endpoints = ["api-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-prod-bpl"
+            cache_enabled = false
+        }
+    }
+
     frontend_endpoint {
         name = "policies-gb-bink-com"
         host_name = "policies.gb.bink.com"

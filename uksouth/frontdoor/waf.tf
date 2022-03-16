@@ -16,7 +16,7 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
         match_condition {
             match_variable = "RequestUri"
             operator = "Contains"
-            match_values = ["/admin"]
+            match_values = ["/admin", "/txm"]
         }
         match_condition {
             match_variable = "RemoteAddr"
@@ -27,22 +27,18 @@ resource "azurerm_frontdoor_firewall_policy" "policy" {
     }
 
     custom_rule {
-        name = "HarmoniaAPI"
+        name = "BPLRateLimit"
         enabled = true
         priority = 2
-        type = "MatchRule"
+        type = "RateLimitRule"
         action = "Block"
+        rate_limit_duration_in_minutes = 1
+        rate_limit_threshold = 15
 
         match_condition {
             match_variable = "RequestUri"
             operator = "Contains"
-            match_values = ["/txm"]
-        }
-        match_condition {
-            match_variable = "RemoteAddr"
-            operator = "IPMatch"
-            negation_condition = true
-            match_values = concat(var.secure_origins, var.secure_origins_v6)
+            match_values = ["/marketing/unsubscribe"]
         }
     }
 }

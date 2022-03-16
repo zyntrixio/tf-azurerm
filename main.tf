@@ -58,7 +58,7 @@ locals {
     kubernetes_sso   = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
   }
 
-  prod_cluster_ingress_subdomains = [ "api", "policies", "link", "data", "api2-docs" ]
+  prod_cluster_ingress_subdomains = [ "api", "policies", "link", "data", "api2-docs", "bpl" ]
 }
 
 terraform {
@@ -74,7 +74,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.96.0"
+      version = "2.96.0"  # Not going to 2.99 because https://github.com/hashicorp/terraform-provider-azurerm/issues/15821
     }
     chef = {
       source = "terrycain/chef"
