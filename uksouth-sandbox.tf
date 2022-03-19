@@ -238,7 +238,7 @@ module "uksouth_sandbox_environment" {
     bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
     bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
-    managed_identities = local.managed_identities
+    managed_identities = merge(local.managed_identities, {pyxis={kv_access="ro"}})
 }
 
 module "uksouth_sandbox_cluster_0" {
