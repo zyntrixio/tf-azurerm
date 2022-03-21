@@ -63,7 +63,7 @@ resource "azurerm_network_security_group" "i" {
         priority = 101
         direction = "Inbound"
         protocol = "TCP"
-        source_address_prefixes = var.cluster_cidrs
+        source_address_prefix = "*"
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
         destination_port_range = 8000
