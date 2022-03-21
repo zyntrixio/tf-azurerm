@@ -56,7 +56,18 @@ resource "azurerm_network_security_group" "i" {
         destination_address_prefix = var.vnet_cidr
         destination_port_range = 8443
     }
-
+    security_rule {
+        name = "Allow_Aiden"
+        description = "Allow Aiden to connect to airbyte"
+        access = "Allow"
+        priority = 101
+        direction = "Inbound"
+        protocol = "TCP"
+        source_address_prefixes = var.cluster_cidrs
+        source_port_range = "*"
+        destination_address_prefix = var.vnet_cidr
+        destination_port_range = 8000
+    }
     security_rule {
         name = "Allow_SSH"
         description = "Allow SSH Connections from Bastion Hosts"

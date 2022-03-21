@@ -44,6 +44,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name =  "Clickhouse Snowflake"
+        source_addresses = ["*"]
+        target_fqdns = [ 
+            "xb90214.eu-west-2.aws.snowflakecomputing.com", 
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Ubuntu Changelogs"
         source_addresses = ["*"]
         target_fqdns = [
@@ -651,6 +662,24 @@ resource "azurerm_firewall_nat_rule_collection" "sftp" {
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = var.sftp_ip_address
         translated_port = "22"
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "aiden_airbyte" {
+    name = "aiden_airbyte"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 150
+    action = "Dnat"
+
+    rule {
+        name = "http"
+        source_addresses = ["94.7.15.187"]
+        destination_ports = ["8000"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.23.4"
+        translated_port = "8000"
         protocols = ["TCP"]
     }
 }
