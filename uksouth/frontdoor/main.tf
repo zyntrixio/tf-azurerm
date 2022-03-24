@@ -589,6 +589,12 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "lloyds-sit-reflector-sandbox-gb-bink-com"
+        host_name = "lloyds-sit-reflector.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
         name = "perf-api-v1-sandbox-gb-bink-com"
         host_name = "perf-api-v1.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
@@ -1121,6 +1127,41 @@ resource "azurerm_frontdoor" "frontdoor" {
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["sit-sandbox-gb-bink-com", "lloyds-sit-sandbox-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-lloyds-sit-reflector"
+        backend {
+            host_header = "lloyds-sit-reflector.sandbox0.uksouth.bink.sh"
+            address = "lloyds-sit-reflector.sandbox0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-lloyds-sit-reflector"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["lloyds-sit-reflector-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-lloyds-sit-reflector"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-lloyds-sit-reflector-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["lloyds-sit-reflector-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"

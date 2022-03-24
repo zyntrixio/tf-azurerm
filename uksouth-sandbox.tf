@@ -11,7 +11,16 @@ module "uksouth_sandbox_environment" {
 
     vnet_cidr = "192.168.100.0/24"
 
-    postgres_iam = {}
+    postgres_iam = {
+        Backend = {
+            object_id = local.aad_group.backend,
+            role      = "Contributor",
+        },
+        QA = {
+            object_id = local.aad_group.qa,
+            role      = "Contributor",
+        },
+    }
 
     keyvault_iam = {
         Backend = {
@@ -265,8 +274,9 @@ module "uksouth_sandbox_cluster_0" {
     controller_storage_type = "StandardSSD_LRS"
 
     cluster_ingress_subdomains = [
-        "barclays-oat", "barclays-sit", "lloyds-sit", "api2-docs",
-        "api2-docs", "perf-api-v1", "perf-api-v2", "perf-bpl", "perf-txm",
+        "api2-docs", "api2-docs", "barclays-oat", "barclays-sit",
+        "lloyds-sit", "lloyds-sit-reflector", "perf-api-v1", "perf-api-v2",
+        "perf-bpl", "perf-txm"
     ]
 
     prometheus_subnet = "10.33.0.0/18"
