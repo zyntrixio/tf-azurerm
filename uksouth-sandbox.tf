@@ -137,6 +137,7 @@ module "uksouth_sandbox_environment" {
             high_availability = false
             databases = [
                 "postgres",
+                "lloyds_sit_api_reflector",
                 "lloyds_sit_atlas",
                 "lloyds_sit_europa",
                 "lloyds_sit_hades",
