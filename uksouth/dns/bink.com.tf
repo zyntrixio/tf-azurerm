@@ -179,7 +179,7 @@ locals {
             "@" = [
                 "atlassian-domain-verification=mqUsdFedKn6vro+U8Cacg/cxjaFFF3CWSE5Jbww0PwYRNdDs5xfJlkiluMUKZrn4",
                 "google-site-verification=TkTtMyGRzTV8pXap0aQo980_lNSfYa9E2__r1kI6Djo",
-                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:_spf.atlassian.net include:stspg-customer.com ~all",
+                "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:_spf.atlassian.net include:stspg-customer.com include:spf.mailjet.com ~all",
                 "MS=ms26724008",
                 "apple-domain-verification=jOvmiNhPlgoqmBOx",
                 "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
@@ -190,6 +190,9 @@ locals {
             ]
             "mailo._domainkey" = [
                 "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtVJBtQtVQp/vOwG2a+cr9Asv4NV1dWyFUbrrMpzfq4C0i4wmWLwCAyPIue2Mi9WLZ5ygeo6iD1yOQS21XmmfnafgYhOPQ2Fm6rF044MwSNQRT6WTyxEGQ6IUaKQ87/91i3o8NqkXVI94Z2DuyGeijrK/fare/CHIqYzDv5eyHi8UjdgKfnQwsI89QGYF3Ey12dF1YBixKvk/+cjYiZFsAZh2r4x3N6ccpKfiw8Gblk1S45ZPvUWo7b0DxTaWP617UCN7MXOCUl7ecji84m/pjfpgORX4yJKJIudYiBGwWpd4BGB68KUNdMAqgVBENcYuik3fna6nfiddTmJ+6UsgiQIDAQAB",
+            ]
+            "mailjet._domainkey" = [
+                "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHHq1EChTzv5Gq4rCq+QAL2+yc6JIJkN8kuUwIu8Z7/opusovpYXy3GbJtgp1an2EVATTfVQp5VH7WmWSuIf2/47TOHB0LW+7kYkQoKma2ZJ91u0kP6Udydzofvy+dOdEDvtd8btszxFHU6hosze7l1BjGeb/1rgdr4J22E6BxIQIDAQAB"
             ]
             "zendeskverification" = [
                 "182c696aec4aa197",
