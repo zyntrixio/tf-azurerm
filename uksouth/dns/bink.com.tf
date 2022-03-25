@@ -206,6 +206,9 @@ locals {
             "_github-challenge-binkhq.bink.com" = [
                 "515a6a7363"
             ]
+            "mailjet._abb31074" = [
+                "abb310741ee0e9aba4bf0cf7b06bb8c7"
+            ]
         }
     }
 }
