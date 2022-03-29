@@ -118,6 +118,12 @@ locals {
             # Office 365
             "selector1._domainkey" = "selector1-bink-com._domainkey.hellobink.onmicrosoft.com",
             "selector2._domainkey" = "selector2-bink-com._domainkey.hellobink.onmicrosoft.com",
+
+            # FreshService
+            "fs._domainkey" = "wl210509s1.domainkey.freshemail.io"
+            "fs2._domainkey" = "wl210509s2.domainkey.freshemail.io"
+            "fs3._domainkey" = "wl210509s3.domainkey.freshemail.io"
+            "fsdkim" = "spfmx3.domainkey.freshemail.io"
         }
         mx_records = {
             "@" = [
