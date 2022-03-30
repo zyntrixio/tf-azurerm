@@ -209,13 +209,23 @@ module "uksouth-sftp" {
           }
         },
         {
-          "name" : "xcm-fatface",
-          "id" : 4002,
-          "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ/o58SV1LaKVqocPR88huiHKdmnx53elrvwfPqjFRu",
+          "name" : "trenette-dev",
+          "id" : 4200,
+          "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwjW5zg1mK+j+BZT/uCpFcjOhNcT8RnzDAuG92+ndE6",
           "upload" : {
-            "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
-            "container" : "harmonia-imports",
-            "slug" : "scheme/fatface",
+            "conn_string" : module.uksouth_dev_environment.storage_accounts.binkuksouthdev,
+            "container" : "carina-imports",
+            "slug" : "trenette",
+          }
+        },
+        {
+          "name" : "trenette-staging",
+          "id" : 4201,
+          "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwjW5zg1mK+j+BZT/uCpFcjOhNcT8RnzDAuG92+ndE6",
+          "upload" : {
+            "conn_string" : module.uksouth_staging_environment.storage_accounts.binkuksouthstaging,
+            "container" : "carina-imports",
+            "slug" : "trenette",
           }
         },
         {
@@ -239,16 +249,11 @@ module "uksouth-sftp" {
           "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw==\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqui3ya3xyECnjnlpb4nLq0ibDgjh/DGjf9h2lsiuVOXbtXm3Vs0D7qKd4M2Z+NaRGoaqdUTjeAbhIFApJoxnk7FetNUYc89qC85pjsXv9VAZZs1PcxmdgL5lVu6S5vs1shozJIC3eejRReSuvLGrOtt/EvMmzUHhnSNZqwomIhnK1sSUiv7qrB/Yh7n7kmxuEixDUVnia1vSvNHFq+prf9wrH1ChfuCME7IxUNiOOupCwYWjJelsizhdpqwsYFuPg92J4ClPCzzeRyRkg5XFYSuT6lq3I/3a23ypgnN/sVVTH7DYx8f9GR4jmQwcR+kWvZiOMEb415A7LHbhf5PaJuIhD83ixCPbomk0rzCPv2J1ayWxyDW38S5jAWa8fvkTy1Yk9tVqu8NEr9S+l5qzkmdDiUnL5V22zxSGdIf2hOlf9tI/Cy5jN0ESQHuODubpmYCXt1zK5mKwLgLz5AUi9bz7brf5dFcAzzQK/6VfSijulkKDx4BqNF9cDiTEDQ7hDtPjtYnzYQ7yA9FpY165bAy7mA2YYUr0Z4huYRTW3bacX0cGwvgCyOqZkQ33hKfRnFTD+32PD9EoVdUCRvT7kkODpu1k40ZSqqc1Pkgk9EGGI5gpkgUXQzR7CAv4JPhe0vrUKEk3rSi6b4EJ4+gqmb2fLlzFXqgOuMR1bo1n64w=="
         },
         {
-          "name" : "tom_winchester_sftp",
-          "id" : 4504,
-          "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM6a2KLI7tsQao5tEoeYVZG//erLryOxo/qV/BH6VEf3"
-        },
-        {
           "name" : "binktest_perf",
           "id" : 4505,
           "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw=="
         },
-        { # Used to test the SFTP functionality of the Barclays SFTP Notifications rubbish
+        {
           "name" : "binktest_dev_hermes_barclays",
           "id" : 4506,
           "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCuqR1EarVpxolYA8/jncHSZJ2c63clp+ygYn5M4i2N5gPH2L3JaDme8ZJ+8k7soq1QgxJMDHZ9yYDFCQpCg/VeLPY4Ve6FbOMOyM3vEkesls2KmkKqer8uwBRUufqH4NlTmKT2jZZiP65ODyo8Ssv3tQF0vaGiatg030XjhPZDmtNIFWV1VEFgclSzhFvugrY+HcckyJiUoWc1w7yYUzhnJb+PRhj5BaohbffD1VEQfgmjEDnaryFbdltaEa4Oe+tu0l6JVVtW7Z5nMuKBzEgr37PCpRyJPPtromVDK8gFZ+SFyEjiOpWcMcC2V3J7m1jlGNj8Snyuaz1N6nHOjqx"
