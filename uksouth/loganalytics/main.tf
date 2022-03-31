@@ -14,7 +14,7 @@ resource "azurerm_log_analytics_workspace" "core" {
     location = azurerm_resource_group.i.location
     resource_group_name = azurerm_resource_group.i.name
     sku = "PerGB2018"
-    retention_in_days = 90
+    retention_in_days = 365
 }
 
 resource "azurerm_role_assignment" "secops" {
