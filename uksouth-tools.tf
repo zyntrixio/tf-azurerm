@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.9.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.10.0"
   providers = {
     azurerm = azurerm
   }
@@ -10,6 +10,8 @@ module "uksouth_tools_environment" {
   }
 
   vnet_cidr = "192.168.100.0/24"
+
+  loganalytics_id = module.uksouth_loganalytics.id
 
   keyvault_users = {
     Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
@@ -48,7 +50,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.15.0"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
@@ -67,7 +69,8 @@ module "uksouth_tools_cluster_0" {
   worker_scaleset_size = 4
   use_scaleset         = true
   max_pods_per_host    = 100
-  log_analytics_workspace_id = module.uksouth_tools_environment.log_analytics_id
+  loganalytics_id = module.uksouth_loganalytics.id
+  controller_storage_type = "StandardSSD_LRS"
 
   prometheus_subnet = "10.33.0.0/18"
 

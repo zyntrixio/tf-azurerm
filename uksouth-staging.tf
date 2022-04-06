@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.9.3"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.10.0"
   providers = {
     azurerm = azurerm.uk_staging
   }
@@ -10,6 +10,8 @@ module "uksouth_staging_environment" {
   }
 
   vnet_cidr = "192.168.100.0/24"
+
+  loganalytics_id = module.uksouth_loganalytics.id
 
   postgres_iam = {}
 
@@ -109,7 +111,7 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.13.0"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.15.0"
   providers = {
     azurerm      = azurerm.uk_staging
     azurerm.core = azurerm
@@ -127,7 +129,8 @@ module "uksouth_staging_cluster_0" {
   worker_scaleset_size = 4
   use_scaleset         = true
   max_pods_per_host    = 100
-  log_analytics_workspace_id = module.uksouth_staging_environment.log_analytics_id
+  loganalytics_id = module.uksouth_loganalytics.id
+  controller_storage_type = "StandardSSD_LRS"
 
   cluster_ingress_subdomains = [ "api", "link", "web", "reflector", "policies", "api2-docs", "aperture", ]
 
@@ -194,7 +197,7 @@ module "uksouth_staging_binkweb" {
     environment = "Staging"
 
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_staging_environment.log_analytics_id
+    loganalytics_id = module.uksouth_loganalytics.id
 
     storage_accounts = {
         wallet = {
