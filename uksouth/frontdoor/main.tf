@@ -916,6 +916,29 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    backend_pool {
+        name = "uksouth-sandbox-barclays-sit-reflector"
+        backend {
+            host_header = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
+            address = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-barclays-sit-reflector-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["barclays-sit-reflector-sandbox-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
     routing_rule {
         name = "uksouth-sandbox-sit-barclays-http"
         accepted_protocols = ["Http"]
