@@ -2092,6 +2092,42 @@ resource "azurerm_frontdoor_custom_https_configuration" "fatface_dev_gb_bink_com
     }
 }
 
+
+resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_reflector_sandbox_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["lloyds-sit-reflector-sandbox-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_reflector_sandbox_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["barclays-sit-reflector-sandbox-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+
+    timeouts {
+        update = "120m"
+        create = "120m"
+        delete = "120m"
+    }
+}
+
+
 resource "azurerm_monitor_diagnostic_setting" "diags" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_frontdoor.frontdoor.id
