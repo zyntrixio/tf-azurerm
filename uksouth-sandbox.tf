@@ -155,6 +155,7 @@ module "uksouth_sandbox_environment" {
                 "lloyds_sit_hermes",
                 "lloyds_sit_midas",
                 "lloyds_sit_pontus",
+                "barclays_sit_api_reflector",
                 "barclays_sit_atlas",
                 "barclays_sit_europa",
                 "barclays_sit_hades",
@@ -276,7 +277,7 @@ module "uksouth_sandbox_cluster_0" {
     controller_storage_type = "StandardSSD_LRS"
 
     cluster_ingress_subdomains = [
-        "api2-docs", "api2-docs", "barclays-oat", "barclays-sit",
+        "api2-docs", "api2-docs", "barclays-oat", "barclays-sit", "barclays-sit-reflector",
         "lloyds-sit", "lloyds-sit-reflector", "perf-api-v1", "perf-api-v2",
         "perf-bpl", "perf-txm"
     ]

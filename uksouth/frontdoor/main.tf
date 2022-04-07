@@ -586,6 +586,12 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "barclays-sit-reflector-sandbox-gb-bink-com"
+        host_name = "barclays-sit-reflector.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
         name = "lloyds-sit-sandbox-gb-bink-com"
         host_name = "lloyds-sit.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
@@ -907,6 +913,41 @@ resource "azurerm_frontdoor" "frontdoor" {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "uksouth-sandbox-sit-barclays"
             cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-barclays-sit-reflector"
+        backend {
+            host_header = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
+            address = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-barclays-sit-reflector"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["barclays-sit-reflector-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-barclays-sit-reflector"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-barclays-sit-reflector-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["barclays-sit-reflector-sandbox-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
         }
     }
 
