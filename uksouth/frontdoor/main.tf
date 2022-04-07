@@ -586,6 +586,12 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "barclays-sit-reflector-sandbox-gb-bink-com"
+        host_name = "barclays-sit-reflector.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
         name = "lloyds-sit-sandbox-gb-bink-com"
         host_name = "lloyds-sit.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
