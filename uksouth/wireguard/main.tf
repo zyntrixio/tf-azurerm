@@ -11,6 +11,7 @@ resource "azurerm_public_ip" "pip" {
     location = azurerm_resource_group.rg.location
     allocation_method = "Static"
     sku = "Standard"
+    zones = [ "1", "2", "3" ]
 
     tags = var.tags
 }
@@ -57,7 +58,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 100
         direction = "Inbound"
-        protocol = "UDP"
+        protocol = "Udp"
         source_address_prefix = "*"
         source_port_range = "*"
         destination_address_prefix = "*"
@@ -70,7 +71,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 500
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefixes = var.secure_origins
         source_port_range = "*"
         destination_address_prefix = "*"
@@ -83,7 +84,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 510
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefixes = var.prometheus_origin
         source_port_range = "*"
         destination_address_prefix = "*"

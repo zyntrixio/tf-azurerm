@@ -1,6 +1,5 @@
 resource "azurerm_lb_probe" "lb" {
     count = length(var.lb_port)
-    resource_group_name = var.resource_group_name
     loadbalancer_id = var.loadbalancer_id
     name = element(keys(var.lb_port), count.index)
     protocol = element(var.lb_port[element(keys(var.lb_port), count.index)], 1)
@@ -11,7 +10,6 @@ resource "azurerm_lb_probe" "lb" {
 
 resource "azurerm_lb_rule" "lb" {
     count = length(var.lb_port)
-    resource_group_name = var.resource_group_name
     loadbalancer_id = var.loadbalancer_id
     name = element(keys(var.lb_port), count.index)
     protocol = element(var.lb_port[element(keys(var.lb_port), count.index)], 1)

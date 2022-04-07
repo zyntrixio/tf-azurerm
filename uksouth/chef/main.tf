@@ -59,7 +59,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowSSH"
         priority = 500
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 22
         source_port_range = "*"
         destination_address_prefix = "192.168.5.0/24"
@@ -70,7 +70,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowHTTPS"
         priority = 100
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 443
         source_port_range = "*"
         destination_address_prefix = "192.168.5.0/24"
@@ -81,7 +81,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowHTTP"
         priority = 110
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 80
         source_port_range = "*"
         destination_address_prefix = "192.168.5.0/24"
@@ -92,7 +92,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowToolsPrometheusNodeExporter"
         priority = 130
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 9100
         source_port_range = "*"
         destination_address_prefix = "192.168.5.0/24"
@@ -173,6 +173,7 @@ resource "azurerm_lb" "lb" {
         private_ip_address_allocation = "Static"
         private_ip_address = "192.168.5.4"
         subnet_id = azurerm_subnet.subnet.id
+        zones = [ "1", "2", "3" ]
     }
 
     tags = var.tags
@@ -184,21 +185,18 @@ resource "azurerm_lb_backend_address_pool" "i" {
 }
 
 resource "azurerm_lb_probe" "http" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "http"
     port = 80
 }
 
 resource "azurerm_lb_probe" "https" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "https"
     port = 443
 }
 
 resource "azurerm_lb_rule" "http" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "http"
     protocol = "Tcp"
@@ -210,7 +208,6 @@ resource "azurerm_lb_rule" "http" {
 }
 
 resource "azurerm_lb_rule" "https" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "https"
     protocol = "Tcp"

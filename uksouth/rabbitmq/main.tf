@@ -50,7 +50,7 @@ resource "azurerm_network_security_group" "i" {
         access = "Allow"
         priority = 100
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "AzureLoadBalancer"
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
@@ -63,7 +63,7 @@ resource "azurerm_network_security_group" "i" {
         access = "Allow"
         priority = 110
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = var.vnet_cidr
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
@@ -76,7 +76,7 @@ resource "azurerm_network_security_group" "i" {
         access = "Allow"
         priority = 120
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefixes = var.cluster_cidrs
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
@@ -89,7 +89,7 @@ resource "azurerm_network_security_group" "i" {
         access = "Allow"
         priority = 130
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "192.168.4.0/24"
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
@@ -102,7 +102,7 @@ resource "azurerm_network_security_group" "i" {
         access = "Allow"
         priority = 140
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "10.33.0.0/18"
         source_port_range = "*"
         destination_address_prefix = var.vnet_cidr
@@ -180,6 +180,7 @@ resource "azurerm_lb" "i" {
         private_ip_address_allocation = "Static"
         private_ip_address = cidrhost(var.vnet_cidr, 4)
         subnet_id = azurerm_subnet.i.id
+        zones = [ "1", "2", "3" ]
     }
 
     tags = var.tags
@@ -212,14 +213,12 @@ resource "azurerm_lb_backend_address_pool" "i" {
 }
 
 resource "azurerm_lb_probe" "amqp" {
-    resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "amqp"
     port = 5671
 }
 
 resource "azurerm_lb_rule" "amqp" {
-    resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "amqp"
     protocol = "Tcp"
@@ -231,14 +230,12 @@ resource "azurerm_lb_rule" "amqp" {
 }
 
 resource "azurerm_lb_probe" "webui" {
-    resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "webui"
     port = 15671
 }
 
 resource "azurerm_lb_rule" "webui" {
-    resource_group_name = azurerm_resource_group.i.name
     loadbalancer_id = azurerm_lb.i.id
     name = "webui"
     protocol = "Tcp"

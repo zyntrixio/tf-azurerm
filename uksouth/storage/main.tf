@@ -43,7 +43,7 @@ resource "azurerm_storage_account" "binkpublic" {
     account_tier = "Standard"
     account_replication_type = "ZRS"
     enable_https_traffic_only = true
-    allow_blob_public_access = true
+    allow_nested_items_to_be_public = true
     min_tls_version = "TLS1_2"
 }
 

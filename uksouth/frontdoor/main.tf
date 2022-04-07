@@ -19,11 +19,11 @@ resource "azurerm_key_vault" "frontdoor" {
         object_id = "f0222751-c786-45ca-bbfb-66037b63c4ac" # Azure FrontDoor
 
         secret_permissions = [
-            "get",
+            "Get",
         ]
 
         certificate_permissions = [
-            "get",
+            "Get",
         ]
     }
 
@@ -32,26 +32,26 @@ resource "azurerm_key_vault" "frontdoor" {
         object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"  # DevOps
 
         secret_permissions = [
-            "backup",
-            "delete",
-            "get",
-            "list",
-            "purge",
-            "recover",
-            "restore",
-            "set",
+            "Backup",
+            "Delete",
+            "Get",
+            "List",
+            "Purge",
+            "Recover",
+            "Restore",
+            "Set",
         ]
 
         certificate_permissions = [
-            "get",
-            "list",
-            "update",
-            "create",
-            "import",
-            "delete",
-            "recover",
-            "backup",
-            "restore",
+            "Get",
+            "List",
+            "Update",
+            "Create",
+            "Import",
+            "Delete",
+            "Recover",
+            "Backup",
+            "Restore",
         ]
     }
 
@@ -60,8 +60,6 @@ resource "azurerm_key_vault" "frontdoor" {
 resource "azurerm_frontdoor" "frontdoor" {
     name = "bink-frontdoor"
     resource_group_name = azurerm_resource_group.rg.name
-    enforce_backend_pools_certificate_name_check = true
-    backend_pools_send_receive_timeout_seconds = 120
 
     tags = var.tags
 
@@ -73,6 +71,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool_load_balancing {
         name = "standard"
         additional_latency_milliseconds = 50
+    }
+
+    backend_pool_settings {
+        enforce_backend_pools_certificate_name_check = true
+        backend_pools_send_receive_timeout_seconds = 120
     }
 
     backend_pool_health_probe {

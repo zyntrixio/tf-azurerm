@@ -12,6 +12,8 @@ resource "azurerm_public_ip" "pip" {
     ip_version = "IPv4"
     allocation_method = "Static"
     sku = "Standard"
+    zones = [ "1", "2", "3" ]
+
 
     tags = var.tags
 }
@@ -23,6 +25,7 @@ resource "azurerm_public_ip" "pip6" {
     ip_version = "IPv6"
     allocation_method = "Static"
     sku = "Standard"
+    zones = [ "1", "2", "3" ]
 
     tags = var.tags
 }
@@ -81,7 +84,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 100
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "*"
         source_port_range = "*"
         destination_address_prefix = "*"
@@ -94,7 +97,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 200
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "*"
         source_port_range = "*"
         destination_address_prefix = "*"
@@ -107,7 +110,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 500
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefixes = var.secure_origins
         source_port_range = "*"
         destination_address_prefix = "*"

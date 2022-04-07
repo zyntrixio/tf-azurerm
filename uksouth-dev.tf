@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.3"
     providers = {
         azurerm = azurerm.uk_dev
     }
@@ -118,7 +118,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.15.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.16.2"
     providers = {
         azurerm      = azurerm.uk_dev
         azurerm.core = azurerm
@@ -198,7 +198,7 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.0.0"
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.0"
     providers = {
         azurerm = azurerm.uk_dev
     }

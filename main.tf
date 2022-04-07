@@ -74,7 +74,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.96.0"  # Not going to 2.99 because https://github.com/hashicorp/terraform-provider-azurerm/issues/15821
+      version = "3.0.2"  # Not going to 2.99 because https://github.com/hashicorp/terraform-provider-azurerm/issues/15821
     }
     chef = {
       source = "terrycain/chef"

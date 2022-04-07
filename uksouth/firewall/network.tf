@@ -19,6 +19,7 @@ resource "azurerm_public_ip_prefix" "prefix" {
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
     prefix_length = 28
+    zones = [ "1", "2", "3" ]
 
     tags = var.tags
 }
@@ -32,6 +33,7 @@ resource "azurerm_public_ip" "pips" {
     sku = "Standard"
     idle_timeout_in_minutes = 5
     public_ip_prefix_id = azurerm_public_ip_prefix.prefix.id
+    zones = [ "1", "2", "3" ]
 
     tags = var.tags
 }
@@ -41,6 +43,8 @@ resource "azurerm_firewall" "firewall" {
     name = "firewall"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
+    sku_name = "AZFW_VNet"
+    sku_tier = "Standard"
 
     ip_configuration {
         name = "ipconfig0"

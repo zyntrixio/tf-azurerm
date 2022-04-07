@@ -17,6 +17,7 @@ resource "azurerm_public_ip" "ip" {
     location = azurerm_resource_group.rg.location
     allocation_method = "Static"
     sku = "Standard"
+    zones = [ "1", "2", "3" ]
 }
 
 resource "azurerm_lb" "lb" {
@@ -49,21 +50,18 @@ resource "azurerm_lb_backend_address_pool" "windows" {
 }
 
 resource "azurerm_lb_probe" "ssh" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "ssh"
     port = 22
 }
 
 resource "azurerm_lb_probe" "rdp" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "rdp"
     port = 3389
 }
 
 resource "azurerm_lb_rule" "ssh" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "ssh"
     protocol = "Tcp"
@@ -75,7 +73,6 @@ resource "azurerm_lb_rule" "ssh" {
 }
 
 resource "azurerm_lb_rule" "rdp" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "rdp"
     protocol = "Tcp"

@@ -93,7 +93,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowSSH"
         priority = 500
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 22
         source_port_range = "*"
         destination_address_prefix = azurerm_subnet.subnet.address_prefixes[0]
@@ -104,7 +104,7 @@ resource "azurerm_network_security_group" "nsg" {
     security_rule {
         name = "AllowNodeExporter"
         priority = 510
-        protocol = "TCP"
+        protocol = "Tcp"
         destination_port_range = 9100
         source_port_range = "*"
         destination_address_prefix = azurerm_subnet.subnet.address_prefixes[0]
@@ -157,20 +157,19 @@ resource "azurerm_lb" "lb" {
         private_ip_address_allocation = "Static"
         private_ip_address = cidrhost(azurerm_subnet.subnet.address_prefixes[0], 4)
         subnet_id = azurerm_subnet.subnet.id
+        zones = [ "1", "2", "3" ]
     }
 
     tags = var.tags
 }
 
 resource "azurerm_lb_probe" "ssh" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "SSH"
     port = 22
 }
 
 resource "azurerm_lb_rule" "ssh" {
-    resource_group_name = azurerm_resource_group.rg.name
     loadbalancer_id = azurerm_lb.lb.id
     name = "SSH"
     protocol = "Tcp"

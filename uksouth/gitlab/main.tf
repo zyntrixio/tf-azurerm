@@ -51,7 +51,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 100
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "*"  # This is limited by Azure Firewall
         source_port_range = "*"
         destination_address_prefix = var.ip_range
@@ -64,7 +64,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 110
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "*"  # This is limited by Azure Firewall
         source_port_range = "*"
         destination_address_prefix = var.ip_range
@@ -77,7 +77,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 500
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "192.168.4.0/24"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
@@ -90,7 +90,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 510
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "192.168.0.0/24"
         source_port_range = "*"
         destination_address_prefix = var.ip_range
@@ -103,7 +103,7 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Allow"
         priority = 520
         direction = "Inbound"
-        protocol = "TCP"
+        protocol = "Tcp"
         source_address_prefix = "10.33.0.0/18"
         source_port_range = "*"
         destination_address_prefix = var.ip_range

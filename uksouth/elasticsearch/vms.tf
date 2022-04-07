@@ -96,7 +96,7 @@ module "elasticsearch_nsg_rules" {
         {
             name = "AllowSSH"
             priority = "500"
-            protocol = "TCP"
+            protocol = "Tcp"
             destination_port_range = "22"
             source_address_prefix = "192.168.4.0/24"
             destination_address_prefix = var.address_space
@@ -105,7 +105,7 @@ module "elasticsearch_nsg_rules" {
             name = "AllowElasticsearchTrafficElasticsearch"
             priority = "100"
             destination_port_range = "9300"
-            protocol = "TCP"
+            protocol = "Tcp"
             source_address_prefix = var.address_space
             destination_address_prefix = var.address_space
         },
@@ -113,7 +113,7 @@ module "elasticsearch_nsg_rules" {
             name = "AllowElasticsearchTrafficFromAll"
             priority = "120"
             destination_port_range = "9200"
-            protocol = "TCP"
+            protocol = "Tcp"
             source_address_prefix = "10.0.0.0/8"
             destination_address_prefix = var.address_space
         },
@@ -121,14 +121,14 @@ module "elasticsearch_nsg_rules" {
             name = "AllowElasticsearchTrafficFromAll2"
             priority = "130"
             destination_port_range = "9200"
-            protocol = "TCP"
+            protocol = "Tcp"
             source_address_prefix = "192.168.0.0/16"
             destination_address_prefix = var.address_space
         },
         {
             name = "AllowHTTP_PrometheusNodeExporter"
             priority = "160"
-            protocol = "TCP"
+            protocol = "Tcp"
             destination_port_range = "9100"
             source_address_prefix = "10.33.0.0/18"
             destination_address_prefix = var.address_space
@@ -137,7 +137,7 @@ module "elasticsearch_nsg_rules" {
             name = "AllowElasticsearchTrafficBastion"
             priority = "180"
             destination_port_range = "9200"
-            protocol = "TCP"
+            protocol = "Tcp"
             source_address_prefix = "192.168.4.0/24"
             destination_address_prefix = var.address_space
         },
@@ -145,7 +145,7 @@ module "elasticsearch_nsg_rules" {
             name = "AllowElasticsearchTrafficToLB"
             priority = "190"
             destination_port_range = "9200"
-            protocol = "TCP"
+            protocol = "Tcp"
             source_address_prefix = var.address_space
             destination_address_prefix = var.address_space
         },
@@ -160,6 +160,6 @@ module "elasticsearch_lb_rules" {
     frontend_ip_configuration_name = "subnet-01"
 
     lb_port = {
-        elasticsearch = ["9200", "TCP", "9200"]
+        elasticsearch = ["9200", "Tcp", "9200"]
     }
 }
