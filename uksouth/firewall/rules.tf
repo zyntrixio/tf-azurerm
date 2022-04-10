@@ -992,3 +992,38 @@ resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
         protocols = ["TCP"]
     }
 }
+
+resource "azurerm_firewall_network_rule_collection" "aks" {
+    name = "AzureKubernetesService"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 500
+    action = "Allow"
+    rule {
+        name = "1194/udp"
+        source_addresses = ["*"]
+        destination_ports = ["1194"]
+        protocols = ["UDP"]
+        destination_fqdns = ["AzureCloud.UKSouth"]
+    }
+    rule {
+        name = "9000/tcp"
+        source_addresses = ["*"]
+        destination_ports = ["9000"]
+        protocols = ["TCP"]
+        destination_fqdns = ["AzureCloud.UKSouth"]
+    }
+}
+
+resource "azurerm_firewall_application_rule_collection" "aks" {
+    name = "AzureKubernetesService"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 500
+    action = "Allow"
+    rule {
+        name = "Azure Kubernetes Service"
+        source_addresses = ["*"]
+        fqdn_tags = ["AzureKubernetesService"]
+    }
+}
