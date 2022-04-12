@@ -33,6 +33,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "OpenSearch"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "artifacts.opensearch.org"
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Clickhouse apt repo"
         source_addresses = ["*"]
         target_fqdns = [
@@ -795,6 +806,22 @@ resource "azurerm_firewall_network_rule_collection" "bastion" {
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
         destination_addresses = ["*"]
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_network_rule_collection" "opensearch" {
+    name = "opensearch"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 180
+    action = "Allow"
+
+    rule {
+        name = "all-to-opensearch"
+        source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+        destination_ports = ["9200"]
+        destination_addresses = ["192.168.1.0/24"]
         protocols = ["TCP"]
     }
 }

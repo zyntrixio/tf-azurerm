@@ -177,6 +177,18 @@ module "uksouth-elasticsearch" {
   loganalytics_id            = module.uksouth_loganalytics.id
 }
 
+module "uksouth_opensearch" {
+    source = "./uksouth/opensearch"
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+    }
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+}
+
 module "uksouth-sftp" {
   source = "./uksouth/sftp"
 
