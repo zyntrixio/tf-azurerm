@@ -181,6 +181,7 @@ module "uksouth_sandbox_environment" {
                 "perf_txm_harmonia",
                 "perf_txm_hades",
                 "perf_txm_hermes",
+                "perf_bpl_api_reflector",
                 "perf_bpl_carina",
                 "perf_bpl_polaris",
                 "perf_bpl_vela",
@@ -270,7 +271,7 @@ module "uksouth_sandbox_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 12
+    worker_scaleset_size = 15
     use_scaleset = true
     max_pods_per_host = 100
     loganalytics_id = module.uksouth_loganalytics.id
@@ -279,7 +280,7 @@ module "uksouth_sandbox_cluster_0" {
     cluster_ingress_subdomains = [
         "api2-docs", "api2-docs", "barclays-oat", "barclays-sit", "barclays-sit-reflector",
         "lloyds-sit", "lloyds-sit-reflector", "perf-api-v1", "perf-api-v2",
-        "perf-bpl", "perf-txm"
+        "perf-bpl", "perf-bpl-reflector", "perf-txm"
     ]
 
     prometheus_subnet = "10.33.0.0/18"

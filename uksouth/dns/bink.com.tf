@@ -71,6 +71,7 @@ locals {
             "barclays-sit-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "perf-bpl-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "perf-api-v1.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "perf-api-v2.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "perf-bpl.sandbox.gb" = "bink-frontdoor.azurefd.net",

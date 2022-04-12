@@ -58,7 +58,7 @@ module "uksouth_performance_environment" {
         common = {
             name = "bink-uksouth-perf"
             version = "13"
-            sku_name = "GP_Standard_D4ds_v4"
+            sku_name = "GP_Standard_D2ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [
@@ -73,7 +73,7 @@ module "uksouth_performance_environment" {
         archive = {
             name = "bink-uksouth-perf-archive"
             version = "13"
-            sku_name = "GP_Standard_D4ds_v4"
+            sku_name = "GP_Standard_D2ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [
@@ -151,7 +151,7 @@ module "uksouth_performance_cluster_0" {
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 10
+  worker_scaleset_size = 3
   use_scaleset         = true
   max_pods_per_host    = 100
   loganalytics_id = module.uksouth_loganalytics.id

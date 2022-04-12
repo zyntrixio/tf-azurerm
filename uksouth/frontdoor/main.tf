@@ -75,7 +75,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 
     backend_pool_settings {
         enforce_backend_pools_certificate_name_check = true
-        backend_pools_send_receive_timeout_seconds = 120
+        backend_pools_send_receive_timeout_seconds = 30
     }
 
     backend_pool_health_probe {
@@ -1213,6 +1213,47 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
+        name = "perf-bpl-reflector-sandbox-gb-bink-com"
+        host_name = "perf-bpl-reflector.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-perf-bpl-reflector"
+        backend {
+            host_header = "perf-bpl-reflector.sandbox0.uksouth.bink.sh"
+            address = "perf-bpl-reflector.sandbox0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-perf-bpl-reflector"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["perf-bpl-reflector-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-perf-bpl-reflector"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-perf-bpl-reflector-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["perf-bpl-reflector-sandbox-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
+    frontend_endpoint {
         name = "sit-sandbox-gb-bink-com"
         host_name = "sit.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
@@ -1501,23 +1542,11 @@ resource "azurerm_frontdoor" "frontdoor" {
             cache_enabled = false
         }
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "custom_https_default" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["default"]
     custom_https_provisioning_enabled = false
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
@@ -1528,12 +1557,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1546,12 +1569,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "data_gb_bink_com" {
@@ -1562,12 +1579,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "data_gb_bink_com" {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1580,12 +1591,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "link_gb_bink_com" {
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "link_staging_gb_bink_com" {
@@ -1596,12 +1601,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "link_staging_gb_bink_co
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1614,12 +1613,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_staging_gb_bink_com
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "reflector_staging_gb_bink_com" {
@@ -1630,12 +1623,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "reflector_staging_gb_bi
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1648,12 +1635,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_staging_gb_bin
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "docs_staging_gb_bink_com" {
@@ -1664,12 +1645,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "docs_staging_gb_bink_co
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1682,12 +1657,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_dev_gb_bink_com" {
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "reflector_dev_gb_bink_com" {
@@ -1698,12 +1667,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "reflector_dev_gb_bink_c
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1716,12 +1679,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "portal_dev_gb_bink_com"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "docs_dev_gb_bink_com" {
@@ -1732,12 +1689,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "docs_dev_gb_bink_com" {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1750,12 +1701,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_sandbox_gb_bink_com
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "performance_sandbox_gb_bink_com" {
@@ -1766,12 +1711,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "performance_sandbox_gb_
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1784,12 +1723,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "docs_sandbox_gb_bink_co
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "sit_sandbox_gb_bink_com" {
@@ -1800,12 +1733,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "sit_sandbox_gb_bink_com
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1818,12 +1745,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "oat_sandbox_gb_bink_com
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_sandbox_gb_bink_com" {
@@ -1834,12 +1755,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_sandbox_gb
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1852,12 +1767,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "barclays_oat_sandbox_gb
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_sandbox_gb_bink_com" {
@@ -1868,12 +1777,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_sandbox_gb_b
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1930,12 +1833,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wallet_gb_bink_com" {
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "wasabi_gb_bink_com" {
@@ -1948,12 +1845,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wasabi_gb_bink_com" {
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
 
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "fatface_gb_bink_com" {
@@ -1964,12 +1855,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "fatface_gb_bink_com" {
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -1982,12 +1867,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wallet_staging_gb_bink_
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "wasabi_staging_gb_bink_com" {
@@ -1998,12 +1877,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wasabi_staging_gb_bink_
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -2016,12 +1889,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "fatface_staging_gb_bink
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "portal_staging_gb_bink_com" {
@@ -2032,12 +1899,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "portal_staging_gb_bink_
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -2050,12 +1911,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wallet_dev_gb_bink_com"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "wasabi_dev_gb_bink_com" {
@@ -2067,12 +1922,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "wasabi_dev_gb_bink_com"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
-    }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "fatface_dev_gb_bink_com" {
@@ -2083,12 +1932,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "fatface_dev_gb_bink_com
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
@@ -2102,11 +1945,16 @@ resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_reflector_sa
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
+}
 
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
+resource "azurerm_frontdoor_custom_https_configuration" "perf_bpl_reflector_sandbox_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["perf-bpl-reflector-sandbox-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
 }
 
@@ -2118,12 +1966,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_reflector_
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-
-    timeouts {
-        update = "120m"
-        create = "120m"
-        delete = "120m"
     }
 }
 
