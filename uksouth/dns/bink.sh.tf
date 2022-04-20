@@ -8,18 +8,15 @@ locals {
         a_records = {
             "prometheus.uksouth" = "51.132.44.251"
             "ssh.uksouth" = "51.132.44.240"
-            "jeff" = "217.169.3.233"
-            "policies.uksouth" = "51.132.44.240" # ???????????????????????????????????
             "sftp.dev.uksouth" = "51.132.44.242"
             "chef.uksouth" = "51.132.44.240"
             "wg.uksouth" = "51.132.44.249"
-            "starbug.uksouth" = "51.132.44.240"
-            "sentry.uksouth" = "51.132.44.254"
             "sftp.staging.uksouth" = "51.132.44.241"
             "sandbox.k8s.uksouth" = "51.132.44.243"
             "wireguard.uksouth" = "20.49.163.188"
             "tableau.uksouth" = "51.132.44.253"
             "tools.k8s.uksouth" = "51.132.44.244"
+            "opensearch.uksouth" = "51.132.44.255"
         }
         cname_records = {
             "mobsf.uksouth" = "tools0.uksouth.bink.sh"

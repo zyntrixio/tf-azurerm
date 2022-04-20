@@ -75,6 +75,30 @@ resource "azurerm_network_security_group" "i" {
         destination_address_prefix = "192.168.1.0/24"
     }
 
+    security_rule {
+        name = "AllowHTTP"
+        priority = "300"
+        access = "Allow"
+        protocol = "Tcp"
+        direction = "Inbound"
+        source_port_range = "*"
+        source_address_prefix = "*"
+        destination_port_range = "80"
+        destination_address_prefix = "192.168.1.0/24"
+    }
+
+    security_rule {
+        name = "AllowHTTPS"
+        priority = "310"
+        access = "Allow"
+        protocol = "Tcp"
+        direction = "Inbound"
+        source_port_range = "*"
+        source_address_prefix = "*"
+        destination_port_range = "443"
+        destination_address_prefix = "192.168.1.0/24"
+    }
+
 }
 
 resource "azurerm_virtual_network" "i" {

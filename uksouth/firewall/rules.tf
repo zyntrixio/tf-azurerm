@@ -695,6 +695,33 @@ resource "azurerm_firewall_nat_rule_collection" "aiden_airbyte" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "opensearch" {
+    name = "opensearch"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 160
+    action = "Dnat"
+
+    rule {
+        name = "http"
+        source_addresses = var.secure_origins
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.1.4"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.1.4"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_nat_rule_collection" "chef" {
     name = "chef"
     azure_firewall_name = azurerm_firewall.firewall.name
