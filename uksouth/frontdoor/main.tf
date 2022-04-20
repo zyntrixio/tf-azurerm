@@ -486,10 +486,10 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "uksouth-dev-aperture"
+        name = "uksouth-dev-portal"
         backend {
-            host_header = "aperture.dev0.uksouth.bink.sh"
-            address = "aperture.dev0.uksouth.bink.sh"
+            host_header = "portal.dev0.uksouth.bink.sh"
+            address = "portal.dev0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -504,7 +504,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         frontend_endpoints = ["portal-dev-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-dev-aperture"
+            backend_pool_name = "uksouth-dev-portal"
             cache_enabled = false
         }
     }
@@ -817,10 +817,10 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     backend_pool {
-        name = "uksouth-staging-aperture"
+        name = "uksouth-staging-portal"
         backend {
-            host_header = "aperture.staging0.uksouth.bink.sh"
-            address = "aperture.staging0.uksouth.bink.sh"
+            host_header = "portal.staging0.uksouth.bink.sh"
+            address = "portal.staging0.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -835,7 +835,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         frontend_endpoints = ["portal-staging-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-staging-aperture"
+            backend_pool_name = "uksouth-staging-portal"
             cache_enabled = false
         }
     }

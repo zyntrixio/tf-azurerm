@@ -114,7 +114,7 @@ module "uksouth_dev_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,monitoring,backups"
+    secret_namespaces = "default,portal,monitoring,backups"
 }
 
 module "uksouth_dev_cluster_0" {
@@ -139,7 +139,7 @@ module "uksouth_dev_cluster_0" {
     loganalytics_id = module.uksouth_loganalytics.id
     controller_storage_type = "StandardSSD_LRS"
 
-    cluster_ingress_subdomains = [ "api", "web", "reflector", "api2-docs" , "aperture" ]
+    cluster_ingress_subdomains = [ "api", "portal", "web", "reflector", "api2-docs" ]
 
     prometheus_subnet = "10.33.0.0/18"
 
