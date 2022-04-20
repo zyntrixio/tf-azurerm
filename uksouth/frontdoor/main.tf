@@ -172,13 +172,42 @@ resource "azurerm_frontdoor" "frontdoor" {
     routing_rule {
         name = "uksouth-prod-bpl"
         accepted_protocols = ["Https"]
-        patterns_to_match = ["/bpl/*"]
-        frontend_endpoints = ["api-gb-bink-com"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-gb-bink-com"]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
             backend_pool_name = "uksouth-prod-bpl"
             cache_enabled = false
         }
+    }
+
+    routing_rule {
+        name = "uksouth-prod-bpl-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-prod-bpl-content"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/content/*"]
+        frontend_endpoints = ["bpl-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-prod-bpl"
+            cache_enabled = true
+            cache_query_parameter_strip_directive = "StripNone"
+        }
+    }
+
+    frontend_endpoint {
+        name = "bpl-gb-bink-com"
+        host_name = "bpl.gb.bink.com"
     }
 
     frontend_endpoint {
@@ -1562,6 +1591,17 @@ resource "azurerm_frontdoor_custom_https_configuration" "api_gb_bink_com" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["policies-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "bpl_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bpl-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {

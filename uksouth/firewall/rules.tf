@@ -639,6 +639,18 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             type = "Https"
         }
     }
+    rule {
+        name = "Carina HTTPS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "api.jigsaw360.com",
+            "dev.jigsaw360.com",
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_nat_rule_collection" "bastion" {

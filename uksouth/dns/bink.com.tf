@@ -49,6 +49,7 @@ locals {
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
             "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
+            "bpl.gb" = "bink-frontdoor.azurefd.net",
             "api.staging.gb" = "bink-frontdoor.azurefd.net",
             "portal.staging.gb" = "bink-frontdoor.azurefd.net",
             "wallet.staging.gb" = "bink-frontdoor.azurefd.net",
