@@ -148,6 +148,11 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    frontend_endpoint {
+        name = "bpl-gb-bink-com"
+        host_name = "bpl.gb.bink.com"
+    }
+
     backend_pool {
         name = "uksouth-prod-bpl"
 
@@ -204,12 +209,7 @@ resource "azurerm_frontdoor" "frontdoor" {
             cache_query_parameter_strip_directive = "StripNone"
         }
     }
-
-    frontend_endpoint {
-        name = "bpl-gb-bink-com"
-        host_name = "bpl.gb.bink.com"
-    }
-
+    
     frontend_endpoint {
         name = "policies-gb-bink-com"
         host_name = "policies.gb.bink.com"
@@ -1288,8 +1288,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
-### Bink Web
-
     frontend_endpoint {
         name = "wallet-gb-bink-com"
         host_name = "wallet.gb.bink.com"
@@ -1571,6 +1569,89 @@ resource "azurerm_frontdoor" "frontdoor" {
             cache_enabled = false
         }
     }
+
+
+    frontend_endpoint {
+        name = "bpl-dev-gb-bink-com"
+        host_name = "bpl.dev.gb.bink.com"
+    }
+
+    backend_pool {
+        name = "uksouth-dev-bpl"
+        backend {
+            host_header = "bpl.dev0.uksouth.bink.sh"
+            address = "bpl.dev0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-dev-bpl"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-dev-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-dev-bpl"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-dev-bpl-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-dev-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
+
+    frontend_endpoint {
+        name = "bpl-staging-gb-bink-com"
+        host_name = "bpl.staging.gb.bink.com"
+    }
+
+    backend_pool {
+        name = "uksouth-staging-bpl"
+        backend {
+            host_header = "bpl.staging0.uksouth.bink.sh"
+            address = "bpl.staging0.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-staging-bpl"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-staging-bpl"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-staging-bpl-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["bpl-staging-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "custom_https_default" {
@@ -2008,6 +2089,29 @@ resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_reflector_
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
     }
 }
+
+resource "azurerm_frontdoor_custom_https_configuration" "bpl_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bpl-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+}
+
+resource "azurerm_frontdoor_custom_https_configuration" "bpl_staging_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bpl-staging-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+}
+
 
 
 resource "azurerm_monitor_diagnostic_setting" "diags" {

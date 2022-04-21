@@ -107,7 +107,7 @@ module "uksouth_staging_environment" {
 
   managed_identities = local.managed_identities
 
-  secret_namespaces = "default,monitoring,backups"
+  secret_namespaces = "default,bpl,monitoring,backups"
 }
 
 module "uksouth_staging_cluster_0" {
@@ -132,7 +132,7 @@ module "uksouth_staging_cluster_0" {
   loganalytics_id = module.uksouth_loganalytics.id
   controller_storage_type = "StandardSSD_LRS"
 
-  cluster_ingress_subdomains = [ "api", "link", "web", "reflector", "policies", "api2-docs", "aperture", ]
+  cluster_ingress_subdomains = [ "api", "bpl", "link", "web", "reflector", "policies", "api2-docs", "aperture", ]
 
   prometheus_subnet = "10.33.0.0/18"
 
