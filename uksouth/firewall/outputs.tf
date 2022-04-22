@@ -21,3 +21,13 @@ output "firewall_name" {
 output "public_ips" {
     value = azurerm_public_ip.pips
 }
+
+output "peering" {
+    value = {
+        vnet_id = azurerm_virtual_network.vnet.id
+        vnet_name = azurerm_virtual_network.vnet.name
+        rg_name = azurerm_resource_group.rg.name
+        firewall_name = azurerm_firewall.firewall.name
+        firewall_ip = azurerm_firewall.firewall.ip_configuration[0].private_ip_address
+    }
+}

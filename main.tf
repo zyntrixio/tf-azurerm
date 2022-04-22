@@ -310,3 +310,8 @@ module "uksouth_wordpress" {
   dns_zone        = module.uksouth-dns.public_dns
   loganalytics_id = module.uksouth_loganalytics.id
 }
+
+module "uksouth_mimir" {
+    source = "./uksouth/mimir"
+    peering = module.uksouth-firewall.peering
+}
