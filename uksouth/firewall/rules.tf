@@ -438,10 +438,11 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         source_addresses = ["*"]
         target_fqdns = [
             "api.gb.bink.com",
-            "api.preprod.gb.bink.com",
             "api.staging.gb.bink.com",
             "api.dev.gb.bink.com",
-            "api.sandbox.gb.bink.com",
+            "bpl.gb.bink.com",
+            "bpl.staging.gb.bink.com",
+            "bpl.dev.gb.bink.com",
             "*.bink.sh",
             "bink.com"
         ]
