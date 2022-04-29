@@ -7,4 +7,4 @@ metadata:
 data:
   location: ${location}
   cluster_name: ${cluster_name}
-  port: ${port}
+  loadbalancer_ip: ${loadbalancer_ip}

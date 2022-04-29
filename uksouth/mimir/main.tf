@@ -63,6 +63,18 @@ resource "azurerm_virtual_network_peering" "fw-to-local" {
     allow_forwarded_traffic = true
 }
 
+resource "azurerm_user_assigned_identity" "i" {
+    resource_group_name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
+    name = azurerm_resource_group.i.name
+}
+
+resource "azurerm_role_assignment" "i" {
+    scope = azurerm_resource_group.i.id
+    role_definition_name = "Contributor"
+    principal_id = azurerm_user_assigned_identity.i.principal_id
+}
+
 resource "azurerm_kubernetes_cluster" "i" {
     name = azurerm_resource_group.i.name
     resource_group_name = azurerm_resource_group.i.name
@@ -77,6 +89,7 @@ resource "azurerm_kubernetes_cluster" "i" {
         node_count = var.node_count
         vm_size = var.node_size
         vnet_subnet_id = azurerm_subnet.i.id
+        max_pods = 100
     }
 
     network_profile {
@@ -89,7 +102,8 @@ resource "azurerm_kubernetes_cluster" "i" {
     }
 
     identity {
-        type = "SystemAssigned"
+        type = "UserAssigned"
+        identity_ids = [ azurerm_user_assigned_identity.i.id ]
     }
 
     linux_profile {
@@ -146,6 +160,9 @@ provider "kubectl" {
 resource "kubectl_manifest" "flux_namespace" {
     depends_on = [ data.azurerm_kubernetes_cluster.i ]
     yaml_body = file("${path.module}/flux/namespace.yaml")
+    lifecycle {
+        ignore_changes = [ yaml_incluster ]
+    }
 }
 
 data "kubectl_file_documents" "flux_deploy" {
@@ -176,11 +193,11 @@ resource "kubectl_manifest" "flux_sync" {
     }
 }
 
-# resource "kubectl_manifest" "flux_cluster_vars" {
-#     depends_on = [ kubectl_manifest.flux_deploy ]
-#     yaml_body = templatefile("${path.module}/flux/vars.yaml", {
-#         location = "uksouth",
-#         cluster_name = "mimir",
-#         port = "6000"
-#     })
-# }
+resource "kubectl_manifest" "flux_cluster_vars" {
+    depends_on = [ kubectl_manifest.flux_deploy ]
+    yaml_body = templatefile("${path.module}/flux/vars.yaml", {
+        location = "uksouth",
+        cluster_name = "mimir",
+        loadbalancer_ip = cidrhost(var.cidr, 65534)
+    })
+}
