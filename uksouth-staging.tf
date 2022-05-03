@@ -107,7 +107,7 @@ module "uksouth_staging_environment" {
 
   managed_identities = local.managed_identities
 
-  secret_namespaces = "default,portal,bpl,monitoring,backups"
+  secret_namespaces = "default,portal,bpl,bpl-testing,monitoring,backups"
 }
 
 module "uksouth_staging_cluster_0" {
