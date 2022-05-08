@@ -234,7 +234,7 @@ module "uksouth_prod_clickhouse" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.16.2"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -323,7 +323,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.16.2"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm

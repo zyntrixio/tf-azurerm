@@ -50,7 +50,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.16.2"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
