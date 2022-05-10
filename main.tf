@@ -288,6 +288,15 @@ module "uksouth-sftp" {
 
 module "uksouth_loganalytics" {
     source = "./uksouth/loganalytics"
+    peers = {
+        firewall = {
+            vnet_id = module.uksouth-firewall.vnet_id
+            vnet_name = module.uksouth-firewall.vnet_name
+            resource_group_name = module.uksouth-firewall.resource_group_name
+        }
+    }
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    vnet_cidr = "192.168.25.0/24"
 }
 
 module "uksouth-redscan" {
