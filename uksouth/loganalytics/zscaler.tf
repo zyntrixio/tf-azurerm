@@ -74,9 +74,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "i" {
 
 
 resource "azurerm_network_security_group" "i" {
-  name                = "zcaler-nsg"
-  location            = azurerm_resource_group.i.location
-  resource_group_name = azurerm_resource_group.i.name
+    name = "zcaler-nsg"
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
 
     security_rule {
         name = "BlockEverything"
@@ -106,8 +106,8 @@ resource "azurerm_network_security_group" "i" {
 
 
 resource "azurerm_network_interface_security_group_association" "i" {
-  network_interface_id      = azurerm_network_interface.i.id
-  network_security_group_id = azurerm_network_security_group.i.id
+    network_interface_id = azurerm_network_interface.i.id
+    network_security_group_id = azurerm_network_security_group.i.id
 }
 
 
