@@ -250,7 +250,7 @@ module "uksouth_prod_cluster_0" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 9
+    worker_scaleset_size = 10
     use_scaleset = true
     max_pods_per_host = 100
     loganalytics_id = module.uksouth_loganalytics.id
@@ -339,7 +339,7 @@ module "uksouth_prod_cluster_1" {
     ubuntu_version = "20.04"
     controller_vm_size = "Standard_D2as_v4"
     worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 9
+    worker_scaleset_size = 10
     use_scaleset = true
     max_pods_per_host = 100
     loganalytics_id = module.uksouth_loganalytics.id

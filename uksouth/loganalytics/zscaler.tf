@@ -124,42 +124,42 @@ resource "azurerm_network_interface" "i" {
 }
 
 
-resource "azurerm_linux_virtual_machine" "i" {
-    name = "zscaler"
-    resource_group_name = azurerm_resource_group.i.name
-    location = azurerm_resource_group.i.location
-    size = "Standard_D2s_v4"
-    admin_username = "terraform"
-    network_interface_ids = [
-        azurerm_network_interface.i.id
-    ]
+# resource "azurerm_linux_virtual_machine" "i" {
+#     name = "zscaler"
+#     resource_group_name = azurerm_resource_group.i.name
+#     location = azurerm_resource_group.i.location
+#     size = "Standard_D2s_v4"
+#     admin_username = "terraform"
+#     network_interface_ids = [
+#         azurerm_network_interface.i.id
+#     ]
 
-    admin_ssh_key {
-        username = "terraform"
-        public_key = file("~/.ssh/id_bink_azure_terraform.pub")
-    }
+#     admin_ssh_key {
+#         username = "terraform"
+#         public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+#     }
 
-    os_disk {
-        caching = "ReadOnly"
-        storage_account_type = "StandardSSD_LRS"
-        disk_size_gb = 32
-    }
+#     os_disk {
+#         caching = "ReadOnly"
+#         storage_account_type = "StandardSSD_LRS"
+#         disk_size_gb = 32
+#     }
 
-    source_image_reference {
-        publisher = "Canonical"
-        offer = "0001-com-ubuntu-server-focal"
-        sku = "20_04-lts"
-        version = "latest"
-    }
+#     source_image_reference {
+#         publisher = "Canonical"
+#         offer = "0001-com-ubuntu-server-focal"
+#         sku = "20_04-lts"
+#         version = "latest"
+#     }
 
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode({ "run_list" : ["recipe[fury]", "recipe[nebula]"] })),
-                cinc_environment = chef_environment.env.name
-                cinc_data_secret = ""
-            }
-        )
-    )
-}
+#     custom_data = base64gzip(
+#         templatefile(
+#             "${path.root}/init.tmpl",
+#             {
+#                 cinc_run_list = base64encode(jsonencode({ "run_list" : ["recipe[fury]", "recipe[nebula]"] })),
+#                 cinc_environment = chef_environment.env.name
+#                 cinc_data_secret = ""
+#             }
+#         )
+#     )
+# }
