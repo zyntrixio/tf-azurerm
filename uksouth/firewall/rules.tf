@@ -344,7 +344,10 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Grafana"
         source_addresses = ["*"]
-        target_fqdns = ["packages.grafana.com"]
+        target_fqdns = [
+            "packages.grafana.com",
+            "grafana.github.io",
+        ]
         protocol {
             port = "443"
             type = "Https"
