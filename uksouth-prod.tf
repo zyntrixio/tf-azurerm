@@ -210,27 +210,25 @@ module "uksouth_prod_rabbit" {
     cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
 }
 
-module "uksouth_prod_clickhouse" {
-    source = "./uksouth/clickhouse"
+module "uksouth_prod_airbyte" {
+    source = "./uksouth/airbyte"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
     }
 
-    resource_group_name = "uksouth-prod-clickhouse"
-    location = "uksouth"
-    tags = {
-        "Environment" = "Production",
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+    firewall = {
+        vnet_id = module.uksouth-firewall.vnet_id,
+        vnet_name = module.uksouth-firewall.vnet_name,
+        resource_group_name = module.uksouth-firewall.resource_group_name,
     }
-
-    vnet_cidr = "192.168.23.0/24"
-    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
-
-    dns = module.uksouth-dns.private_dns
-
-    peering_remote_id = module.uksouth-firewall.vnet_id
-    peering_remote_rg = module.uksouth-firewall.resource_group_name
-    peering_remote_name = module.uksouth-firewall.vnet_name
+    environment = {
+        vnet_id = module.uksouth_prod_environment.peering.vnet_id
+        vnet_name = module.uksouth_prod_environment.peering.vnet_name
+        resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    }
 }
 
 module "uksouth_prod_cluster_0" {
@@ -288,11 +286,6 @@ module "uksouth_prod_cluster_0" {
             vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
             vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
             resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
-        }
-        clickhouse = {
-            vnet_id = module.uksouth_prod_clickhouse.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_clickhouse.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_clickhouse.peering["resource_group_name"]
         }
         environment = {
             vnet_id = module.uksouth_prod_environment.peering.vnet_id
@@ -377,11 +370,6 @@ module "uksouth_prod_cluster_1" {
             vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
             vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
             resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
-        }
-        clickhouse = {
-            vnet_id = module.uksouth_prod_clickhouse.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_clickhouse.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_clickhouse.peering["resource_group_name"]
         }
         environment = {
             vnet_id = module.uksouth_prod_environment.peering.vnet_id
