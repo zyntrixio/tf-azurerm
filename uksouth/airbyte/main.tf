@@ -59,7 +59,7 @@ resource "azurerm_network_security_group" "i" {
         direction = "Inbound"
         source_port_range = "*"
         source_address_prefix = "*"
-        destination_port_range = "9200"
+        destination_port_range = "8000"
         destination_address_prefix = "192.168.23.0/24"
     }
 }
