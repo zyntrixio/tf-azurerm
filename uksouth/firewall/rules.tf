@@ -223,6 +223,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         source_addresses = ["*"]
         target_fqdns = [
             "versioncheck.linkerd.io",
+            "helm.linkerd.io",
             "api.buoyant.cloud"
         ]
         protocol {

@@ -1,7 +1,9 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.4"
+    # source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
+    source = "../tf-azurerm_environment"
     providers = {
         azurerm = azurerm.uk_dev
+        azurerm.core = azurerm
     }
     resource_group_name = "uksouth-dev"
     location = "uksouth"
@@ -115,6 +117,52 @@ module "uksouth_dev_environment" {
     managed_identities = local.managed_identities
 
     secret_namespaces = "default,bpl,portal,monitoring,backups"
+
+    aks = {
+        jeff0 = {
+            name = "jeff0"
+            cidr = "10.222.0.0/16"
+            updates = "rapid"
+            sku = "Free"
+            node_max_count = 5
+            node_size = "Standard_D4s_v4"
+            maintenance_day = "Monday"
+            dns = module.uksouth-dns.aks_zones
+            iam = {
+                architecture = {
+                    object_id = local.aad_group.architecture
+                    role = "Azure Kubernetes Service RBAC Writer"
+                }
+                data_mgmt = {
+                    object_id = local.aad_group.data_mgmt
+                    role = "Azure Kubernetes Service RBAC Writer"
+                }
+                backend = {
+                    object_id = local.aad_group.backend
+                    role = "Azure Kubernetes Service RBAC Writer"
+                }
+                qa = {
+                    object_id = local.aad_group.qa
+                    role = "Azure Kubernetes Service RBAC Writer"
+                }
+            }
+            firewall = {
+                config = module.uksouth-firewall.config
+                rule_priority = 2100
+                ingress = {
+                    source_addr = "*"
+                    public_ip = module.uksouth-firewall.public_ips.3.ip_address
+                    http_port = 8001
+                    https_port = 4001
+                }
+            }
+        }
+    }
+}
+
+module "uksouth_dev_aks_flux_jeff0" {
+    source = "../tf-azurerm_environment/submodules/flux"
+    flux_config = module.uksouth_dev_environment.aks_flux_config.jeff0
 }
 
 module "uksouth_dev_cluster_0" {
@@ -198,7 +246,7 @@ module "uksouth_dev_cluster_0" {
 }
 
 module "uksouth_dev_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.0"
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.1"
     providers = {
         azurerm = azurerm.uk_dev
     }

@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.4"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
   providers = {
     azurerm = azurerm.uk_staging
   }
@@ -189,7 +189,7 @@ module "uksouth_staging_cluster_0" {
 }
 
 module "uksouth_staging_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.0"
+    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.1"
     providers = {
         azurerm = azurerm.uk_staging
     }

@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.4"
+  source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
   providers = {
     azurerm = azurerm
   }
@@ -165,6 +165,7 @@ resource "azurerm_storage_account" "tools" {
   resource_group_name = "uksouth-tools"
   location            = "uksouth"
 
+  cross_tenant_replication_enabled = false
   account_kind             = "BlobStorage"
   account_tier             = "Standard"
   account_replication_type = "LRS"

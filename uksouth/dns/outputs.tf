@@ -14,6 +14,19 @@ output "uksouth-bink-host" {
     value = [azurerm_resource_group.rg.name, azurerm_private_dns_zone.uksouth-bink-host.name, azurerm_private_dns_zone.uksouth-bink-host.id]
 }
 
+output "aks_zones" {
+    value = {
+        private = {
+            name = azurerm_private_dns_zone.uksouth-bink-host.name
+            resource_group = azurerm_resource_group.rg.name
+        }
+        public = {
+            name = azurerm_dns_zone.bink-sh.name
+            resource_group = azurerm_resource_group.rg.name
+        }
+    }
+}
+
 output "private_dns" {
     value = {
         "uksouth_host" = {

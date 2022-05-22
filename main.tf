@@ -39,6 +39,7 @@ locals {
 
   aad_group = {
     architecture          = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
+    data_mgmt             = "13876e0a-d625-42ff-89aa-3f6904b2f073"
     qa                    = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
     cyber_sec             = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
     devops                = "aac28b59-8ac3-4443-bccc-3fb820165a08"
@@ -74,7 +75,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.0.2"  # Not going to 2.99 because https://github.com/hashicorp/terraform-provider-azurerm/issues/15821
+      version = "3.7.0"
     }
     chef = {
       source = "terrycain/chef"

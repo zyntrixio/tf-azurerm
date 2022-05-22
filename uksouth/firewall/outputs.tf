@@ -31,3 +31,19 @@ output "peering" {
         firewall_ip = azurerm_firewall.firewall.ip_configuration[0].private_ip_address
     }
 }
+
+output "config" {
+    value = {
+        resource_group = {
+            name = azurerm_resource_group.rg.name
+        }
+        virtual_network = {
+            name = azurerm_virtual_network.vnet.name
+            id = azurerm_virtual_network.vnet.id
+        }
+        firewall = {
+            name = azurerm_firewall.firewall.name
+            ip = azurerm_firewall.firewall.ip_configuration[0].private_ip_address
+        }
+    }
+}
