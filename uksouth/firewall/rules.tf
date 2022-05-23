@@ -820,7 +820,7 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     }
     rule {
         name = "http"
-        source_addresses = ["*"]
+        source_addresses = var.secure_origins
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.8.ip_address]
         translated_address = "192.168.10.4"
@@ -829,7 +829,7 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     }
     rule {
         name = "https"
-        source_addresses = ["*"]
+        source_addresses = var.secure_origins
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.8.ip_address]
         translated_address = "192.168.10.4"

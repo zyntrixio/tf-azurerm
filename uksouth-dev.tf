@@ -1,6 +1,5 @@
 module "uksouth_dev_environment" {
-    # source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
-    source = "../tf-azurerm_environment"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.3"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -161,7 +160,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_aks_flux_jeff0" {
-    source = "../tf-azurerm_environment/submodules/flux"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.3"
     flux_config = module.uksouth_dev_environment.aks_flux_config.jeff0
 }
 

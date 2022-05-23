@@ -1,22 +1,23 @@
 module "uksouth_tools_environment" {
-  source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
-  providers = {
-    azurerm = azurerm
-  }
-  resource_group_name = "uksouth-tools"
-  location            = "uksouth"
-  tags = {
-    "Environment" = "Core",
-  }
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.3"
+    providers = {
+        azurerm = azurerm
+        azurerm.core = azurerm
+    }
+    resource_group_name = "uksouth-tools"
+    location = "uksouth"
+    tags = {
+        "Environment" = "Core",
+    }
 
-  vnet_cidr = "192.168.100.0/24"
+    vnet_cidr = "192.168.100.0/24"
 
-  loganalytics_id = module.uksouth_loganalytics.id
+    loganalytics_id = module.uksouth_loganalytics.id
 
-  keyvault_users = {
-    Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
-    SecOps = local.aad_group.cyber_sec,
-  }
+    keyvault_users = {
+        Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
+        SecOps = local.aad_group.cyber_sec,
+    }
 
     postgres_flexible_config = {
         common = {
@@ -34,19 +35,19 @@ module "uksouth_tools_environment" {
         }
     }
 
-  eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-  storage_config = {
-    common = {
-      name                     = "binkuksouthtools",
-      account_replication_type = "ZRS",
-      account_tier             = "Standard"
-    },
-  }
+    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
+    storage_config = {
+        common = {
+        name                     = "binkuksouthtools",
+        account_replication_type = "ZRS",
+        account_tier             = "Standard"
+        },
+    }
 
-  bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-  bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
+    bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
-  managed_identities = local.managed_identities
+    managed_identities = local.managed_identities
 }
 
 module "uksouth_tools_cluster_0" {

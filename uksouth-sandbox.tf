@@ -1,7 +1,8 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=2.11.5"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.3"
     providers = {
         azurerm = azurerm.uk_sandbox
+        azurerm.core = azurerm
     }
     resource_group_name = "uksouth-sandbox"
     location = "uksouth"

@@ -30,6 +30,7 @@ resource "azurerm_storage_account" "i" {
 
 resource "azurerm_storage_share" "users" {
   name = "users"
+  access_tier = "TransactionOptimized"
   storage_account_name = azurerm_storage_account.i.name
   quota = 50
 }
