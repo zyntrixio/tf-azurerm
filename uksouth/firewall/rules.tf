@@ -1064,28 +1064,8 @@ resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "aks" {
-    name = "AzureKubernetesService"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 500
-    action = "Allow"
-    rule {
-        name = "1194/udp"
-        source_addresses = ["*"]
-        destination_ports = ["1194"]
-        protocols = ["UDP"]
-        destination_fqdns = ["AzureCloud.UKSouth"]
-    }
-    rule {
-        name = "9000/tcp"
-        source_addresses = ["*"]
-        destination_ports = ["9000"]
-        protocols = ["TCP"]
-        destination_fqdns = ["AzureCloud.UKSouth"]
-    }
-}
-
+# Used for Tools cluster prometheus to query k8s clusters
+# Should be removed once we kill that prometheus
 resource "azurerm_firewall_application_rule_collection" "aks" {
     name = "AzureKubernetesService"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -1094,7 +1074,7 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
     action = "Allow"
     rule {
         name = "Azure Kubernetes Service"
-        source_addresses = ["*"]
+        source_addresses = ["10.33.0.0/16"]
         fqdn_tags = ["AzureKubernetesService"]
     }
 }

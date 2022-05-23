@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.4"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm

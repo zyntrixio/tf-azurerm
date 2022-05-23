@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.4"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -118,9 +118,9 @@ module "uksouth_dev_environment" {
     secret_namespaces = "default,bpl,portal,monitoring,backups"
 
     aks = {
-        jeff0 = {
-            name = "jeff0"
-            cidr = "10.222.0.0/16"
+        dev0 = {
+            name = "dev0"
+            cidr = "10.99.0.0/16"
             updates = "rapid"
             sku = "Free"
             node_max_count = 5
@@ -147,101 +147,21 @@ module "uksouth_dev_environment" {
             }
             firewall = {
                 config = module.uksouth-firewall.config
-                rule_priority = 2100
+                rule_priority = 1300
                 ingress = {
                     source_addr = "*"
                     public_ip = module.uksouth-firewall.public_ips.3.ip_address
-                    http_port = 8001
-                    https_port = 4001
+                    http_port = 8000
+                    https_port = 4000
                 }
             }
         }
     }
 }
 
-module "uksouth_dev_aks_flux_jeff0" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.3"
-    flux_config = module.uksouth_dev_environment.aks_flux_config.jeff0
-}
-
-module "uksouth_dev_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
-    providers = {
-        azurerm      = azurerm.uk_dev
-        azurerm.core = azurerm
-    }
-
-    resource_group_name  = "uksouth-dev-k0"
-    cluster_name = "dev0"
-    location = "uksouth"
-    vnet_cidr = "10.99.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.23.0"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2as_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 4
-    use_scaleset = true
-    max_pods_per_host = 100
-    loganalytics_id = module.uksouth_loganalytics.id
-    controller_storage_type = "StandardSSD_LRS"
-
-    cluster_ingress_subdomains = [ "api", "bpl", "portal", "web", "reflector", "api2-docs" ]
-
-    prometheus_subnet = "10.33.0.0/18"
-
-    flux_environment = "uksouth-dev"
-
-    # Gitops repo, Managed identity for syncing common secrets
-
-    common_keyvault               = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns  = module.uksouth-dns.public_dns
-
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-        elasticsearch = {
-            vnet_id = module.uksouth-elasticsearch.vnet_id
-            vnet_name = module.uksouth-elasticsearch.vnet_name
-            resource_group_name = module.uksouth-elasticsearch.resource_group_name
-        }
-    }
-    subscription_peers = {
-        environment = {
-            vnet_id = module.uksouth_dev_environment.peering.vnet_id
-            vnet_name = module.uksouth_dev_environment.peering.vnet_name
-            resource_group_name = module.uksouth_dev_environment.peering.resource_group_name
-        }
-    }
-
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1300
-        rule_priority = 1300
-        public_ip = module.uksouth-firewall.public_ips.3.ip_address
-        secure_origins = local.secure_origins
-        ingress_source = "*"
-        ingress_http = 8000
-        ingress_https = 4000
-        ingress_controller = 6000
-    }
-
-    postgres_servers = module.uksouth_dev_environment.postgres_servers
-    postgres_flexible_server_dns_link = module.uksouth_dev_environment.postgres_flexible_server_dns_link
-    # private_links = module.uksouth_dev_environment.private_links
-
-    tags = {
-        "Environment" = "Development",
-    }
+module "uksouth_dev_aks_flux_dev0" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.4"
+    flux_config = module.uksouth_dev_environment.aks_flux_config.dev0
 }
 
 module "uksouth_dev_binkweb" {
