@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.5"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.8"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -123,6 +123,7 @@ module "uksouth_dev_environment" {
             cidr = "10.99.0.0/16"
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
+                rule_priority = 1300
                 ingress = merge(local.aks_ingress_defaults, {})
             })
         })
@@ -130,7 +131,7 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_aks_flux_dev0" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.5"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.8"
     flux_config = module.uksouth_dev_environment.aks_flux_config.dev0
 }
 

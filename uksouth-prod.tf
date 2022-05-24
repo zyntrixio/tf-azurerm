@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.5"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.8"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm

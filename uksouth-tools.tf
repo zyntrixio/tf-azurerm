@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.5"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.8"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -48,6 +48,28 @@ module "uksouth_tools_environment" {
     bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
     managed_identities = local.managed_identities
+
+    aks = {
+        mimir = merge(local.aks_config_defaults, {
+            name = "mimir"
+            cidr = "10.50.0.0/16"
+            iam = {}
+            firewall = merge(local.aks_firewall_defaults, {
+                rule_priority = 1600
+                ingress = merge(local.aks_ingress_defaults, {
+                    public_ip = module.uksouth-firewall.public_ips.14.ip_address
+                    source_addr = local.secure_origins
+                    http_port = 80
+                    https_port = 443
+                })
+            })
+        })
+    }
+}
+
+module "uksouth_tools_aks_flux_mimir" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.8"
+    flux_config = module.uksouth_tools_environment.aks_flux_config.mimir
 }
 
 module "uksouth_tools_cluster_0" {

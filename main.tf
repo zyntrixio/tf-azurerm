@@ -38,11 +38,10 @@ locals {
 
   aks_firewall_defaults = {
         config = module.uksouth-firewall.config
-        rule_priority = 1300
   }
 
   aks_ingress_defaults = {
-    source_addr = "*"
+    source_addr = ["*"]
     public_ip = module.uksouth-firewall.public_ips.3.ip_address
     http_port = 8000
     https_port = 4000
@@ -361,9 +360,4 @@ module "uksouth_wordpress" {
   secure_origins  = local.secure_origins
   dns_zone        = module.uksouth-dns.public_dns
   loganalytics_id = module.uksouth_loganalytics.id
-}
-
-module "uksouth_mimir" {
-    source = "./uksouth/mimir"
-    peering = module.uksouth-firewall.peering
 }
