@@ -7,11 +7,53 @@ locals {
     uk_dev        = { id = "794aa787-ec6a-40dd-ba82-0ad64ed51639" },
     uk_sandbox    = { id = "957523d8-bbe2-4f68-8fae-95975157e91c" },
   }
+
+  aks_config_defaults = {
+    updates = "rapid"
+    sku = "Free"
+    node_max_count = 5
+    node_size = "Standard_D4s_v4"
+    maintenance_day = "Monday"
+    dns = module.uksouth-dns.aks_zones
+  }
+
+  aks_iam_defaults = {
+    architecture = {
+        object_id = local.aad_group.architecture
+        role = "Azure Kubernetes Service RBAC Writer"
+    }
+    data_mgmt = {
+        object_id = local.aad_group.data_mgmt
+        role = "Azure Kubernetes Service RBAC Writer"
+    }
+    backend = {
+        object_id = local.aad_group.backend
+        role = "Azure Kubernetes Service RBAC Writer"
+    }
+    qa = {
+        object_id = local.aad_group.qa
+        role = "Azure Kubernetes Service RBAC Writer"
+    }
+  }
+
+  aks_firewall_defaults = {
+        config = module.uksouth-firewall.config
+        rule_priority = 1300
+  }
+
+  aks_ingress_defaults = {
+    source_addr = "*"
+    public_ip = module.uksouth-firewall.public_ips.3.ip_address
+    http_port = 8000
+    https_port = 4000
+  }
+
   secure_origins = [
     "194.74.152.8/29", # Ascot Bink HQ
     "89.38.121.228/30", # London Bink Scrub Office
     "217.169.3.233/32", # cpressland@bink.com
     "81.2.99.144/29",   # cpressland@bink.com
+    "31.125.46.20/32", # nread@bink.com
     "${module.uksouth-wireguard.public_ip}/32",
   ]
   secure_origins_v6 = [

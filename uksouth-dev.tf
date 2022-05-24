@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.5"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -118,49 +118,19 @@ module "uksouth_dev_environment" {
     secret_namespaces = "default,bpl,portal,monitoring,backups"
 
     aks = {
-        dev0 = {
+        dev0 = merge(local.aks_config_defaults, {
             name = "dev0"
             cidr = "10.99.0.0/16"
-            updates = "rapid"
-            sku = "Free"
-            node_max_count = 5
-            node_size = "Standard_D4s_v4"
-            maintenance_day = "Monday"
-            dns = module.uksouth-dns.aks_zones
-            iam = {
-                architecture = {
-                    object_id = local.aad_group.architecture
-                    role = "Azure Kubernetes Service RBAC Writer"
-                }
-                data_mgmt = {
-                    object_id = local.aad_group.data_mgmt
-                    role = "Azure Kubernetes Service RBAC Writer"
-                }
-                backend = {
-                    object_id = local.aad_group.backend
-                    role = "Azure Kubernetes Service RBAC Writer"
-                }
-                qa = {
-                    object_id = local.aad_group.qa
-                    role = "Azure Kubernetes Service RBAC Writer"
-                }
-            }
-            firewall = {
-                config = module.uksouth-firewall.config
-                rule_priority = 1300
-                ingress = {
-                    source_addr = "*"
-                    public_ip = module.uksouth-firewall.public_ips.3.ip_address
-                    http_port = 8000
-                    https_port = 4000
-                }
-            }
-        }
+            iam = merge(local.aks_iam_defaults, {})
+            firewall = merge(local.aks_firewall_defaults, {
+                ingress = merge(local.aks_ingress_defaults, {})
+            })
+        })
     }
 }
 
 module "uksouth_dev_aks_flux_dev0" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.4"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.5"
     flux_config = module.uksouth_dev_environment.aks_flux_config.dev0
 }
 
