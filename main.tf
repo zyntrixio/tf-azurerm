@@ -212,13 +212,6 @@ module "uksouth-storage" {
   loganalytics_id = module.uksouth_loganalytics.id
 }
 
-module "uksouth-elasticsearch" {
-  source = "./uksouth/elasticsearch"
-
-  private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-  loganalytics_id            = module.uksouth_loganalytics.id
-}
-
 module "uksouth_opensearch" {
     source = "./uksouth/opensearch"
     peers = {

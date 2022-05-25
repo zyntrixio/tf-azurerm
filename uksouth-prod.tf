@@ -279,11 +279,6 @@ module "uksouth_prod_cluster_0" {
             vnet_name           = module.uksouth-firewall.vnet_name
             resource_group_name = module.uksouth-firewall.resource_group_name
         }
-        elasticsearch = {
-            vnet_id             = module.uksouth-elasticsearch.vnet_id
-            vnet_name           = module.uksouth-elasticsearch.vnet_name
-            resource_group_name = module.uksouth-elasticsearch.resource_group_name
-        }
     }
     subscription_peers = {
         rabbitmq = {
@@ -362,11 +357,6 @@ module "uksouth_prod_cluster_1" {
             vnet_id = module.uksouth-firewall.vnet_id
             vnet_name = module.uksouth-firewall.vnet_name
             resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-        elasticsearch = {
-            vnet_id = module.uksouth-elasticsearch.vnet_id
-            vnet_name = module.uksouth-elasticsearch.vnet_name
-            resource_group_name = module.uksouth-elasticsearch.resource_group_name
         }
     }
     subscription_peers = {

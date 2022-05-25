@@ -278,15 +278,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Elasticsearch"
-        source_addresses = ["*"]
-        target_fqdns = ["artifacts.elastic.co"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "RabbitMQ"
         source_addresses = ["*"]
         target_fqdns = ["dl.cloudsmith.io"]
@@ -305,7 +296,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.blob.core.windows.net",
             "*.azure-automation.net",
             "*.vault.azure.net",
-            "www.microsoft.com"  # For getting RSS feeds
+            "www.microsoft.com",  # For getting RSS feeds
+            "api.loganalytics.io",
         ]
         protocol {
             port = "443"
