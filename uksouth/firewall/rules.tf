@@ -1064,8 +1064,9 @@ resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
     }
 }
 
-# Used for Tools cluster prometheus to query k8s clusters
-# Should be removed once we kill that prometheus
+# The below is allows AKS clusters to be bootstrapped before the explicit
+# network rules are created. This is a non-ideal scenario, but it's livable.
+# Access is restricted to a 10/8 to prevent non-clusters from using this.
 resource "azurerm_firewall_application_rule_collection" "aks" {
     name = "AzureKubernetesService"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -1074,7 +1075,7 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
     action = "Allow"
     rule {
         name = "Azure Kubernetes Service"
-        source_addresses = ["10.33.0.0/16"]
+        source_addresses = ["10.0.0.0/8"]
         fqdn_tags = ["AzureKubernetesService"]
     }
 }

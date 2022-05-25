@@ -36,6 +36,7 @@ locals {
             # Random
             "git" = "51.132.44.248",
             "tableau.gb" = "51.132.44.252"
+            "help" = "138.68.154.237"
         }
         cname_records = {
 
@@ -47,6 +48,8 @@ locals {
             "data.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
+            "help.gb" = "bink-frontdoor.azurefd.net",
+            "help.staging.gb" = "bink-frontdoor.azurefd.net",
             "performance.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
             "bpl.gb" = "bink-frontdoor.azurefd.net",
@@ -107,7 +110,6 @@ locals {
             "autodiscover.e2e" = "autodiscover.outlook.com",
 
             # Zendesk
-            "help" = "binkcx.zendesk.com",
             "zendesk1" = "mail1.zendesk.com",
             "zendesk2" = "mail2.zendesk.com",
             "zendesk3" = "mail3.zendesk.com",

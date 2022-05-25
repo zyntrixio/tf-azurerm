@@ -50,8 +50,8 @@ module "uksouth_tools_environment" {
     managed_identities = local.managed_identities
 
     aks = {
-        mimir = merge(local.aks_config_defaults, {
-            name = "mimir"
+        tools = merge(local.aks_config_defaults, {
+            name = "tools"
             cidr = "10.50.0.0/16"
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
@@ -67,10 +67,10 @@ module "uksouth_tools_environment" {
     }
 }
 
-module "uksouth_tools_aks_flux_mimir" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.8"
-    flux_config = module.uksouth_tools_environment.aks_flux_config.mimir
-}
+# module "uksouth_tools_aks_flux_mimir" {
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.8"
+#     flux_config = module.uksouth_tools_environment.aks_flux_config.mimir
+# }
 
 module "uksouth_tools_cluster_0" {
   source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"

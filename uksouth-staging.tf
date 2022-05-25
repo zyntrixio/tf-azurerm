@@ -134,7 +134,7 @@ module "uksouth_staging_cluster_0" {
   loganalytics_id = module.uksouth_loganalytics.id
   controller_storage_type = "StandardSSD_LRS"
 
-  cluster_ingress_subdomains = [ "api", "bpl", "link", "web", "reflector", "policies", "api2-docs", "portal", ]
+  cluster_ingress_subdomains = [ "api", "bpl", "link", "web", "reflector", "policies", "api2-docs", "portal", "help" ]
 
   prometheus_subnet = "10.33.0.0/18"
 
