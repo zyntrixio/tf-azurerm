@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.8"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.1"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -68,7 +68,7 @@ module "uksouth_tools_environment" {
 }
 
 # module "uksouth_tools_aks_flux_mimir" {
-#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.0.8"
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.1"
 #     flux_config = module.uksouth_tools_environment.aks_flux_config.mimir
 # }
 

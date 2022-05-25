@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.0.8"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.1"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -161,6 +161,9 @@ module "uksouth_prod_environment" {
     bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
     managed_identities = merge(local.managed_identities, { wasabireport = { kv_access = "ro" } })
+    managed_identities_loganalytics = {
+        tableau = { role = "Reader" }
+    }
 
     secret_namespaces = "default,bpl,monitoring,datamanagement,backups,tableau"
 }
