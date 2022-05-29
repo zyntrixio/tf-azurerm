@@ -22,6 +22,10 @@ output "public_ips" {
     value = azurerm_public_ip.pips
 }
 
+output "public_ip_prefix" {
+    value = azurerm_public_ip_prefix.prefix.ip_prefix
+}
+
 output "peering" {
     value = {
         vnet_id = azurerm_virtual_network.vnet.id

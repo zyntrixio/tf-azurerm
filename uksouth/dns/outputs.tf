@@ -29,7 +29,7 @@ output "aks_zones" {
 
 output "private_dns" {
     value = {
-        "uksouth_host" = {
+        uksouth_host = {
             resource_group_name = azurerm_resource_group.rg.name
             private_dns_zone_name = azurerm_private_dns_zone.uksouth-bink-host.name
             should_register = true
@@ -39,11 +39,11 @@ output "private_dns" {
 
 output "public_dns" {
     value = {
-        "bink_sh" = {
+        bink_sh = {
             resource_group_name = azurerm_resource_group.rg.name
             dns_zone_name = azurerm_dns_zone.bink-sh.name
         },
-        "bink_com" = {
+        bink_com = {
             resource_group_name = azurerm_resource_group.rg.name
             dns_zone_name = azurerm_dns_zone.bink-com.name
         }

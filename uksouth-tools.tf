@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.1"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.2"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -38,9 +38,9 @@ module "uksouth_tools_environment" {
     eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
-        name                     = "binkuksouthtools",
-        account_replication_type = "ZRS",
-        account_tier             = "Standard"
+            name = "binkuksouthtools",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
         },
     }
 
@@ -67,10 +67,10 @@ module "uksouth_tools_environment" {
     }
 }
 
-# module "uksouth_tools_aks_flux_mimir" {
-#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.1"
-#     flux_config = module.uksouth_tools_environment.aks_flux_config.mimir
-# }
+module "uksouth_tools_aks_flux_tools" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.2"
+    flux_config = module.uksouth_tools_environment.aks_flux_config.tools
+}
 
 module "uksouth_tools_cluster_0" {
   source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"

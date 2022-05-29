@@ -831,14 +831,14 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "bastion" {
-    name = "bastion"
+    name = "rfc1918-to-bastion"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
     priority = 100
     action = "Allow"
 
     rule {
-        name = "bastion-to-all"
+        name = "ssh"
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
         destination_addresses = ["*"]
@@ -847,17 +847,33 @@ resource "azurerm_firewall_network_rule_collection" "bastion" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "opensearch" {
-    name = "opensearch"
+    name = "rfc1918-to-opensearch"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
     priority = 180
     action = "Allow"
 
     rule {
-        name = "all-to-opensearch"
+        name = "opensearch"
         source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
         destination_ports = ["9200"]
         destination_addresses = ["192.168.1.0/24"]
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_network_rule_collection" "tools" {
+    name = "rfc1918-to-tools"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 190
+    action = "Allow"
+
+    rule {
+        name = "http"
+        source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+        destination_ports = ["80", "443"]
+        destination_addresses = ["10.50.255.254/32"]
         protocols = ["TCP"]
     }
 }

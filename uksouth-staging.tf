@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.1"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.1.2"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -128,7 +128,7 @@ module "uksouth_staging_cluster_0" {
   ubuntu_version       = "20.04"
   controller_vm_size   = "Standard_D2as_v4"
   worker_vm_size       = "Standard_D4s_v4"
-  worker_scaleset_size = 4
+  worker_scaleset_size = 5
   use_scaleset         = true
   max_pods_per_host    = 100
   loganalytics_id = module.uksouth_loganalytics.id
