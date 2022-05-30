@@ -980,8 +980,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-oat"
         backend {
-            host_header = "barclays-oat.sandbox0.uksouth.bink.sh"
-            address = "barclays-oat.sandbox0.uksouth.bink.sh"
+            host_header = "barclays-oat.sandbox.uksouth.bink.sh"
+            address = "barclays-oat.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1015,8 +1015,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-sit-barclays"
         backend {
-            host_header = "barclays-sit.sandbox0.uksouth.bink.sh"
-            address = "barclays-sit.sandbox0.uksouth.bink.sh"
+            host_header = "barclays-sit.sandbox.uksouth.bink.sh"
+            address = "barclays-sit.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1039,8 +1039,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-barclays-sit-reflector"
         backend {
-            host_header = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
-            address = "barclays-sit-reflector.sandbox0.uksouth.bink.sh"
+            host_header = "barclays-sit-reflector.sandbox.uksouth.bink.sh"
+            address = "barclays-sit-reflector.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1108,8 +1108,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-perf-api-v1"
         backend {
-            host_header = "perf-api-v1.sandbox0.uksouth.bink.sh"
-            address = "perf-api-v1.sandbox0.uksouth.bink.sh"
+            host_header = "perf-api-v1.sandbox.uksouth.bink.sh"
+            address = "perf-api-v1.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1143,8 +1143,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-perf-api-v2"
         backend {
-            host_header = "perf-api-v2.sandbox0.uksouth.bink.sh"
-            address = "perf-api-v2.sandbox0.uksouth.bink.sh"
+            host_header = "perf-api-v2.sandbox.uksouth.bink.sh"
+            address = "perf-api-v2.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1178,8 +1178,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-perf-bpl"
         backend {
-            host_header = "perf-bpl.sandbox0.uksouth.bink.sh"
-            address = "perf-bpl.sandbox0.uksouth.bink.sh"
+            host_header = "perf-bpl.sandbox.uksouth.bink.sh"
+            address = "perf-bpl.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1213,8 +1213,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-perf-txm"
         backend {
-            host_header = "perf-txm.sandbox0.uksouth.bink.sh"
-            address = "perf-txm.sandbox0.uksouth.bink.sh"
+            host_header = "perf-txm.sandbox.uksouth.bink.sh"
+            address = "perf-txm.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1225,8 +1225,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-docs"
         backend {
-            host_header = "api2-docs.sandbox0.uksouth.bink.sh"
-            address = "api2-docs.sandbox0.uksouth.bink.sh"
+            host_header = "api2-docs.sandbox.uksouth.bink.sh"
+            address = "api2-docs.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1265,8 +1265,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-sit-lbg"
         backend {
-            host_header = "lloyds-sit.sandbox0.uksouth.bink.sh"
-            address = "lloyds-sit.sandbox0.uksouth.bink.sh"
+            host_header = "lloyds-sit.sandbox.uksouth.bink.sh"
+            address = "lloyds-sit.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1300,8 +1300,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-lloyds-sit-reflector"
         backend {
-            host_header = "lloyds-sit-reflector.sandbox0.uksouth.bink.sh"
-            address = "lloyds-sit-reflector.sandbox0.uksouth.bink.sh"
+            host_header = "lloyds-sit-reflector.sandbox.uksouth.bink.sh"
+            address = "lloyds-sit-reflector.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1341,8 +1341,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-sandbox-perf-bpl-reflector"
         backend {
-            host_header = "perf-bpl-reflector.sandbox0.uksouth.bink.sh"
-            address = "perf-bpl-reflector.sandbox0.uksouth.bink.sh"
+            host_header = "perf-bpl-reflector.sandbox.uksouth.bink.sh"
+            address = "perf-bpl-reflector.sandbox.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }

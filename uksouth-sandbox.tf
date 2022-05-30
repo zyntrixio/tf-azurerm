@@ -254,80 +254,27 @@ module "uksouth_sandbox_environment" {
     bink_host_zone_id = module.uksouth-dns.bink-host[2]
 
     managed_identities = merge(local.managed_identities, {pyxis={kv_access="ro"}})
+
+    aks = {
+        sandbox = merge(local.aks_config_defaults, {
+            name = "sandbox"
+            cidr = "10.189.0.0/16"
+            updates = "stable"
+            sku = "Paid"
+            node_max_count = 20
+            maintenance_day = "Wednesday"
+            iam = merge(local.aks_iam_defaults, {})
+            firewall = merge(local.aks_firewall_defaults, {
+                rule_priority = 1400
+                ingress = merge(local.aks_ingress_defaults, {
+                    public_ip = module.uksouth-firewall.public_ips.4.ip_address
+                })
+            })
+        })
+    }
 }
 
-module "uksouth_sandbox_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
-    providers = {
-        azurerm      = azurerm.uk_sandbox
-        azurerm.core = azurerm
-    }
-
-    resource_group_name = "uksouth-sandbox-k0"
-    cluster_name = "sandbox0"
-    location = "uksouth"
-    vnet_cidr = "10.189.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    bifrost_version = "4.23.0"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2as_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 15
-    use_scaleset = true
-    max_pods_per_host = 100
-    loganalytics_id = module.uksouth_loganalytics.id
-    controller_storage_type = "StandardSSD_LRS"
-
-    cluster_ingress_subdomains = [
-        "api2-docs", "api2-docs", "barclays-oat", "barclays-sit", "barclays-sit-reflector",
-        "lloyds-sit", "lloyds-sit-reflector", "perf-api-v1", "perf-api-v2",
-        "perf-bpl", "perf-bpl-reflector", "perf-txm"
-    ]
-
-    prometheus_subnet = "10.33.0.0/18"
-
-    flux_environment = "uksouth-sandbox"
-
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns  = module.uksouth-dns.public_dns
-
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-    }
-    subscription_peers = {
-        environment = {
-            vnet_id = module.uksouth_sandbox_environment.peering.vnet_id
-            vnet_name = module.uksouth_sandbox_environment.peering.vnet_name
-            resource_group_name = module.uksouth_sandbox_environment.peering.resource_group_name
-        }
-    }
-
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1400
-        rule_priority = 1400
-        public_ip = module.uksouth-firewall.public_ips.4.ip_address
-        secure_origins = local.secure_origins
-        ingress_source = "*"
-        ingress_http = 8000
-        ingress_https = 4000
-        ingress_controller  = 6000
-    }
-
-    postgres_servers = module.uksouth_sandbox_environment.postgres_servers
-    postgres_flexible_server_dns_link = module.uksouth_sandbox_environment.postgres_flexible_server_dns_link
-
-    tags = {
-        "Environment" = "Sandbox",
-    }
+module "uksouth_sandbox_aks_flux_sandbox" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.2"
+    flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
 }
