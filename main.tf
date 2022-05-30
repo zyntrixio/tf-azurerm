@@ -94,6 +94,7 @@ locals {
     chris_latham      = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
     christian_prior   = "ae282437-d730-4342-8914-c936e8289cdc"
     charlie_bricknell = "2ef70efe-8675-419d-97cb-4775828383cd"
+    azhar_khan        = "6f0e18dc-210c-405d-847e-cad38d195115"
   }
   aad_apps = {
     confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"

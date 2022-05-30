@@ -263,7 +263,12 @@ module "uksouth_sandbox_environment" {
             sku = "Paid"
             node_max_count = 20
             maintenance_day = "Wednesday"
-            iam = merge(local.aks_iam_defaults, {})
+            iam = merge(local.aks_iam_defaults, {
+                azhar_khan = {
+                    object_id = local.aad_user.azhar_khan
+                    role = "Azure Kubernetes Service RBAC Admin"
+                }
+            })
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1400
                 ingress = merge(local.aks_ingress_defaults, {
