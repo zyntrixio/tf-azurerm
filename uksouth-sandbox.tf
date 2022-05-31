@@ -121,6 +121,16 @@ module "uksouth_sandbox_environment" {
             object_id  = local.aad_group.qa,
             role       = "Contributor",
         },
+        perf-data-backend = {
+            storage_id = "perf-data",
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        perf-data-qa = {
+            storage_id = "perf-data",
+            object_id  = local.aad_group.qa,
+            role       = "Contributor",
+        },
     }
 
     keyvault_users = {
@@ -138,6 +148,7 @@ module "uksouth_sandbox_environment" {
         "bink-uksouth-perf-api-v2",
         "bink-uksouth-perf-txm",
         "bink-uksouth-perf-bpl",
+        "bink-uksouth-perf-data",
     ]
 
     postgres_flexible_config = {
@@ -186,6 +197,13 @@ module "uksouth_sandbox_environment" {
                 "perf_bpl_carina",
                 "perf_bpl_polaris",
                 "perf_bpl_vela",
+                "perf_data_api_reflector",
+                "perf_data_atlas",
+                "perf_data_europa",
+                "perf_data_hades",
+                "perf_data_hermes",
+                "perf_data_midas",
+                "perf_data_pontus",
             ]
         },
         archive = {
@@ -246,6 +264,11 @@ module "uksouth_sandbox_environment" {
         },
         perf-bpl = {
             name = "binkuksouthperfbpl",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
+        },
+        perf-data = {
+            name = "binkuksouthperfdata",
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
