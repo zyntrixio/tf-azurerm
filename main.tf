@@ -47,6 +47,17 @@ locals {
     https_port = 4000
   }
 
+  aks_cidrs = {
+      uksouth = {
+        prod0 = "10.10.0.0/16"
+        prod1 = "10.11.0.0/16"
+        sandbox = "10.20.0.0/16"
+        staging = "10.30.0.0/16"
+        dev = "10.40.0.0/16"
+        tools = "10.50.0.0/16"
+      }
+  }
+
   secure_origins = [
     "194.74.152.8/29", # Ascot Bink HQ
     "89.38.121.228/30", # London Bink Scrub Office
@@ -117,7 +128,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.7.0"
+      version = "3.9.0"
     }
     chef = {
       source = "terrycain/chef"

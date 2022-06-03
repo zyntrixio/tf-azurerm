@@ -52,7 +52,7 @@ module "uksouth_tools_environment" {
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
-            cidr = "10.50.0.0/16"
+            cidr = local.aks_cidrs.uksouth.tools
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1600

@@ -118,9 +118,9 @@ module "uksouth_dev_environment" {
     secret_namespaces = "default,bpl,portal,monitoring,backups"
 
     aks = {
-        dev0 = merge(local.aks_config_defaults, {
-            name = "dev0"
-            cidr = "10.99.0.0/16"
+        dev = merge(local.aks_config_defaults, {
+            name = "dev"
+            cidr = local.aks_cidrs.uksouth.dev
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1300
@@ -130,9 +130,9 @@ module "uksouth_dev_environment" {
     }
 }
 
-module "uksouth_dev_aks_flux_dev0" {
+module "uksouth_dev_aks_flux" {
     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.2"
-    flux_config = module.uksouth_dev_environment.aks_flux_config.dev0
+    flux_config = module.uksouth_dev_environment.aks_flux_config.dev
 }
 
 module "uksouth_dev_binkweb" {

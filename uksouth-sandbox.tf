@@ -281,7 +281,7 @@ module "uksouth_sandbox_environment" {
     aks = {
         sandbox = merge(local.aks_config_defaults, {
             name = "sandbox"
-            cidr = "10.189.0.0/16"
+            cidr = local.aks_cidrs.uksouth.sandbox
             updates = "stable"
             sku = "Paid"
             node_max_count = 20
@@ -302,7 +302,7 @@ module "uksouth_sandbox_environment" {
     }
 }
 
-module "uksouth_sandbox_aks_flux_sandbox" {
+module "uksouth_sandbox_aks_flux" {
     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.2"
     flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
 }
