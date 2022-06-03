@@ -318,8 +318,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-staging-api"
 
         backend {
-            host_header = "api.staging0.uksouth.bink.sh"
-            address = "api.staging0.uksouth.bink.sh"
+            host_header = "api.staging.uksouth.bink.sh"
+            address = "api.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -361,8 +361,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-staging-api-reflector"
 
         backend {
-            host_header = "reflector.staging0.uksouth.bink.sh"
-            address = "reflector.staging0.uksouth.bink.sh"
+            host_header = "reflector.staging.uksouth.bink.sh"
+            address = "reflector.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -403,8 +403,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-staging-policies"
 
         backend {
-            host_header = "policies.staging0.uksouth.bink.sh"
-            address = "policies.staging0.uksouth.bink.sh"
+            host_header = "policies.staging.uksouth.bink.sh"
+            address = "policies.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -445,8 +445,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-staging-help"
 
         backend {
-            host_header = "help.staging0.uksouth.bink.sh"
-            address = "help.staging0.uksouth.bink.sh"
+            host_header = "help.staging.uksouth.bink.sh"
+            address = "help.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -481,8 +481,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-staging-docs"
         backend {
-            host_header = "api2-docs.staging0.uksouth.bink.sh"
-            address = "api2-docs.staging0.uksouth.bink.sh"
+            host_header = "api2-docs.staging.uksouth.bink.sh"
+            address = "api2-docs.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -529,8 +529,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-dev-api"
 
         backend {
-            host_header = "api.dev0.uksouth.bink.sh"
-            address = "api.dev0.uksouth.bink.sh"
+            host_header = "api.dev.uksouth.bink.sh"
+            address = "api.dev.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -572,8 +572,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-dev-reflector"
 
         backend {
-            host_header = "reflector.dev0.uksouth.bink.sh"
-            address = "reflector.dev0.uksouth.bink.sh"
+            host_header = "reflector.dev.uksouth.bink.sh"
+            address = "reflector.dev.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -608,8 +608,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-dev-portal"
         backend {
-            host_header = "portal.dev0.uksouth.bink.sh"
-            address = "portal.dev0.uksouth.bink.sh"
+            host_header = "portal.dev.uksouth.bink.sh"
+            address = "portal.dev.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -649,8 +649,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-dev-docs"
         backend {
-            host_header = "api2-docs.dev0.uksouth.bink.sh"
-            address = "api2-docs.dev0.uksouth.bink.sh"
+            host_header = "api2-docs.dev.uksouth.bink.sh"
+            address = "api2-docs.dev.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -904,8 +904,8 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-staging-link"
 
         backend {
-            host_header = "link.staging0.uksouth.bink.sh"
-            address = "link.staging0.uksouth.bink.sh"
+            host_header = "link.staging.uksouth.bink.sh"
+            address = "link.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -939,8 +939,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-staging-portal"
         backend {
-            host_header = "portal.staging0.uksouth.bink.sh"
-            address = "portal.staging0.uksouth.bink.sh"
+            host_header = "portal.staging.uksouth.bink.sh"
+            address = "portal.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1670,8 +1670,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-dev-bpl"
         backend {
-            host_header = "bpl.dev0.uksouth.bink.sh"
-            address = "bpl.dev0.uksouth.bink.sh"
+            host_header = "bpl.dev.uksouth.bink.sh"
+            address = "bpl.dev.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
@@ -1711,8 +1711,8 @@ resource "azurerm_frontdoor" "frontdoor" {
     backend_pool {
         name = "uksouth-staging-bpl"
         backend {
-            host_header = "bpl.staging0.uksouth.bink.sh"
-            address = "bpl.staging0.uksouth.bink.sh"
+            host_header = "bpl.staging.uksouth.bink.sh"
+            address = "bpl.staging.uksouth.bink.sh"
             http_port = 8000
             https_port = 4000
         }
