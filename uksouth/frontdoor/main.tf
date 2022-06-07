@@ -753,6 +753,18 @@ resource "azurerm_frontdoor" "frontdoor" {
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
+    frontend_endpoint {
+        name = "perf-data-sandbox-gb-bink-com"
+        host_name = "perf-data.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    frontend_endpoint {
+        name = "perf-data-reflector-sandbox-gb-bink-com"
+        host_name = "perf-data-reflector.sandbox.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
     backend_pool {
         name = "uksouth-perf-api"
 
@@ -1336,6 +1348,65 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "perf-bpl-reflector-sandbox-gb-bink-com"
         host_name = "perf-bpl-reflector.sandbox.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-perf-data-reflector"
+        backend {
+            host_header = "perf-data-reflector.sandbox.uksouth.bink.sh"
+            address = "perf-data-reflector.sandbox.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-perf-data-reflector"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["perf-data-reflector-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-perf-data-reflector"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-perf-data"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["perf-data-sandbox-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "uksouth-sandbox-perf-data"
+            cache_enabled = false
+        }
+    }
+
+    routing_rule {
+        name = "uksouth-sandbox-perf-data-http"
+        accepted_protocols = ["Http"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["perf-data-sandbox-gb-bink-com"]
+        redirect_configuration {
+            redirect_type = "Found"
+            redirect_protocol = "HttpsOnly"
+        }
+    }
+
+    backend_pool {
+        name = "uksouth-sandbox-perf-data"
+        backend {
+            host_header = "perf-data.sandbox.uksouth.bink.sh"
+            address = "perf-data.sandbox.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
     }
 
     backend_pool {
