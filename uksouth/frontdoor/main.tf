@@ -2085,6 +2085,17 @@ resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_sandbox_gb_b
     }
 }
 
+resource "azurerm_frontdoor_custom_https_configuration" "perf_data_sandbox_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["perf-data-sandbox-gb-bink-com"]
+    custom_https_provisioning_enabled = true
+
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+}
+
 resource "azurerm_frontdoor_custom_https_configuration" "perf_api_v1_sandbox_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["perf-api-v1-sandbox-gb-bink-com"]
     custom_https_provisioning_enabled = true
