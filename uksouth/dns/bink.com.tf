@@ -82,6 +82,8 @@ locals {
             "perf-api-v2.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "perf-bpl.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "perf-txm.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "perf-data.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "perf-data-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "docs.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "docs.dev.gb" = "bink-frontdoor.azurefd.net",
             "docs.gb" = "bink-frontdoor.azurefd.net",
