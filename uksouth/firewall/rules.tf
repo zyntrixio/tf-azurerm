@@ -1087,19 +1087,3 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
         fqdn_tags = ["AzureKubernetesService"]
     }
 }
-
-resource "azurerm_firewall_network_rule_collection" "dr-prep" {
-    name = "dr-prep"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 200
-    action = "Allow"
-
-    rule {
-        name = "psql"
-        source_addresses = ["10.0.0.0/8"]
-        destination_ports = ["5432"]
-        destination_addresses = ["20.108.147.101"]
-        protocols = ["TCP"]
-    }
-}
