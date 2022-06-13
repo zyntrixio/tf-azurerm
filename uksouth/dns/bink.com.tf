@@ -44,7 +44,6 @@ locals {
             "link.gb" = "bink-frontdoor.azurefd.net",
             "wallet.gb" = "bink-frontdoor.azurefd.net",
             "wasabi.gb" = "bink-frontdoor.azurefd.net",
-            "fatface.gb" = "bink-frontdoor.azurefd.net",
             "data.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
@@ -58,7 +57,6 @@ locals {
             "wallet.staging.gb" = "bink-frontdoor.azurefd.net",
             "wasabi.staging.gb" = "bink-frontdoor.azurefd.net",
             "bpl.staging.gb" = "bink-frontdoor.azurefd.net",
-            "fatface.staging.gb" = "bink-frontdoor.azurefd.net",
             "docs.staging.gb" = "bink-frontdoor.azurefd.net",
             "link.staging.gb" = "bink-frontdoor.azurefd.net",
             "reflector.staging.gb" = "bink-frontdoor.azurefd.net",
@@ -67,7 +65,6 @@ locals {
             "wallet.dev.gb" = "bink-frontdoor.azurefd.net",
             "wasabi.dev.gb" = "bink-frontdoor.azurefd.net",
             "bpl.dev.gb" = "bink-frontdoor.azurefd.net",
-            "fatface.dev.gb" = "bink-frontdoor.azurefd.net",
             "reflector.dev.gb" = "bink-frontdoor.azurefd.net",
             "api.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "oat.sandbox.gb" = "bink-frontdoor.azurefd.net",
@@ -87,6 +84,7 @@ locals {
             "docs.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "docs.dev.gb" = "bink-frontdoor.azurefd.net",
             "docs.gb" = "bink-frontdoor.azurefd.net",
+            "data-dashboard.dev.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
 
             #Statuspage

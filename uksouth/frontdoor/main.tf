@@ -2232,16 +2232,16 @@ resource "azurerm_frontdoor_custom_https_configuration" "bpl_staging_gb_bink_com
     }
 }
 
-# resource "azurerm_frontdoor_custom_https_configuration" "data_dashboard_dev_gb_bink_com" {
-#     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["data-dashboard-dev-gb-bink-com"]
-#     custom_https_provisioning_enabled = true
+resource "azurerm_frontdoor_custom_https_configuration" "data_dashboard_dev_gb_bink_com" {
+    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["data-dashboard-dev-gb-bink-com"]
+    custom_https_provisioning_enabled = true
 
-#     custom_https_configuration {
-#         certificate_source = "AzureKeyVault"
-#         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-#         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-#     }
-# }
+    custom_https_configuration {
+        certificate_source = "AzureKeyVault"
+        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
+        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
+    }
+}
 
 
 

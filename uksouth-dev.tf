@@ -115,7 +115,7 @@ module "uksouth_dev_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,bpl,portal,monitoring,backups"
+    secret_namespaces = "default,bpl,portal,monitoring,backups,data"
 
     aks = {
         dev = merge(local.aks_config_defaults, {
@@ -133,29 +133,4 @@ module "uksouth_dev_environment" {
 module "uksouth_dev_aks_flux" {
     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.2"
     flux_config = module.uksouth_dev_environment.aks_flux_config.dev
-}
-
-module "uksouth_dev_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.1"
-    providers = {
-        azurerm = azurerm.uk_dev
-    }
-    resource_group_name = "uksouth-dev"
-    location = "uksouth"
-    environment = "Development"
-
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_loganalytics.id
-
-    storage_accounts = {
-        wallet = {
-            name = "binkwebdevbink"
-        }
-        wasabi = {
-            name = "binkwebdevwasabi"
-        }
-        fatface = {
-            name = "binkwebdevfatface"
-        }
-    }
 }
