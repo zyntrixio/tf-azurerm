@@ -311,7 +311,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "api-staging-gb-bink-com"
         host_name = "api.staging.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
@@ -354,7 +353,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "reflector-staging-gb-bink-com"
         host_name = "reflector.staging.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
@@ -516,13 +514,11 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "docs-staging-gb-bink-com"
         host_name = "docs.staging.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
         name = "api-dev-gb-bink-com"
         host_name = "api.dev.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
@@ -565,7 +561,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "reflector-dev-gb-bink-com"
         host_name = "reflector.dev.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
@@ -643,7 +638,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "portal-dev-gb-bink-com"
         host_name = "portal.dev.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
@@ -684,85 +678,71 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "docs-dev-gb-bink-com"
         host_name = "docs.dev.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
         name = "api-sandbox-gb-bink-com"
         host_name = "api.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "barclays-oat-sandbox-gb-bink-com"
         host_name = "barclays-oat.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "barclays-sit-sandbox-gb-bink-com"
         host_name = "barclays-sit.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "barclays-sit-reflector-sandbox-gb-bink-com"
         host_name = "barclays-sit-reflector.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "lloyds-sit-sandbox-gb-bink-com"
         host_name = "lloyds-sit.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "lloyds-sit-reflector-sandbox-gb-bink-com"
         host_name = "lloyds-sit-reflector.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-api-v1-sandbox-gb-bink-com"
         host_name = "perf-api-v1.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-api-v2-sandbox-gb-bink-com"
         host_name = "perf-api-v2.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-bpl-sandbox-gb-bink-com"
         host_name = "perf-bpl.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-txm-sandbox-gb-bink-com"
         host_name = "perf-txm.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "performance-sandbox-gb-bink-com"
         host_name = "performance.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-data-sandbox-gb-bink-com"
         host_name = "perf-data.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
         name = "perf-data-reflector-sandbox-gb-bink-com"
         host_name = "perf-data-reflector.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
@@ -806,7 +786,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "oat-sandbox-gb-bink-com"
         host_name = "oat.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
@@ -986,7 +965,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "portal-staging-gb-bink-com"
         host_name = "portal.staging.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     backend_pool {
@@ -1347,7 +1325,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "perf-bpl-reflector-sandbox-gb-bink-com"
         host_name = "perf-bpl-reflector.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
@@ -1447,7 +1424,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "sit-sandbox-gb-bink-com"
         host_name = "sit.sandbox.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     frontend_endpoint {
