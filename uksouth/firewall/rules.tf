@@ -420,6 +420,17 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             type = "Https"
         }
     }
+    rule {
+        name = "Grafana Cloud HTTPS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "prometheus-prod-01-eu-west-0.grafana.net",
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {
