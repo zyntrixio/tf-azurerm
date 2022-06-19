@@ -823,7 +823,7 @@ resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     }
     rule {
         name = "http"
-        source_addresses = var.secure_origins
+        source_addresses = ["*"]
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.8.ip_address]
         translated_address = "192.168.10.4"
