@@ -109,7 +109,7 @@ module "uksouth_staging_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,portal,bpl,bpl-testing,monitoring,backups"
+    secret_namespaces = "default,portal,bpl,bpl-testing,monitoring,backups,data"
 
     aks = {
         staging = merge(local.aks_config_defaults, {
