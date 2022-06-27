@@ -86,6 +86,7 @@ locals {
             "docs.dev.gb" = "bink-frontdoor.azurefd.net",
             "docs.gb" = "bink-frontdoor.azurefd.net",
             "data-dashboard.dev.gb" = "bink-frontdoor.azurefd.net",
+            "data-dashboard.staging.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
 
             #Statuspage
