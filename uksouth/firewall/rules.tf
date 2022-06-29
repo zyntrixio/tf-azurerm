@@ -706,7 +706,7 @@ resource "azurerm_firewall_nat_rule_collection" "aiden_airbyte" {
 
     rule {
         name = "http"
-        source_addresses = concat(["90.218.99.61", "152.37.65.88"], var.secure_origins)
+        source_addresses = concat(["90.218.99.61", "152.37.65.88", "20.26.230.235"], var.secure_origins)
         destination_ports = ["8000"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.23.4"
