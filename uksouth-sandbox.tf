@@ -201,6 +201,7 @@ module "uksouth_sandbox_environment" {
                 "perf_data_atlas",
                 "perf_data_europa",
                 "perf_data_hades",
+                "perf_data_harmonia",
                 "perf_data_hermes",
                 "perf_data_midas",
                 "perf_data_pontus",
