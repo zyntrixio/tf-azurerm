@@ -806,6 +806,43 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
 }
 
+resource "azurerm_firewall_nat_rule_collection" "tableau-sandbox" {
+    name = "tableau-sandbox"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 135
+    action = "Dnat"
+
+    rule {
+        name = "tableau_http"
+        source_addresses = ["*"]
+        destination_ports = ["80"]
+        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
+        translated_address = "192.168.102.4"
+        translated_port = "80"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_https"
+        source_addresses = var.secure_origins
+        destination_ports = ["443"]
+        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
+        translated_address = "192.168.102.4"
+        translated_port = "443"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "tableau_psql"
+        source_addresses = var.secure_origins
+        destination_ports = ["5432"]
+        destination_addresses = [azurerm_public_ip.pips.13.ip_address]
+        translated_address = "192.168.102.4"
+        translated_port = "5432"
+        protocols = ["TCP"]
+    }
+}
+
+
 resource "azurerm_firewall_nat_rule_collection" "gitlab" {
     name = "gitlab"
     azure_firewall_name = azurerm_firewall.firewall.name
