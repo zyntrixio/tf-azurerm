@@ -35,8 +35,9 @@ locals {
 
             # Random
             "git" = "51.132.44.248",
-            "tableau.gb" = "51.132.44.252"
-            "help" = "138.68.154.237"
+            "tableau.gb" = "51.132.44.252",
+            "tableau-sandbox.gb" = "51.132.44.253",
+            "help" = "138.68.154.237",
         }
         cname_records = {
 
