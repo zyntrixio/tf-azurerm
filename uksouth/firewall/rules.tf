@@ -459,13 +459,13 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Hermes HTTPS"
-        source_addresses = ["*"]
+        name = "Mailgun and Mailjet"
+        source_addresses = [ "*" ]
         target_fqdns = [
-            "api.twitter.com",
-            "graph.facebook.com",
-            "appleid.apple.com",
-            "bink.blob.core.windows.net",
+            "api.mailgun.net",
+            "api.eu.mailgun.net",
+            "status.mailgun.com",
+            "api.mailjet.com",
         ]
         protocol {
             port = "443"
@@ -473,12 +473,13 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Lethe HTTPS"
+        name = "Hermes HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
-            "api.mailgun.net",
-            "api.eu.mailgun.net",
-            "status.mailgun.com",
+            "api.twitter.com",
+            "graph.facebook.com",
+            "appleid.apple.com",
+            "bink.blob.core.windows.net",
         ]
         protocol {
             port = "443"
