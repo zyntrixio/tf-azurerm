@@ -49,6 +49,8 @@ module "uksouth_tools_environment" {
 
     managed_identities = local.managed_identities
 
+    secret_namespaces = "default,asset-register"
+
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
@@ -58,7 +60,6 @@ module "uksouth_tools_environment" {
                 rule_priority = 1600
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.14.ip_address
-                    source_addr = local.secure_origins
                     http_port = 80
                     https_port = 443
                 })

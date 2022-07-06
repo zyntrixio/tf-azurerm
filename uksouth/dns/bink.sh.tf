@@ -20,11 +20,10 @@ locals {
         }
         cname_records = {
             "mobsf.uksouth" = "tools0.uksouth.bink.sh"
-            "kibana.uksouth" = "tools0.uksouth.bink.sh"
             "autodiscover" = "autodiscover.outlook.com"
             "cluster-autodiscover.uksouth" = "tools0.uksouth.bink.sh"
             "grafana.tools" = "tools0.uksouth.bink.sh"
-            "asset-register.tools" = "tools0.uksouth.bink.sh"
+            "asset-register.tools" = "redirect.tools.uksouth.bink.sh"
             "bridge.uksouth" = "tools0.uksouth.bink.sh"
             "tools.uksouth" = "tools0.uksouth.bink.sh"
             "pypi.uksouth" = "tools0.uksouth.bink.sh"
