@@ -205,6 +205,7 @@ module "uksouth_sandbox_environment" {
                 "perf_data_hermes",
                 "perf_data_midas",
                 "perf_data_pontus",
+                "perf_data_tableau",
             ]
         },
         archive = {
