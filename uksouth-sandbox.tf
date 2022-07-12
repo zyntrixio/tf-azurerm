@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.2.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -227,7 +227,6 @@ module "uksouth_sandbox_environment" {
     }
 
     secret_namespaces = "default,barclays-oat,barclays-sit,lloyds-sit,monitoring,perf-api-v1,perf-api-v2,perf-bpl,perf-txm,perf-data"
-    eventhub_authid   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name = "binkuksouthsandbox",
@@ -305,7 +304,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.3"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.3.1"
     flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
 }
 

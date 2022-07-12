@@ -3,9 +3,6 @@ variable rg_name { type = string }
 variable rg_location { type = string }
 variable tags {}
 
-variable eventhub_name { type = string }
-variable eventhub_auth { type = string }
-
 variable "devops_objectids" {
     type = map(object({ object_id = string }))
 

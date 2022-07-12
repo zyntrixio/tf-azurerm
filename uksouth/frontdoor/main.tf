@@ -1465,54 +1465,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         host_name = "wasabi.dev.gb.bink.com"
     }
 
-    backend_pool {
-        name = "production-binkweb-bink"
-        backend {
-            host_header = "binkwebprodbink.z33.web.core.windows.net"
-            address = "binkwebprodbink.z33.web.core.windows.net"
-            http_port = 80
-            https_port = 443
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "production-binkweb-bink"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/healthz"] # was ["/*"]
-        frontend_endpoints = ["wallet-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "production-binkweb-bink"
-            cache_enabled = false
-        }
-    }
-
-    backend_pool {
-        name = "production-binkweb-wasabi"
-        backend {
-            host_header = "binkwebprodwasabi.z33.web.core.windows.net"
-            address = "binkwebprodwasabi.z33.web.core.windows.net"
-            http_port = 80
-            https_port = 443
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "production-binkweb-wasabi"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/healthz"] # was ["/*"]
-        frontend_endpoints = ["wasabi-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "production-binkweb-wasabi"
-            cache_enabled = false
-        }
-    }
-
     routing_rule {
         name = "binkweb-http-to-https"
         accepted_protocols = ["Http"]
@@ -1528,54 +1480,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
-        }
-    }
-
-    backend_pool {
-        name = "staging-binkweb-bink"
-        backend {
-            host_header = "binkwebstagingbink.z33.web.core.windows.net"
-            address = "binkwebstagingbink.z33.web.core.windows.net"
-            http_port = 80
-            https_port = 443
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "staging-binkweb-bink"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["wallet-staging-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "staging-binkweb-bink"
-            cache_enabled = false
-        }
-    }
-
-    backend_pool {
-        name = "staging-binkweb-wasabi"
-        backend {
-            host_header = "binkwebstagingwasabi.z33.web.core.windows.net"
-            address = "binkwebstagingwasabi.z33.web.core.windows.net"
-            http_port = 80
-            https_port = 443
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "staging-binkweb-wasabi"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["wasabi-staging-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "staging-binkweb-wasabi"
-            cache_enabled = false
         }
     }
 
@@ -2295,8 +2199,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "data_dashboard_staging_
 resource "azurerm_monitor_diagnostic_setting" "diags" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_frontdoor.frontdoor.id
-    eventhub_name = "azurefrontdoorpre" # go to a "pre" eventhub for post processing.
-    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     log_analytics_workspace_id = var.loganalytics_id
 
     log {

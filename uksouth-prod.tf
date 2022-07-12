@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.2.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -115,7 +115,6 @@ module "uksouth_prod_environment" {
         day_of_week    = "Wednesday"
         start_hour_utc = 1
     }
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name = "binkuksouthprod",
@@ -236,7 +235,7 @@ module "uksouth_prod_airbyte" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -246,7 +245,6 @@ module "uksouth_prod_cluster_0" {
     cluster_name = "prod0"
     location = "uksouth"
     vnet_cidr = "10.169.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
     bifrost_version = "4.23.0"
     ubuntu_version = "20.04"
@@ -315,7 +313,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -325,7 +323,6 @@ module "uksouth_prod_cluster_1" {
     cluster_name = "prod1"
     location = "uksouth"
     vnet_cidr = "10.170.0.0/16"
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
 
     bifrost_version = "4.23.0"
     ubuntu_version = "20.04"
@@ -390,30 +387,5 @@ module "uksouth_prod_cluster_1" {
 
     tags = {
         "Environment" = "Production",
-    }
-}
-
-module "uksouth_prod_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.1"
-    providers = {
-        azurerm = azurerm.uk_production
-    }
-    resource_group_name = "uksouth-prod"
-    location = "uksouth"
-    environment = "Production"
-
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_loganalytics.id
-
-    storage_accounts = {
-        wallet = {
-            name = "binkwebprodbink"
-        }
-        wasabi = {
-            name = "binkwebprodwasabi"
-        }
-        fatface = {
-            name = "binkwebprodfatface"
-        }
     }
 }

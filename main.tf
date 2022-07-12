@@ -128,7 +128,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.9.0"
+      version = "3.13.0"
     }
     chef = {
       source = "terrycain/chef"
@@ -180,10 +180,6 @@ module "uksouth-dns" {
 
 module "uksouth-alerts" {
   source = "./uksouth/alerts"
-}
-
-module "uksouth-eventhubs" {
-  source = "./uksouth/eventhubs"
 }
 
 module "uksouth-chef" {
@@ -344,14 +340,6 @@ module "uksouth_loganalytics" {
     }
     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     vnet_cidr = "192.168.25.0/24"
-}
-
-module "uksouth-redscan" {
-  source          = "./uksouth/redscan"
-  bink_sh         = module.uksouth-dns.bink-sh
-  dns_link        = module.uksouth-dns.uksouth-bink-host
-  secure_origins  = local.secure_origins
-  loganalytics_id = module.uksouth_loganalytics.id
 }
 
 module "uksouth-wireguard" {

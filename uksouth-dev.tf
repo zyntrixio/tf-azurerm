@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.2.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -79,7 +79,6 @@ module "uksouth_dev_environment" {
         }
     }
 
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name                     = "binkuksouthdev",
@@ -131,6 +130,6 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.3"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.3.1"
     flux_config = module.uksouth_dev_environment.aks_flux_config.dev
 }

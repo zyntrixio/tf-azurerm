@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.2.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -35,7 +35,6 @@ module "uksouth_tools_environment" {
         }
     }
 
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name = "binkuksouthtools",
@@ -69,12 +68,12 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_aks_flux_tools" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.3"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.3.1"
     flux_config = module.uksouth_tools_environment.aks_flux_config.tools
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.17.0"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
@@ -84,7 +83,6 @@ module "uksouth_tools_cluster_0" {
   cluster_name        = "tools0"
   location            = "uksouth"
   vnet_cidr           = "10.33.0.0/16"
-  eventhub_authid     = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
   bifrost_version     = "4.23.0"
   ubuntu_version      = "20.04"
 

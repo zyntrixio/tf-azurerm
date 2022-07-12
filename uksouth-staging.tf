@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.2.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -73,7 +73,6 @@ module "uksouth_staging_environment" {
         }
     }
 
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     storage_config = {
         common = {
             name                     = "binkuksouthstaging",
@@ -128,31 +127,6 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.1.3"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.3.1"
     flux_config = module.uksouth_staging_environment.aks_flux_config.staging
-}
-
-module "uksouth_staging_binkweb" {
-    source = "github.com/binkhq/tf-azurerm_binkweb?ref=2.1.1"
-    providers = {
-        azurerm = azurerm.uk_staging
-    }
-    resource_group_name = "uksouth-staging"
-    location = "uksouth"
-    environment = "Staging"
-
-    eventhub_authid = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
-    loganalytics_id = module.uksouth_loganalytics.id
-
-    storage_accounts = {
-        wallet = {
-            name = "binkwebstagingbink"
-        }
-        wasabi = {
-            name = "binkwebstagingwasabi"
-        }
-        fatface = {
-            name = "binkwebstagingfatface"
-        }
-    }
 }

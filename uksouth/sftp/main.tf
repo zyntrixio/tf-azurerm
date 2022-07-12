@@ -21,7 +21,6 @@ resource "azurerm_subnet" "subnet" {
     ]
     service_endpoints = [
         "Microsoft.Storage",
-        "Microsoft.EventHub",
     ]
 }
 
@@ -119,8 +118,6 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_monitor_diagnostic_setting" "nsg" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_network_security_group.nsg.id
-    eventhub_name = "azurensg"
-    eventhub_authorization_rule_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-eventhubs/providers/Microsoft.EventHub/namespaces/binkuksouthlogs/authorizationRules/RootManageSharedAccessKey"
     log_analytics_workspace_id = var.loganalytics_id
 
     log {
