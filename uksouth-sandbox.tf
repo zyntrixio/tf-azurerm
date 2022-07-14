@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.3.1"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.4.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -304,7 +304,7 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.3.1"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.4.0"
     flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
 }
 
