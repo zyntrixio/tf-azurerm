@@ -151,6 +151,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "bpl-gb-bink-com"
         host_name = "bpl.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.policy.id
     }
 
     backend_pool {
