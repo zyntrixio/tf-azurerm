@@ -69,6 +69,10 @@ locals {
   secure_origins_v6 = [
     "2001:8b0:b130:a52d::/64", # cpressland@bink.com
   ]
+  lloyds_origins_v4 = [
+    "141.92.129.40/29", # Peterborough
+    "141.92.67.40/29", # Horizon
+  ]
   managed_identities = {
     fakicorp          = { kv_access = "rw" },
     angelia           = { kv_access = "ro" },
@@ -204,6 +208,7 @@ module "uksouth-firewall" {
   sftp_ip_address    = module.uksouth-sftp.ip_address
   loganalytics_id    = module.uksouth_loganalytics.id
   secure_origins     = local.secure_origins
+  lloyds_origins     = local.lloyds_origins_v4
 }
 
 # module "uksouth-sandbox" {

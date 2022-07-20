@@ -13,6 +13,11 @@ variable "secure_origins" {
     default = []
 }
 
+variable "lloyds_origins" {
+    type = list
+    default = [] 
+}
+
 variable "loganalytics_id" {
     type = string
 }

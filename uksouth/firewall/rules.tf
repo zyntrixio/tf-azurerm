@@ -788,7 +788,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
     rule {
         name = "tableau_https"
-        source_addresses = var.secure_origins
+        source_addresses = concat(var.secure_origins, var.lloyds_origins)
         destination_ports = ["443"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "192.168.101.4"
