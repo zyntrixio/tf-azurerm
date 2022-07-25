@@ -90,7 +90,10 @@ locals {
             "data-dashboard.staging.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
 
-            #Statuspage
+            # Auth0
+            "auth" = "bink-cd-x0ncx4gd7fxbncmx.edge.tenants.eu.auth0.com",
+
+            # Statuspage
             "spg._domainkey" = "spg.domainkey.u12618875.wl126.sendgrid.net",
             "spg2._domainkey" = "spg2.domainkey.u12618875.wl126.sendgrid.net",
             "statuspage-notifications" = "u12618875.wl126.sendgrid.net",
