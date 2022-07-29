@@ -13,6 +13,7 @@ locals {
     sku = "Free"
     node_max_count = 5
     node_size = "Standard_D4s_v4"
+    # node_size = "Standard_E4as_v5" # TODO
     maintenance_day = "Monday"
     dns = module.uksouth-dns.aks_zones
   }
@@ -132,7 +133,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.13.0"
+      version = "3.16.0"
     }
     chef = {
       source = "terrycain/chef"
