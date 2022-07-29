@@ -515,6 +515,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "docs-staging-gb-bink-com"
         host_name = "docs.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
@@ -679,6 +680,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "docs-dev-gb-bink-com"
         host_name = "docs.dev.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
