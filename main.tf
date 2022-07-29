@@ -12,8 +12,7 @@ locals {
     updates = "rapid"
     sku = "Free"
     node_max_count = 5
-    node_size = "Standard_D4s_v4"
-    # node_size = "Standard_E4as_v5" # TODO
+    node_size = "Standard_E4as_v5"
     maintenance_day = "Monday"
     dns = module.uksouth-dns.aks_zones
   }
