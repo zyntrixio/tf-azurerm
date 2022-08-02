@@ -162,7 +162,7 @@ resource "azurerm_linux_virtual_machine" "wireguard" {
     name = "wireguard"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D2s_v4"
+    size = "Standard_D2as_v4"
     admin_username = "terraform"
     tags = var.tags
     network_interface_ids = [
