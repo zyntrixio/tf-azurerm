@@ -132,7 +132,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.16.0"
+      version = "3.17.0"
     }
     chef = {
       source = "terrycain/chef"
@@ -140,17 +140,6 @@ terraform {
     random = {
       source = "hashicorp/random"
     }
-  }
-}
-
-data "terraform_remote_state" "uksouth-common" {
-  backend = "azurerm"
-
-  config = {
-    storage_account_name = "binkitops"
-    container_name       = "terraform"
-    key                  = "uksouth-common.tfstate"
-    access_key           = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
   }
 }
 
@@ -210,15 +199,6 @@ module "uksouth-firewall" {
   secure_origins     = local.secure_origins
   lloyds_origins     = local.lloyds_origins_v4
 }
-
-# module "uksouth-sandbox" {
-#     source = "./uksouth/sandbox"
-
-#     common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-#     common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
-#     private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-#     private_dns_link_bink_sh = module.uksouth-dns.uksouth-bink-sh
-# }
 
 module "uksouth-storage" {
   source          = "./uksouth/storage"

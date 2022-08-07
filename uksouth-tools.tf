@@ -73,7 +73,7 @@ module "uksouth_tools_aks_flux_tools" {
 }
 
 module "uksouth_tools_cluster_0" {
-  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
+  source = "github.com/binkhq/tf-azurerm_cluster?ref=2.19.0"
   providers = {
     azurerm      = azurerm
     azurerm.core = azurerm
@@ -98,8 +98,6 @@ module "uksouth_tools_cluster_0" {
 
   # Gitops repo, Managed identity for syncing common secrets
   flux_environment              = "uksouth-tools"
-  common_keyvault               = data.terraform_remote_state.uksouth-common.outputs.keyvault
-  common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
   # DNS zones
   private_dns = module.uksouth-dns.private_dns

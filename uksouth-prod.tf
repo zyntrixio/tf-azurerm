@@ -168,7 +168,7 @@ module "uksouth_prod_environment" {
 }
 
 module "uksouth_prod_tableau" {
-    source = "./uksouth/tableau2"
+    source = "./uksouth/tableau"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -235,7 +235,7 @@ module "uksouth_prod_airbyte" {
 }
 
 module "uksouth_prod_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.19.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -262,9 +262,6 @@ module "uksouth_prod_cluster_0" {
 
     # Gitops repo, Managed identity for syncing common secrets
     flux_environment = "uksouth-prod"
-
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
     # DNS zones
     private_dns = module.uksouth-dns.private_dns
@@ -313,7 +310,7 @@ module "uksouth_prod_cluster_0" {
 }
 
 module "uksouth_prod_cluster_1" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.18.0"
+    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.19.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -340,9 +337,6 @@ module "uksouth_prod_cluster_1" {
 
     # Gitops repo, Managed identity for syncing common secrets
     flux_environment = "uksouth-prod"
-
-    common_keyvault = data.terraform_remote_state.uksouth-common.outputs.keyvault
-    common_keyvault_sync_identity = data.terraform_remote_state.uksouth-common.outputs.keyvault2kube_identity
 
     # DNS zones
     private_dns = module.uksouth-dns.private_dns
