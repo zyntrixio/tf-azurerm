@@ -30,10 +30,6 @@ module "uksouth_prod_environment" {
             object_id = local.aad_user.chris_latham,
             role = "Reader",
         },
-        christian_prior = {
-            object_id = local.aad_user.christian_prior,
-            role = "Reader",
-        },
         qa = {
             object_id = local.aad_group.qa,
             role = "Reader",
@@ -51,11 +47,6 @@ module "uksouth_prod_environment" {
             object_id = local.aad_user.chris_latham,
             role = "Contributor",
         },
-        christian_prior = {
-            storage_id = "common",
-            object_id = local.aad_user.christian_prior,
-            role = "Contributor",
-        },
     }
 
     redis_iam = {
@@ -68,9 +59,6 @@ module "uksouth_prod_environment" {
     keyvault_users = {
         mick_latham = local.aad_user.mick_latham,
         chris_latham = local.aad_user.chris_latham,
-        christian_prior = local.aad_user.christian_prior,
-        qa = local.aad_group.qa,
-        SecOps = local.aad_group.cyber_sec,
     }
 
     postgres_flexible_config = {
@@ -165,6 +153,35 @@ module "uksouth_prod_environment" {
     }
 
     secret_namespaces = "default,bpl,monitoring,datamanagement,backups,tableau"
+
+    aks = {
+        prod0 = merge(local.aks_config_defaults_prod, {
+            name = "prod0"
+            cidr = local.aks_cidrs.uksouth.prod0
+            iam = merge(local.aks_iam_production, {})
+            firewall = merge(local.aks_firewall_defaults, {
+                rule_priority = 1100
+                ingress = merge(local.aks_ingress_defaults, {
+                    public_ip = module.uksouth-firewall.public_ips.0.ip_address
+                    http_port = 8002
+                    https_port = 4002
+                })
+            })
+        })
+        prod1 = merge(local.aks_config_defaults_prod, {
+            name = "prod1"
+            cidr = local.aks_cidrs.uksouth.prod1
+            iam = merge(local.aks_iam_production, {})
+            firewall = merge(local.aks_firewall_defaults, {
+                rule_priority = 1110
+                ingress = merge(local.aks_ingress_defaults, {
+                    public_ip = module.uksouth-firewall.public_ips.0.ip_address
+                    http_port = 8003
+                    https_port = 4003
+                })
+            })
+        })
+    }
 }
 
 module "uksouth_prod_tableau" {

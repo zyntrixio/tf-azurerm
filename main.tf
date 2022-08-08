@@ -17,6 +17,13 @@ locals {
         dns = module.uksouth-dns.aks_zones
     }
 
+    aks_config_defaults_prod = merge(local.aks_config_defaults, {
+        updates = "stable"
+        sku = "Paid"
+        node_max_count = 10
+        maintenance_day = "Thursday"
+    })
+
     aks_iam_defaults = {
         architecture = {
             object_id = local.aad_group.architecture
@@ -32,6 +39,29 @@ locals {
         }
         qa = {
             object_id = local.aad_group.qa
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
+    }
+
+    aks_iam_production = {
+        chris_latham = {
+            object_id = local.aad_user.chris_latham
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
+        kashim_aziz = {
+            object_id = local.aad_user.kashim_aziz
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
+        mick_latham = {
+            object_id = local.aad_user.mick_latham
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
+        martin_marsh = {
+            object_id = local.aad_user.martin_marsh
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
+        stewart_prerrygove = {
+            object_id = local.aad_user.stewart_prerrygove
             role = "Azure Kubernetes Service RBAC Writer"
         }
     }
@@ -100,15 +130,15 @@ locals {
         cyber_sec = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
         devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
         backend = "219194f6-b186-4146-9be7-34b731e19001"
-        data_warehouse_admins = "8596acbd-b840-4124-9ec6-b6c0918ac247"
     }
     aad_user = {
         jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
-        chris_sterritt = "43ac5515-f32b-46a3-80c8-15a0a2ef24d5"
         mick_latham = "343299d4-0a39-4109-adce-973ad29d0183"
         chris_latham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
-        christian_prior = "ae282437-d730-4342-8914-c936e8289cdc"
         azhar_khan = "6f0e18dc-210c-405d-847e-cad38d195115"
+        kashim_aziz = "b004c980-3e08-4237-b8e2-d6e65d2bef3f"
+        martin_marsh = "3c92809d-91a4-456f-a161-a8b9df4c01e1"
+        stewart_prerrygove = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
     }
     aad_apps = {
         confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"
