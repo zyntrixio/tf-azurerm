@@ -227,6 +227,7 @@ module "uksouth-firewall" {
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
+    production_cidrs = [ local.aks_cidrs.uksouth.prod0, local.aks_cidrs.uksouth.prod1 ]
 }
 
 module "uksouth-storage" {

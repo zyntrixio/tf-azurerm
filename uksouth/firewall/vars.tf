@@ -8,6 +8,11 @@ variable "tags" {
 variable "bastion_ip_address" {}
 variable "sftp_ip_address" {}
 
+variable "production_cidrs" {
+  type = list
+  default = []
+}
+
 variable "secure_origins" {
     type = list
     default = []

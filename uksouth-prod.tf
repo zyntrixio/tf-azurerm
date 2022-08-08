@@ -184,6 +184,16 @@ module "uksouth_prod_environment" {
     }
 }
 
+module "uksouth_prod0_aks_flux" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.4.0"
+    flux_config = module.uksouth_prod_environment.aks_flux_config.prod0
+}
+
+module "uksouth_prod1_aks_flux" {
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.4.0"
+    flux_config = module.uksouth_prod_environment.aks_flux_config.prod1
+}
+
 module "uksouth_prod_tableau" {
     source = "./uksouth/tableau"
     providers = {
@@ -227,7 +237,7 @@ module "uksouth_prod_rabbit" {
 
     dns = module.uksouth-dns.private_dns
 
-    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16"] # TODO: Uplift azurerm_cluster to output worker subnet ranges
+    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16", local.aks_cidrs.uksouth.prod0, local.aks_cidrs.uksouth.prod1 ]
 }
 
 module "uksouth_prod_airbyte" {

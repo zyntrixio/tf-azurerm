@@ -1081,6 +1081,7 @@ resource "azurerm_firewall_network_rule_collection" "smtp" {
         protocols = ["TCP"]
     }
 }
+
 resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
     name = "outbound_sftp"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -1093,6 +1094,22 @@ resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
         source_addresses = ["*"]
         destination_ports = ["10023"]
         destination_addresses = ["157.83.104.20"]
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_network_rule_collection" "prod_amqp" {
+    name = "prod_amqp"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 210
+    action = "Allow"
+
+    rule {
+        name = "amqp"
+        source_addresses = var.production_cidrs
+        destination_ports = ["5671", "15671"]
+        destination_addresses = ["192.168.22.0/24"]
         protocols = ["TCP"]
     }
 }
