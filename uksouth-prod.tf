@@ -163,8 +163,8 @@ module "uksouth_prod_environment" {
                 rule_priority = 1100
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    http_port = 8002
-                    https_port = 4002
+                    http_port = 8000
+                    https_port = 4000
                 })
             })
         })
@@ -176,8 +176,8 @@ module "uksouth_prod_environment" {
                 rule_priority = 1110
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    http_port = 8003
-                    https_port = 4003
+                    http_port = 8001
+                    https_port = 4001
                 })
             })
         })
@@ -258,155 +258,5 @@ module "uksouth_prod_airbyte" {
         vnet_id = module.uksouth_prod_environment.peering.vnet_id
         vnet_name = module.uksouth_prod_environment.peering.vnet_name
         resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
-    }
-}
-
-module "uksouth_prod_cluster_0" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.19.0"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
-
-    resource_group_name = "uksouth-prod-k0"
-    cluster_name = "prod0"
-    location = "uksouth"
-    vnet_cidr = "10.169.0.0/16"
-
-    bifrost_version = "4.23.0"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2as_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 10
-    use_scaleset = true
-    max_pods_per_host = 100
-    loganalytics_id = module.uksouth_loganalytics.id
-    controller_storage_type = "StandardSSD_LRS"
-
-    cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
-
-    prometheus_subnet = "10.33.0.0/18"
-
-    # Gitops repo, Managed identity for syncing common secrets
-    flux_environment = "uksouth-prod"
-
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns  = module.uksouth-dns.public_dns
-
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id             = module.uksouth-firewall.vnet_id
-            vnet_name           = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-    }
-    subscription_peers = {
-        rabbitmq = {
-            vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
-        }
-        environment = {
-            vnet_id = module.uksouth_prod_environment.peering.vnet_id
-            vnet_name = module.uksouth_prod_environment.peering.vnet_name
-            resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
-        }
-    }
-
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1000
-        rule_priority = 1000
-        public_ip = module.uksouth-firewall.public_ips.0.ip_address
-        secure_origins = local.secure_origins
-        ingress_source = "*"
-        ingress_http = 8000
-        ingress_https = 4000
-        ingress_controller = 6000
-    }
-
-    postgres_servers = module.uksouth_prod_environment.postgres_servers
-    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-
-    tags = {
-        "Environment" = "Production",
-    }
-}
-
-module "uksouth_prod_cluster_1" {
-    source = "github.com/binkhq/tf-azurerm_cluster?ref=2.19.0"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
-
-    resource_group_name = "uksouth-prod-k1"
-    cluster_name = "prod1"
-    location = "uksouth"
-    vnet_cidr = "10.170.0.0/16"
-
-    bifrost_version = "4.23.0"
-    ubuntu_version = "20.04"
-    controller_vm_size = "Standard_D2as_v4"
-    worker_vm_size = "Standard_D4s_v4"
-    worker_scaleset_size = 10
-    use_scaleset = true
-    max_pods_per_host = 100
-    loganalytics_id = module.uksouth_loganalytics.id
-    controller_storage_type = "StandardSSD_LRS"
-
-    cluster_ingress_subdomains = local.prod_cluster_ingress_subdomains
-
-    prometheus_subnet = "10.33.0.0/18"
-
-    # Gitops repo, Managed identity for syncing common secrets
-    flux_environment = "uksouth-prod"
-
-    # DNS zones
-    private_dns = module.uksouth-dns.private_dns
-    public_dns  = module.uksouth-dns.public_dns
-
-    # Peers    
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-    }
-    subscription_peers = {
-        rabbitmq = {
-            vnet_id = module.uksouth_prod_rabbit.peering["vnet_id"]
-            vnet_name = module.uksouth_prod_rabbit.peering["vnet_name"]
-            resource_group_name = module.uksouth_prod_rabbit.peering["resource_group_name"]
-        }
-        environment = {
-            vnet_id = module.uksouth_prod_environment.peering.vnet_id
-            vnet_name = module.uksouth_prod_environment.peering.vnet_name
-            resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
-        }
-    }
-
-    firewall = {
-        firewall_name = module.uksouth-firewall.firewall_name
-        resource_group_name = module.uksouth-firewall.resource_group_name
-        ingress_priority = 1001
-        rule_priority = 1001
-        public_ip = module.uksouth-firewall.public_ips.0.ip_address
-        secure_origins = local.secure_origins
-        ingress_source = "*"
-        ingress_http = 8001
-        ingress_https = 4001
-        ingress_controller = 6001
-    }
-
-    postgres_servers = module.uksouth_prod_environment.postgres_servers
-    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-
-    tags = {
-        "Environment" = "Production",
     }
 }
