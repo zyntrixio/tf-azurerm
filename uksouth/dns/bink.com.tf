@@ -47,6 +47,7 @@ locals {
             "wasabi.gb" = "bink-frontdoor.azurefd.net",
             "data.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
+            "service-api.gb" = "bink-frontdoor.azurefd.net",
             "policies.staging.gb" = "bink-frontdoor.azurefd.net",
             "help.gb" = "bink-frontdoor.azurefd.net",
             "help.staging.gb" = "bink-frontdoor.azurefd.net",
