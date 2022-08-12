@@ -94,6 +94,16 @@ module "uksouth_prod_environment" {
                 "postgres",
             ]
         },
+        prefect = {
+            name = "bink-uksouth-prefect"
+            version = "13"
+            sku_name = "GP_Standard_D2ds_v4"
+            storage_mb = 32768
+            high_availability = false
+            databases = [
+                "postgres",
+            ]
+        },
     }
 
     redis_config = {
@@ -246,6 +256,27 @@ module "uksouth_prod_rabbit" {
 
 module "uksouth_prod_airbyte" {
     source = "./uksouth/airbyte"
+    providers = {
+        azurerm = azurerm.uk_production
+        azurerm.core = azurerm
+    }
+
+    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+    firewall = {
+        vnet_id = module.uksouth-firewall.vnet_id,
+        vnet_name = module.uksouth-firewall.vnet_name,
+        resource_group_name = module.uksouth-firewall.resource_group_name,
+    }
+    environment = {
+        vnet_id = module.uksouth_prod_environment.peering.vnet_id
+        vnet_name = module.uksouth_prod_environment.peering.vnet_name
+        resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    }
+}
+
+module "uksouth_prod_prefect" {
+    source = "./uksouth/prefect"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm

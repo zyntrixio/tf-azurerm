@@ -114,7 +114,7 @@ module "uksouth_dev_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,bpl,portal,monitoring,backups,data"
+    secret_namespaces = "default,bpl,portal,monitoring,backups,data,trusted-channels"
 
     aks = {
         dev = merge(local.aks_config_defaults, {

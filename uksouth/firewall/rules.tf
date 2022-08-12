@@ -109,6 +109,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         target_fqdns = [
             "storage.googleapis.com",
             "download.docker.com",
+            "get.docker.com",
             "discovery.etcd.io",
             "sts.windows.net",
             "login.windows.net",
