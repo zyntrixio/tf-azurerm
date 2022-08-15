@@ -48,6 +48,10 @@ locals {
             object_id = local.aad_user.chris_latham
             role = "Azure Kubernetes Service RBAC Writer"
         }
+        christian_prior = {
+            object_id = local.aad_user.christian_prior
+            role = "Azure Kubernetes Service RBAC Writer"
+        }
         kashim_aziz = {
             object_id = local.aad_user.kashim_aziz
             role = "Azure Kubernetes Service RBAC Writer"
@@ -135,6 +139,7 @@ locals {
         jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
         mick_latham = "343299d4-0a39-4109-adce-973ad29d0183"
         chris_latham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
+        christian_prior = "ae282437-d730-4342-8914-c936e8289cdc"
         azhar_khan = "6f0e18dc-210c-405d-847e-cad38d195115"
         kashim_aziz = "b004c980-3e08-4237-b8e2-d6e65d2bef3f"
         martin_marsh = "3c92809d-91a4-456f-a161-a8b9df4c01e1"
