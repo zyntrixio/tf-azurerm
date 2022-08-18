@@ -1115,6 +1115,28 @@ resource "azurerm_firewall_network_rule_collection" "prod_amqp" {
     }
 }
 
+resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
+    name = "tools_prom_access"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 300
+    action = "Allow"
+
+    rule {
+        name = "http"
+        source_addresses = [var.aks_cidrs.tools]
+        destination_ports = ["9090"]
+        destination_addresses = [
+            var.aks_cidrs.prod0,
+            var.aks_cidrs.prod1,
+            var.aks_cidrs.sandbox,
+            var.aks_cidrs.staging,
+            var.aks_cidrs.dev,
+        ]
+        protocols = ["TCP"]
+    }
+}
+
 # The below is allows AKS clusters to be bootstrapped before the explicit
 # network rules are created. This is a non-ideal scenario, but it's livable.
 # Access is restricted to a 10/8 to prevent non-clusters from using this.

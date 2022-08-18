@@ -233,6 +233,7 @@ module "uksouth-firewall" {
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
     production_cidrs = [ local.aks_cidrs.uksouth.prod0, local.aks_cidrs.uksouth.prod1 ]
+    aks_cidrs = local.aks_cidrs.uksouth
 }
 
 module "uksouth-storage" {

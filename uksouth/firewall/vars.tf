@@ -26,3 +26,8 @@ variable "lloyds_origins" {
 variable "loganalytics_id" {
     type = string
 }
+
+variable "aks_cidrs" {
+    type = map
+    default = {}
+}
