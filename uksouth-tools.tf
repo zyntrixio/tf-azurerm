@@ -53,6 +53,7 @@ module "uksouth_tools_environment" {
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
+            node_max_count = 7
             cidr = local.aks_cidrs.uksouth.tools
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
