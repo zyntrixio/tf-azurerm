@@ -182,6 +182,18 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
     }
 }
 
+resource "azurerm_storage_account" "i" {
+    name = "binkuksouthtableau"
+    location = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+
+    cross_tenant_replication_enabled = false
+    account_tier = "Standard"
+    account_replication_type = "ZRS"
+    enable_https_traffic_only = true
+    min_tls_version = "TLS1_2"
+}
+
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
     subnet_id = azurerm_subnet.subnet.id
     network_security_group_id = azurerm_network_security_group.nsg.id

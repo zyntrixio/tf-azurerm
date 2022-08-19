@@ -1127,11 +1127,11 @@ resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
         source_addresses = [var.aks_cidrs.tools]
         destination_ports = ["9090"]
         destination_addresses = [
-            var.aks_cidrs.prod0,
-            var.aks_cidrs.prod1,
-            var.aks_cidrs.sandbox,
-            var.aks_cidrs.staging,
-            var.aks_cidrs.dev,
+            cidrhost(var.aks_cidrs.prod0, 65533),
+            cidrhost(var.aks_cidrs.prod1, 65533),
+            cidrhost(var.aks_cidrs.sandbox, 65533),
+            cidrhost(var.aks_cidrs.staging, 65533),
+            cidrhost(var.aks_cidrs.dev, 65533),
         ]
         protocols = ["TCP"]
     }
