@@ -1137,6 +1137,22 @@ resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
     }
 }
 
+resource "azurerm_firewall_network_rule_collection" "tableau" {
+    name = "tableau"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 400
+    action = "Allow"
+
+    rule {
+        name = "smb"
+        source_addresses = ["192.168.101.0/24"]
+        destination_ports = ["445"]
+        destination_addresses = ["*"]
+        protocols = ["TCP"]
+    }
+}
+
 # The below is allows AKS clusters to be bootstrapped before the explicit
 # network rules are created. This is a non-ideal scenario, but it's livable.
 # Access is restricted to a 10/8 to prevent non-clusters from using this.
