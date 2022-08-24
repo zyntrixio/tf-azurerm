@@ -52,8 +52,20 @@ resource "azurerm_network_security_group" "i" {
     }
 
     security_rule {
-        name = "AllowHTTP"
+        name = "AllowHTTP_admin"
         priority = "200"
+        access = "Allow"
+        protocol = "Tcp"
+        direction = "Inbound"
+        source_port_range = "*"
+        source_address_prefix = "*"
+        destination_port_range = "8080"
+        destination_address_prefix = "192.168.24.0/24"
+    }
+
+    security_rule {
+        name = "AllowHTTP_playground"
+        priority = "201"
         access = "Allow"
         protocol = "Tcp"
         direction = "Inbound"

@@ -1,3 +1,7 @@
+locals {
+    lumilinks_ips = ["51.182.84.85", "152.37.65.88"]
+}
+
 resource "azurerm_firewall_application_rule_collection" "software" {
     name = "Software"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -712,20 +716,39 @@ resource "azurerm_firewall_nat_rule_collection" "sftp" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "aiden_airbyte" {
-    name = "aiden_airbyte"
+resource "azurerm_firewall_nat_rule_collection" "data_warehouse" {
+    # Collection of rules to allow Lumilinks to manage airbyte and prefect
+    name = "data_warehouse_lumilinks"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
     priority = 150
     action = "Dnat"
 
     rule {
-        name = "http"
-        source_addresses = concat(["51.190.171.7", "152.37.65.88", "20.26.230.235"], var.secure_origins)
+        name = "airbyte_admin_http"
+        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
         destination_ports = ["8000"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.23.4"
         translated_port = "8000"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "prefect_admin_http"
+        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
+        destination_ports = ["8080"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.24.4"
+        translated_port = "8080"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "prefect_playground_http"
+        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
+        destination_ports = ["4200"]
+        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
+        translated_address = "192.168.24.4"
+        translated_port = "4200"
         protocols = ["TCP"]
     }
 }
@@ -811,7 +834,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     }
     rule {
         name = "tableau_psql"
-        source_addresses = var.secure_origins
+        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
         destination_ports = ["5432"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "192.168.101.4"
@@ -900,6 +923,22 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
         destination_ports = ["80", "443"]
         destination_addresses = ["10.50.255.254/32"]
+        protocols = ["TCP"]
+    }
+}
+
+resource "azurerm_firewall_network_rule_collection" "prefect_to_airbyte" {
+    name = "prefect_to_airbyte"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 200
+    action = "Allow"
+
+    rule {
+        name = "http"
+        source_addresses = ["192.168.24.0/24"]
+        destination_ports = ["8000"]
+        destination_addresses = ["192.168.23.0/24"]
         protocols = ["TCP"]
     }
 }
@@ -1022,8 +1061,6 @@ resource "azurerm_firewall_network_rule_collection" "github" {
             "185.199.108.0/22",
             "140.82.112.0/20",
             "143.55.64.0/20",
-            # "2a0a:a440::/29", Kinda looks like Azure Firewall doesn't support v6
-            # "2606:50c0::/32", Kinda looks like Azure Firewall doesn't support v6
             "13.114.40.48/32",
             "52.192.72.89/32",
             "52.69.186.44/32",
