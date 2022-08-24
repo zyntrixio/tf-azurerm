@@ -196,10 +196,9 @@ data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
 resource "azurerm_user_assigned_identity" "prometheus" {
-  resource_group_name = "uksouth-tools"
-  location            = "uksouth"
-
   name = "prometheus"
+  resource_group_name = "uksouth-tools"
+  location = "uksouth"
 }
 
 resource "azurerm_role_definition" "prometheus_azure_vm_read" {
