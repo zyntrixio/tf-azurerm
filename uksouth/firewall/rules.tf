@@ -1169,6 +1169,7 @@ resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
             cidrhost(var.aks_cidrs.sandbox, 65534),
             cidrhost(var.aks_cidrs.staging, 65534),
             cidrhost(var.aks_cidrs.dev, 65534),
+            cidrhost(var.aks_cidrs.tools, 65534),
         ]
         protocols = ["TCP"]
     }
