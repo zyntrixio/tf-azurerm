@@ -122,3 +122,28 @@ resource "azurerm_dns_txt_record" "bink_sh_txt" {
         }
     }
 }
+
+resource "azurerm_dns_caa_record" "root" {
+    name = "@"
+    zone_name = azurerm_dns_zone.bink-sh.name
+    resource_group_name = azurerm_resource_group.rg.name
+    ttl = 300
+
+    record {
+        flags = 0
+        tag = "issue"
+        value = "letsencrypt.org"
+    }
+
+    record {
+        flags = 0
+        tag = "issuewild"
+        value = "letsencrypt.org"
+    }
+
+    record {
+        flags = 0
+        tag = "iodef"
+        value = "mailto:devops@bink.com"
+    }
+}
