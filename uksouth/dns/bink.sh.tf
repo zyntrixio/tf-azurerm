@@ -127,7 +127,7 @@ resource "azurerm_dns_caa_record" "root" {
     name = "@"
     zone_name = azurerm_dns_zone.bink-sh.name
     resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
+    ttl = 3600
 
     record {
         flags = 0
