@@ -6,27 +6,16 @@ resource "azurerm_dns_zone" "bink-sh" {
 locals {
     bink_sh = {
         a_records = {
-            "prometheus.uksouth" = "51.132.44.251"
             "ssh.uksouth" = "51.132.44.240"
             "sftp.dev.uksouth" = "51.132.44.242"
             "chef.uksouth" = "51.132.44.240"
             "wg.uksouth" = "51.132.44.249"
-            "sftp.staging.uksouth" = "51.132.44.241"
-            "sandbox.k8s.uksouth" = "51.132.44.243"
             "wireguard.uksouth" = "20.49.163.188"
             "tableau.uksouth" = "51.132.44.253"
-            "tools.k8s.uksouth" = "51.132.44.244"
             "opensearch.uksouth" = "51.132.44.255"
         }
         cname_records = {
-            "mobsf.uksouth" = "tools0.uksouth.bink.sh"
             "autodiscover" = "autodiscover.outlook.com"
-            "cluster-autodiscover.uksouth" = "tools0.uksouth.bink.sh"
-            "grafana.tools" = "tools0.uksouth.bink.sh"
-            "asset-register.tools" = "redirect.tools.uksouth.bink.sh"
-            "bridge.uksouth" = "tools0.uksouth.bink.sh"
-            "tools.uksouth" = "tools0.uksouth.bink.sh"
-            "pypi.uksouth" = "tools0.uksouth.bink.sh"
         }
         mx_records = {
             "@" = [
