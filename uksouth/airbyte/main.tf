@@ -174,7 +174,7 @@ resource "azurerm_linux_virtual_machine" "i" {
     name = "airbyte"
     resource_group_name = azurerm_resource_group.i.name
     location = azurerm_resource_group.i.location
-    size = "Standard_D2as_v4"
+    size = "Standard_D4as_v4"
     admin_username = "terraform"
     network_interface_ids = [
         azurerm_network_interface.i.id,
