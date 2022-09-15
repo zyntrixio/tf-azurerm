@@ -1584,6 +1584,54 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
+    backend_pool {
+        name = "staging-binkweb-bink"
+        backend {
+            host_header = "web-bink.staging.uksouth.bink.sh"
+            address = "web-bink.staging.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "staging-binkweb-bink"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wallet-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "staging-binkweb-bink"
+            cache_enabled = false
+        }
+    }
+
+    backend_pool {
+        name = "staging-binkweb-wasabi"
+        backend {
+            host_header = "web-wasabi.staging.uksouth.bink.sh"
+            address = "web-wasabi.staging.uksouth.bink.sh"
+            http_port = 8000
+            https_port = 4000
+        }
+        load_balancing_name = "standard"
+        health_probe_name = "healthz"
+    }
+
+    routing_rule {
+        name = "staging-binkweb-wasabi"
+        accepted_protocols = ["Https"]
+        patterns_to_match = ["/*"]
+        frontend_endpoints = ["wasabi-staging-gb-bink-com"]
+        forwarding_configuration {
+            forwarding_protocol = "HttpsOnly"
+            backend_pool_name = "staging-binkweb-wasabi"
+            cache_enabled = false
+        }
+    }
+
 
     frontend_endpoint {
         name = "bpl-dev-gb-bink-com"
