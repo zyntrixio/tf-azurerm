@@ -10,7 +10,6 @@ resource "chef_role" "role" {
     run_list = [
         "recipe[fury]",
         "recipe[jarvis]",
-        "recipe[nebula]",
-        "recipe[black_widow]"
+        "recipe[nebula]"
     ]
 }
