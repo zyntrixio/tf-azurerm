@@ -51,3 +51,11 @@ output "config" {
         }
     }
 }
+
+output "ip_groups" {
+    value = {
+        office = azurerm_ip_group.office_ips.id
+        devops = azurerm_ip_group.devops_ips.id
+        frontdoor = azurerm_ip_group.frontdoor_ips.id
+    }
+}

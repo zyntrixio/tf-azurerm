@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.9.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -197,12 +197,12 @@ module "uksouth_prod_environment" {
 }
 
 module "uksouth_prod0_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.9.0"
     flux_config = module.uksouth_prod_environment.aks_flux_config.prod0
 }
 
 module "uksouth_prod1_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.9.0"
     flux_config = module.uksouth_prod_environment.aks_flux_config.prod1
 }
 

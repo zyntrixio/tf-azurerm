@@ -79,22 +79,6 @@ resource "azurerm_role_assignment" "devops" {
   principal_id         = local.aad_group.devops
 }
 
-resource "azurerm_role_assignment" "devsecops" {
-  for_each = local.subscriptions
-
-  scope                = "/subscriptions/${each.value["id"]}"
-  role_definition_name = "Reader"
-  principal_id         = local.aad_group.cyber_sec
-}
-
-resource "azurerm_role_assignment" "confluence-macro" {
-  for_each = local.subscriptions
-
-  scope                = "/subscriptions/${each.value["id"]}"
-  role_definition_name = "Reader"
-  principal_id         = local.aad_apps.confluence_macro
-}
-
 resource "azurerm_role_assignment" "qa" {
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Reader"
@@ -105,12 +89,6 @@ resource "azurerm_role_assignment" "jo_raine" {
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Billing Reader"
   principal_id         = local.aad_user.jo_raine
-}
-
-resource "azurerm_role_assignment" "kubernetes_sso" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Contributor"
-  principal_id         = local.aad_apps.kubernetes_sso
 }
 
 resource "azurerm_role_assignment" "azure_frontdoor" {

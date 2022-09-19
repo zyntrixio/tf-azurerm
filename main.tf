@@ -150,10 +150,7 @@ locals {
         stewart_prerrygove = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
         francesco_milani = "dbcb7a78-da53-4fb9-a5a0-4f5d9a1e664c"
     }
-    aad_apps = {
-        confluence_macro = "ce918d9f-5641-4798-b1d5-bf31d234921a"
-        kubernetes_sso   = "ed09bbbc-7b4d-4f2e-a657-3f0c7b3335c7"
-    }
+    aad_apps = {}
 
     prod_cluster_ingress_subdomains = [ "api", "policies", "help", "link", "data", "api2-docs", "bpl" ]
 }

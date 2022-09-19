@@ -2,6 +2,10 @@ resource "azurerm_ip_group" "frontdoor_ips" {
     name = "frontdoor_ips"
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
+
+    lifecycle {
+        ignore_changes = [cidrs]  # Updated by external service, terraform should not modify this object
+    }
 }
 
 resource "azurerm_role_assignment" "frontdoor_ips" {

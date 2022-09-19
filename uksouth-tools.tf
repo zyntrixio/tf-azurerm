@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.9.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -67,7 +67,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_aks_flux_tools" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.9.0"
     flux_config = module.uksouth_tools_environment.aks_flux_config.tools
 }
 
@@ -150,4 +150,26 @@ resource "azurerm_role_assignment" "prometheus_azure_vm_read_subs" {
   lifecycle {
     ignore_changes = [role_definition_id]
   }
+}
+
+resource "azurerm_role_definition" "service_tags_reader" {
+    name  = "service_tags_reader"
+    scope = data.azurerm_subscription.current.id
+
+    permissions {
+        actions = [
+            "Microsoft.Network/locations/serviceTagDetails/read"
+        ]
+        not_actions = []
+    }
+
+    assignable_scopes = [
+        data.azurerm_subscription.current.id,
+    ]
+}
+
+resource "azurerm_role_assignment" "service_tags_reader" {
+    scope = data.azurerm_subscription.current.id
+    role_definition_id = azurerm_role_definition.service_tags_reader.role_definition_resource_id
+    principal_id = "3f8a04a0-2675-48c5-a0df-7d3e0d684e79"  # App Registration: Azure Frontdoor IP Range Updater
 }
