@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -226,7 +226,6 @@ module "uksouth_sandbox_environment" {
         },
     }
 
-    secret_namespaces = "default,barclays-oat,barclays-sit,lloyds-sit,monitoring,perf-api-v1,perf-api-v2,perf-bpl,perf-txm,perf-data"
     storage_config = {
         common = {
             name = "binkuksouthsandbox",
@@ -304,6 +303,6 @@ module "uksouth_sandbox_environment" {
 }
 
 module "uksouth_sandbox_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
     flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
 }

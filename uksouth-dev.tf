@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -114,8 +114,6 @@ module "uksouth_dev_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,bpl,portal,monitoring,backups,data,trusted-channels"
-
     aks = {
         dev = merge(local.aks_config_defaults, {
             name = "dev"
@@ -130,6 +128,6 @@ module "uksouth_dev_environment" {
 }
 
 module "uksouth_dev_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
     flux_config = module.uksouth_dev_environment.aks_flux_config.dev
 }

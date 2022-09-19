@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -48,8 +48,6 @@ module "uksouth_tools_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,asset-register"
-
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
@@ -69,7 +67,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_aks_flux_tools" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
     flux_config = module.uksouth_tools_environment.aks_flux_config.tools
 }
 

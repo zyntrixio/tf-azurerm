@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.8.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -108,8 +108,6 @@ module "uksouth_staging_environment" {
 
     managed_identities = local.managed_identities
 
-    secret_namespaces = "default,portal,bpl,bpl-testing,monitoring,backups,data"
-
     aks = {
         staging = merge(local.aks_config_defaults, {
             name = "staging"
@@ -127,6 +125,6 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.7.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.8.0"
     flux_config = module.uksouth_staging_environment.aks_flux_config.staging
 }
