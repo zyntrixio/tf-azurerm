@@ -58,6 +58,8 @@ module "uksouth_tools_environment" {
                 rule_priority = 1600
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.14.ip_address
+                    source_ip_groups = null
+                    source_addr = ["*"]
                     http_port = 80
                     https_port = 443
                 })

@@ -175,6 +175,8 @@ module "uksouth_prod_environment" {
                 rule_priority = 1100
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
+                    source_ip_groups = null
+                    source_addr = ["*"]
                     http_port = 8000
                     https_port = 4000
                 })
@@ -188,6 +190,8 @@ module "uksouth_prod_environment" {
                 rule_priority = 1110
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
+                    source_ip_groups = null
+                    source_addr = ["*"]
                     http_port = 8001
                     https_port = 4001
                 })

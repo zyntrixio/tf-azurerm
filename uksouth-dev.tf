@@ -121,10 +121,7 @@ module "uksouth_dev_environment" {
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1300
-                ingress = merge(local.aks_ingress_defaults, {
-                    source_ip_groups = [ module.uksouth-firewall.ip_groups.frontdoor ]
-                    source_addr = null
-                })
+                ingress = merge(local.aks_ingress_defaults, {})
             })
         })
     }

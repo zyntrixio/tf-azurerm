@@ -79,7 +79,7 @@ locals {
     }
 
     aks_ingress_defaults = {
-        source_addr = ["*"]
+        source_ip_groups = [ module.uksouth-firewall.ip_groups.frontdoor ]
         public_ip = module.uksouth-firewall.public_ips.3.ip_address
         http_port = 8000
         https_port = 4000
