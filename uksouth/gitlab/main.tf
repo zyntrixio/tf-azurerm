@@ -259,6 +259,6 @@ resource "azurerm_linux_virtual_machine" "gitlab" {
     )
 
     lifecycle {
-        ignore_changes = [source_image_reference, custom_data]
+        ignore_changes = [source_image_reference, custom_data, patch_assessment_mode]
     }
 }
