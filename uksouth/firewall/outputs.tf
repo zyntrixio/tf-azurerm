@@ -54,8 +54,8 @@ output "config" {
 
 output "ip_groups" {
     value = {
-        office = azurerm_ip_group.office_ips.id
-        devops = azurerm_ip_group.devops_ips.id
-        frontdoor = azurerm_ip_group.frontdoor_ips.id
+        secure_origins_v4 = azurerm_ip_group.secure_origins_v4.id
+        frontdoor_backend_v4 = azurerm_ip_group.frontdoor_backend_v4.id
+        digital_ocean_checkly_runners_v4 = azurerm_ip_group.digital_ocean_checkly_runners_v4.id
     }
 }

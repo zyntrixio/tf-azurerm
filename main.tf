@@ -79,7 +79,11 @@ locals {
     }
 
     aks_ingress_defaults = {
-        source_ip_groups = [ module.uksouth-firewall.ip_groups.frontdoor ]
+        source_ip_groups = [
+            module.uksouth-firewall.ip_groups.secure_origins_v4,
+            module.uksouth-firewall.ip_groups.frontdoor_backend_v4,
+            module.uksouth-firewall.ip_groups.digital_ocean_checkly_runners_v4,
+        ]
         public_ip = module.uksouth-firewall.public_ips.3.ip_address
         http_port = 8000
         https_port = 4000
@@ -97,12 +101,12 @@ locals {
     }
 
     secure_origins = [
-        "194.74.152.8/29", # Ascot Bink HQ
-        "89.38.121.228/30", # London Bink Scrub Office
-        "217.169.3.233/32", # cpressland@bink.com
-        "81.2.99.144/29",   # cpressland@bink.com
-        "31.125.46.20/32", # nread@bink.com
-        "${module.uksouth-wireguard.public_ip}/32",
+        "194.74.152.8/29",  # Ascot Bink HQ
+        "89.38.121.228/30",  # London Bink Scrub Office
+        "217.169.3.233/32",  # cpressland@bink.com
+        "81.2.99.144/29",  # cpressland@bink.com
+        "31.125.46.20/32",  # nread@bink.com
+        "${module.uksouth-wireguard.public_ip}/32",  # Wireguard IP
     ]
     secure_origins_v6 = [
         "2001:8b0:b130:a52d::/64", # cpressland@bink.com
