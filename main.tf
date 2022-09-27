@@ -198,15 +198,6 @@ module "uksouth-bastion" {
     loganalytics_id = module.uksouth_loganalytics.id
 }
 
-module "uksouth-gitlab" {
-    source = "./uksouth/gitlab"
-
-    firewall_route_ip = module.uksouth-firewall.firewall_ip
-    firewall_vnet_id = module.uksouth-firewall.vnet_id
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    loganalytics_id = module.uksouth_loganalytics.id
-}
-
 module "uksouth-dns" {
     source = "./uksouth/dns"
 }
