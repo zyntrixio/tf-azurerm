@@ -5,15 +5,8 @@ terraform {
       version = ">= 2.69.0"
       configuration_aliases = [ azurerm.core ]
     }
-    chef = {
-      source = "terrycain/chef"
-    }
   }
   required_version = ">= 0.13"
-}
-
-resource "chef_environment" "i" {
-    name = var.resource_group_name
 }
 
 resource "azurerm_resource_group" "i" {
@@ -307,17 +300,6 @@ resource "azurerm_linux_virtual_machine" "i" {
         sku = "20_04-lts"
         version = "latest"
     }
-
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[rabbitmq]"] })),
-                cinc_environment = chef_environment.i.name,
-                cinc_data_secret = ""
-            }
-        )
-    )
 
     lifecycle { ignore_changes = [custom_data] }
 }

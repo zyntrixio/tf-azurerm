@@ -62,13 +62,6 @@ provider "azurerm" {
   features {}
 }
 
-provider "chef" {
-  server_url = "https://chef.uksouth.bink.sh/organizations/bink/"
-
-  client_name  = chomp(file("~/.chef/username"))
-  key_material = file("~/.chef/user.pem")
-}
-
 provider "random" {}
 
 resource "azurerm_role_assignment" "devops" {

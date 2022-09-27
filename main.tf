@@ -174,9 +174,6 @@ terraform {
             source  = "hashicorp/azurerm"
             version = "3.24.0"
         }
-        chef = {
-            source = "terrycain/chef"
-        }
         random = {
             source = "hashicorp/random"
         }
@@ -204,13 +201,6 @@ module "uksouth-dns" {
 
 module "uksouth-alerts" {
     source = "./uksouth/alerts"
-}
-
-module "uksouth-chef" {
-    source = "./uksouth/chef"
-
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    loganalytics_id = module.uksouth_loganalytics.id
 }
 
 module "uksouth-frontdoor" {

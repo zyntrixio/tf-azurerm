@@ -99,15 +99,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Gitlab"
-        source_addresses = ["*"]
-        target_fqdns = ["git.bink.com"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Kubernetes"
         source_addresses = ["*"]
         target_fqdns = [
@@ -152,31 +143,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         protocol {
             port = "443"
             type = "Https"
-        }
-    }
-    rule {
-        name = "Chef"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "packages.chef.io",
-            "omnitruck.chef.io",
-            "www.chef.io",
-            "www.rubygems.org",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Cinc"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "downloads.cinc.sh"
-        ]
-        protocol {
-            port = "80"
-            type = "Http"
         }
     }
     rule {
@@ -356,18 +322,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "ClamAV"
         source_addresses = ["*"]
         target_fqdns = ["*.clamav.net"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "GitLab"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "packages.gitlab.com",
-            "*.bitrise.io",
-        ]
         protocol {
             port = "443"
             type = "Https"
@@ -791,33 +745,6 @@ resource "azurerm_firewall_nat_rule_collection" "opensearch" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "chef" {
-    name = "chef"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 120
-    action = "Dnat"
-
-    rule {
-        name = "http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "192.168.5.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "https"
-        source_addresses = ["*"]
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "192.168.5.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -850,42 +777,6 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "192.168.101.4"
         translated_port = "5432"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_nat_rule_collection" "gitlab" {
-    name = "gitlab"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 140
-    action = "Dnat"
-
-    rule {
-        name = "ssh"
-        source_addresses = var.secure_origins
-        destination_ports = ["22"]
-        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
-        translated_address = "192.168.10.4"
-        translated_port = "22"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
-        translated_address = "192.168.10.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.8.ip_address]
-        translated_address = "192.168.10.4"
-        translated_port = "443"
         protocols = ["TCP"]
     }
 }
@@ -1027,30 +918,6 @@ resource "azurerm_firewall_network_rule_collection" "cloudflare" {
         destination_ports = ["53"]
         destination_addresses = ["1.1.1.1", "1.0.0.1"]
         protocols = ["TCP", "UDP"]
-    }
-}
-
-
-resource "azurerm_firewall_network_rule_collection" "gitlab" {
-    name = "gitlab"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 140
-    action = "Allow"
-
-    rule {
-        name = "all-to-gitlab-ssh"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = ["${azurerm_public_ip.pips.8.ip_address}/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "gitlab-runner-outbound-http-https"
-        source_addresses = ["192.168.10.5/32"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
     }
 }
 

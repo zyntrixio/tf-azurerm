@@ -56,22 +56,3 @@ provider "registry.terraform.io/hashicorp/random" {
     "zh:f143a9a5af42b38fed328a161279906759ff39ac428ebcfe55606e05e1518b93",
   ]
 }
-
-provider "registry.terraform.io/terrycain/chef" {
-  version = "0.3.2"
-  hashes = [
-    "h1:AFAFyc2czOIgUSRUrS4OHce+LJOwJIkdSsTiuhMjKa0=",
-    "zh:06a9e874c25300ca51debac6bdbdb70a217119bcc46fb3ad46a4926b8bc260d3",
-    "zh:103cbb75275a4227dabc2a12f64ce8a6cbc52f1c1abb041c006afb673393871b",
-    "zh:1645410251448ba4b92f7f42897c1e066b84099b302554bf658f11ccdf50046c",
-    "zh:487e62d292485ce89e21a8d3a9e125aba60dd15f54c0d46e8523434562699dff",
-    "zh:6bc4818e346b8861dc4e4c9e2a57a7e343b03b5fc70f2bfa69d0cc5783af6509",
-    "zh:6cf82bdcd2765631966028a6e798f1036f29a61ff6b46ccb3265952f4fc9a7f5",
-    "zh:87b1e25151ff21798ef9181accf3f49fff97d4bdd00bbf6a734e3cbc55d6a8bb",
-    "zh:ae627c7d40e285bfd6d5102d33071e00ca45fba606dbbccf48fea57f4e895b80",
-    "zh:ba7d0ac38fa51ea3658a8fda13116f9f21c419abf0b8e06061bed67d634c893d",
-    "zh:bd108199bdfc7ea614e93b6abb9fa2461b9a0280cb80919e3ee7b3c1a4218f6f",
-    "zh:eb6101587239cb686176c5f2ab59f2dffd3413860f3ab029891954681d59115f",
-    "zh:fd500a40c0bd9be1e3e4a7ed4cad1df1d1ef9cb1eda1b4c04f22468fe55362b4",
-  ]
-}

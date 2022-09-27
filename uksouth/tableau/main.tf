@@ -5,24 +5,12 @@ terraform {
             version = ">= 2.83.0"
             configuration_aliases = [ azurerm.core ]
         }
-        chef = {
-            source = "terrycain/chef"
-        }
     }
 }
 
 resource "azurerm_resource_group" "rg" {
     name = "uksouth-tableau"
     location = "uksouth"
-}
-
-resource "chef_environment" "env" {
-    name = "${azurerm_resource_group.rg.name}-prod"
-    cookbook_constraints = {
-        jarvis = ">= 2.1.0"
-        fury = ">= 2.2.0"
-        nebula = ">= 2.1.0"
-    }
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -251,19 +239,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
         sku = "18.04-LTS"
         version = "latest"
     }
-
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode(
-                    { "run_list" : ["recipe[fury]", "recipe[nebula]", "recipe[jarvis]"] }
-                )),
-                cinc_environment = chef_environment.env.name
-                cinc_data_secret = ""
-            }
-        )
-    )
 
     lifecycle { ignore_changes = [custom_data] }
 }

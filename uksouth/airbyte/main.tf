@@ -5,9 +5,6 @@ terraform {
       version = ">= 2.95.0"
       configuration_aliases = [ azurerm.core ]
     }
-    chef = {
-      source = "terrycain/chef"
-    }
   }
   required_version = ">= 0.13"
 }
@@ -74,18 +71,6 @@ resource "azurerm_virtual_network" "i" {
         name = "subnet"
         security_group = azurerm_network_security_group.i.id
     }
-}
-
-resource "chef_environment" "i" {
-    name = azurerm_resource_group.i.name
-}
-
-resource "chef_role" "i" {
-    name = "airbyte"
-    run_list = [
-        "recipe[fury]",
-        "recipe[nebula]"
-    ]
 }
 
 resource "azurerm_virtual_network_peering" "local-to-fw" {
@@ -197,17 +182,6 @@ resource "azurerm_linux_virtual_machine" "i" {
         sku = "20_04-lts"
         version = "latest"
     }
-
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[airbyte]"] })),
-                cinc_environment = chef_environment.i.name
-                cinc_data_secret = ""
-            }
-        )
-    )
 
     lifecycle {
         ignore_changes = [custom_data]

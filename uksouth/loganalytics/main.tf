@@ -3,12 +3,8 @@ terraform {
         azurerm = {
             source = "hashicorp/azurerm"
         }
-        chef = {
-            source = "terrycain/chef"
-        }
     }
 }
-
 
 resource "azurerm_resource_group" "i" {
     name = "uksouth-loganalytics"

@@ -3,9 +3,6 @@ terraform {
         azurerm = {
             source = "hashicorp/azurerm"
         }
-        chef = {
-            source = "terrycain/chef"
-        }
     }
 }
 
@@ -20,18 +17,6 @@ variable "private_dns_link_bink_host" { type = list }
 resource "azurerm_resource_group" "i" {
     name = "uksouth-opensearch"
     location = "uksouth"
-}
-
-resource "chef_environment" "i" {
-    name = azurerm_resource_group.i.name
-}
-
-resource "chef_role" "i" {
-    name = "opensearch"
-    run_list = [
-        "recipe[fury]",
-        "recipe[nebula]"
-    ]
 }
 
 resource "azurerm_network_security_group" "i" {
@@ -209,17 +194,6 @@ resource "azurerm_linux_virtual_machine" "i" {
         sku = "20_04-lts"
         version = "latest"
     }
-
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[opensearch]"] })),
-                cinc_environment = chef_environment.i.name
-                cinc_data_secret = ""
-            }
-        )
-    )
 
     lifecycle {
         ignore_changes = [custom_data]

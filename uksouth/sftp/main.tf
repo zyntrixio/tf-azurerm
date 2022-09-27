@@ -247,17 +247,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
         version = "latest"
     }
 
-    custom_data = base64gzip(
-        templatefile(
-            "${path.root}/init.tmpl",
-            {
-                cinc_run_list = base64encode(jsonencode({ "run_list" : ["role[sftp]"] })),
-                cinc_environment = chef_environment.env.name
-                cinc_data_secret = ""
-            }
-        )
-    )
-
     lifecycle {
         ignore_changes = [custom_data]
     }

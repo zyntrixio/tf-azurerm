@@ -8,7 +8,6 @@ locals {
         a_records = {
             "ssh.uksouth" = "51.132.44.240"
             "sftp.dev.uksouth" = "51.132.44.242"
-            "chef.uksouth" = "51.132.44.240"
             "wg.uksouth" = "51.132.44.249"
             "wireguard.uksouth" = "20.49.163.188"
             "tableau.uksouth" = "51.132.44.253"

@@ -15,13 +15,6 @@ echo "export TF_VAR_azurerm_terraform_client_id=<secret> >> ~/.zshrc
 source ~/.zshrc
 ```
 
-## Chef Certificates
-
-`chef.pem` needs to be populated in this projects root directory. Please find this in the DevOps Vault in 1Password
-
-CI Now runs `terrafmt --check` so you'll probably want to setup a pre commit hook. https://github.com/terrycain/terrafmt/releases terrafmt-darwin-amd64.zip is what you'll want.
-
-
 ## Firewall IP Assigments
 
 * `azurerm_public_ip.pips.0.id`
@@ -50,7 +43,7 @@ CI Now runs `terrafmt --check` so you'll probably want to setup a pre commit hoo
     * Environment: Aqua
 * `azurerm_public_ip.pips.8.id`
     * IP Address: 51.132.44.248
-    * Environment: GitLab
+    * Environment: Unassigned
 * `azurerm_public_ip.pips.9.id`
     * IP Address: 51.132.44.249
     * Environment: Unassigned
