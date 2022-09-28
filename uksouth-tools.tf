@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.3"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -14,10 +14,7 @@ module "uksouth_tools_environment" {
 
     loganalytics_id = module.uksouth_loganalytics.id
 
-    keyvault_users = {
-        Confluence = "ce918d9f-5641-4798-b1d5-bf31d234921a",
-        SecOps = local.aad_group.cyber_sec,
-    }
+    keyvault_users = {}
 
     postgres_flexible_config = {
         common = {
@@ -52,6 +49,7 @@ module "uksouth_tools_environment" {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
             node_max_count = 7
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             cidr = local.aks_cidrs.uksouth.tools
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
@@ -69,7 +67,7 @@ module "uksouth_tools_environment" {
 }
 
 module "uksouth_tools_aks_flux_tools" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.3"
     flux_config = module.uksouth_tools_environment.aks_flux_config.tools
 }
 

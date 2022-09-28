@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.3"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -175,8 +175,6 @@ module "uksouth_prod_environment" {
                 rule_priority = 1100
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    source_ip_groups = null
-                    source_addr = ["*"]
                     http_port = 8000
                     https_port = 4000
                 })
@@ -190,8 +188,6 @@ module "uksouth_prod_environment" {
                 rule_priority = 1110
                 ingress = merge(local.aks_ingress_defaults, {
                     public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    source_ip_groups = null
-                    source_addr = ["*"]
                     http_port = 8001
                     https_port = 4001
                 })
@@ -201,12 +197,12 @@ module "uksouth_prod_environment" {
 }
 
 module "uksouth_prod0_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.3"
     flux_config = module.uksouth_prod_environment.aks_flux_config.prod0
 }
 
 module "uksouth_prod1_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.10.0"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.3"
     flux_config = module.uksouth_prod_environment.aks_flux_config.prod1
 }
 
