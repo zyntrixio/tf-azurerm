@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.4"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -125,6 +125,6 @@ module "uksouth_staging_environment" {
 }
 
 module "uksouth_staging_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.3"
+    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.4"
     flux_config = module.uksouth_staging_environment.aks_flux_config.staging
 }
