@@ -170,6 +170,7 @@ module "uksouth_prod_environment" {
         prod0 = merge(local.aks_config_defaults_prod, {
             name = "prod0"
             cidr = local.aks_cidrs.uksouth.prod0
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1100
@@ -183,6 +184,7 @@ module "uksouth_prod_environment" {
         prod1 = merge(local.aks_config_defaults_prod, {
             name = "prod1"
             cidr = local.aks_cidrs.uksouth.prod1
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1110
