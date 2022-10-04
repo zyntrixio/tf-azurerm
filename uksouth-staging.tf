@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.12.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -113,6 +113,7 @@ module "uksouth_staging_environment" {
             name = "staging"
             cidr = local.aks_cidrs.uksouth.staging
             maintenance_day = "Tuesday"
+            zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1200
@@ -124,7 +125,8 @@ module "uksouth_staging_environment" {
     }
 }
 
-module "uksouth_staging_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.4"
-    flux_config = module.uksouth_staging_environment.aks_flux_config.staging
-}
+# Commented after running once and executing `terraform state rm 'module.uksouth_staging_aks_flux'`
+# module "uksouth_staging_aks_flux" {
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.12.0"
+#     flux_config = module.uksouth_staging_environment.aks_flux_config.staging
+# }

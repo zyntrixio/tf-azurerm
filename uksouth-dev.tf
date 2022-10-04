@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.12.0"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -118,6 +118,7 @@ module "uksouth_dev_environment" {
         dev = merge(local.aks_config_defaults, {
             name = "dev"
             cidr = local.aks_cidrs.uksouth.dev
+            zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1300
@@ -127,7 +128,9 @@ module "uksouth_dev_environment" {
     }
 }
 
-module "uksouth_dev_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.4"
-    flux_config = module.uksouth_dev_environment.aks_flux_config.dev
-}
+# Commented after running once and executing `terraform state rm 'module.uksouth_dev_aks_flux'`
+# Will come up with better system
+# module "uksouth_dev_aks_flux" {
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.12.0"
+#     flux_config = module.uksouth_dev_environment.aks_flux_config.dev
+# }

@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.11.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.12.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -198,15 +198,17 @@ module "uksouth_prod_environment" {
     }
 }
 
-module "uksouth_prod0_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.4"
-    flux_config = module.uksouth_prod_environment.aks_flux_config.prod0
-}
+# Commented after running once and executing `terraform state rm 'module.uksouth_prod0_aks_flux'`
+# module "uksouth_prod0_aks_flux" {
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.12.0"
+#     flux_config = module.uksouth_prod_environment.aks_flux_config.prod0
+# }
 
-module "uksouth_prod1_aks_flux" {
-    source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.11.4"
-    flux_config = module.uksouth_prod_environment.aks_flux_config.prod1
-}
+# Commented after running once and executing `terraform state rm 'module.uksouth_prod1_aks_flux'`
+# module "uksouth_prod1_aks_flux" {
+#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.12.0"
+#     flux_config = module.uksouth_prod_environment.aks_flux_config.prod1
+# }
 
 module "uksouth_prod_tableau" {
     source = "./uksouth/tableau"
