@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.12.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.3"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -302,9 +302,3 @@ module "uksouth_sandbox_environment" {
         })
     }
 }
-
-# Commented after running once and executing `terraform state rm 'module.uksouth_sandbox_aks_flux'`
-# module "uksouth_sandbox_aks_flux" {
-#     source = "github.com/binkhq/tf-azurerm_environment//submodules/flux?ref=5.12.0"
-#     flux_config = module.uksouth_sandbox_environment.aks_flux_config.sandbox
-# }
