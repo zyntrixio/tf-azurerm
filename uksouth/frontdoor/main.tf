@@ -1501,21 +1501,25 @@ resource "azurerm_frontdoor" "frontdoor" {
     frontend_endpoint {
         name = "wallet-staging-gb-bink-com"
         host_name = "wallet.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
         name = "wasabi-staging-gb-bink-com"
         host_name = "wasabi.staging.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
         name = "wallet-dev-gb-bink-com"
         host_name = "wallet.dev.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     frontend_endpoint {
         name = "wasabi-dev-gb-bink-com"
         host_name = "wasabi.dev.gb.bink.com"
+        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
     }
 
     routing_rule {
