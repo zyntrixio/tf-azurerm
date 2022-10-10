@@ -67,7 +67,7 @@ resource "azurerm_frontdoor_firewall_policy" "secure_origins" {
             match_variable = "RemoteAddr"
             operator = "IPMatch"
             negation_condition = true
-            match_values = concat(var.secure_origins, var.secure_origins_v6)
+            match_values = concat(var.secure_origins, var.secure_origins_v6, var.checkly_ips)
         }
     }
 }

@@ -18,6 +18,11 @@ variable "secure_origins_v6" {
     default = []
 }
 
+variable "checkly_ips" {
+    type = list
+    default = [ "167.172.61.234/32", "167.172.53.20/32" ] # Lazy implementation, will make better in Front Door Premium
+}
+
 variable "loganalytics_id" {
     type = string
 }
