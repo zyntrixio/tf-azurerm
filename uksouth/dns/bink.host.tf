@@ -3,19 +3,6 @@ resource "azurerm_dns_zone" "bink-host" {
     resource_group_name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_private_dns_zone" "uksouth-bink-host" {
-    name = "uksouth.bink.host"
-    resource_group_name = azurerm_resource_group.rg.name
-}
-
-resource "azurerm_private_dns_a_record" "aqua-uksouth-bink-host" {
-    name = "aqua"
-    zone_name = azurerm_private_dns_zone.uksouth-bink-host.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["10.5.0.4"]
-}
-
 locals {
     bink_host = {
         cname_records = {
@@ -36,6 +23,12 @@ locals {
             ]
         }
     }
+}
+
+resource "azurerm_private_dns_zone" "uksouth_bink_host" {
+    for_each = toset(["root", "prod", "sandbox", "staging", "dev", "core"])
+    name = each.key == "root" ? "uksouth.bink.host" : "${each.key}.uksouth.bink.host"
+    resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_dns_cname_record" "bink_host_cname" {

@@ -7,9 +7,7 @@ variable "tags" {
     }
 }
 
-variable "ip_range" { default = "192.168.20.0/24" }
-
-variable "private_dns_link_bink_host" {}
+variable "ip_range" { type = string }
 
 variable "peers" { type = map(object({
     vnet_id = string
@@ -23,4 +21,12 @@ variable "config" {
 
 variable "loganalytics_id" {
     type = string
+}
+
+variable "private_dns" {
+    type = object({
+        resource_group = string
+        primary_zone = string
+        secondary_zones = list(string)
+    })
 }

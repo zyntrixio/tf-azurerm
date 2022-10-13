@@ -681,43 +681,6 @@ resource "azurerm_firewall_nat_rule_collection" "sftp" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "data_warehouse" {
-    # Collection of rules to allow Lumilinks to manage airbyte and prefect
-    name = "data_warehouse_lumilinks"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 150
-    action = "Dnat"
-
-    rule {
-        name = "airbyte_admin_http"
-        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
-        destination_ports = ["8000"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.23.4"
-        translated_port = "8000"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prefect_admin_http"
-        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
-        destination_ports = ["8080"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.24.4"
-        translated_port = "8080"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prefect_playground_http"
-        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
-        destination_ports = ["4200"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.24.4"
-        translated_port = "4200"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "opensearch" {
     name = "opensearch"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -825,22 +788,6 @@ resource "azurerm_firewall_network_rule_collection" "tools" {
         source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
         destination_ports = ["80", "443"]
         destination_addresses = ["10.50.255.254/32"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "prefect_to_airbyte" {
-    name = "prefect_to_airbyte"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 200
-    action = "Allow"
-
-    rule {
-        name = "http"
-        source_addresses = ["192.168.24.0/24"]
-        destination_ports = ["8000"]
-        destination_addresses = ["192.168.23.0/24"]
         protocols = ["TCP"]
     }
 }

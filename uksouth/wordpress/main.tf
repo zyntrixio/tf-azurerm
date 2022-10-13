@@ -32,32 +32,32 @@ resource "azurerm_public_ip" "pip6" {
 
 resource "azurerm_dns_a_record" "apex" {
     name = "@"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    zone_name = var.dns.zone
+    resource_group_name = var.dns.resource_group
     ttl = 300
     records = [azurerm_public_ip.pip.ip_address]
 }
 
 resource "azurerm_dns_aaaa_record" "apex" {
     name = "@"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    zone_name = var.dns.zone
+    resource_group_name = var.dns.resource_group
     ttl = 300
     records = [azurerm_public_ip.pip6.ip_address]
 }
 
 resource "azurerm_dns_a_record" "www" {
     name = "www"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    zone_name = var.dns.zone
+    resource_group_name = var.dns.resource_group
     ttl = 300
     records = [azurerm_public_ip.pip.ip_address]
 }
 
 resource "azurerm_dns_aaaa_record" "www" {
     name = "www"
-    zone_name = var.dns_zone.bink_com.dns_zone_name
-    resource_group_name = var.dns_zone.bink_com.resource_group_name
+    zone_name = var.dns.zone
+    resource_group_name = var.dns.resource_group
     ttl = 300
     records = [azurerm_public_ip.pip6.ip_address]
 }
@@ -78,37 +78,28 @@ resource "azurerm_network_security_group" "nsg" {
 
     tags = var.tags
 
-    security_rule {
-        name = "AllowHTTP"
-        description = "Allow HTTP Access"
-        access = "Allow"
-        priority = 100
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "80"
+    dynamic security_rule {
+        for_each = {
+            "Allow_TCP_80" = {"priority": "100", "port": "80", "source": "*"},
+            "Allow_TCP_443" = {"priority": "110", "port": "443", "source": "*"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Tcp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = "*"
+        }
     }
 
     security_rule {
-        name = "AllowHTTPS"
-        description = "Allow HTTPS Access"
+        name = "Allow_TCP_22"
         access = "Allow"
         priority = 200
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "443"
-    }
-
-    security_rule {
-        name = "AllowSSH"
-        description = "Allow SSH Access"
-        access = "Allow"
-        priority = 500
         direction = "Inbound"
         protocol = "Tcp"
         source_address_prefixes = var.secure_origins

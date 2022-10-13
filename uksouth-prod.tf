@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.14.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -154,8 +154,8 @@ module "uksouth_prod_environment" {
             },
         ]
     }
-    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-    bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
+    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
     managed_identities = merge(
         local.managed_identities, {
@@ -169,7 +169,8 @@ module "uksouth_prod_environment" {
     aks = {
         prod0 = merge(local.aks_config_defaults_prod, {
             name = "prod0"
-            cidr = local.aks_cidrs.uksouth.prod0
+            cidr = local.cidrs.uksouth.aks.prod0
+            dns = local.aks_dns.prod_defaults
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {
@@ -183,7 +184,8 @@ module "uksouth_prod_environment" {
         })
         prod1 = merge(local.aks_config_defaults_prod, {
             name = "prod1"
-            cidr = local.aks_cidrs.uksouth.prod1
+            cidr = local.cidrs.uksouth.aks.prod1
+            dns = local.aks_dns.prod_defaults
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {
@@ -217,6 +219,8 @@ module "uksouth_prod_tableau" {
     }
     postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
     loganalytics_id = module.uksouth_loganalytics.id
+    private_dns = local.private_dns.prod_defaults
+    ip_range = local.cidrs.uksouth.tableau
 }
 
 module "uksouth_prod_rabbit" {
@@ -239,49 +243,41 @@ module "uksouth_prod_rabbit" {
     peering_remote_rg = module.uksouth-firewall.resource_group_name
     peering_remote_name = module.uksouth-firewall.vnet_name
 
-    dns = module.uksouth-dns.private_dns
+    # dns = module.uksouth-dns.private_dns
+    private_dns = local.private_dns.root_defaults
 
-    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16", local.aks_cidrs.uksouth.prod0, local.aks_cidrs.uksouth.prod1 ]
+    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16", local.cidrs.uksouth.aks.prod0, local.cidrs.uksouth.aks.prod1 ]
 }
 
-module "uksouth_prod_airbyte" {
-    source = "./uksouth/airbyte"
+module "uksouth_prod_datawarehouse" {
+    source = "./uksouth/datawarehouse"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
     }
-
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-    firewall = {
-        vnet_id = module.uksouth-firewall.vnet_id,
-        vnet_name = module.uksouth-firewall.vnet_name,
-        resource_group_name = module.uksouth-firewall.resource_group_name,
-    }
-    environment = {
-        vnet_id = module.uksouth_prod_environment.peering.vnet_id
-        vnet_name = module.uksouth_prod_environment.peering.vnet_name
-        resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
-    }
-}
-
-module "uksouth_prod_prefect" {
-    source = "./uksouth/prefect"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
-
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    postgres_flexible_server_dns_link = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-    firewall = {
-        vnet_id = module.uksouth-firewall.vnet_id,
-        vnet_name = module.uksouth-firewall.vnet_name,
-        resource_group_name = module.uksouth-firewall.resource_group_name,
-    }
-    environment = {
-        vnet_id = module.uksouth_prod_environment.peering.vnet_id
-        vnet_name = module.uksouth_prod_environment.peering.vnet_name
-        resource_group_name = module.uksouth_prod_environment.peering.resource_group_name
+    common = {
+        environment = "prod"
+        location = "uksouth"
+        cidr = local.cidrs.uksouth.datawarehouse.prod
+        private_dns = local.private_dns.prod_defaults
+        loganalytics_id = module.uksouth_loganalytics.id
+        firewall_ip = module.uksouth-firewall.firewall_ip
+        postgres_dns = module.uksouth_prod_environment.postgres_flexible_server_dns_link
+        vms = {
+            airbyte = { size = "Standard_E2as_v5" }
+            prefect = { size = "Standard_E2as_v5" }
+        }
+        peering = {
+            firewall = {
+                vnet_id = module.uksouth-firewall.peering.vnet_id
+                vnet_name = module.uksouth-firewall.peering.vnet_name
+                resource_group = module.uksouth-firewall.peering.rg_name
+            }
+            environment = {
+                vnet_id = module.uksouth_prod_environment.peering.vnet_id
+                vnet_name = module.uksouth_prod_environment.peering.vnet_name
+                resource_group = module.uksouth_prod_environment.peering.resource_group_name
+            }
+        }
     }
 }

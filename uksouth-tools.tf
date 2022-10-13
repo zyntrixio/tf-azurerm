@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.14.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -40,8 +40,8 @@ module "uksouth_tools_environment" {
         },
     }
 
-    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-    bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
+    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
     managed_identities = local.managed_identities
 
@@ -50,7 +50,8 @@ module "uksouth_tools_environment" {
             name = "tools"
             node_max_count = 7
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
-            cidr = local.aks_cidrs.uksouth.tools
+            cidr = local.cidrs.uksouth.aks.tools
+            dns = local.aks_dns.core_defaults
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1600

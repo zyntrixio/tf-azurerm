@@ -1,13 +1,17 @@
-# Module required vars:
 variable "firewall_vnet_id" {}
 variable "firewall_route_ip" {}
-variable "private_dns_link_bink_host" {}
 
-# Defaults:
+variable "private_dns" {
+    type = object({
+        resource_group = string
+        primary_zone = string
+        secondary_zones = list(string)
+    })
+}
 
 variable environment { default = "bastion" }
 
-variable "ip_range" { default = "192.168.4.0/24" }
+variable "ip_range" {}
 
 variable "tags" {
     type = map

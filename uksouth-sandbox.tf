@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.14.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -273,15 +273,16 @@ module "uksouth_sandbox_environment" {
             account_tier = "Standard"
         },
     }
-    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-    bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
+    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
     managed_identities = merge(local.managed_identities, {pyxis={kv_access="ro"}})
 
     aks = {
         sandbox = merge(local.aks_config_defaults, {
             name = "sandbox"
-            cidr = local.aks_cidrs.uksouth.sandbox
+            cidr = local.cidrs.uksouth.aks.sandbox
+            dns = local.aks_dns.sandbox_defaults
             updates = "stable"
             sku = "Paid"
             node_max_count = 20

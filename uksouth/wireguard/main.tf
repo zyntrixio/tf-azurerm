@@ -56,6 +56,19 @@ resource "azurerm_network_security_group" "nsg" {
     tags = var.tags
 
     security_rule {
+        name = "BlockEverything"
+        description = "Default Block All Rule"
+        access = "Deny"
+        priority = 4096
+        direction = "Inbound"
+        protocol = "*"
+        source_address_prefix = "*"
+        source_port_range = "*"
+        destination_address_prefix = "*"
+        destination_port_range = "*"
+    }
+
+    security_rule {
         name = "AllowWireguard"
         description = "Wireguard Access"
         access = "Allow"
@@ -79,32 +92,6 @@ resource "azurerm_network_security_group" "nsg" {
         source_port_range = "*"
         destination_address_prefix = "*"
         destination_port_range = "22"
-    }
-
-    security_rule {
-        name = "AllowPrometheus"
-        description = "Allow Prometheus to hit exporters"
-        access = "Allow"
-        priority = 510
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefixes = var.prometheus_origin
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_ranges = [9100, 9586]
-    }
-
-    security_rule {
-        name = "BlockEverything"
-        description = "Default Block All Rule"
-        access = "Deny"
-        priority = 4096
-        direction = "Inbound"
-        protocol = "*"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "*"
     }
 }
 

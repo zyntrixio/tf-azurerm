@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.14.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -103,15 +103,16 @@ module "uksouth_staging_environment" {
         ]
     }
 
-    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-    bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
+    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
     managed_identities = local.managed_identities
 
     aks = {
         staging = merge(local.aks_config_defaults, {
             name = "staging"
-            cidr = local.aks_cidrs.uksouth.staging
+            cidr = local.cidrs.uksouth.aks.staging
+            dns = local.aks_dns.staging_defaults
             maintenance_day = "Tuesday"
             zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
@@ -122,5 +123,38 @@ module "uksouth_staging_environment" {
                 })
             })
         })
+    }
+}
+
+module "uksouth_staging_datawarehouse" {
+    source = "./uksouth/datawarehouse"
+    providers = {
+        azurerm = azurerm.uk_staging
+        azurerm.core = azurerm
+    }
+    common = {
+        environment = "staging"
+        location = "uksouth"
+        cidr = local.cidrs.uksouth.datawarehouse.staging
+        private_dns = local.private_dns.staging_defaults
+        firewall_ip = module.uksouth-firewall.firewall_ip
+        loganalytics_id = module.uksouth_loganalytics.id
+        postgres_dns = module.uksouth_staging_environment.postgres_flexible_server_dns_link
+        vms = {
+            airbyte = { size = "Standard_E2as_v5" }
+            prefect = { size = "Standard_E2as_v5" }
+        }
+        peering = {
+            firewall = {
+                vnet_id = module.uksouth-firewall.peering.vnet_id
+                vnet_name = module.uksouth-firewall.peering.vnet_name
+                resource_group = module.uksouth-firewall.peering.rg_name
+            }
+            environment = {
+                vnet_id = module.uksouth_staging_environment.peering.vnet_id
+                vnet_name = module.uksouth_staging_environment.peering.vnet_name
+                resource_group = module.uksouth_staging_environment.peering.resource_group_name
+            }
+        }        
     }
 }

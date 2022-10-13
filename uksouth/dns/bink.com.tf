@@ -290,14 +290,6 @@ resource "azurerm_dns_a_record" "bink_com_a" {
     records = [each.value]
 }
 
-resource "azurerm_dns_a_record" "bink_com_a_battlesnakes" {
-    name = "*.battlesnakes"
-    zone_name = azurerm_dns_zone.bink-com.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
-    records = ["178.62.127.37"]
-}
-
 resource "azurerm_dns_cname_record" "bink_com_cname" {
     for_each = local.bink_com.cname_records
 

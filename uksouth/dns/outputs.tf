@@ -1,51 +1,23 @@
-output "bink-com" {
-    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-com.name, azurerm_dns_zone.bink-com.id]
-}
-
-output "bink-sh" {
-    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-sh.name, azurerm_dns_zone.bink-sh.id]
-}
-
-output "bink-host" {
-    value = [azurerm_resource_group.rg.name, azurerm_dns_zone.bink-host.name, azurerm_dns_zone.bink-host.id]
-}
-
-output "uksouth-bink-host" {
-    value = [azurerm_resource_group.rg.name, azurerm_private_dns_zone.uksouth-bink-host.name, azurerm_private_dns_zone.uksouth-bink-host.id]
-}
-
-output "aks_zones" {
+output "dns_zones" {
     value = {
-        private = {
-            name = azurerm_private_dns_zone.uksouth-bink-host.name
-            resource_group = azurerm_resource_group.rg.name
+        resource_group = {
+            name = azurerm_resource_group.rg.name
+            id = azurerm_resource_group.rg.id
         }
-        public = {
-            name = azurerm_dns_zone.bink-sh.name
-            resource_group = azurerm_resource_group.rg.name
+        bink_host = {
+            root = azurerm_private_dns_zone.uksouth_bink_host["root"]
+            core = azurerm_private_dns_zone.uksouth_bink_host["core"]
+            dev = azurerm_private_dns_zone.uksouth_bink_host["dev"]
+            staging = azurerm_private_dns_zone.uksouth_bink_host["staging"]
+            sandbox = azurerm_private_dns_zone.uksouth_bink_host["sandbox"]
+            prod = azurerm_private_dns_zone.uksouth_bink_host["prod"]
+            public = azurerm_dns_zone.bink-host
         }
-    }
-}
-
-output "private_dns" {
-    value = {
-        uksouth_host = {
-            resource_group_name = azurerm_resource_group.rg.name
-            private_dns_zone_name = azurerm_private_dns_zone.uksouth-bink-host.name
-            should_register = true
-        }
-    }
-}
-
-output "public_dns" {
-    value = {
         bink_sh = {
-            resource_group_name = azurerm_resource_group.rg.name
-            dns_zone_name = azurerm_dns_zone.bink-sh.name
-        },
+            root = azurerm_dns_zone.bink-sh
+        }
         bink_com = {
-            resource_group_name = azurerm_resource_group.rg.name
-            dns_zone_name = azurerm_dns_zone.bink-com.name
+            root = azurerm_dns_zone.bink-com
         }
     }
 }

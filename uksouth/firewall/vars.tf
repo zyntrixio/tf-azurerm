@@ -5,6 +5,7 @@ variable "tags" {
     }
 }
 
+variable "ip_range" { type = string }
 variable "bastion_ip_address" {}
 variable "sftp_ip_address" {}
 

@@ -12,7 +12,15 @@ variable "peers" { type = map(object({
     resource_group_name = string
 })) }
 
-variable "private_dns_link_bink_host" { type = list }
+variable "private_dns" {
+    type = object({
+        resource_group = string
+        primary_zone = string
+        secondary_zones = list(string)
+    })
+}
+
+variable "ip_range" { type = string }
 
 resource "azurerm_resource_group" "i" {
     name = "uksouth-opensearch"
@@ -36,63 +44,35 @@ resource "azurerm_network_security_group" "i" {
         destination_address_prefix = "*"
     }
 
-    security_rule {
-        name = "AllowSSH"
-        priority = "100"
-        access = "Allow"
-        protocol = "Tcp"
-        direction = "Inbound"
-        source_port_range = "*"
-        source_address_prefix = "192.168.4.0/24"
-        destination_port_range = "22"
-        destination_address_prefix = "192.168.1.0/24"
+    dynamic security_rule {
+        for_each = {
+            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "192.168.4.0/24"},
+            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
+            "Allow_TCP_9200" = {"priority": "200", "port": "9200", "source": "10.0.0.0/8"},
+            "Allow_TCP_80" = {"priority": "210", "port": "80", "source": "192.168.0.0/24"},
+            "Allow_TCP_443" = {"priority": "220", "port": "443", "source": "192.168.0.0/24"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Tcp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = var.ip_range
+        }
     }
-
-    security_rule {
-        name = "AllowOSClients"
-        priority = "200"
-        access = "Allow"
-        protocol = "Tcp"
-        direction = "Inbound"
-        source_port_range = "*"
-        source_address_prefix = "*"
-        destination_port_range = "9200"
-        destination_address_prefix = "192.168.1.0/24"
-    }
-
-    security_rule {
-        name = "AllowHTTP"
-        priority = "300"
-        access = "Allow"
-        protocol = "Tcp"
-        direction = "Inbound"
-        source_port_range = "*"
-        source_address_prefix = "*"
-        destination_port_range = "80"
-        destination_address_prefix = "192.168.1.0/24"
-    }
-
-    security_rule {
-        name = "AllowHTTPS"
-        priority = "310"
-        access = "Allow"
-        protocol = "Tcp"
-        direction = "Inbound"
-        source_port_range = "*"
-        source_address_prefix = "*"
-        destination_port_range = "443"
-        destination_address_prefix = "192.168.1.0/24"
-    }
-
 }
 
 resource "azurerm_virtual_network" "i" {
     name = "opensearch"
     location = azurerm_resource_group.i.location
     resource_group_name = azurerm_resource_group.i.name
-    address_space = [ "192.168.1.0/24" ]
+    address_space = [ var.ip_range ]
     subnet {
-        address_prefix = "192.168.1.0/24"
+        address_prefix = var.ip_range
         name = "subnet"
         security_group = azurerm_network_security_group.i.id
     }
@@ -118,12 +98,20 @@ resource "azurerm_virtual_network_peering" "remote" {
     allow_forwarded_traffic = true
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "i" {
-    name = "${azurerm_virtual_network.i.name}-uksouth-host"
-    resource_group_name = var.private_dns_link_bink_host[0]
-    private_dns_zone_name = var.private_dns_link_bink_host[1]
+resource "azurerm_private_dns_zone_virtual_network_link" "primary" {
+    name = azurerm_virtual_network.i.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = var.private_dns.primary_zone
     virtual_network_id = azurerm_virtual_network.i.id
     registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "secondary" {
+    for_each = toset(var.private_dns.secondary_zones)
+    name = azurerm_virtual_network.i.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = each.key
+    virtual_network_id = azurerm_virtual_network.i.id
 }
 
 resource "azurerm_route_table" "i" {

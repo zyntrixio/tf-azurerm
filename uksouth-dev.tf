@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.13.4"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.14.0"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -109,15 +109,15 @@ module "uksouth_dev_environment" {
         ]
     }
 
-    bink_sh_zone_id = module.uksouth-dns.bink-sh[2]
-    bink_host_zone_id = module.uksouth-dns.bink-host[2]
+    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
+    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
     managed_identities = local.managed_identities
 
     aks = {
         dev = merge(local.aks_config_defaults, {
             name = "dev"
-            cidr = local.aks_cidrs.uksouth.dev
+            cidr = local.cidrs.uksouth.aks.dev
             zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {

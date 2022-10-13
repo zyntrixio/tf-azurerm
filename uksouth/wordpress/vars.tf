@@ -12,9 +12,15 @@ variable "secure_origins" {
     default = []
 }
 
-variable "dns_zone" { default = {} }
 variable "frontdoor_id" { default = {} }
 
 variable "loganalytics_id" {
     type = string
+}
+
+variable "dns" {
+    type = object({
+        zone = string
+        resource_group = string
+    })
 }

@@ -1,12 +1,12 @@
 terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 2.69.0"
-      configuration_aliases = [ azurerm.core ]
+    required_providers {
+        azurerm = {
+            source  = "hashicorp/azurerm"
+            version = ">= 2.69.0"
+            configuration_aliases = [ azurerm.core ]
+        }
     }
-  }
-  required_version = ">= 0.13"
+    required_version = ">= 0.13"
 }
 
 resource "azurerm_resource_group" "i" {
@@ -179,23 +179,29 @@ resource "azurerm_lb" "i" {
     tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "i" {
-    for_each = var.dns
-
+resource "azurerm_private_dns_zone_virtual_network_link" "primary" {
     provider = azurerm.core
-
-    name = "${azurerm_virtual_network.i.name}-${each.key}"
-    resource_group_name = each.value["resource_group_name"]
-    private_dns_zone_name = each.value["private_dns_zone_name"]
+    name = azurerm_virtual_network.i.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = var.private_dns.primary_zone
     virtual_network_id = azurerm_virtual_network.i.id
-    registration_enabled = each.value["should_register"]
+    registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "secondary" {
+    provider = azurerm.core
+    for_each = toset(var.private_dns.secondary_zones)
+    name = azurerm_virtual_network.i.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = each.key
+    virtual_network_id = azurerm_virtual_network.i.id
 }
 
 resource "azurerm_private_dns_a_record" "i" {
     provider = azurerm.core
     name = var.base_name
-    zone_name = var.dns["uksouth_host"].private_dns_zone_name
-    resource_group_name = var.dns["uksouth_host"].resource_group_name
+    zone_name = var.private_dns.primary_zone
+    resource_group_name = var.private_dns.resource_group
     ttl = 300
     records = azurerm_lb.i.private_ip_addresses
 }

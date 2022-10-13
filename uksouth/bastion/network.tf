@@ -7,12 +7,20 @@ resource "azurerm_virtual_network" "vnet" {
     tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "host" {
-    name = "${azurerm_virtual_network.vnet.name}-uksouth-host"
-    resource_group_name = var.private_dns_link_bink_host[0]
-    private_dns_zone_name = var.private_dns_link_bink_host[1]
+resource "azurerm_private_dns_zone_virtual_network_link" "primary" {
+    name = azurerm_virtual_network.vnet.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = var.private_dns.primary_zone
     virtual_network_id = azurerm_virtual_network.vnet.id
     registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "secondary" {
+    for_each = toset(var.private_dns.secondary_zones)
+    name = azurerm_virtual_network.vnet.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = each.key
+    virtual_network_id = azurerm_virtual_network.vnet.id
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -21,32 +29,6 @@ resource "azurerm_network_security_group" "nsg" {
     resource_group_name = azurerm_resource_group.rg.name
 
     tags = var.tags
-
-    security_rule {
-        name = "AllowSSH"
-        description = "SSH Access"
-        access = "Allow"
-        priority = 500
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefix = "192.168.0.0/24"
-        source_port_range = "*"
-        destination_address_prefix = var.ip_range
-        destination_port_ranges = [22]
-    }
-
-    security_rule {
-        name = "AllowNodeExporterAccess"
-        description = "Tools Prometheus -> Node Exporter"
-        access = "Allow"
-        priority = 510
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefix = "10.33.0.0/18"
-        source_port_range = "*"
-        destination_address_prefix = var.ip_range
-        destination_port_ranges = [9100]
-    }
 
     security_rule {
         name = "BlockEverything"
@@ -59,6 +41,24 @@ resource "azurerm_network_security_group" "nsg" {
         source_port_range = "*"
         destination_address_prefix = "*"
         destination_port_range = "*"
+    }
+
+    dynamic security_rule {
+        for_each = {
+            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "192.168.0.0/24"},
+            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Tcp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = var.ip_range
+        }
     }
 }
 

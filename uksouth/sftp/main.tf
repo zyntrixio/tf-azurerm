@@ -44,12 +44,20 @@ resource "azurerm_virtual_network_peering" "remote_peer" {
     allow_forwarded_traffic = true
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "host" {
-    name = "${azurerm_virtual_network.vnet.name}-uksouth-host"
-    resource_group_name = var.private_dns_link_bink_host[0]
-    private_dns_zone_name = var.private_dns_link_bink_host[1]
+resource "azurerm_private_dns_zone_virtual_network_link" "primary" {
+    name = azurerm_virtual_network.vnet.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = var.private_dns.primary_zone
     virtual_network_id = azurerm_virtual_network.vnet.id
     registration_enabled = true
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "secondary" {
+    for_each = toset(var.private_dns.secondary_zones)
+    name = azurerm_virtual_network.vnet.name
+    resource_group_name = var.private_dns.resource_group
+    private_dns_zone_name = each.key
+    virtual_network_id = azurerm_virtual_network.vnet.id
 }
 
 resource "azurerm_route_table" "rt" {
@@ -89,27 +97,23 @@ resource "azurerm_network_security_group" "nsg" {
         access = "Deny"
         direction = "Inbound"
     }
-    security_rule {
-        name = "AllowSSH"
-        priority = 500
-        protocol = "Tcp"
-        destination_port_range = 22
-        source_port_range = "*"
-        destination_address_prefix = azurerm_subnet.subnet.address_prefixes[0]
-        source_address_prefix = "*"
-        direction = "Inbound"
-        access = "Allow"
-    }
-    security_rule {
-        name = "AllowNodeExporter"
-        priority = 510
-        protocol = "Tcp"
-        destination_port_range = 9100
-        source_port_range = "*"
-        destination_address_prefix = azurerm_subnet.subnet.address_prefixes[0]
-        source_address_prefix = "*"
-        direction = "Inbound"
-        access = "Allow"
+
+    dynamic security_rule {
+        for_each = {
+            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "*"},
+            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Tcp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = var.ip_range
+        }
     }
 
     tags = var.tags

@@ -14,7 +14,7 @@ locals {
         node_max_count = 6
         node_size = "Standard_E4as_v5"
         maintenance_day = "Monday"
-        dns = module.uksouth-dns.aks_zones
+        dns = local.aks_dns.dev_defaults
     }
 
     aks_config_defaults_prod = merge(local.aks_config_defaults, {
@@ -89,14 +89,25 @@ locals {
         https_port = 4000
     }
 
-    aks_cidrs = {
+    cidrs = {
         uksouth = {
-            prod0 = "10.10.0.0/16"
-            prod1 = "10.11.0.0/16"
-            sandbox = "10.20.0.0/16"
-            staging = "10.30.0.0/16"
-            dev = "10.40.0.0/16"
-            tools = "10.50.0.0/16"
+            firewall = "192.168.0.0/24"
+            opensearch = "192.168.1.0/24"
+            bastion = "192.168.4.0/24"
+            sftp = "192.168.20.0/24"
+            tableau = "192.168.101.0/24"
+            aks = {
+                tools = "10.50.0.0/16"
+                dev = "10.40.0.0/16"
+                staging = "10.30.0.0/16"
+                sandbox = "10.20.0.0/16"
+                prod0 = "10.10.0.0/16"
+                prod1 = "10.11.0.0/16"
+            },
+            datawarehouse = {
+                staging = "192.168.201.0/24"
+                prod = "192.168.200.0/24"
+            }
         }
     }
 
@@ -191,8 +202,10 @@ module "uksouth-bastion" {
 
     firewall_route_ip = module.uksouth-firewall.firewall_ip
     firewall_vnet_id = module.uksouth-firewall.vnet_id
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
     loganalytics_id = module.uksouth_loganalytics.id
+    ip_range = local.cidrs.uksouth.bastion
+
+    private_dns = local.private_dns.core_defaults
 }
 
 module "uksouth-dns" {
@@ -214,13 +227,14 @@ module "uksouth-frontdoor" {
 module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
+    ip_range = local.cidrs.uksouth.firewall
     bastion_ip_address = module.uksouth-bastion.ip_address
     sftp_ip_address = module.uksouth-sftp.ip_address
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
-    production_cidrs = [ local.aks_cidrs.uksouth.prod0, local.aks_cidrs.uksouth.prod1 ]
-    aks_cidrs = local.aks_cidrs.uksouth
+    production_cidrs = [ local.cidrs.uksouth.aks.prod0, local.cidrs.uksouth.aks.prod1 ]
+    aks_cidrs = local.cidrs.uksouth.aks
 }
 
 module "uksouth-storage" {
@@ -237,106 +251,12 @@ module "uksouth_opensearch" {
             resource_group_name = module.uksouth-firewall.resource_group_name
         }
     }
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
+    private_dns = local.private_dns.root_defaults # OpenSearch requires CN changes to support moving this to core
+    ip_range = local.cidrs.uksouth.opensearch
 }
 
 module "uksouth-sftp" {
     source = "./uksouth/sftp"
-
-    config = {
-        "ssh" : {
-            "ciphers" : "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr",
-            "macs" : "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-96,hmac-md5",
-            "kexalgorithms" : "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-        },
-        "users" : {
-            "sftp" : [
-                {
-                    "name" : "harveynichols",
-                    "id" : 4000,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEApo4pf1NWLWrcmRWqLvFKOvkzJKDyo8QkN/pil60x4YPs/j+8JUiO1UI9TeP4YSJ9C3nyFNkjqc0jorI5EnVUPdVCGRPweZCgr4Di4eu/2KgYobO9DzvRoBvZAzxIR3dlJDsnOa27FscQ6iZXWdgCvJcTPQaEot/8eKDifZ+eU3Rh2mpVCykiNH4qeYPUTJDws+aC1PfTQQ8bmcN8IWxcG+dVjkKzlM/NJ0lzsJiOQGRJc0ZuC66D8UwJXF0UEzsteWge9DDL394t9mHl5DFhhuLsZ+laNsqVstdppwFk+S9Hd63wy4Yrdu3Wz1obgXcBrdROESTyiZ5o4kaRwf48DQ==",
-                    "upload" : {
-                        "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
-                        "container" : "harmonia-imports",
-                        "slug" : "scheme/harvey-nichols",
-                    }
-                },
-                {
-                    "name" : "iceland",
-                    "id" : 4001,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlR8IrClW5vyU3utv+LTshjt49FWxdHnogNj1JesWvQZPla0nFze28Ohup3EPWLZUbVL4z3ay8PJeotszIEDHKc5K8P2/cwytdopOpdvdWJfxZcLzIIrKSMXjc+uXWLA+jvav9JIewEda/SsiM2ChYmR6BtpQirUtupcrbXXPXsjWoZ1BZdKZ6EmVT3uq1bGvMUZgr77QThtbcfR4x9B/3eVJSK5r1H8baohnkQx0cEcCt9KSkjU3gw5RXGKqJXAci+nR/ieCNw5znqKHaIEvsV06UKxqL9UYjuXdLI1bA24R3IKxhb4vrklTt0paisXPljp4YekDRAJ7j9BpgSve3w==",
-                    "upload" : {
-                        "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
-                        "container" : "harmonia-imports",
-                        "slug" : "scheme/iceland",
-                    }
-                },
-                {
-                    "name" : "viator",
-                    "id" : 4002,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDJLUDH/VUPhfUN0hiz7DDEkuKNQTmu2iW3mdmvA/z/ESB+zLh5kid21u27zjeKH5xGKHEkHjz8cGdXQ4FM5YpDEEXTwIyWkxkbHgeC+K5Dn1HCJVk/GiWnh65HKDBwVa5stsdq8LyWxK9hm+enZNy14UWUBPEx4AaX9zX7rsUXO9wCvT19LLb72MgGaIGSgQcLjqXZcsEq11617NNK35bJl+tu7m+kJpDuXwQ1ML211S2JM8fk2un8Ndihd/w3LqaVPMINz2wGtEL1OxWcJRP1ZXLWc516FWQvKWxdPLrVVHIoEhOtrLj2J3ttd9o7P6WryXUhnYolPdwgOD1DSPsE59SDQVzyr1vgEy27h370qw10R8VNIak44RgGHKn1jwcnHUzsc1qWWtYU26bhF5vwFOrS8hs1/11GuLy3o3Gb4e2OhsQiUQJp6LH5BnT8PjZVyB1Fsbz9O3LW6r45pI3+ECcPrjfTuVgq1niQ9EkR2hhQXb4oNqDB+JsBsUV/AcM=",
-                    "upload" : {
-                        "conn_string" : module.uksouth_prod_environment.storage_accounts.binkuksouthprod,
-                        "container" : "carina-imports",
-                        "slug" : "viator",
-                    }
-                },
-                {
-                    "name" : "trenette-dev",
-                    "id" : 4200,
-                    "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwjW5zg1mK+j+BZT/uCpFcjOhNcT8RnzDAuG92+ndE6",
-                    "upload" : {
-                        "conn_string" : module.uksouth_dev_environment.storage_accounts.binkuksouthdev,
-                        "container" : "carina-imports",
-                        "slug" : "trenette",
-                    }
-                },
-                {
-                    "name" : "trenette-staging",
-                    "id" : 4201,
-                    "ssh_key" : "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwjW5zg1mK+j+BZT/uCpFcjOhNcT8RnzDAuG92+ndE6",
-                    "upload" : {
-                        "conn_string" : module.uksouth_staging_environment.storage_accounts.binkuksouthstaging,
-                        "container" : "carina-imports",
-                        "slug" : "trenette",
-                    }
-                },
-                {
-                    "name" : "binktest_prod",
-                    "id" : 4500,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw=="
-                },
-                {
-                    "name" : "binktest_preprod",
-                    "id" : 4501,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw=="
-                },
-                {
-                    "name" : "binktest_staging",
-                    "id" : 4502,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw=="
-                },
-                {
-                    "name" : "binktest_dev",
-                    "id" : 4503,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw==\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqui3ya3xyECnjnlpb4nLq0ibDgjh/DGjf9h2lsiuVOXbtXm3Vs0D7qKd4M2Z+NaRGoaqdUTjeAbhIFApJoxnk7FetNUYc89qC85pjsXv9VAZZs1PcxmdgL5lVu6S5vs1shozJIC3eejRReSuvLGrOtt/EvMmzUHhnSNZqwomIhnK1sSUiv7qrB/Yh7n7kmxuEixDUVnia1vSvNHFq+prf9wrH1ChfuCME7IxUNiOOupCwYWjJelsizhdpqwsYFuPg92J4ClPCzzeRyRkg5XFYSuT6lq3I/3a23ypgnN/sVVTH7DYx8f9GR4jmQwcR+kWvZiOMEb415A7LHbhf5PaJuIhD83ixCPbomk0rzCPv2J1ayWxyDW38S5jAWa8fvkTy1Yk9tVqu8NEr9S+l5qzkmdDiUnL5V22zxSGdIf2hOlf9tI/Cy5jN0ESQHuODubpmYCXt1zK5mKwLgLz5AUi9bz7brf5dFcAzzQK/6VfSijulkKDx4BqNF9cDiTEDQ7hDtPjtYnzYQ7yA9FpY165bAy7mA2YYUr0Z4huYRTW3bacX0cGwvgCyOqZkQ33hKfRnFTD+32PD9EoVdUCRvT7kkODpu1k40ZSqqc1Pkgk9EGGI5gpkgUXQzR7CAv4JPhe0vrUKEk3rSi6b4EJ4+gqmb2fLlzFXqgOuMR1bo1n64w=="
-                },
-                {
-                    "name" : "binktest_perf",
-                    "id" : 4505,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4hWtuYpNwLKB0YEHwxEdtib0oxDPWVfW9y45eJhfvcjQA8/e8GHHRCSIUsWEcmjEZE1ZHc1MX09xS1HteExxjhOtMJ1x5qS0ye0rbxGujkpxdyfuTfyU+MRIQI7r4/Gt1bsrEJyULz287mfZK+IePGRun9sbRxHcVqgTXnHy/7PdKUyzykLCvTcnCUT8pdRU8GNqAHwtNojMJ8Qa6g3FP6Q9rlYCMZ7gA+dJvkm6oxgkpss3nbi4ZiDfZVbsUG49k0TP6qBC0r404eJjKfES1PZ2RveFuwAw4rur0ctUwiEYZtbenv4EzaYNtIpFg569r5ubuGfNNu/LXnOS8CzV2Ol1qIq0wCFkS3HIvGzU8wp0Fv+7RYiJclNKnnxDQ2w/4batinNgyCqhenEIZSKCPfWDipQn4CEEGqjpKqGeI2kAJgEDDUXjAThUDJHG6ill0EXxvpw2Ae0Ua8vuUgwGqw5x8gwWvyHPRBTCgCekVofRwZHVtMzP72rD71zXkkhnst8EfVb6C/J629qeAl2kkQLUWReal5NTuTi4ZpTb4UFge97kjwtoYUncfU0aqepYn/h7nJI3CXXDkhz5oK20oo0nxpYmIkhBAHKN1OsyyIpb0cOZUgoqWlvbvKJjoaaKbcXiyWK+4AIAOkj0x7oCGGFGeTIhISvQp9WPIV4IsIw=="
-                },
-                {
-                    "name" : "binktest_dev_hermes_barclays",
-                    "id" : 4506,
-                    "ssh_key" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCuqR1EarVpxolYA8/jncHSZJ2c63clp+ygYn5M4i2N5gPH2L3JaDme8ZJ+8k7soq1QgxJMDHZ9yYDFCQpCg/VeLPY4Ve6FbOMOyM3vEkesls2KmkKqer8uwBRUufqH4NlTmKT2jZZiP65ODyo8Ssv3tQF0vaGiatg030XjhPZDmtNIFWV1VEFgclSzhFvugrY+HcckyJiUoWc1w7yYUzhnJb+PRhj5BaohbffD1VEQfgmjEDnaryFbdltaEa4Oe+tu0l6JVVtW7Z5nMuKBzEgr37PCpRyJPPtromVDK8gFZ+SFyEjiOpWcMcC2V3J7m1jlGNj8Snyuaz1N6nHOjqx"
-                },
-            ]
-        }
-    }
-
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-
     peers = {
         firewall = {
             vnet_id = module.uksouth-firewall.vnet_id
@@ -345,19 +265,12 @@ module "uksouth-sftp" {
         }
     }
     loganalytics_id = module.uksouth_loganalytics.id
+    private_dns = local.private_dns.core_defaults
+    ip_range = local.cidrs.uksouth.sftp
 }
 
 module "uksouth_loganalytics" {
     source = "./uksouth/loganalytics"
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
-        }
-    }
-    private_dns_link_bink_host = module.uksouth-dns.uksouth-bink-host
-    vnet_cidr = "192.168.25.0/24"
 }
 
 module "uksouth-wireguard" {
@@ -369,6 +282,9 @@ module "uksouth-wireguard" {
 module "uksouth_wordpress" {
     source = "./uksouth/wordpress"
     secure_origins = local.secure_origins
-    dns_zone = module.uksouth-dns.public_dns
     loganalytics_id = module.uksouth_loganalytics.id
+    dns = {
+        zone = module.uksouth-dns.dns_zones.bink_com.root.name
+        resource_group = module.uksouth-dns.dns_zones.resource_group.name
+    }
 }
