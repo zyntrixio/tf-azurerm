@@ -9,7 +9,7 @@ locals {
             "ssh.uksouth" = "51.132.44.240"
             "sftp.dev.uksouth" = "51.132.44.242"
             "wg.uksouth" = "51.132.44.249"
-            "wireguard.uksouth" = "20.49.163.188"
+            "wireguard.uksouth" = "51.105.20.158" # TODO: Move this into Wireguard module
             "tableau.uksouth" = "51.132.44.253"
             "opensearch.uksouth" = "51.132.44.255"
         }

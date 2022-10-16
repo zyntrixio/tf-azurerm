@@ -93,6 +93,7 @@ locals {
         uksouth = {
             firewall = "192.168.0.0/24"
             opensearch = "192.168.1.0/24"
+            wireguard = "192.168.2.0/24"
             bastion = "192.168.4.0/24"
             sftp = "192.168.20.0/24"
             tableau = "192.168.101.0/24"
@@ -117,7 +118,7 @@ locals {
         "217.169.3.233/32",  # cpressland@bink.com
         "81.2.99.144/29",  # cpressland@bink.com
         "31.125.46.20/32",  # nread@bink.com
-        "${module.uksouth-wireguard.public_ip}/32",  # Wireguard IP
+        "51.105.20.158/32",  # Wireguard IP TODO: Bring this from module
     ]
     secure_origins_v6 = [
         "2001:8b0:b130:a52d::/64", # cpressland@bink.com
@@ -215,6 +216,21 @@ module "uksouth_bastion" {
     }
 }
 
+module "uksouth_wireguard" {
+    source = "./uksouth/wireguard"
+    common = {
+        firewall = {
+            resource_group = module.uksouth-firewall.resource_group_name
+            ip_address = module.uksouth-firewall.firewall_ip
+            vnet_name = module.uksouth-firewall.vnet_name
+            vnet_id = module.uksouth-firewall.vnet_id
+        }
+        private_dns = local.private_dns.core_defaults
+        cidr = local.cidrs.uksouth.wireguard
+        loganalytics_id = module.uksouth_loganalytics.id
+    }
+}
+
 module "uksouth-dns" {
     source = "./uksouth/dns"
 }
@@ -277,12 +293,6 @@ module "uksouth-sftp" {
 
 module "uksouth_loganalytics" {
     source = "./uksouth/loganalytics"
-}
-
-module "uksouth-wireguard" {
-    source = "./uksouth/wireguard"
-    secure_origins = local.secure_origins
-    loganalytics_id = module.uksouth_loganalytics.id
 }
 
 module "uksouth_wordpress" {

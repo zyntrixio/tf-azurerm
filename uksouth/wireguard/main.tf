@@ -1,31 +1,64 @@
-resource "azurerm_resource_group" "rg" {
-    name = "uksouth-${var.environment}"
-    location = "uksouth"
-
-    tags = var.tags
+terraform {
+    required_providers {
+        azurerm = {
+            source = "hashicorp/azurerm"
+        }
+    }
+    required_version = ">= 1.3.2"
 }
 
-resource "azurerm_public_ip" "pip" {
-    name = "${var.environment}-pip"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
+variable "common" {
+    type = object({
+        firewall = object({
+            resource_group = string
+            ip_address = string
+            vnet_name = string
+            vnet_id = string
+        })
+        private_dns = object({
+            resource_group = string
+            primary_zone = string
+            secondary_zones = list(string)
+        })
+        location = optional(string, "uksouth")
+        vm_size = optional(string, "Standard_D2as_v4")
+        tags = optional(map(string), {
+            Environment = "Core"
+            Role = "Bastion"
+        })
+        cidr = string
+        loganalytics_id = string
+    })
+}
+
+resource "azurerm_resource_group" "i" {
+    name = "${var.common.location}-wireguard"
+    location = var.common.location
+
+    tags = var.common.tags
+}
+
+resource "azurerm_public_ip" "i" {
+    name = azurerm_resource_group.i.name
+    resource_group_name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
     allocation_method = "Static"
     sku = "Standard"
     zones = [ "1", "2", "3" ]
 
-    tags = var.tags
+    tags = var.common.tags
 }
 
 resource "azurerm_storage_account" "i" {
-    name = "binkuksouthwireguard"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
+    name = "bink${var.common.location}wireguard"
+    resource_group_name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
 
     cross_tenant_replication_enabled = false
     account_tier = "Standard"
     account_replication_type = "ZRS"
 
-    tags = var.tags
+    tags = var.common.tags
 }
 
 resource "azurerm_storage_share" "users" {
@@ -35,25 +68,43 @@ resource "azurerm_storage_share" "users" {
   quota = 50
 }
 
-output "public_ip" {
-    value = azurerm_public_ip.pip.ip_address
+resource "azurerm_virtual_network" "i" {
+    name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
+    address_space = [var.common.cidr]
+    tags = var.common.tags
+
+    subnet {
+        name = "subnet"
+        address_prefix = var.common.cidr
+    }
+
+    lifecycle {ignore_changes = [subnet]}
 }
 
-resource "azurerm_virtual_network" "vnet" {
-    name = "${var.environment}-vnet"
-    location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
-    address_space = [var.ip_range]
-
-    tags = var.tags
+resource "azurerm_private_dns_zone_virtual_network_link" "primary" {
+    name = azurerm_resource_group.i.name
+    resource_group_name = var.common.private_dns.resource_group
+    private_dns_zone_name = var.common.private_dns.primary_zone
+    virtual_network_id = azurerm_virtual_network.i.id
+    registration_enabled = true
 }
 
-resource "azurerm_network_security_group" "nsg" {
-    name = "${var.environment}-nsg"
-    location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
+resource "azurerm_private_dns_zone_virtual_network_link" "secondary" {
+    for_each = toset(var.common.private_dns.secondary_zones)
+    name = azurerm_resource_group.i.name
+    resource_group_name = var.common.private_dns.resource_group
+    private_dns_zone_name = each.key
+    virtual_network_id = azurerm_virtual_network.i.id
+}
 
-    tags = var.tags
+resource "azurerm_network_security_group" "i" {
+    name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
+
+    tags = var.common.tags
 
     security_rule {
         name = "BlockEverything"
@@ -68,113 +119,148 @@ resource "azurerm_network_security_group" "nsg" {
         destination_port_range = "*"
     }
 
-    security_rule {
-        name = "AllowWireguard"
-        description = "Wireguard Access"
-        access = "Allow"
-        priority = 100
-        direction = "Inbound"
-        protocol = "Udp"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_ranges = [51820]
+    dynamic security_rule {
+        for_each = {
+            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "192.168.4.0/24"},
+            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Tcp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = var.common.cidr
+        }
     }
 
-    security_rule {
-        name = "AllowSSH"
-        description = "Allow SSH Access"
-        access = "Allow"
-        priority = 500
-        direction = "Inbound"
-        protocol = "Tcp"
-        source_address_prefixes = var.secure_origins
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "22"
+    dynamic security_rule {
+        for_each = {
+            "Allow_UDP_51820" = {"priority": "200", "port": "51820", "source": "*"},
+        }
+        content {
+            name = security_rule.key
+            priority = security_rule.value.priority
+            access = "Allow"
+            protocol = "Udp"
+            direction = "Inbound"
+            source_port_range = "*"
+            source_address_prefix = security_rule.value.source
+            destination_port_range = security_rule.value.port
+            destination_address_prefix = "*"
+        }
     }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nsg" {
     name = "binkuksouthlogs"
-    target_resource_id = azurerm_network_security_group.nsg.id
-    log_analytics_workspace_id = var.loganalytics_id
+    target_resource_id = azurerm_network_security_group.i.id
+    log_analytics_workspace_id = var.common.loganalytics_id
 
     log {
         category = "NetworkSecurityGroupEvent"
         enabled = true
         retention_policy {
-            days = 0
-            enabled = false
+            days = 90
+            enabled = true
         }
     }
     log {
         category = "NetworkSecurityGroupRuleCounter"
         enabled = true
         retention_policy {
-            days = 0
-            enabled = false
+            days = 90
+            enabled = true
         }
     }
 }
 
-resource "azurerm_subnet" "subnet0" {
-    name = "subnet0"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefixes = [var.ip_range]
+resource "azurerm_route_table" "i" {
+    name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
+    disable_bgp_route_propagation = true
+
+    route {
+        name = "bastion"
+        address_prefix = "192.168.4.0/24"
+        next_hop_type = "VirtualAppliance"
+        next_hop_in_ip_address = var.common.firewall.ip_address
+    }
+
+    tags = var.common.tags
 }
 
-resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
-    subnet_id = azurerm_subnet.subnet0.id
-    network_security_group_id = azurerm_network_security_group.nsg.id
+resource "azurerm_subnet_network_security_group_association" "i" {
+    subnet_id = one(azurerm_virtual_network.i.subnet[*].id)
+    network_security_group_id = azurerm_network_security_group.i.id
 }
 
-resource "azurerm_network_interface" "wireguard" {
-    name = "${var.environment}-nic"
-    location = azurerm_resource_group.rg.location
-    resource_group_name = azurerm_resource_group.rg.name
-    enable_accelerated_networking = true
+resource "azurerm_subnet_route_table_association" "i" {
+    subnet_id = one(azurerm_virtual_network.i.subnet[*].id)
+    route_table_id = azurerm_route_table.i.id
+}
+
+resource "azurerm_virtual_network_peering" "firewall_to_local" {
+    name = "local-to-${azurerm_resource_group.i.name}"
+    resource_group_name = var.common.firewall.resource_group
+    virtual_network_name = var.common.firewall.vnet_name
+    remote_virtual_network_id = azurerm_virtual_network.i.id
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = true
+}
+
+resource "azurerm_virtual_network_peering" "local_to_firewall" {
+    name = "${var.common.firewall.resource_group}-to-local"
+    resource_group_name = azurerm_resource_group.i.name
+    virtual_network_name = azurerm_virtual_network.i.name
+    remote_virtual_network_id = var.common.firewall.vnet_id
+    allow_virtual_network_access = true
+    allow_forwarded_traffic = true
+}
+
+resource "azurerm_network_interface" "i" {
+    name = "wireguard"
+    location = azurerm_resource_group.i.location
+    resource_group_name = azurerm_resource_group.i.name
 
     ip_configuration {
-        name = "primary"
-        subnet_id = azurerm_subnet.subnet0.id
-        private_ip_address_allocation = "Static"
-        private_ip_address = cidrhost(var.ip_range, 4)
-        public_ip_address_id = azurerm_public_ip.pip.id
+        name = "ipconfig"
+        subnet_id = one(azurerm_virtual_network.i.subnet[*].id)
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id = azurerm_public_ip.i.id
     }
 }
 
-resource "azurerm_linux_virtual_machine" "wireguard" {
+resource "azurerm_linux_virtual_machine" "i" {
     name = "wireguard"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    size = "Standard_D2as_v4"
+    resource_group_name = azurerm_resource_group.i.name
+    location = azurerm_resource_group.i.location
+    size = var.common.vm_size
     admin_username = "terraform"
-    tags = var.tags
+    tags = var.common.tags
     network_interface_ids = [
-        azurerm_network_interface.wireguard.id
+        azurerm_network_interface.i.id,
     ]
 
     admin_ssh_key {
-        username = "terraform"
+        username   = "terraform"
         public_key = file("~/.ssh/id_bink_azure_terraform.pub")
     }
 
     os_disk {
-        caching = "ReadOnly"
-        storage_account_type = "StandardSSD_LRS"
         disk_size_gb = 32
+        caching = "ReadOnly"
+        storage_account_type = "Premium_LRS"
     }
 
     source_image_reference {
         publisher = "Canonical"
-        offer = "0001-com-ubuntu-server-focal"
-        sku = "20_04-lts"
+        offer = "0001-com-ubuntu-server-jammy"
+        sku = "22_04-lts-gen2"
         version = "latest"
-    }
-
-    lifecycle {
-        ignore_changes = [custom_data]
     }
 }
