@@ -645,24 +645,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "bastion" {
-    name = "bastion"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 100
-    action = "Dnat"
-
-    rule {
-        name = "ssh"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = var.bastion_ip_address
-        translated_port = "22"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "sftp" {
     name = "sftp"
     azure_firewall_name = azurerm_firewall.firewall.name

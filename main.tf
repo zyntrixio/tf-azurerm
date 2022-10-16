@@ -197,15 +197,22 @@ module "uksouth-core" {
     source = "./uksouth/core"
 }
 
-module "uksouth-bastion" {
+module "uksouth_bastion" {
     source = "./uksouth/bastion"
 
-    firewall_route_ip = module.uksouth-firewall.firewall_ip
-    firewall_vnet_id = module.uksouth-firewall.vnet_id
-    loganalytics_id = module.uksouth_loganalytics.id
-    ip_range = local.cidrs.uksouth.bastion
-
-    private_dns = local.private_dns.core_defaults
+    common = {
+        firewall = {
+            name = module.uksouth-firewall.firewall_name
+            resource_group = module.uksouth-firewall.resource_group_name
+            ip_address = module.uksouth-firewall.firewall_ip
+            public_ip = module.uksouth-firewall.public_ips.0.ip_address
+            vnet_name = module.uksouth-firewall.vnet_name
+            vnet_id = module.uksouth-firewall.vnet_id
+        }
+        private_dns = local.private_dns.core_defaults
+        cidr = local.cidrs.uksouth.bastion
+        loganalytics_id = module.uksouth_loganalytics.id
+    }
 }
 
 module "uksouth-dns" {
@@ -228,7 +235,6 @@ module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
     ip_range = local.cidrs.uksouth.firewall
-    bastion_ip_address = module.uksouth-bastion.ip_address
     sftp_ip_address = module.uksouth-sftp.ip_address
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
