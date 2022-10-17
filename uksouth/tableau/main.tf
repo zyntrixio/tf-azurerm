@@ -98,9 +98,9 @@ resource "azurerm_network_security_group" "nsg" {
         for_each = {
             "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "192.168.4.0/24"},
             "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
-            "Allow_TCP_80" = {"priority": "200", "port": "80", "source": "10.0.0.0/24"},
-            "Allow_TCP_443" = {"priority": "210", "port": "443", "source": "10.0.0.0/24"},
-            "Allow_TCP_5432" = {"priority": "220", "port": "5432", "source": "10.0.0.0/24"},
+            "Allow_TCP_80" = {"priority": "200", "port": "80", "source": "192.168.0.0/24"},
+            "Allow_TCP_443" = {"priority": "210", "port": "443", "source": "192.168.0.0/24"},
+            "Allow_TCP_5432" = {"priority": "220", "port": "5432", "source": "192.168.0.0/24"},
 
         }
         content {
