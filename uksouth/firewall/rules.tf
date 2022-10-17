@@ -48,21 +48,11 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "Clickhouse apt repo"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "repo.clickhouse.com",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name =  "Clickhouse Snowflake"
+        name =  "Datawarehouse"
         source_addresses = ["*"]
         target_fqdns = [ 
-            "xb90214.eu-west-2.aws.snowflakecomputing.com", 
+            "xb90214.eu-west-2.aws.snowflakecomputing.com",
+            "hub.getdbt.com",
         ]
         protocol {
             port = "443"
