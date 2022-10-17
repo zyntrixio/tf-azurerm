@@ -139,6 +139,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.cdn.mscr.io",
             "cr.l5d.io",
             "registry.k8s.io",
+            "*.pkg.dev",
         ]
         protocol {
             port = "443"
