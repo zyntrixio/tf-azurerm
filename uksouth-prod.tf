@@ -173,6 +173,7 @@ module "uksouth_prod_environment" {
             dns = local.aks_dns.prod_defaults
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
+            zones = ["1","2","3"]
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1100
                 ingress = merge(local.aks_ingress_defaults, {
