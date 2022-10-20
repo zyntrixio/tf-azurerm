@@ -191,6 +191,13 @@ resource "azurerm_route_table" "i" {
         next_hop_in_ip_address = var.common.firewall.ip_address
     }
 
+    route {
+        name = "barclays_sftp"
+        address_prefix = "157.83.104.20/32"
+        next_hop_type = "VirtualAppliance"
+        next_hop_in_ip_address = var.common.firewall.ip_address
+    }
+
     tags = var.common.tags
 }
 
