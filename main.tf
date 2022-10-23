@@ -184,7 +184,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.26.0"
+            version = "3.28.0"
         }
         random = {
             source = "hashicorp/random"
@@ -245,6 +245,28 @@ module "uksouth-frontdoor" {
     secure_origins = local.secure_origins
     secure_origins_v6 = local.secure_origins_v6
     loganalytics_id = module.uksouth_loganalytics.id
+}
+
+module "uksouth_frontdoor" {
+    source = "./uksouth/frontdoor_premium"
+    common = {
+        dns_zone = {
+            id = module.uksouth-dns.dns_zones.bink_com.root.id
+            name = module.uksouth-dns.dns_zones.bink_com.root.name
+            resource_group = module.uksouth-dns.dns_zones.resource_group.name
+        }
+        loganalytics_id = module.uksouth_loganalytics.id
+        secure_origins = {
+          ipv4 = local.secure_origins
+          ipv6 = local.secure_origins_v6
+        }
+        key_vault = {
+            admin_object_ids = {
+                "devops" = local.aad_group.devops
+            }
+            admin_ips = local.secure_origins
+        }
+    }
 }
 
 module "uksouth-firewall" {
