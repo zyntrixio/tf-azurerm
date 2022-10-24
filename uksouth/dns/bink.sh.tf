@@ -12,6 +12,7 @@ locals {
             "wireguard.uksouth" = "51.105.20.158" # TODO: Move this into Wireguard module
             "tableau.uksouth" = "51.132.44.253"
             "opensearch.uksouth" = "51.132.44.255"
+            "ara.do" = "134.209.178.119"
         }
         cname_records = {
             "autodiscover" = "autodiscover.outlook.com"
