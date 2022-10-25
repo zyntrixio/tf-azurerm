@@ -205,7 +205,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "api_reflector" {
         match_condition {
             match_variable = "RequestUri"
             operator = "Contains"
-            match_values = ["/admin"]
+            negation_condition = true
+            match_values = ["/mock/"]
         }
         match_condition {
             match_variable = "RemoteAddr"
