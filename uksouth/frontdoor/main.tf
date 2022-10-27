@@ -381,30 +381,6 @@ resource "azurerm_frontdoor" "frontdoor" {
             redirect_protocol = "HttpsOnly"
         }
     }
-
-    frontend_endpoint {
-        name = "wallet-gb-bink-com"
-        host_name = "wallet.gb.bink.com"
-    }
-
-    frontend_endpoint {
-        name = "wasabi-gb-bink-com"
-        host_name = "wasabi.gb.bink.com"
-    }
-
-    routing_rule {
-        name = "binkweb-http-to-https"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = [
-            "wallet-gb-bink-com",
-            "wasabi-gb-bink-com",
-        ]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
 }
 resource "azurerm_frontdoor_custom_https_configuration" "custom_https_default" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["default"]
@@ -463,29 +439,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_sandbox_gb_b
         certificate_source = "AzureKeyVault"
         azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
         azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "wallet_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wallet-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "wasabi_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["wasabi-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-
     }
 }
 

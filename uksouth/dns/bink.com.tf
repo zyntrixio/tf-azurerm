@@ -42,8 +42,6 @@ locals {
         cname_records = {
 
             # API/Front Door
-            "wallet.gb" = "bink-frontdoor.azurefd.net",
-            "wasabi.gb" = "bink-frontdoor.azurefd.net",
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
             "bpl.gb" = "bink-frontdoor.azurefd.net",
