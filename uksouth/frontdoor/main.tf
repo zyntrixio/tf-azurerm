@@ -270,56 +270,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         host_name = "lloyds-sit-reflector.sandbox.gb.bink.com"
     }
 
-    frontend_endpoint {
-        name = "data-gb-bink-com"
-        host_name = "data.gb.bink.com"
-        web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
-    }
-
-    backend_pool {
-        name = "uksouth-prod-data"
-
-        backend {
-            host_header = "data.prod0.uksouth.bink.sh"
-            address = "data.prod0.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-
-        backend {
-            host_header = "data.prod1.uksouth.bink.sh"
-            address = "data.prod1.uksouth.bink.sh"
-            http_port = 8001
-            https_port = 4001
-        }
-
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-prod-data"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["data-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-prod-data"
-            cache_enabled = false
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-prod-data-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["data-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
     backend_pool {
         name = "uksouth-sandbox-docs"
         backend {
@@ -485,17 +435,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "bpl_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bpl-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "data_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["data-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
