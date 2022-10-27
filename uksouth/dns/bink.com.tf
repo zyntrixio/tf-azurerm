@@ -51,7 +51,6 @@ locals {
             "api.gb" = "bink-frontdoor.azurefd.net",
             "bpl.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
-            "squaremeal.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "docs.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "docs.gb" = "bink-frontdoor.azurefd.net",

@@ -320,11 +320,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
-        name = "squaremeal-sandbox-gb-bink-com"
-        host_name = "squaremeal.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
         name = "data-gb-bink-com"
         host_name = "data.gb.bink.com"
         web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.secure_origins.id
@@ -480,7 +475,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         patterns_to_match = ["/*"]
         frontend_endpoints = [
             "lloyds-sit-sandbox-gb-bink-com",
-            "squaremeal-sandbox-gb-bink-com",
         ]
         forwarding_configuration {
             forwarding_protocol = "HttpsOnly"
@@ -643,17 +637,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "docs_sandbox_gb_bink_co
 
 resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_sandbox_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["lloyds-sit-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "squaremeal_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["squaremeal-sandbox-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
