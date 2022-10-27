@@ -116,6 +116,20 @@ locals {
             "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
 
+        # Sandbox Environment
+        "uksouth_sandbox_barclays_sit" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "barclays-sit.sandbox.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {"barclays-sit.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+        }
+        "uksouth_sandbox_barclays_oat" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "barclays-oat.sandbox.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+        }
+
         # Production Environment
         "uksouth_prod_kratos" = {
             "endpoint" = "uksouth-prod"

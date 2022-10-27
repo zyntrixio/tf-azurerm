@@ -310,26 +310,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
-        name = "api-sandbox-gb-bink-com"
-        host_name = "api.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
-        name = "barclays-oat-sandbox-gb-bink-com"
-        host_name = "barclays-oat.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
-        name = "barclays-sit-sandbox-gb-bink-com"
-        host_name = "barclays-sit.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
-        name = "barclays-sit-reflector-sandbox-gb-bink-com"
-        host_name = "barclays-sit-reflector.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
         name = "lloyds-sit-sandbox-gb-bink-com"
         host_name = "lloyds-sit.sandbox.gb.bink.com"
     }
@@ -414,12 +394,6 @@ resource "azurerm_frontdoor" "frontdoor" {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
         }
-    }
-
-
-    frontend_endpoint {
-        name = "oat-sandbox-gb-bink-com"
-        host_name = "oat.sandbox.gb.bink.com"
     }
 
     frontend_endpoint {
@@ -514,111 +488,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["link-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
-    backend_pool {
-        name = "uksouth-sandbox-oat"
-        backend {
-            host_header = "barclays-oat.sandbox.uksouth.bink.sh"
-            address = "barclays-oat.sandbox.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-oat"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["oat-sandbox-gb-bink-com", "barclays-oat-sandbox-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-sandbox-oat"
-            cache_enabled = false
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-oat-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["oat-sandbox-gb-bink-com", "barclays-oat-sandbox-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
-    backend_pool {
-        name = "uksouth-sandbox-sit-barclays"
-        backend {
-            host_header = "barclays-sit.sandbox.uksouth.bink.sh"
-            address = "barclays-sit.sandbox.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-sit-barclays"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-sandbox-gb-bink-com", "barclays-sit-sandbox-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-sandbox-sit-barclays"
-            cache_enabled = false
-        }
-    }
-
-    backend_pool {
-        name = "uksouth-sandbox-barclays-sit-reflector"
-        backend {
-            host_header = "barclays-sit-reflector.sandbox.uksouth.bink.sh"
-            address = "barclays-sit-reflector.sandbox.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-barclays-sit-reflector"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["barclays-sit-reflector-sandbox-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-sandbox-barclays-sit-reflector"
-            cache_enabled = false
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-barclays-sit-reflector-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["barclays-sit-reflector-sandbox-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-sandbox-sit-barclays-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["api-sandbox-gb-bink-com", "barclays-sit-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
@@ -822,7 +691,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         accepted_protocols = ["Https"]
         patterns_to_match = ["/*"]
         frontend_endpoints = [
-            "sit-sandbox-gb-bink-com",
             "lloyds-sit-sandbox-gb-bink-com",
             "squaremeal-sandbox-gb-bink-com",
         ]
@@ -837,7 +705,7 @@ resource "azurerm_frontdoor" "frontdoor" {
         name = "uksouth-sandbox-sit-lbg-http"
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
-        frontend_endpoints = ["sit-sandbox-gb-bink-com", "lloyds-sit-sandbox-gb-bink-com"]
+        frontend_endpoints = ["lloyds-sit-sandbox-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
@@ -979,11 +847,6 @@ resource "azurerm_frontdoor" "frontdoor" {
     }
 
     frontend_endpoint {
-        name = "sit-sandbox-gb-bink-com"
-        host_name = "sit.sandbox.gb.bink.com"
-    }
-
-    frontend_endpoint {
         name = "wallet-gb-bink-com"
         host_name = "wallet.gb.bink.com"
     }
@@ -1078,17 +941,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "link_gb_bink_com" {
     }
 }
 
-resource "azurerm_frontdoor_custom_https_configuration" "api_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["api-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
 resource "azurerm_frontdoor_custom_https_configuration" "performance_sandbox_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["performance-sandbox-gb-bink-com"]
     custom_https_provisioning_enabled = true
@@ -1102,50 +954,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "performance_sandbox_gb_
 
 resource "azurerm_frontdoor_custom_https_configuration" "docs_sandbox_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["docs-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "sit_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["sit-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "oat_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["oat-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["barclays-sit-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "barclays_oat_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["barclays-oat-sandbox-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
@@ -1279,17 +1087,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "lloyds_sit_reflector_sa
 
 resource "azurerm_frontdoor_custom_https_configuration" "perf_bpl_reflector_sandbox_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["perf-bpl-reflector-sandbox-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "barclays_sit_reflector_sandbox_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["barclays-sit-reflector-sandbox-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
