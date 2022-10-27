@@ -47,8 +47,6 @@ locals {
             "bpl.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
             "lloyds-sit-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
-            "docs.sandbox.gb" = "bink-frontdoor.azurefd.net",
-            "docs.gb" = "bink-frontdoor.azurefd.net",
             "kibana.gb" = "bink-frontdoor.azurefd.net",
 
             # Auth0

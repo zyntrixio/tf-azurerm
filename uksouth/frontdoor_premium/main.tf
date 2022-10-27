@@ -129,6 +129,12 @@ locals {
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
+        "uksouth_sandbox_docs" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "docs.sandbox.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+        }
 
         # Production Environment
         "uksouth_prod_kratos" = {
