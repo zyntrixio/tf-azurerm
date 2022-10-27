@@ -42,7 +42,10 @@ resource "azurerm_cdn_frontdoor_security_policy" "olympus" {
                 dynamic domain {
                     for_each = toset([
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_api"].id,
-                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_api"].id
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_api"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_barclays_sit"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_barclays_oat"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_lloyds_sit"].id,
                     ])
                     content {
                         cdn_frontdoor_domain_id = domain.key
@@ -113,7 +116,8 @@ resource "azurerm_cdn_frontdoor_security_policy" "bpl" {
                 dynamic domain {
                     for_each = toset([
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_bpl"].id,
-                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_bpl"].id
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_bpl"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_bpl"].id,
                     ])
                     content {
                         cdn_frontdoor_domain_id = domain.key
