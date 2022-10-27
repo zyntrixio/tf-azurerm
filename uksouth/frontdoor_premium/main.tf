@@ -140,6 +140,24 @@ locals {
                 "kratos.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
             }
         }
+        "uksouth_prod_link" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "link.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {
+                "link.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
+                "link.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+            }
+        }
+        "uksouth_prod_help" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "help.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {
+                "help.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
+                "help.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+            }
+        }
     }
 
     endpoints = distinct([ for og in local.origin_groups : og.endpoint ])

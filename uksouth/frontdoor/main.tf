@@ -260,55 +260,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         }
     }
 
- frontend_endpoint {
-        name = "help-gb-bink-com"
-        host_name = "help.gb.bink.com"
-    }
-
-    backend_pool {
-        name = "uksouth-prod-help"
-
-        backend {
-            host_header = "help.prod0.uksouth.bink.sh"
-            address = "help.prod0.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-
-        backend {
-            host_header = "help.prod1.uksouth.bink.sh"
-            address = "help.prod1.uksouth.bink.sh"
-            http_port = 8001
-            https_port = 4001
-        }
-
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-prod-help"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["help-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-prod-help"
-            cache_enabled = false
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-prod-help-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["help-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
     frontend_endpoint {
         name = "lloyds-sit-sandbox-gb-bink-com"
         host_name = "lloyds-sit.sandbox.gb.bink.com"
@@ -363,54 +314,6 @@ resource "azurerm_frontdoor" "frontdoor" {
         accepted_protocols = ["Http"]
         patterns_to_match = ["/*"]
         frontend_endpoints = ["data-gb-bink-com"]
-        redirect_configuration {
-            redirect_type = "Found"
-            redirect_protocol = "HttpsOnly"
-        }
-    }
-
-    frontend_endpoint {
-        name = "link-gb-bink-com"
-        host_name = "link.gb.bink.com"
-    }
-
-    backend_pool {
-        name = "uksouth-prod-link"
-
-        backend {
-            host_header = "link.prod0.uksouth.bink.sh"
-            address = "link.prod0.uksouth.bink.sh"
-            http_port = 8000
-            https_port = 4000
-        }
-
-        backend {
-            host_header = "link.prod1.uksouth.bink.sh"
-            address = "link.prod1.uksouth.bink.sh"
-            http_port = 8001
-            https_port = 4001
-        }
-        load_balancing_name = "standard"
-        health_probe_name = "healthz"
-    }
-
-    routing_rule {
-        name = "uksouth-prod-link"
-        accepted_protocols = ["Https"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["link-gb-bink-com"]
-        forwarding_configuration {
-            forwarding_protocol = "HttpsOnly"
-            backend_pool_name = "uksouth-prod-link"
-            cache_enabled = false
-        }
-    }
-
-    routing_rule {
-        name = "uksouth-prod-link-http"
-        accepted_protocols = ["Http"]
-        patterns_to_match = ["/*"]
-        frontend_endpoints = ["link-gb-bink-com"]
         redirect_configuration {
             redirect_type = "Found"
             redirect_protocol = "HttpsOnly"
@@ -580,17 +483,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "policies_gb_bink_com" {
     }
 }
 
-resource "azurerm_frontdoor_custom_https_configuration" "help_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["help-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
 resource "azurerm_frontdoor_custom_https_configuration" "bpl_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["bpl-gb-bink-com"]
     custom_https_provisioning_enabled = true
@@ -604,17 +496,6 @@ resource "azurerm_frontdoor_custom_https_configuration" "bpl_gb_bink_com" {
 
 resource "azurerm_frontdoor_custom_https_configuration" "data_gb_bink_com" {
     frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["data-gb-bink-com"]
-    custom_https_provisioning_enabled = true
-
-    custom_https_configuration {
-        certificate_source = "AzureKeyVault"
-        azure_key_vault_certificate_vault_id = azurerm_key_vault.frontdoor.id
-        azure_key_vault_certificate_secret_name = "gb-bink-com-2022-2023"
-    }
-}
-
-resource "azurerm_frontdoor_custom_https_configuration" "link_gb_bink_com" {
-    frontend_endpoint_id = azurerm_frontdoor.frontdoor.frontend_endpoints["link-gb-bink-com"]
     custom_https_provisioning_enabled = true
 
     custom_https_configuration {
