@@ -3,12 +3,6 @@ resource "azurerm_dns_zone" "bink-com" {
     resource_group_name = azurerm_resource_group.rg.name
 }
 
-# Current issues:
-# Zone Apex is supposed to cname to "binkdev.wpengine.com"
-# In cloudflare this is performed via cname flattening
-# It doesn't look like we can do this with Azure DNS
-# Created an A Record below, hopefully it doesn't change.
-
 locals {
     bink_com = {
         a_records = {
@@ -44,8 +38,7 @@ locals {
             # API/Front Door
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
-            "lloyds-sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
-            "lloyds-sit-reflector.sandbox.gb" = "bink-frontdoor.azurefd.net",
+            "sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
 
             # Auth0
             "auth" = "bink-cd-x0ncx4gd7fxbncmx.edge.tenants.eu.auth0.com",
