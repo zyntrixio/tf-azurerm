@@ -99,7 +99,13 @@ module "uksouth_staging_environment" {
                 enabled           = true,
                 prefix_match      = ["backups/yearly"],
                 delete_after_days = 1095
-            }
+            },
+            {
+                name              = "qareports",
+                enabled           = true,
+                prefix_match      = ["qareports/"],
+                delete_after_days = 30
+            },
         ]
     }
 
