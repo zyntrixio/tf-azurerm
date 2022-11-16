@@ -117,6 +117,7 @@ module "uksouth_staging_environment" {
     aks = {
         staging = merge(local.aks_config_defaults, {
             name = "staging"
+            node_max_count = 8
             cidr = local.cidrs.uksouth.aks.staging
             dns = local.aks_dns.staging_defaults
             maintenance_day = "Tuesday"

@@ -187,6 +187,7 @@ module "uksouth_prod_environment" {
             name = "prod1"
             cidr = local.cidrs.uksouth.aks.prod1
             dns = local.aks_dns.prod_defaults
+            maintenance_day = "Friday"
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             zones = ["1","2","3"]
