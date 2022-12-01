@@ -38,7 +38,6 @@ locals {
             # API/Front Door
             "policies.gb" = "bink-frontdoor.azurefd.net",
             "api.gb" = "bink-frontdoor.azurefd.net",
-            "sit.sandbox.gb" = "bink-frontdoor.azurefd.net",
 
             # Auth0
             "auth" = "bink-cd-x0ncx4gd7fxbncmx.edge.tenants.eu.auth0.com",

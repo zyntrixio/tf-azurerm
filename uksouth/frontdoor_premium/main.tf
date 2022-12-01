@@ -147,6 +147,13 @@ locals {
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
+        # This should be removed in future once Kish confirms lloyds have moved to lloyds-sit.sandbox.gb.bink.com
+        "uksouth_sandbox_sit" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "sit.sandbox.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+        }
 
         # Production Environment
         "uksouth_prod_kratos" = {
