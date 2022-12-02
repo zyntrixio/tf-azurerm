@@ -239,15 +239,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
     }
 
     os_disk {
-        caching = "ReadOnly"
+        caching = "ReadWrite"
         storage_account_type = "StandardSSD_LRS"
         disk_size_gb = 32
     }
 
     source_image_reference {
         publisher = "Canonical"
-        offer = "0001-com-ubuntu-server-focal"
-        sku = "20_04-lts"
+        offer = "0001-com-ubuntu-server-jammy"
+        sku = "22_04-lts-gen2"
         version = "latest"
     }
 

@@ -275,7 +275,7 @@ module "uksouth-firewall" {
     source = "./uksouth/firewall"
 
     ip_range = local.cidrs.uksouth.firewall
-    sftp_ip_address = module.uksouth-sftp.ip_address
+    sftp_ip_address = module.uksouth_sftp.ip_address
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
@@ -301,7 +301,7 @@ module "uksouth_opensearch" {
     ip_range = local.cidrs.uksouth.opensearch
 }
 
-module "uksouth-sftp" {
+module "uksouth_sftp" {
     source = "./uksouth/sftp"
     peers = {
         firewall = {
