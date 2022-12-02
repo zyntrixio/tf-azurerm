@@ -67,12 +67,6 @@ locals {
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"bpl.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
-        "uksouth_staging_tc" = {
-            "endpoint" = "uksouth-nonprod"
-            "domain" = "tc.staging.gb.bink.com"
-            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"tc.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
-        }
         "uksouth_staging_reflector" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "reflector.staging.gb.bink.com"
