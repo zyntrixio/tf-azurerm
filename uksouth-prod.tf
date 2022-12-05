@@ -94,16 +94,6 @@ module "uksouth_prod_environment" {
                 "postgres",
             ]
         },
-        prefect = {
-            name = "bink-uksouth-prefect"
-            version = "13"
-            sku_name = "GP_Standard_D2ds_v4"
-            storage_mb = 32768
-            high_availability = false
-            databases = [
-                "postgres",
-            ]
-        },
     }
 
     redis_config = {
