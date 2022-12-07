@@ -14,12 +14,14 @@ locals {
         "uksouth_dev_api" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "api.dev.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"api.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
         "uksouth_dev_bpl" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "bpl.dev.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"bpl.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
@@ -58,12 +60,14 @@ locals {
         "uksouth_staging_api" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "api.staging.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"api.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
         "uksouth_staging_bpl" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "bpl.staging.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"bpl.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
         }
@@ -180,6 +184,7 @@ locals {
         "uksouth_prod_bpl" = {
             "endpoint" = "uksouth-prod"
             "domain" = "bpl.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
                 "bpl.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
@@ -198,6 +203,7 @@ locals {
         "uksouth_prod_api" = {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
                 "api.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
@@ -217,7 +223,7 @@ locals {
                     "https_port" = origin_value.https_port,
                 }
             }
-        ]))...)
+    ]))...)
 }
 
 variable "common" {
@@ -495,6 +501,31 @@ resource "azurerm_cdn_frontdoor_route" "i" {
     https_redirect_enabled = true
     patterns_to_match      = ["/*"]
     supported_protocols    = ["Http", "Https"]
+
+    cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.i[each.key].id]
+    link_to_default_domain = false
+}
+
+resource "azurerm_cdn_frontdoor_route" "cache" {
+    for_each = { for key, value in local.origin_groups : key => value if can(value.cached_endpoints) }
+    name = "${replace(each.key, "_", "-")}-cached"
+    cdn_frontdoor_endpoint_id = azurerm_cdn_frontdoor_endpoint.i[each.value.endpoint].id
+    cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.i[each.key].id
+    cdn_frontdoor_origin_ids = [
+        for k, v in each.value.origins : azurerm_cdn_frontdoor_origin.i["${each.key}-${k}"].id 
+    ]
+    cdn_frontdoor_rule_set_ids = [azurerm_cdn_frontdoor_rule_set.standard.id]
+    enabled = true
+
+    forwarding_protocol = "HttpsOnly"
+    https_redirect_enabled = true
+    patterns_to_match = each.value.cached_endpoints
+    supported_protocols = ["Http", "Https"]
+
+    cache {
+        query_string_caching_behavior = "UseQueryString"
+        compression_enabled = false
+    }
 
     cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.i[each.key].id]
     link_to_default_domain = false
