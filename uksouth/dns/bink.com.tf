@@ -34,11 +34,6 @@ locals {
             "help" = "138.68.154.237",
         }
         cname_records = {
-
-            # API/Front Door
-            "policies.gb" = "bink-frontdoor.azurefd.net",
-            "api.gb" = "bink-frontdoor.azurefd.net",
-
             # Auth0
             "auth" = "bink-cd-x0ncx4gd7fxbncmx.edge.tenants.eu.auth0.com",
 

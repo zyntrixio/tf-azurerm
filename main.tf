@@ -241,14 +241,6 @@ module "uksouth-alerts" {
     source = "./uksouth/alerts"
 }
 
-module "uksouth-frontdoor" {
-    source = "./uksouth/frontdoor"
-
-    secure_origins = local.secure_origins
-    secure_origins_v6 = local.secure_origins_v6
-    loganalytics_id = module.uksouth_loganalytics.id
-}
-
 module "uksouth_frontdoor" {
     source = "./uksouth/frontdoor_premium"
     common = {

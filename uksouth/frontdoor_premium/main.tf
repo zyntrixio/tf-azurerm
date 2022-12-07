@@ -186,6 +186,24 @@ locals {
                 "bpl.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
             }
         }
+        "uksouth_prod_policies" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "policies.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {
+                "policies.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
+                "policies.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+            }
+        }
+        "uksouth_prod_api" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "api.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {
+                "api.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
+                "api.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+            }
+        }
     }
 
     endpoints = distinct([ for og in local.origin_groups : og.endpoint ])
