@@ -119,28 +119,28 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_firewall.firewall.id
     log_analytics_workspace_id = var.loganalytics_id
-    log_analytics_destination_type = "AzureDiagnostics"
+    log_analytics_destination_type = "Dedicated"
 
+    # Old Logs, should be disabled.
     log {
         category = "AzureFirewallApplicationRule"
-        enabled = true
+        enabled = false
         retention_policy {
             days = 0
             enabled = false
         }
     }
-    # log {
-    #     category = "AzureFirewallDnsProxy"
-    #     enabled = false
-
-    #     retention_policy {
-    #         days = 0
-    #         enabled = false
-    #     }
-    # }
     log {
         category = "AzureFirewallNetworkRule"
-        enabled = true
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+    log {
+        category = "AzureFirewallDnsProxy"
+        enabled = false
         retention_policy {
             days = 0
             enabled = false
@@ -154,7 +154,102 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
             enabled = false
         }
     }
-    lifecycle {
-        ignore_changes = [log]
+
+    # New Logs, Hurrah!
+    log {
+        category = "AZFWNetworkRule"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWApplicationRule"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNatRule"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWThreatIntel"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWIdpsSignature"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWDnsQuery"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFqdnResolveFailure"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFatFlow"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFlowTrace"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWApplicationRuleAggregation"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNetworkRuleAggregation"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNatRuleAggregation"
+        enabled = true
+        retention_policy {
+            days = 90
+            enabled = true
+        }
     }
 }
