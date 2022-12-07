@@ -119,23 +119,22 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_firewall.firewall.id
     log_analytics_workspace_id = var.loganalytics_id
-    log_analytics_destination_type = "Dedicated"
+    log_analytics_destination_type = "AzureDiagnostics"
 
-    # Old Logs, should be disabled.
     log {
         category = "AzureFirewallApplicationRule"
-        enabled = false
+        enabled = true
         retention_policy {
-            days = 0
-            enabled = false
+            days = 90
+            enabled = true
         }
     }
     log {
         category = "AzureFirewallNetworkRule"
-        enabled = false
+        enabled = true
         retention_policy {
-            days = 0
-            enabled = false
+            days = 90
+            enabled = true
         }
     }
     log {
@@ -155,7 +154,147 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
         }
     }
 
-    # New Logs, Hurrah!
+    # New Logs, Hurrah! Disabled due to Azure Bug
+    # Support ticket: #2212060050000779
+    log {
+        category = "AZFWNetworkRule"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWApplicationRule"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNatRule"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWThreatIntel"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWIdpsSignature"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWDnsQuery"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFqdnResolveFailure"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFatFlow"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWFlowTrace"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWApplicationRuleAggregation"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNetworkRuleAggregation"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+    log {
+        category = "AZFWNatRuleAggregation"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = true
+        }
+    }
+}
+
+# Literally the opposite of the above Diagnostic settings,
+# for support to use in troubleshooting our issue
+resource "azurerm_monitor_diagnostic_setting" "preview" {
+    name = "preview"
+    target_resource_id = azurerm_firewall.firewall.id
+    log_analytics_workspace_id = var.loganalytics_id
+    log_analytics_destination_type = "Dedicated"
+
+    log {
+        category = "AzureFirewallApplicationRule"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = false
+        }
+    }
+    log {
+        category = "AzureFirewallNetworkRule"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = false
+        }
+    }
+    log {
+        category = "AzureFirewallDnsProxy"
+        enabled = false
+        retention_policy {
+            days = 90
+            enabled = false
+        }
+    }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+        retention_policy {
+            days = 0
+            enabled = false
+        }
+    }
+
     log {
         category = "AZFWNetworkRule"
         enabled = true
