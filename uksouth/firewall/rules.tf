@@ -663,7 +663,7 @@ resource "azurerm_firewall_nat_rule_collection" "opensearch" {
 
     rule {
         name = "http"
-        source_addresses = var.secure_origins
+        source_addresses = ["*"] # Allow all hosts to let certbot check domain
         destination_ports = ["80"]
         destination_addresses = [azurerm_public_ip.pips.15.ip_address]
         translated_address = "192.168.1.4"

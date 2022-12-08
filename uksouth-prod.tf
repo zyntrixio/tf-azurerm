@@ -257,8 +257,8 @@ module "uksouth_prod_datawarehouse" {
         firewall_ip = module.uksouth-firewall.firewall_ip
         postgres_dns = module.uksouth_prod_environment.postgres_flexible_server_dns_link
         vms = {
-            airbyte = { size = "Standard_E2as_v5" }
-            prefect = { size = "Standard_E2as_v5" }
+            airbyte = { size = "Standard_D2as_v5" }
+            prefect = { size = "Standard_D2as_v5" }
         }
         peering = {
             firewall = {

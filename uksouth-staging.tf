@@ -148,8 +148,8 @@ module "uksouth_staging_datawarehouse" {
         loganalytics_id = module.uksouth_loganalytics.id
         postgres_dns = module.uksouth_staging_environment.postgres_flexible_server_dns_link
         vms = {
-            airbyte = { size = "Standard_E2as_v5" }
-            prefect = { size = "Standard_E2as_v5" }
+            airbyte = { size = "Standard_D2as_v5" }
+            prefect = { size = "Standard_D2as_v5" }
         }
         peering = {
             firewall = {

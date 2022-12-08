@@ -21,7 +21,7 @@ variable "common" {
             secondary_zones = list(string)
         })
         location = optional(string, "uksouth")
-        vm_size = optional(string, "Standard_D2as_v4")
+        vm_size = optional(string, "Standard_D2as_v5")
         tags = optional(map(string), {
             Environment = "Core"
             Role = "Bastion"
