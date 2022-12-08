@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.2"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -49,6 +49,10 @@ module "uksouth_tools_environment" {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
             node_max_count = 7
+            ### # This block is to override our migration to Standard_E4ads_v5 VMs until we backup grafana
+            os_disk_type = "Managed"
+            node_size = "Standard_E4as_v5"
+            ###
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             cidr = local.cidrs.uksouth.aks.tools
             dns = local.aks_dns.core_defaults

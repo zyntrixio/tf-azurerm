@@ -12,7 +12,8 @@ locals {
         updates = "rapid"
         sku = "Free"
         node_max_count = 6
-        node_size = "Standard_E4as_v5"
+        os_disk_type = "Ephemeral"
+        node_size = "Standard_E4ads_v5"
         maintenance_day = "Monday"
         dns = local.aks_dns.dev_defaults
     }
