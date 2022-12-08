@@ -259,7 +259,7 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
 resource "azurerm_monitor_diagnostic_setting" "preview" {
     name = "preview"
     target_resource_id = azurerm_firewall.firewall.id
-    log_analytics_workspace_id = var.loganalytics_id
+    log_analytics_workspace_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-loganalytics/providers/Microsoft.OperationalInsights/workspaces/uksouth-loganalytics-temp"
     log_analytics_destination_type = "Dedicated"
 
     log {
