@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.2"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -163,7 +163,6 @@ module "uksouth_prod_environment" {
             dns = local.aks_dns.prod_defaults
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
-            zones = ["1","2","3"]
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1100
                 ingress = merge(local.aks_ingress_defaults, {
@@ -180,7 +179,6 @@ module "uksouth_prod_environment" {
             maintenance_day = "Friday"
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
-            zones = ["1","2","3"]
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1110
                 ingress = merge(local.aks_ingress_defaults, {
@@ -216,30 +214,24 @@ module "uksouth_prod_tableau" {
     ip_range = local.cidrs.uksouth.tableau
 }
 
-module "uksouth_prod_rabbit" {
-    source = "./uksouth/rabbitmq"
+module "uksouth_prod_amqp" {
+    source = "./uksouth/amqp"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
     }
-
-    resource_group_name = "uksouth-prod-rabbitmq"
-    location = "uksouth"
-    tags = {
-        "Environment" = "Production",
+    common = {
+        environment = "prod"
+        cidr = local.cidrs.uksouth.amqp.prod
+        loganalytics_id = module.uksouth_loganalytics.id
+        private_dns = local.private_dns.prod_defaults
+        client_cidrs = [ local.cidrs.uksouth.aks.prod0, local.cidrs.uksouth.aks.prod1 ]
+        tags = {
+            "Environment" = "Production"
+            "Role" = "AMQP"
+        }
+        firewall = merge(module.uksouth-firewall.peering, {rule_priority = 200})
     }
-
-    base_name = "prod-rabbitmq"
-    vnet_cidr = "192.168.22.0/24"
-
-    peering_remote_id = module.uksouth-firewall.vnet_id
-    peering_remote_rg = module.uksouth-firewall.resource_group_name
-    peering_remote_name = module.uksouth-firewall.vnet_name
-
-    # dns = module.uksouth-dns.private_dns
-    private_dns = local.private_dns.root_defaults
-
-    cluster_cidrs = ["10.169.0.0/16", "10.170.0.0/16", local.cidrs.uksouth.aks.prod0, local.cidrs.uksouth.aks.prod1 ]
 }
 
 module "uksouth_prod_datawarehouse" {

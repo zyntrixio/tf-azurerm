@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.2"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -117,7 +117,6 @@ module "uksouth_staging_environment" {
     aks = {
         staging = merge(local.aks_config_defaults, {
             name = "staging"
-            node_max_count = 8
             cidr = local.cidrs.uksouth.aks.staging
             dns = local.aks_dns.staging_defaults
             maintenance_day = "Tuesday"

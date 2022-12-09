@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.2"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -48,7 +48,6 @@ module "uksouth_tools_environment" {
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
-            node_max_count = 3
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             cidr = local.cidrs.uksouth.aks.tools
             dns = local.aks_dns.core_defaults

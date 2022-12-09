@@ -1,5 +1,5 @@
 module "uksouth_dev_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.2"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
     providers = {
         azurerm = azurerm.uk_dev
         azurerm.core = azurerm
@@ -118,7 +118,6 @@ module "uksouth_dev_environment" {
         dev = merge(local.aks_config_defaults, {
             name = "dev"
             cidr = local.cidrs.uksouth.aks.dev
-            zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1300

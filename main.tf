@@ -10,10 +10,6 @@ locals {
 
     aks_config_defaults = {
         updates = "rapid"
-        sku = "Free"
-        node_max_count = 6
-        os_disk_type = "Ephemeral"
-        node_size = "Standard_E4ads_v5"
         maintenance_day = "Monday"
         dns = local.aks_dns.dev_defaults
     }
@@ -106,6 +102,9 @@ locals {
                 prod0 = "10.10.0.0/16"
                 prod1 = "10.11.0.0/16"
             },
+            amqp = {
+                prod = "192.168.50.0/24"
+            }
             datawarehouse = {
                 staging = "192.168.201.0/24"
                 prod = "192.168.200.0/24"
@@ -187,7 +186,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.34.0"
+            version = "3.35.0"
         }
         random = {
             source = "hashicorp/random"
