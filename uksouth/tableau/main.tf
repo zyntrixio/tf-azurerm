@@ -204,7 +204,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name = "tableau"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
-    size = "Standard_D32as_v4"
+    size = "Standard_E16as_v5"
     admin_username = "terraform"
     network_interface_ids = [
         azurerm_network_interface.nic.id,
@@ -224,7 +224,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     source_image_reference {
         publisher = "Canonical"
         offer = "UbuntuServer"
-        sku = "18.04-LTS"
+        sku = "18_04-lts-gen2"
         version = "latest"
     }
 
