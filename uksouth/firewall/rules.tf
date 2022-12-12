@@ -261,6 +261,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "*.vault.azure.net",
             "www.microsoft.com",  # For getting RSS feeds
             "api.loganalytics.io",
+            "aka.ms",  # For AzCopy
         ]
         protocol {
             port = "443"
