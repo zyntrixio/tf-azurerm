@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.0"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -294,12 +294,7 @@ module "uksouth_sandbox_environment" {
                     role = "Azure Kubernetes Service RBAC Admin"
                 }
             })
-            firewall = merge(local.aks_firewall_defaults, {
-                rule_priority = 1400
-                ingress = merge(local.aks_ingress_defaults, {
-                    public_ip = module.uksouth-firewall.public_ips.4.ip_address
-                })
-            })
+            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1400})
         })
     }
 }

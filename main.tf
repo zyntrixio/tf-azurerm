@@ -75,17 +75,6 @@ locals {
         config = module.uksouth-firewall.config
     }
 
-    aks_ingress_defaults = {
-        source_ip_groups = [
-            module.uksouth-firewall.ip_groups.secure_origins_v4,
-            module.uksouth-firewall.ip_groups.frontdoor_backend_v4,
-            module.uksouth-firewall.ip_groups.digital_ocean_checkly_runners_v4,
-        ]
-        public_ip = module.uksouth-firewall.public_ips.3.ip_address
-        http_port = 8000
-        https_port = 4000
-    }
-
     cidrs = {
         uksouth = {
             firewall = "192.168.0.0/24"

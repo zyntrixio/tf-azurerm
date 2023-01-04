@@ -8,52 +8,62 @@ terraform {
 }
 
 locals {
-    origin_groups = {
+    # The below list should be dynamically generated, but alas, this was easier given the
+    # time constaints
+    private_link_ids = {
+        "uksouth_tools" = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-tools-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-tools"
+        "uksouth_dev" = "/subscriptions/794aa787-ec6a-40dd-ba82-0ad64ed51639/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
+        "uksouth_staging" = "/subscriptions/457b0db5-6680-480f-9e77-2dafb06bd9dc/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
+        "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
+        "uksouth_prod0" = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod0-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod0"
+        "uksouth_prod1" = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod1-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod1"
+    }
 
+    origin_groups = {
         # Dev Environment
         "uksouth_dev_api" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "api.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"api.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"api.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_bpl" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "bpl.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"bpl.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"bpl.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_reflector" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "reflector.dev.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"reflector.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"reflector.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_docs" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "docs.dev.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"api2-docs.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"api2-docs.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_portal" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "portal.dev.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"portal.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"portal.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_wallet" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "wallet.dev.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"web-bink.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"web-bink.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_wasabi" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "wasabi.dev.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"web-wasabi.dev.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"web-wasabi.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
 
         # Staging Envrionment
@@ -62,62 +72,62 @@ locals {
             "domain" = "api.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"api.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"api.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_bpl" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "bpl.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"bpl.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"bpl.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_reflector" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "reflector.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"reflector.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"reflector.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_policies" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "policies.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"policies.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"policies.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_help" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "help.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"help.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"help.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_docs" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "docs.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"api2-docs.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"api2-docs.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_link" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "link.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"link.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"link.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_portal" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "portal.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"portal.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"portal.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_wallet" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "wallet.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"web-bink.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"web-bink.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_wasabi" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "wasabi.staging.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
 
         # Sandbox Environment
@@ -125,32 +135,32 @@ locals {
             "endpoint" = "uksouth-sandbox"
             "domain" = "barclays-sit.sandbox.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"barclays-sit.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"barclays-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_barclays_oat" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "barclays-oat.sandbox.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_lloyds_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "lloyds-sit.sandbox.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_docs" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "docs.sandbox.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         # This should be removed in future once Kish confirms lloyds have moved to lloyds-sit.sandbox.gb.bink.com
         "uksouth_sandbox_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "sit.sandbox.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
-            "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}}
+            "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
 
         # Production Environment
@@ -159,8 +169,8 @@ locals {
             "domain" = "service-api.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "kratos.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "kratos.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "kratos.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "kratos.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_link" = {
@@ -168,8 +178,8 @@ locals {
             "domain" = "link.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "link.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "link.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "link.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "link.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_help" = {
@@ -177,8 +187,8 @@ locals {
             "domain" = "help.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "help.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "help.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "help.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "help.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_bpl" = {
@@ -187,8 +197,8 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "bpl.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "bpl.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "bpl.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_policies" = {
@@ -196,8 +206,8 @@ locals {
             "domain" = "policies.gb.bink.com"
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "policies.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "policies.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "policies.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "policies.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_api" = {
@@ -206,8 +216,8 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {
-                "api.prod0.uksouth.bink.sh" = {"http_port" = 8000, "https_port" = 4000}
-                "api.prod1.uksouth.bink.sh" = {"http_port" = 8001, "https_port" = 4001}
+                "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "api.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
     }
@@ -219,8 +229,7 @@ locals {
                 "${group_key}-${origin_key}" => {
                     "domain" = origin_key,
                     "origin_group" = group_key,
-                    "http_port" = origin_value.http_port,
-                    "https_port" = origin_value.https_port,
+                    "id" = origin_value.id,
                 }
             }
     ]))...)
@@ -479,11 +488,14 @@ resource "azurerm_cdn_frontdoor_origin" "i" {
     certificate_name_check_enabled = true
 
     host_name = each.value.domain
-    http_port = each.value.http_port
-    https_port = each.value.https_port
     origin_host_header = each.value.domain
     priority = 1
     weight = 1
+    private_link {
+        request_message = "Request access for Private Link Origin CDN Frontdoor"
+        location = var.common.location
+        private_link_target_id = each.value.id
+    }
 }
 
 resource "azurerm_cdn_frontdoor_route" "i" {
@@ -492,15 +504,15 @@ resource "azurerm_cdn_frontdoor_route" "i" {
     cdn_frontdoor_endpoint_id = azurerm_cdn_frontdoor_endpoint.i[each.value.endpoint].id
     cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.i[each.key].id
     cdn_frontdoor_origin_ids = [
-        for k, v in each.value.origins : azurerm_cdn_frontdoor_origin.i["${each.key}-${k}"].id 
+        for k, v in each.value.origins : azurerm_cdn_frontdoor_origin.i["${each.key}-${k}"].id
     ]
     cdn_frontdoor_rule_set_ids = [azurerm_cdn_frontdoor_rule_set.standard.id]
     enabled = true
 
-    forwarding_protocol    = "HttpsOnly"
+    forwarding_protocol = "HttpsOnly"
     https_redirect_enabled = true
-    patterns_to_match      = ["/*"]
-    supported_protocols    = ["Http", "Https"]
+    patterns_to_match = ["/*"]
+    supported_protocols = ["Http", "Https"]
 
     cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.i[each.key].id]
     link_to_default_domain = false

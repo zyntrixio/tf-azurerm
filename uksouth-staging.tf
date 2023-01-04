@@ -1,5 +1,5 @@
 module "uksouth_staging_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.0"
     providers = {
         azurerm = azurerm.uk_staging
         azurerm.core = azurerm
@@ -122,12 +122,7 @@ module "uksouth_staging_environment" {
             maintenance_day = "Tuesday"
             zones = ["1","2","3"]
             iam = merge(local.aks_iam_defaults, {})
-            firewall = merge(local.aks_firewall_defaults, {
-                rule_priority = 1200
-                ingress = merge(local.aks_ingress_defaults, {
-                    public_ip = module.uksouth-firewall.public_ips.2.ip_address
-                })
-            })
+            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1200})
         })
     }
 }

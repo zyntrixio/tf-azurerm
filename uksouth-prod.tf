@@ -1,5 +1,5 @@
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.0"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -163,14 +163,7 @@ module "uksouth_prod_environment" {
             dns = local.aks_dns.prod_defaults
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
-            firewall = merge(local.aks_firewall_defaults, {
-                rule_priority = 1100
-                ingress = merge(local.aks_ingress_defaults, {
-                    public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    http_port = 8000
-                    https_port = 4000
-                })
-            })
+            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1100})
         })
         prod1 = merge(local.aks_config_defaults_prod, {
             name = "prod1"
@@ -179,14 +172,7 @@ module "uksouth_prod_environment" {
             maintenance_day = "Friday"
             api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
-            firewall = merge(local.aks_firewall_defaults, {
-                rule_priority = 1110
-                ingress = merge(local.aks_ingress_defaults, {
-                    public_ip = module.uksouth-firewall.public_ips.0.ip_address
-                    http_port = 8001
-                    https_port = 4001
-                })
-            })
+            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1110})
         })
     }
 }

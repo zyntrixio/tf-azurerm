@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.16.3"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.0"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -54,13 +54,13 @@ module "uksouth_tools_environment" {
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1600
-                ingress = merge(local.aks_ingress_defaults, {
+                ingress = {
                     public_ip = module.uksouth-firewall.public_ips.14.ip_address
                     source_ip_groups = null
                     source_addr = ["*"]
                     http_port = 80
                     https_port = 443
-                })
+                }
             })
         })
     }
