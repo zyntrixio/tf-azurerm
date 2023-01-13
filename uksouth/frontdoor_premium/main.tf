@@ -162,6 +162,12 @@ locals {
             "secret_file" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
+        "uksouth_sandbox_retail" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "retail.sandbox.gb.bink.com"
+            "secret_file" = "env-gb-bink-com-2022-2023.pfx"
+            "origins" = {"retail.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
+        }
 
         # Production Environment
         "uksouth_prod_kratos" = {

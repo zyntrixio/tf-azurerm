@@ -131,6 +131,16 @@ module "uksouth_sandbox_environment" {
             object_id  = local.aad_group.qa,
             role       = "Contributor",
         },
+        retail-backend = {
+            storage_id = "retail",
+            object_id = local.aad_group.backend,
+            role = "Contributor",
+        },
+        retail-qa = {
+            storage_id = "retail",
+            object_id = local.aad_group.qa,
+            role = "Contributor",
+        },
     }
 
     keyvault_users = {
@@ -149,6 +159,7 @@ module "uksouth_sandbox_environment" {
         "bink-uksouth-perf-txm",
         "bink-uksouth-perf-bpl",
         "bink-uksouth-perf-data",
+        "bink-uksouth-retail"
     ]
 
     postgres_flexible_config = {
@@ -206,6 +217,13 @@ module "uksouth_sandbox_environment" {
                 "perf_data_midas",
                 "perf_data_pontus",
                 "perf_data_tableau",
+                "retail_api_reflector",
+                "retail_atlas",
+                "retail_europa",
+                "retail_hades",
+                "retail_hermes",
+                "retail_midas",
+                "retail_pontus",
             ]
         },
         archive = {
@@ -272,6 +290,12 @@ module "uksouth_sandbox_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
+        retail = {
+            name = "binkuksouthretail",
+            account_replication_type = "ZRS",
+            account_tier = "Standard"
+        },
+
     }
     bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
     bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
