@@ -324,30 +324,8 @@ resource "azurerm_monitor_diagnostic_setting" "kv" {
     target_resource_id = azurerm_key_vault.i.id
     log_analytics_workspace_id = var.common.loganalytics_id
 
-    log {
-        category = "AuditEvent"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = true
-        }
-    }
-    log {
-        category = "AzurePolicyEvaluationDetails"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = false
-        }
-    }
-    metric {
-        category = "AllMetrics"
-        enabled = false
-        retention_policy {
-            days = 0
-            enabled = false
-        }
-    }
+    enabled_log { category = "AuditEvent" }
+    enabled_log { category = "AzurePolicyEvaluationDetails" }
 }
 
 resource "azurerm_key_vault_certificate" "i" {
@@ -376,38 +354,9 @@ resource "azurerm_monitor_diagnostic_setting" "afd" {
     target_resource_id = azurerm_cdn_frontdoor_profile.i.id
     log_analytics_workspace_id = var.common.loganalytics_id
 
-    log {
-        category = "FrontDoorAccessLog"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = true
-        }
-    }
-    log {
-        category = "FrontDoorHealthProbeLog"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = false
-        }
-    }
-    log {
-        category = "FrontDoorWebApplicationFirewallLog"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = false
-        }
-    }
-    metric {
-        category = "AllMetrics"
-        enabled = false
-        retention_policy {
-            days = 0
-            enabled = false
-        }
-    }
+    enabled_log { category = "FrontDoorAccessLog" }
+    enabled_log { category = "FrontDoorHealthProbeLog" }
+    enabled_log { category = "FrontDoorWebApplicationFirewallLog" }
 }
 
 # TODO: Figure out a use case for this and implement in a logical way

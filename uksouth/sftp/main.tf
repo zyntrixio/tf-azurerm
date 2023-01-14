@@ -124,22 +124,8 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
     target_resource_id = azurerm_network_security_group.nsg.id
     log_analytics_workspace_id = var.loganalytics_id
 
-    log {
-        category = "NetworkSecurityGroupEvent"
-        enabled = true
-        retention_policy {
-            days = 0
-            enabled = false
-        }
-    }
-    log {
-        category = "NetworkSecurityGroupRuleCounter"
-        enabled = true
-        retention_policy {
-            days = 0
-            enabled = false
-        }
-    }
+    enabled_log { category = "NetworkSecurityGroupEvent" }
+    enabled_log { category = "NetworkSecurityGroupRuleCounter" }
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg-assoc" {

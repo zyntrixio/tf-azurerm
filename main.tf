@@ -170,12 +170,12 @@ terraform {
         access_key = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
     }
 
-    required_version = ">= 0.13"
+    required_version = ">= 1.3.7"
 
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.35.0"
+            version = "3.39.1"
         }
         random = {
             source = "hashicorp/random"

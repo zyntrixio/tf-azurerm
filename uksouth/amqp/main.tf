@@ -168,22 +168,8 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
     target_resource_id = azurerm_network_security_group.i.id
     log_analytics_workspace_id = var.common.loganalytics_id
 
-    log {
-        category = "NetworkSecurityGroupEvent"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = true
-        }
-    }
-    log {
-        category = "NetworkSecurityGroupRuleCounter"
-        enabled = true
-        retention_policy {
-            days = 90
-            enabled = true
-        }
-    }
+    enabled_log { category = "NetworkSecurityGroupEvent" }
+    enabled_log { category = "NetworkSecurityGroupRuleCounter" }
 }
 
 resource "azurerm_virtual_network_peering" "firewall_to_local" {
