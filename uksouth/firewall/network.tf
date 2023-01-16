@@ -119,8 +119,11 @@ resource "azurerm_monitor_diagnostic_setting" "diags" {
     name = "binkuksouthlogs"
     target_resource_id = azurerm_firewall.firewall.id
     log_analytics_workspace_id = var.loganalytics_id
-    log_analytics_destination_type = "AzureDiagnostics"
 
     enabled_log { category = "AzureFirewallApplicationRule" }
     enabled_log { category = "AzureFirewallNetworkRule" }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+    }
 }
