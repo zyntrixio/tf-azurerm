@@ -43,9 +43,8 @@ resource "azurerm_resource_group" "acmebot" {
 }
 
 module "keyvault_acmebot" {
-    source = "github.com/cpressland/terraform-azurerm-keyvault-acmebot"
-    # source = "shibayan/keyvault-acmebot/azurerm"
-    # version = "~> 2.0.5"
+    source = "shibayan/keyvault-acmebot/azurerm"
+    version = "~> 2.1.0"
 
     function_app_name = "bink-${azurerm_resource_group.acmebot.location}-acmebot"
     app_service_plan_name = "bink-${azurerm_resource_group.acmebot.location}-acmebot"

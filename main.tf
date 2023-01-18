@@ -108,7 +108,7 @@ locals {
         "81.2.99.144/29",  # cpressland@bink.com
         "31.125.46.20/32",  # nread@bink.com
         "51.105.20.158/32",  # Wireguard IP TODO: Bring this from module
-        "86.149.30.69/32", # Thenuja, not static, will rotate.
+        "81.133.125.233/32", # Thenuja, not static, will rotate.
     ]
     secure_origins_v6 = [
         "2001:8b0:b130:a52d::/64", # cpressland@bink.com

@@ -174,7 +174,7 @@ locals {
         "uksouth_prod_kratos" = {
             "endpoint" = "uksouth-prod"
             "domain" = "service-api.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "kratos.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "kratos.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
@@ -183,7 +183,7 @@ locals {
         "uksouth_prod_link" = {
             "endpoint" = "uksouth-prod"
             "domain" = "link.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "link.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "link.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
@@ -192,7 +192,7 @@ locals {
         "uksouth_prod_help" = {
             "endpoint" = "uksouth-prod"
             "domain" = "help.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "help.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "help.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
@@ -202,7 +202,7 @@ locals {
             "endpoint" = "uksouth-prod"
             "domain" = "bpl.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "bpl.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
@@ -244,6 +244,7 @@ locals {
     kv_certs = setunion(
         fileset("${path.module}/certificates", "*.pfx"),
         toset([
+            "acmebot-gb-bink-com",
             "acmebot-dev-gb-bink-com",
             "acmebot-staging-gb-bink-com",
             "acmebot-sandbox-gb-bink-com",
