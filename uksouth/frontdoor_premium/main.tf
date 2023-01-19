@@ -127,7 +127,6 @@ locals {
             "endpoint" = "uksouth-nonprod"
             "domain" = "wasabi.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
-            # "cert_name" = "env-gb-bink-com-2022-2023.pfx"
             "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
 
@@ -155,6 +154,12 @@ locals {
             "domain" = "docs.sandbox.gb.bink.com"
             "cert_name" = "acmebot-sandbox-gb-bink-com"
             "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
+        }
+        "uksouth_sandbox_docs_retail" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "retail-docs.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"retail-docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         # This should be removed in future once Kish confirms lloyds have moved to lloyds-sit.sandbox.gb.bink.com
         "uksouth_sandbox_sit" = {
@@ -393,6 +398,9 @@ resource "azurerm_cdn_frontdoor_rule_set" "standard" {
     cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
 }
 
+# If this is crashy after adding a new cert to the certificates folder, you can call the dependant
+# resource with a plan first, example:
+# $ terraform plan -out=out -target='module.uksouth_frontdoor.azurerm_key_vault_certificate.i'
 resource "azurerm_cdn_frontdoor_secret" "i" {
     for_each = data.azurerm_key_vault_certificate.i
     name = each.value.name
