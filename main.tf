@@ -10,6 +10,7 @@ locals {
 
     aks_config_defaults = {
         updates = "rapid"
+        node_max_count = 10
         maintenance_day = "Monday"
         dns = local.aks_dns.dev_defaults
     }
@@ -17,7 +18,6 @@ locals {
     aks_config_defaults_prod = merge(local.aks_config_defaults, {
         updates = "stable"
         sku = "Paid"
-        node_max_count = 10
         maintenance_day = "Thursday"
     })
 
