@@ -69,6 +69,7 @@ module "uksouth_staging_environment" {
                 "postgres",
                 "vela",
                 "zagreus",
+                "snowstorm",
             ]
         }
     }

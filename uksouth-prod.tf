@@ -82,6 +82,7 @@ module "uksouth_prod_environment" {
                 "carina",
                 "polaris",
                 "vela",
+                "snowstorm",
             ]
         },
         tableau = {

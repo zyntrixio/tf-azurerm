@@ -75,6 +75,7 @@ module "uksouth_dev_environment" {
                 "postgres",
                 "vela",
                 "zagreus",
+                "snowstorm",
             ]
         }
     }
