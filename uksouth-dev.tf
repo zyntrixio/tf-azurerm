@@ -76,6 +76,7 @@ module "uksouth_dev_environment" {
                 "vela",
                 "zagreus",
                 "snowstorm",
+                "cosmos",
             ]
         }
     }

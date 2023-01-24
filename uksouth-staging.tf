@@ -70,6 +70,7 @@ module "uksouth_staging_environment" {
                 "vela",
                 "zagreus",
                 "snowstorm",
+                "cosmos",
             ]
         }
     }
