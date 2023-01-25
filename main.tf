@@ -136,6 +136,8 @@ locals {
         carina = { kv_access = "ro" },
         styx = { kv_access = "ro" },
         cyclops = { kv_access = "ro" },
+        snowstorm = { kv_access = "ro" },
+        cosmos = { kv_access = "ro" },
     }
 
     aad_group = {
