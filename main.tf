@@ -21,53 +21,33 @@ locals {
         maintenance_day = "Thursday"
     })
 
-    aks_iam_defaults = {
-        architecture = {
-            object_id = local.aad_group.architecture
-            role = "Azure Kubernetes Service RBAC Writer"
+    aks_iam_non_production = {
+        "readers" = {
+            object_id = "763319e1-e8d3-4a71-91eb-8ff980a55302",
+            role = "Azure Kubernetes Service RBAC Reader",
         }
-        data_mgmt = {
-            object_id = local.aad_group.data_mgmt
-            role = "Azure Kubernetes Service RBAC Writer"
+        "writers" = {
+            object_id = "34f05ce7-fdbe-49bf-b285-2937c548aab5",
+            role = "Azure Kubernetes Service RBAC Writer",
         }
-        backend = {
-            object_id = local.aad_group.backend
-            role = "Azure Kubernetes Service RBAC Writer"
-        }
-        qa = {
-            object_id = local.aad_group.qa
-            role = "Azure Kubernetes Service RBAC Writer"
+        "admins" = {
+            object_id = "0140ccf4-f68c-4daa-b531-97e5292ec364",
+            role = "Azure Kubernetes Service RBAC Admin",
         }
     }
 
     aks_iam_production = {
-        chris_latham = {
-            object_id = local.aad_user.chris_latham
-            role = "Azure Kubernetes Service RBAC Writer"
+        "readers" = {
+            object_id = "6fd82111-210c-461a-bce3-8ea6ff0c1313"
+            role = "Azure Kubernetes Service RBAC Reader",
         }
-        christian_prior = {
-            object_id = local.aad_user.christian_prior
-            role = "Azure Kubernetes Service RBAC Writer"
+        "writers" = {
+            object_id = "3c1cbd27-81ce-4938-a4c8-fd2171971d4e",
+            role = "Azure Kubernetes Service RBAC Writer",
         }
-        kashim_aziz = {
-            object_id = local.aad_user.kashim_aziz
-            role = "Azure Kubernetes Service RBAC Writer"
-        }
-        mick_latham = {
-            object_id = local.aad_user.mick_latham
-            role = "Azure Kubernetes Service RBAC Writer"
-        }
-        martin_marsh = {
-            object_id = local.aad_user.martin_marsh
-            role = "Azure Kubernetes Service RBAC Writer"
-        }
-        stewart_prerrygove = {
-            object_id = local.aad_user.stewart_prerrygove
-            role = "Azure Kubernetes Service RBAC Writer"
-        }
-        francesco_milani = {
-            object_id = local.aad_user.francesco_milani
-            role = "Azure Kubernetes Service RBAC Reader"
+        "admins" = {
+            object_id = "d3a25905-88a1-4820-9384-9e6b2d05283f",
+            role = "Azure Kubernetes Service RBAC Admin",
         }
     }
 

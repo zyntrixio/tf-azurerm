@@ -312,12 +312,7 @@ module "uksouth_sandbox_environment" {
             node_max_count = 20
             maintenance_day = "Wednesday"
             zones = ["1","2","3"]
-            iam = merge(local.aks_iam_defaults, {
-                azhar_khan = {
-                    object_id = local.aad_user.azhar_khan
-                    role = "Azure Kubernetes Service RBAC Admin"
-                }
-            })
+            iam = merge(local.aks_iam_non_production, {})
             firewall = merge(local.aks_firewall_defaults, {rule_priority = 1400})
         })
     }

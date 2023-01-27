@@ -123,7 +123,7 @@ module "uksouth_staging_environment" {
             dns = local.aks_dns.staging_defaults
             maintenance_day = "Tuesday"
             zones = ["1","2","3"]
-            iam = merge(local.aks_iam_defaults, {})
+            iam = merge(local.aks_iam_non_production, {})
             firewall = merge(local.aks_firewall_defaults, {rule_priority = 1200})
         })
     }
