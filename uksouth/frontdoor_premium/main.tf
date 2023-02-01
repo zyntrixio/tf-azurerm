@@ -65,6 +65,13 @@ locals {
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"web-wasabi.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
+        "uksouth_dev_cosmos" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "cosmos.dev.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
+            "cert_name" = "acmebot-dev-gb-bink-com"
+            "origins" = {"cosmos.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
+        }
 
         # Staging Envrionment
         "uksouth_staging_api" = {
@@ -128,6 +135,13 @@ locals {
             "domain" = "wasabi.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
+        }
+        "uksouth_staging_cosmos" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "cosmos.staging.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
+            "cert_name" = "acmebot-staging-gb-bink-com"
+            "origins" = {"cosmos.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
 
         # Sandbox Environment
