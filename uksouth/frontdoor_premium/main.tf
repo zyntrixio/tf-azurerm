@@ -148,19 +148,19 @@ locals {
         "uksouth_sandbox_barclays_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "barclays-sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"barclays-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_barclays_oat" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "barclays-oat.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_lloyds_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "lloyds-sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_docs" = {
@@ -179,7 +179,7 @@ locals {
         "uksouth_sandbox_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"lloyds-sit.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_retail" = {
@@ -230,7 +230,7 @@ locals {
         "uksouth_prod_policies" = {
             "endpoint" = "uksouth-prod"
             "domain" = "policies.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
                 "policies.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "policies.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
