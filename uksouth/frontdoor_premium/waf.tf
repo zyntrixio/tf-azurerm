@@ -148,7 +148,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "internal" {
         match_condition {
             match_variable = "RequestUri"
             operator = "Contains"
-            match_values = ["/*"]
+            match_values = ["/"]
         }
         match_condition {
             match_variable = "RemoteAddr"
