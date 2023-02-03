@@ -240,7 +240,7 @@ locals {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
-            "cert_name" = "env-gb-bink-com-2022-2023.pfx"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
                 "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
                 "api.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
@@ -424,14 +424,6 @@ resource "azurerm_cdn_frontdoor_secret" "i" {
         customer_certificate {
             key_vault_certificate_id = each.value.versionless_id
         }
-    }
-
-    # The below was added to mitigate downtime assocaited with key_vault_certificate_id
-    # changing from each.value.id to each.value.versionless_id
-    # during the next scheduled downtime window we'll execute this as I've no idea
-    # what the API behaviour will be
-    lifecycle {
-        ignore_changes = all
     }
 }
 
