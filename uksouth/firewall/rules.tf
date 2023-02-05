@@ -727,6 +727,24 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         translated_port = "5432"
         protocols = ["TCP"]
     }
+    rule {
+        name = "airbyte_temp"
+        source_addresses = var.secure_origins
+        destination_ports = ["8000"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.200.4"
+        translated_port = "8000"
+        protocols = ["TCP"]
+    }
+    rule {
+        name = "prefect_temp"
+        source_addresses = var.secure_origins
+        destination_ports = ["4200"]
+        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
+        translated_address = "192.168.200.5"
+        translated_port = "4200"
+        protocols = ["TCP"]
+    }
 }
 
 resource "azurerm_firewall_network_rule_collection" "bastion" {

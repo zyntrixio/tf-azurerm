@@ -52,7 +52,7 @@ locals {
     }
 
     aks_firewall_defaults = {
-        config = module.uksouth-firewall.config
+        config = module.uksouth_firewall.config
     }
 
     cidrs = {
@@ -157,7 +157,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.41.0"
+            version = "3.42.0"
         }
         random = {
             source = "hashicorp/random"
@@ -176,12 +176,12 @@ module "uksouth_bastion" {
 
     common = {
         firewall = {
-            name = module.uksouth-firewall.firewall_name
-            resource_group = module.uksouth-firewall.resource_group_name
-            ip_address = module.uksouth-firewall.firewall_ip
-            public_ip = module.uksouth-firewall.public_ips.0.ip_address
-            vnet_name = module.uksouth-firewall.vnet_name
-            vnet_id = module.uksouth-firewall.vnet_id
+            name = module.uksouth_firewall.firewall_name
+            resource_group = module.uksouth_firewall.resource_group_name
+            ip_address = module.uksouth_firewall.firewall_ip
+            public_ip = module.uksouth_firewall.public_ips.0.ip_address
+            vnet_name = module.uksouth_firewall.vnet_name
+            vnet_id = module.uksouth_firewall.vnet_id
         }
         private_dns = local.private_dns.core_defaults
         cidr = local.cidrs.uksouth.bastion
@@ -193,10 +193,10 @@ module "uksouth_wireguard" {
     source = "./uksouth/wireguard"
     common = {
         firewall = {
-            resource_group = module.uksouth-firewall.resource_group_name
-            ip_address = module.uksouth-firewall.firewall_ip
-            vnet_name = module.uksouth-firewall.vnet_name
-            vnet_id = module.uksouth-firewall.vnet_id
+            resource_group = module.uksouth_firewall.resource_group_name
+            ip_address = module.uksouth_firewall.firewall_ip
+            vnet_name = module.uksouth_firewall.vnet_name
+            vnet_id = module.uksouth_firewall.vnet_id
         }
         private_dns = local.private_dns.core_defaults
         cidr = local.cidrs.uksouth.wireguard
@@ -234,7 +234,7 @@ module "uksouth_frontdoor" {
     }
 }
 
-module "uksouth-firewall" {
+module "uksouth_firewall" {
     source = "./uksouth/firewall"
 
     ip_range = local.cidrs.uksouth.firewall
@@ -255,9 +255,9 @@ module "uksouth_opensearch" {
     source = "./uksouth/opensearch"
     peers = {
         firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
+            vnet_id = module.uksouth_firewall.vnet_id
+            vnet_name = module.uksouth_firewall.vnet_name
+            resource_group_name = module.uksouth_firewall.resource_group_name
         }
     }
     private_dns = local.private_dns.root_defaults # OpenSearch requires CN changes to support moving this to core
@@ -268,9 +268,9 @@ module "uksouth_sftp" {
     source = "./uksouth/sftp"
     peers = {
         firewall = {
-            vnet_id = module.uksouth-firewall.vnet_id
-            vnet_name = module.uksouth-firewall.vnet_name
-            resource_group_name = module.uksouth-firewall.resource_group_name
+            vnet_id = module.uksouth_firewall.vnet_id
+            vnet_name = module.uksouth_firewall.vnet_name
+            resource_group_name = module.uksouth_firewall.resource_group_name
         }
     }
     loganalytics_id = module.uksouth_loganalytics.id

@@ -162,7 +162,7 @@ module "uksouth_prod_environment" {
             name = "prod0"
             cidr = local.cidrs.uksouth.aks.prod0
             dns = local.aks_dns.prod_defaults
-            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {rule_priority = 1100})
         })
@@ -171,7 +171,7 @@ module "uksouth_prod_environment" {
             cidr = local.cidrs.uksouth.aks.prod1
             dns = local.aks_dns.prod_defaults
             maintenance_day = "Friday"
-            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {rule_priority = 1110})
         })
@@ -186,9 +186,9 @@ module "uksouth_prod_tableau" {
     }
 
     firewall = {
-        vnet_id = module.uksouth-firewall.vnet_id,
-        vnet_name = module.uksouth-firewall.vnet_name,
-        resource_group_name = module.uksouth-firewall.resource_group_name,
+        vnet_id = module.uksouth_firewall.vnet_id,
+        vnet_name = module.uksouth_firewall.vnet_name,
+        resource_group_name = module.uksouth_firewall.resource_group_name,
     }
     environment = {
         vnet_id = module.uksouth_prod_environment.peering.vnet_id
@@ -217,7 +217,7 @@ module "uksouth_prod_amqp" {
             "Environment" = "Production"
             "Role" = "AMQP"
         }
-        firewall = merge(module.uksouth-firewall.peering, {rule_priority = 200})
+        firewall = merge(module.uksouth_firewall.peering, {rule_priority = 200})
     }
 }
 
@@ -233,7 +233,7 @@ module "uksouth_prod_datawarehouse" {
         cidr = local.cidrs.uksouth.datawarehouse.prod
         private_dns = local.private_dns.prod_defaults
         loganalytics_id = module.uksouth_loganalytics.id
-        firewall_ip = module.uksouth-firewall.firewall_ip
+        firewall_ip = module.uksouth_firewall.firewall_ip
         postgres_dns = module.uksouth_prod_environment.postgres_flexible_server_dns_link
         vms = {
             airbyte = { size = "Standard_D2as_v5" }
@@ -241,9 +241,9 @@ module "uksouth_prod_datawarehouse" {
         }
         peering = {
             firewall = {
-                vnet_id = module.uksouth-firewall.peering.vnet_id
-                vnet_name = module.uksouth-firewall.peering.vnet_name
-                resource_group = module.uksouth-firewall.peering.rg_name
+                vnet_id = module.uksouth_firewall.peering.vnet_id
+                vnet_name = module.uksouth_firewall.peering.vnet_name
+                resource_group = module.uksouth_firewall.peering.rg_name
             }
             environment = {
                 vnet_id = module.uksouth_prod_environment.peering.vnet_id

@@ -48,14 +48,14 @@ module "uksouth_tools_environment" {
     aks = {
         tools = merge(local.aks_config_defaults, {
             name = "tools"
-            api_ip_ranges = concat(local.secure_origins, [module.uksouth-firewall.public_ip_prefix])
+            api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
             cidr = local.cidrs.uksouth.aks.tools
             dns = local.aks_dns.core_defaults
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1600
                 ingress = {
-                    public_ip = module.uksouth-firewall.public_ips.14.ip_address
+                    public_ip = module.uksouth_firewall.public_ips.14.ip_address
                     source_ip_groups = null
                     source_addr = ["*"]
                     http_port = 80

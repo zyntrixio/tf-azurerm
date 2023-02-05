@@ -140,7 +140,7 @@ module "uksouth_staging_datawarehouse" {
         location = "uksouth"
         cidr = local.cidrs.uksouth.datawarehouse.staging
         private_dns = local.private_dns.staging_defaults
-        firewall_ip = module.uksouth-firewall.firewall_ip
+        firewall_ip = module.uksouth_firewall.firewall_ip
         loganalytics_id = module.uksouth_loganalytics.id
         postgres_dns = module.uksouth_staging_environment.postgres_flexible_server_dns_link
         vms = {
@@ -149,9 +149,9 @@ module "uksouth_staging_datawarehouse" {
         }
         peering = {
             firewall = {
-                vnet_id = module.uksouth-firewall.peering.vnet_id
-                vnet_name = module.uksouth-firewall.peering.vnet_name
-                resource_group = module.uksouth-firewall.peering.rg_name
+                vnet_id = module.uksouth_firewall.peering.vnet_id
+                vnet_name = module.uksouth_firewall.peering.vnet_name
+                resource_group = module.uksouth_firewall.peering.rg_name
             }
             environment = {
                 vnet_id = module.uksouth_staging_environment.peering.vnet_id

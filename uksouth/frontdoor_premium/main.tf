@@ -190,6 +190,15 @@ locals {
         }
 
         # Production Environment
+        "uksouth_prod_stats" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "stats.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "stats.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "stats.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
+            }
+        }
         "uksouth_prod_kratos" = {
             "endpoint" = "uksouth-prod"
             "domain" = "service-api.gb.bink.com"
