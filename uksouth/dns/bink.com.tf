@@ -165,6 +165,9 @@ locals {
             "mailjet._domainkey" = [
                 "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHHq1EChTzv5Gq4rCq+QAL2+yc6JIJkN8kuUwIu8Z7/opusovpYXy3GbJtgp1an2EVATTfVQp5VH7WmWSuIf2/47TOHB0LW+7kYkQoKma2ZJ91u0kP6Udydzofvy+dOdEDvtd8btszxFHU6hosze7l1BjGeb/1rgdr4J22E6BxIQIDAQAB"
             ]
+            "krs._domainkey" = [
+                "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXaLcjQPHqSBx6irwtyku9CyXMDQy/tLYJZ/isCuvVLLHIz90t9UUBAe+JHX3pG9flVCioLoEAYwLNIJz1HkNZKrzQYmGuRDU6FJmpa+UcfTV2iO+tjMRh9Bb++fjH57zUMSBtc7DleazuVArdxFharZkeMt6vm7RyQE5F3sHwUwIDAQAB"
+            ]
             "zendeskverification" = [
                 "182c696aec4aa197",
             ]
