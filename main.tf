@@ -13,12 +13,14 @@ locals {
         node_max_count = 10
         maintenance_day = "Monday"
         dns = local.aks_dns.dev_defaults
+        aad_admin_group_object_ids = [ "0140ccf4-f68c-4daa-b531-97e5292ec364" ] # Kubernetes - Non-Prod - Admins
     }
 
     aks_config_defaults_prod = merge(local.aks_config_defaults, {
         updates = "stable"
         sku = "Paid"
         maintenance_day = "Thursday"
+        aad_admin_group_object_ids = null
     })
 
     aks_iam_non_production = {

@@ -1,5 +1,5 @@
 module "uksouth_tools_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.7"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.18.8"
     providers = {
         azurerm = azurerm
         azurerm.core = azurerm
@@ -62,6 +62,7 @@ module "uksouth_tools_environment" {
                     https_port = 443
                 }
             })
+            aad_admin_group_object_ids = [ "aac28b59-8ac3-4443-bccc-3fb820165a08" ] # DevOps
         })
     }
 }
