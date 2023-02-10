@@ -94,7 +94,7 @@ locals {
     ]
     secure_origins_v6 = [
         "2001:8b0:b130:a52d::/64", # cpressland@bink.com
-        "2a00:23c7:da8c:4201::/64", # Thenuja, should be static unless BT implemented IPv6 improperly
+        "2a00:23a8:50:1400::1/64", # Thenuja, should be static unless BT implemented IPv6 improperly
     ]
     lloyds_origins_v4 = [
         "141.92.129.40/29", # Peterborough
