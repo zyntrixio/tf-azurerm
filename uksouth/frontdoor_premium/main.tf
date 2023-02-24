@@ -45,7 +45,7 @@ locals {
             "endpoint" = "uksouth-nonprod"
             "domain" = "docs.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
-            "origins" = {"api2-docs.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
+            "origins" = {"docs.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_portal" = {
             "endpoint" = "uksouth-nonprod"
@@ -110,7 +110,7 @@ locals {
             "endpoint" = "uksouth-nonprod"
             "domain" = "docs.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
-            "origins" = {"api2-docs.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
+            "origins" = {"docs.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_link" = {
             "endpoint" = "uksouth-nonprod"
@@ -167,7 +167,7 @@ locals {
             "endpoint" = "uksouth-sandbox"
             "domain" = "docs.sandbox.gb.bink.com"
             "cert_name" = "acmebot-sandbox-gb-bink-com"
-            "origins" = {"api2-docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
+            "origins" = {"docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
         "uksouth_sandbox_docs_retail" = {
             "endpoint" = "uksouth-sandbox"
