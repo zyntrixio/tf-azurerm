@@ -199,6 +199,7 @@ module "uksouth_sandbox_environment" {
                 "perf_api_v2_europa",
                 "perf_api_v2_hades",
                 "perf_api_v2_hermes",
+                "perf_txm_api_reflector",
                 "perf_txm_atlas",
                 "perf_txm_europa",
                 "perf_txm_harmonia",
