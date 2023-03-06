@@ -19,12 +19,6 @@ resource "azurerm_log_analytics_workspace" "i" {
     retention_in_days = 365
 }
 
-resource "azurerm_role_assignment" "secops" {
-    scope = azurerm_log_analytics_workspace.i.id
-    role_definition_name = "Contributor"
-    principal_id = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
-}
-
 resource "azurerm_role_assignment" "backend" {
     scope = azurerm_log_analytics_workspace.i.id
     role_definition_name = "Contributor"
