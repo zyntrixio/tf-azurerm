@@ -165,6 +165,7 @@ resource "azurerm_lb_rule" "ssh" {
     frontend_ip_configuration_name = "subnet"
     backend_address_pool_ids = [ azurerm_lb_backend_address_pool.pool.id ]
     probe_id = azurerm_lb_probe.ssh.id
+    load_distribution = "SourceIP"
 }
 
 resource "azurerm_lb_backend_address_pool" "pool" {
