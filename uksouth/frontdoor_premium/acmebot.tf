@@ -44,7 +44,7 @@ resource "azurerm_resource_group" "acmebot" {
 
 module "keyvault_acmebot" {
     source = "shibayan/keyvault-acmebot/azurerm"
-    version = "~> 2.1.0"
+    version = "~> 2.2.0"
 
     function_app_name = "bink-${azurerm_resource_group.acmebot.location}-acmebot"
     app_service_plan_name = "bink-${azurerm_resource_group.acmebot.location}-acmebot"
@@ -64,17 +64,16 @@ module "keyvault_acmebot" {
         var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
     )
 
-    # TODO: Figure this out, has been manually configured in Portal, think module needs uplift
-    # auth_settings = {
-    #     enabled = true
-    #     issuer = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0"
-    #     token_store_enabled = true
-    #     active_directory = {
-    #         client_id = "04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"
-    #         allowed_audiences = ["api://04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"]
-    #     }
-    #     unauthenticated_client_action = "RedirectToLoginPage"
-    # }
+    auth_settings_v2 = {
+        login = {
+            token_store_enabled = false
+        }
+        active_directory_v2 = {
+            client_id = "04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"
+            allowed_audiences = ["api://04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"]
+            tenant_auth_endpoint = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0"
+        }
+    }
 }
 
 resource "azurerm_key_vault_access_policy" "acmebot" {
