@@ -59,6 +59,25 @@ resource "azurerm_role_assignment" "snowstorm" {
     role_definition_name = "Reader"
     principal_id = each.key
 }
+
+
+locals {
+    kiroshi_principle_ids = [
+        "a44984fd-2550-406d-a35a-a6f4b8ee722d", 
+        "b4129374-8219-4447-9356-893185723403", 
+        "31546403-7666-4456-a0bc-453e97684bb9", 
+        "aeeb28f8-4b45-488b-af71-a9287f946081", 
+        "59a5f854-bd56-4960-bf80-2439d5e21d7d",
+    ]
+}
+
+resource "azurerm_role_assignment" "kiroshi" {
+    for_each = toset(local.kiroshi_principle_ids)
+    scope = azurerm_log_analytics_workspace.i.id
+    role_definition_name = "Reader"
+    principal_id = each.key
+}
+
 output "id" {
     value = azurerm_log_analytics_workspace.i.id
 }
