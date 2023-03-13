@@ -68,8 +68,8 @@ module "keyvault_acmebot" {
             token_store_enabled = false
         }
         active_directory_v2 = {
-            client_id = "04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"
-            allowed_audiences = ["api://04e20ce8-bb3d-4237-9cd9-8ae4c3df7f15"]
+            client_id = "06cd27b7-0fe3-4dbc-9f04-690a64927438"
+            allowed_audiences = ["api://06cd27b7-0fe3-4dbc-9f04-690a64927438"]
             tenant_auth_endpoint = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0"
         }
     }
