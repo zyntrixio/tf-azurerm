@@ -67,14 +67,19 @@ module "keyvault_acmebot" {
         var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
     )
 
-    auth_settings_v2 = {
+    auth_settings = {
+        enabled = true
+        default_provider = "azureactivedirectory"
+        require_authentication = true
+        unauthenticated_action = "RedirectToLoginPage"
         login = {
             token_store_enabled = false
         }
         active_directory_v2 = {
             client_id = "06cd27b7-0fe3-4dbc-9f04-690a64927438"
             allowed_audiences = ["api://06cd27b7-0fe3-4dbc-9f04-690a64927438"]
-            tenant_auth_endpoint = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0"
+            tenant_auth_endpoint = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0",
+            client_secret_setting_name = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
         }
     }
 }
