@@ -84,8 +84,8 @@ locals {
     }
 
     secure_origins = [
-        "194.74.152.8/29",  # Ascot Bink HQ
-        "89.38.121.228/30",  # London Bink Scrub Office
+        "62.64.135.206/32", # Ascot Primary - Giganet
+        "194.74.152.8/29",  # Ascot Backup - BT
         "217.169.3.233/32",  # cpressland@bink.com
         "81.2.99.144/29",  # cpressland@bink.com
         "31.125.46.20/32",  # nread@bink.com
@@ -94,6 +94,7 @@ locals {
     ]
     secure_origins_v6 = [
         "2001:8b0:b130:a52d::/64", # cpressland@bink.com
+        "2a05:87c1:017c::/64", # Ascot Primary - Giganet
         "2a00:23a8:50:1400::1/64", # Thenuja, should be static unless BT implemented IPv6 improperly
     ]
     lloyds_origins_v4 = [
