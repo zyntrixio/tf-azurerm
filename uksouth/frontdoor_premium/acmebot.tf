@@ -73,7 +73,7 @@ module "keyvault_acmebot" {
         require_authentication = true
         unauthenticated_action = "RedirectToLoginPage"
         login = {
-            token_store_enabled = false
+            token_store_enabled = true
         }
         active_directory_v2 = {
             client_id = "06cd27b7-0fe3-4dbc-9f04-690a64927438"
