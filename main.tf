@@ -122,6 +122,7 @@ locals {
         snowstorm = { kv_access = "ro" },
         cosmos = { kv_access = "ro" },
         kiroshi = {kv_access = "ro"},
+        boreas = {kv_access = "ro"},
     }
 
     aad_group = {
