@@ -62,6 +62,15 @@ provider "azurerm" {
   features {}
 }
 
+provider "azurerm" {
+  alias           = "cp"
+  subscription_id = "07e0d4b3-0b0c-438d-98ea-1d4c2367739b"
+  client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
+  client_secret   = var.azurerm_terraform_client_id
+  tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  features {}
+}
+
 provider "random" {}
 
 resource "azurerm_role_assignment" "devops" {

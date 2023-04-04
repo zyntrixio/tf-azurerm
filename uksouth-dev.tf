@@ -1,3 +1,29 @@
+module "uksouth_dev" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.cp
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "dev"
+        location = "uksouth"
+        cidr = "10.41.0.0/16"
+    }
+    managed_identities = {
+        "hermes" = { assigned_to = ["postgres", "keyvault_rw"] }
+        "harmonia" = { assigned_to = ["postgres", "keyvault_ro"] }
+    }
+    kube = {
+        enabled = true
+        authorized_ip_ranges = local.secure_origins
+    }
+    storage = { enabled = true }
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = true }
+    redis = { enabled = true }
+}
+
 module "uksouth_dev_environment" {
     source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.0"
     providers = {
