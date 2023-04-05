@@ -188,6 +188,12 @@ locals {
             "cert_name" = "acmebot-sandbox-gb-bink-com"
             "origins" = {"retail.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
+        "uksouth_sandbox_sit_reflector" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "lloyds-sit-reflector.sandbox.gb.bink.com"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
+            "origins" = {"lloyds-sit-reflector.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
+        }
 
         # Production Environment
         "uksouth_prod_stats" = {
