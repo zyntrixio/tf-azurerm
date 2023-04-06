@@ -134,6 +134,10 @@ locals {
         backend = "219194f6-b186-4146-9be7-34b731e19001"
     }
     aad_user = {
+        chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"
+        nathan_read = "bba71e03-172e-4d07-8ee4-aad029d9031d"
+        thenuja_viknarajah = "e69fd5a7-8b6c-4ac5-8df0-c88c77df0a12"
+        terraform = "4869640a-3727-4496-a8eb-f7fae0872410"
         jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
         mick_latham = "343299d4-0a39-4109-adce-973ad29d0183"
         chris_latham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"

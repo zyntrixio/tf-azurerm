@@ -31,3 +31,20 @@ resource "azurerm_monitor_diagnostic_setting" "st" {
         enabled = false
     }
 }
+
+resource "azurerm_key_vault_secret" "st" {
+    count = var.storage.enabled && var.keyvault.enabled ? 1 : 0
+
+    name = "infra-storage-connection-details"
+    key_vault_id = azurerm_key_vault.i[0].id
+    content_type = "application/json"
+    value = jsonencode({
+        "connection_string_primary" = azurerm_storage_account.i[0].primary_connection_string,
+        "connection_string_secondary" = azurerm_storage_account.i[0].secondary_connection_string,
+    })
+    tags = {
+        k8s_secret_name = "azure-storage"
+    }
+
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
+}

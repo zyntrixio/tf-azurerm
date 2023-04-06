@@ -9,6 +9,13 @@ module "uksouth_dev" {
         location = "uksouth"
         cidr = "10.41.0.0/16"
     }
+    iam = {
+        (local.aad_user.chris_pressland) = { assigned_to = ["postgres", "storage", "keyvault_su"] }
+        (local.aad_user.nathan_read) = { assigned_to = ["keyvault_su"] }
+        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["keyvault_su"] }
+        (local.aad_user.terraform) = { assigned_to = ["keyvault_su"] }
+        (local.aad_group.backend) = { assigned_to = [ "postgres", "storage", "keyvault_rw" ] }
+    }
     managed_identities = {
         "hermes" = { assigned_to = ["postgres", "keyvault_rw"] }
         "harmonia" = { assigned_to = ["postgres", "keyvault_ro"] }

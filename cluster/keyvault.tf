@@ -70,6 +70,45 @@ resource "azurerm_key_vault_access_policy" "mi_rw" {
     secret_permissions = ["Get", "List", "Set", "Delete"]
 }
 
+resource "azurerm_key_vault_access_policy" "iam_ro" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "keyvault_ro") && var.keyvault.enabled
+    }
+
+    key_vault_id = azurerm_key_vault.i[0].id
+    tenant_id = data.azurerm_client_config.i.tenant_id
+    object_id = each.key
+
+    secret_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "iam_rw" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "keyvault_rw") && var.keyvault.enabled
+    }
+
+    key_vault_id = azurerm_key_vault.i[0].id
+    tenant_id = data.azurerm_client_config.i.tenant_id
+    object_id = each.key
+
+    secret_permissions = ["Get", "List", "Set"]
+}
+
+resource "azurerm_key_vault_access_policy" "iam_su" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "keyvault_su") && var.keyvault.enabled
+    }
+
+    key_vault_id = azurerm_key_vault.i[0].id
+    tenant_id = data.azurerm_client_config.i.tenant_id
+    object_id = each.key
+
+    secret_permissions = ["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"]
+}
+
 resource "azurerm_key_vault_access_policy" "aks" {
     count = var.keyvault.enabled && var.kube.enabled ? 1 : 0
 
@@ -82,12 +121,18 @@ resource "azurerm_key_vault_access_policy" "aks" {
     key_permissions = ["Get"]
 }
 
-resource "azurerm_key_vault_access_policy" "devops" {
+resource "azurerm_key_vault_secret" "kv" {
     count = var.keyvault.enabled ? 1 : 0
 
+    name = "infra-keyvault-connection-details"
     key_vault_id = azurerm_key_vault.i[0].id
-    tenant_id = data.azurerm_client_config.i.tenant_id
-    object_id = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+    content_type = "application/json"
+    value = jsonencode({
+        "url" = azurerm_key_vault.i[0].vault_uri,
+    })
+    tags = {
+        k8s_secret_name = "azure-keyvault"
+    }
 
-    secret_permissions = ["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"]
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
 }

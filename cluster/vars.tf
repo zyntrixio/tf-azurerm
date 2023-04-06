@@ -27,6 +27,12 @@ variable "managed_identities" {
     }))
 }
 
+variable "iam" {
+    type = map(object({
+        assigned_to = list(string)
+    }))
+}
+
 variable "loganalytics" {
     type = object({
         enabled = bool
@@ -54,6 +60,25 @@ variable "postgres" {
         version = optional(number, 14)
         storage_mb = optional(number, 131072)
         ha = optional(bool, false)
+        databases = optional(list(string), [
+            "api_reflector",
+            "atlas",
+            "carina",
+            "cosmos",
+            "eos",
+            "europa",
+            "hades",
+            "harmonia",
+            "helios",
+            "hermes",
+            "midas",
+            "polaris",
+            "pontus",
+            "postgres",
+            "snowstorm",
+            "vela",
+            "zagreus"
+        ])
     })
 }
 
@@ -66,7 +91,8 @@ variable "redis" {
 variable "kube" {
     type = object({
         enabled = bool
-        automatic_channel_upgrade = optional(string, "rapid")
+        automatic_channel_upgrade = optional(string,
+"rapid")
         sku_tier = optional(string, "Free")
         pool_min_count = optional(number, 3)
         pool_max_count = optional(number, 10)

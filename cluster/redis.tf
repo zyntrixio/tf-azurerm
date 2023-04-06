@@ -32,6 +32,23 @@ resource "azurerm_redis_cache" "i" {
     }
 }
 
+resource "azurerm_key_vault_secret" "rd" {
+    count = var.redis.enabled && var.keyvault.enabled ? 1 : 0
+
+    name = "infra-redis-connection-details"
+    key_vault_id = azurerm_key_vault.i[0].id
+    content_type = "application/json"
+    value = jsonencode({
+        "url_primary" = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].port}/0",
+        "url_secondary" = "rediss://:${azurerm_redis_cache.i[0].secondary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].port}/0",
+    })
+    tags = {
+        k8s_secret_name = "azure-redis"
+    }
+
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
+}
+
 resource "azurerm_monitor_diagnostic_setting" "rd" {
     count = var.redis.enabled && var.loganalytics.enabled ? 1 : 0
 
