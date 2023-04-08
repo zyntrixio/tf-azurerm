@@ -76,14 +76,28 @@ resource "azurerm_monitor_diagnostic_setting" "pg" {
     }
 }
 
-resource "azurerm_role_assignment" "pg" {
+resource "azurerm_role_assignment" "pg_mi" {
     for_each = {
-        for k, v in var.managed_identities : k => v if contains(v["assigned_to"], "postgres") && var.postgres.enabled
+        for k, v in var.managed_identities : k => v
+            if contains(v["assigned_to"], "pg") &&
+            var.postgres.enabled
     }
 
     scope = azurerm_postgresql_flexible_server.i[0].id
     role_definition_name = "Contributor"
     principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "pg_iam" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "pg") &&
+            var.postgres.enabled
+    }
+
+    scope = azurerm_postgresql_flexible_server.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = each.key
 }
 
 resource "azurerm_key_vault_secret" "pg" {

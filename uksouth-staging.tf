@@ -1,3 +1,59 @@
+module "uksouth_staging" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.uksouth_staging
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "staging"
+        location = "uksouth"
+        cidr = "10.31.0.0/16"
+    }
+    iam = {
+        (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
+        (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
+        (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
+        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_ro", "kv_ro"] }
+    }
+    managed_identities = {
+        "angelia" = { assigned_to = ["kv_ro"] }
+        "boreas" = { assigned_to = ["kv_ro"] }
+        "carina" = { assigned_to = ["kv_ro"] }
+        "cert-manager" = { assigned_to = [] }
+        "cosmos" = { assigned_to = ["kv_ro"] }
+        "eos" = { assigned_to = ["kv_ro"] }
+        "europa" = { assigned_to = ["kv_ro"] }
+        "event-horizon" = { assigned_to = ["kv_ro"] }
+        "harmonia" = { assigned_to = ["kv_ro"] }
+        "hermes" = { assigned_to = ["kv_ro"] }
+        "metis" = { assigned_to = ["kv_ro"] }
+        "midas" = { assigned_to = ["kv_ro"] }
+        "polaris" = { assigned_to = ["kv_ro"] }
+        "snowstorm" = { assigned_to = ["kv_ro"] }
+        "vela" = { assigned_to = ["kv_ro"] }
+        "zephyrus" = { assigned_to = ["kv_ro"] }
+    }
+    kube = {
+        enabled = false
+        authorized_ip_ranges = local.secure_origins
+    }
+    storage = {
+        enabled = true
+        rules = [
+            { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
+            { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
+            { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
+        ]
+    }
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = false }
+    redis = { enabled = false }
+}
+
 module "uksouth_staging_environment" {
     source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.0"
     providers = {

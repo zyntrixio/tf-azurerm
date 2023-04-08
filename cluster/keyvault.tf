@@ -32,11 +32,11 @@ resource "azurerm_monitor_diagnostic_setting" "kv" {
     }
 }
 
-resource "azurerm_role_assignment" "kv" {
+resource "azurerm_role_assignment" "kv_mi_ro" {
     for_each = {
         for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "keyvault_rw") || contains(v["assigned_to"], "keyvault_ro")
-                && var.keyvault.enabled
+             if contains(v["assigned_to"], "kv_ro") &&
+                var.keyvault.enabled
     }
 
     scope = azurerm_key_vault.i[0].id
@@ -44,10 +44,48 @@ resource "azurerm_role_assignment" "kv" {
     principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
+resource "azurerm_role_assignment" "kv_mi_rw" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+             if contains(v["assigned_to"], "kv_su") ||
+                contains(v["assigned_to"], "kv_rw") &&
+                var.keyvault.enabled
+    }
+
+    scope = azurerm_key_vault.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "kv_iam_ro" {
+    for_each = {
+        for k, v in var.iam : k => v
+             if contains(v["assigned_to"], "kv_ro") &&
+                var.keyvault.enabled
+    }
+
+    scope = azurerm_key_vault.i[0].id
+    role_definition_name = "Reader"
+    principal_id = each.key
+}
+
+resource "azurerm_role_assignment" "kv_iam_rw" {
+    for_each = {
+        for k, v in var.iam : k => v
+             if contains(v["assigned_to"], "kv_su") ||
+                contains(v["assigned_to"], "kv_rw") &&
+                var.keyvault.enabled
+    }
+
+    scope = azurerm_key_vault.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = each.key
+}
+
 resource "azurerm_key_vault_access_policy" "mi_ro" {
     for_each = {
         for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "keyvault_ro") && var.keyvault.enabled
+            if contains(v["assigned_to"], "kv_ro") && var.keyvault.enabled
     }
 
     key_vault_id = azurerm_key_vault.i[0].id
@@ -60,7 +98,7 @@ resource "azurerm_key_vault_access_policy" "mi_ro" {
 resource "azurerm_key_vault_access_policy" "mi_rw" {
     for_each = {
         for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "keyvault_rw") && var.keyvault.enabled
+            if contains(v["assigned_to"], "kv_rw") && var.keyvault.enabled
     }
 
     key_vault_id = azurerm_key_vault.i[0].id
@@ -73,7 +111,7 @@ resource "azurerm_key_vault_access_policy" "mi_rw" {
 resource "azurerm_key_vault_access_policy" "iam_ro" {
     for_each = {
         for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "keyvault_ro") && var.keyvault.enabled
+            if contains(v["assigned_to"], "kv_ro") && var.keyvault.enabled
     }
 
     key_vault_id = azurerm_key_vault.i[0].id
@@ -86,7 +124,7 @@ resource "azurerm_key_vault_access_policy" "iam_ro" {
 resource "azurerm_key_vault_access_policy" "iam_rw" {
     for_each = {
         for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "keyvault_rw") && var.keyvault.enabled
+            if contains(v["assigned_to"], "kv_rw") && var.keyvault.enabled
     }
 
     key_vault_id = azurerm_key_vault.i[0].id
@@ -99,7 +137,7 @@ resource "azurerm_key_vault_access_policy" "iam_rw" {
 resource "azurerm_key_vault_access_policy" "iam_su" {
     for_each = {
         for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "keyvault_su") && var.keyvault.enabled
+            if contains(v["assigned_to"], "kv_su") && var.keyvault.enabled
     }
 
     key_vault_id = azurerm_key_vault.i[0].id

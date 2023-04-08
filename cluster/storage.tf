@@ -1,7 +1,14 @@
+resource "random_string" "st" {
+    length = 4
+    upper = false
+    special = false
+    min_numeric = 2
+}
+
 resource "azurerm_storage_account" "i" {
     count = var.storage.enabled ? 1 : 0
 
-    name = replace(azurerm_resource_group.i.name, "-", "")
+    name = "${replace(azurerm_resource_group.i.name, "-", "")}${random_string.st.result}"
     location = azurerm_resource_group.i.location
     resource_group_name = azurerm_resource_group.i.name
 
@@ -32,6 +39,78 @@ resource "azurerm_monitor_diagnostic_setting" "st" {
     }
 }
 
+resource "azurerm_role_assignment" "st_mi_ro" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+            if contains(v["assigned_to"], "st_ro") &&
+            var.storage.enabled
+    }
+
+    scope = azurerm_storage_account.i[0].id
+    role_definition_name = "Reader"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "st_mi_rw" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+            if contains(v["assigned_to"], "st_rw") &&
+            var.storage.enabled
+    }
+
+    scope = azurerm_storage_account.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "st_iam_ro" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "st_ro") &&
+            var.storage.enabled
+    }
+
+    scope = azurerm_storage_account.i[0].id
+    role_definition_name = "Reader"
+    principal_id = each.key
+}
+
+resource "azurerm_role_assignment" "st_iam_rw" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "st_rw") &&
+            var.storage.enabled
+    }
+
+    scope = azurerm_storage_account.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = each.key
+}
+
+resource "azurerm_storage_management_policy" "st" {
+    count = var.storage.enabled && length(var.storage.rules) > 0 ? 1 : 0
+
+    storage_account_id = azurerm_storage_account.i[0].id
+
+    dynamic "rule" {
+        for_each = var.storage.rules
+
+        content {
+            name = rule.value["name"]
+            enabled = true
+            filters {
+                prefix_match = rule.value["prefix_match"]
+                blob_types = ["blockBlob"]
+            }
+            actions {
+                base_blob {
+                    delete_after_days_since_modification_greater_than = rule.value["delete_after_days"]
+                }
+            }
+        }
+    }
+}
+
 resource "azurerm_key_vault_secret" "st" {
     count = var.storage.enabled && var.keyvault.enabled ? 1 : 0
 
@@ -47,4 +126,18 @@ resource "azurerm_key_vault_secret" "st" {
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]
+}
+
+### Temporary permissions, delete after all service migrations are complete
+
+resource "azurerm_role_assignment" "st_iam_temp_1" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "st_rw") &&
+            var.storage.enabled
+    }
+
+    scope = azurerm_storage_account.i[0].id
+    role_definition_name = "Storage Blob Data Contributor"
+    principal_id = each.key
 }

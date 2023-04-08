@@ -49,6 +49,30 @@ resource "azurerm_key_vault_secret" "rd" {
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]
 }
 
+resource "azurerm_role_assignment" "rd_mi" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+            if contains(v["assigned_to"], "rd") &&
+            var.redis.enabled
+    }
+
+    scope = azurerm_redis_cache.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "rd_iam" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "rd") &&
+            var.redis.enabled
+    }
+
+    scope = azurerm_redis_cache.i[0].id
+    role_definition_name = "Contributor"
+    principal_id = each.key
+}
+
 resource "azurerm_monitor_diagnostic_setting" "rd" {
     count = var.redis.enabled && var.loganalytics.enabled ? 1 : 0
 

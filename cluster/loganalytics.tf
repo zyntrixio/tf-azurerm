@@ -7,3 +7,25 @@ resource "azurerm_log_analytics_workspace" "i" {
     sku = var.loganalytics.sku
     retention_in_days = var.loganalytics.retention_in_days
 }
+
+resource "azurerm_role_assignment" "la_mi" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+             if contains(v["assigned_to"], "la") && var.loganalytics.enabled
+    }
+
+    scope = azurerm_log_analytics_workspace.i[0].id
+    role_definition_name = "Reader"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "la_iam" {
+    for_each = {
+        for k, v in var.iam : k => v
+             if contains(v["assigned_to"], "la") && var.loganalytics.enabled
+    }
+
+    scope = azurerm_log_analytics_workspace.i[0].id
+    role_definition_name = "Reader"
+    principal_id = each.key
+}

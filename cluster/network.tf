@@ -51,7 +51,7 @@ resource "azurerm_subnet" "kube_controller" {
     address_prefixes = [cidrsubnet(var.common.cidr, 8, 128)] #10.0.128.0/24
 
     delegation {
-        name = "kube_controller"
+        name = "aks-delegation"
         service_delegation {
             name = "Microsoft.ContainerService/managedClusters"
             actions = [

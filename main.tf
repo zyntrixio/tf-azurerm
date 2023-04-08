@@ -215,6 +215,9 @@ module "uksouth_wireguard" {
 
 module "uksouth-dns" {
     source = "./uksouth/dns"
+    bink_sh_managed_identities = {
+        uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
+    }
 }
 
 module "uksouth-alerts" {

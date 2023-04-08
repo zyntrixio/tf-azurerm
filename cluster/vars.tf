@@ -50,6 +50,11 @@ variable "keyvault" {
 variable "storage" {
     type = object({
         enabled = bool
+        rules = optional(list(object({
+            name = string
+            prefix_match = list(string)
+            delete_after_days = number
+        })), [])
     })
 }
 
@@ -91,14 +96,14 @@ variable "redis" {
 variable "kube" {
     type = object({
         enabled = bool
-        automatic_channel_upgrade = optional(string,
-"rapid")
+        automatic_channel_upgrade = optional(string, "rapid")
         sku_tier = optional(string, "Free")
         pool_min_count = optional(number, 3)
         pool_max_count = optional(number, 10)
         pool_vm_size = optional(string, "Standard_E4ads_v5")
         pool_zones = optional(list(string), ["1","2","3"])
         pool_os_disk_type = optional(string, "Ephemeral")
+        pool_os_sku = optional(string, "Mariner")
         authorized_ip_ranges = optional(list(string))
         aad_admin_group_object_ids = optional(list(string), ["0140ccf4-f68c-4daa-b531-97e5292ec364"])
         maintenance_day = optional(string, "Monday")
