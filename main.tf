@@ -217,6 +217,7 @@ module "uksouth-dns" {
     source = "./uksouth/dns"
     bink_sh_managed_identities = {
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
+        uksouth_staging = module.uksouth_staging.managed_identities.cert-manager
     }
 }
 

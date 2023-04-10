@@ -29,15 +29,19 @@ module "uksouth_staging" {
         "event-horizon" = { assigned_to = ["kv_ro"] }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
+        "keyvault2kube" = { assigned_to = ["kv_ro"] }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
         "polaris" = { assigned_to = ["kv_ro"] }
+        "pyqa" = { assigned_to = ["kv_ro"] }
         "snowstorm" = { assigned_to = ["kv_ro"] }
+        "styx" = { assigned_to = ["kv_ro"] }
         "vela" = { assigned_to = ["kv_ro"] }
         "zephyrus" = { assigned_to = ["kv_ro"] }
     }
     kube = {
-        enabled = false
+        enabled = true
+        flux_enabled = true
         authorized_ip_ranges = local.secure_origins
     }
     storage = {
@@ -50,7 +54,7 @@ module "uksouth_staging" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = false }
+    postgres = { enabled = true }
     redis = { enabled = false }
 }
 
@@ -172,48 +176,5 @@ module "uksouth_staging_environment" {
 
     managed_identities = local.managed_identities
 
-    aks = {
-        staging = merge(local.aks_config_defaults, {
-            name = "staging"
-            cidr = local.cidrs.uksouth.aks.staging
-            dns = local.aks_dns.staging_defaults
-            maintenance_day = "Tuesday"
-            zones = ["1","2","3"]
-            iam = merge(local.aks_iam_non_production, {})
-            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1200})
-        })
-    }
-}
-
-module "uksouth_staging_datawarehouse" {
-    source = "./uksouth/datawarehouse"
-    providers = {
-        azurerm = azurerm.uk_staging
-        azurerm.core = azurerm
-    }
-    common = {
-        environment = "staging"
-        location = "uksouth"
-        cidr = local.cidrs.uksouth.datawarehouse.staging
-        private_dns = local.private_dns.staging_defaults
-        firewall_ip = module.uksouth_firewall.firewall_ip
-        loganalytics_id = module.uksouth_loganalytics.id
-        postgres_dns = module.uksouth_staging_environment.postgres_flexible_server_dns_link
-        vms = {
-            airbyte = { size = "Standard_D2as_v5" }
-            prefect = { size = "Standard_D2as_v5" }
-        }
-        peering = {
-            firewall = {
-                vnet_id = module.uksouth_firewall.peering.vnet_id
-                vnet_name = module.uksouth_firewall.peering.vnet_name
-                resource_group = module.uksouth_firewall.peering.rg_name
-            }
-            environment = {
-                vnet_id = module.uksouth_staging_environment.peering.vnet_id
-                vnet_name = module.uksouth_staging_environment.peering.vnet_name
-                resource_group = module.uksouth_staging_environment.peering.resource_group_name
-            }
-        }        
-    }
+    aks = {}
 }

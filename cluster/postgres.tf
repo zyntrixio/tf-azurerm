@@ -1,9 +1,3 @@
-# locals {
-#     connection_strings = [
-#         { for database in var.postgres.databases: database => "${database}" }
-#     ]
-# }
-
 resource "azurerm_private_dns_zone" "pg" {
     name = "private.postgres.database.azure.com"
     resource_group_name = azurerm_resource_group.i.name
@@ -60,6 +54,14 @@ resource "azurerm_postgresql_flexible_server" "i" {
     lifecycle {
         ignore_changes = [zone, high_availability.0.standby_availability_zone]
     }
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
+    count = var.postgres.enabled ? 1 : 0
+
+    name = "azure.extensions"
+    server_id = azurerm_postgresql_flexible_server.i[0].id
+    value = "UUID-OSSP"
 }
 
 resource "azurerm_monitor_diagnostic_setting" "pg" {

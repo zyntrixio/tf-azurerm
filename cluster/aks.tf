@@ -5,7 +5,9 @@ resource "azurerm_user_assigned_identity" "aks" {
 }
 
 resource "azurerm_role_assignment" "aks" {
-    scope = azurerm_virtual_network.i.id
+    for_each = toset([azurerm_virtual_network.i.id, azurerm_route_table.i.id])
+
+    scope = each.key
     role_definition_name = "Network Contributor"
     principal_id = azurerm_user_assigned_identity.aks.principal_id
 }
@@ -189,7 +191,7 @@ resource "azurerm_monitor_diagnostic_setting" "aks" {
 }
 
 resource "null_resource" "flux_install" {
-    count = var.kube.enabled && var.keyvault.enabled ? 1 : 0
+    count = var.kube.enabled && var.keyvault.enabled && var.kube.flux_enabled ? 1 : 0
     provisioner "local-exec" {
         command = <<-EOF
             export CLUSTER_NAME="${var.common.name}"
@@ -207,6 +209,7 @@ resource "null_resource" "flux_install" {
                 --resource-group ${azurerm_resource_group.i.name} \
                 --name ${azurerm_resource_group.i.name}
             
+            kubectl apply -f ${path.module}/aks_templates/container-azm-ms-agentconfig.yaml
             kubectl apply -f ${path.module}/aks_templates/gotk-components.yaml
             kubectl apply -f /tmp/${azurerm_resource_group.i.name}.yaml
         EOF

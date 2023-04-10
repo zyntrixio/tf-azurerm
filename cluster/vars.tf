@@ -96,6 +96,7 @@ variable "redis" {
 variable "kube" {
     type = object({
         enabled = bool
+        flux_enabled = optional(bool, true)
         automatic_channel_upgrade = optional(string, "rapid")
         sku_tier = optional(string, "Free")
         pool_min_count = optional(number, 3)
