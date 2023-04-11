@@ -43,6 +43,7 @@ resource "azurerm_kubernetes_cluster" "i" {
         vm_size = var.kube.pool_vm_size
         zones = var.kube.pool_zones
         os_disk_type = var.kube.pool_os_disk_type
+        os_disk_size_gb = var.kube.pool_os_disk_size_gb
         os_sku = var.kube.pool_os_sku
         vnet_subnet_id = azurerm_subnet.kube_nodes.id
         max_pods = 100

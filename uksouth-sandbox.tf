@@ -318,3 +318,101 @@ module "uksouth_sandbox_environment" {
         })
     }
 }
+
+locals {
+    sandbox_common = {
+        iam = {
+            (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
+            (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
+            (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
+            (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
+        }
+        managed_identities = {
+            "angelia" = { assigned_to = ["kv_ro"] }
+            "cert-manager" = { assigned_to = [] }
+            "europa" = { assigned_to = ["kv_ro"] }
+            "harmonia" = { assigned_to = ["kv_ro"] }
+            "hermes" = { assigned_to = ["kv_ro"] }
+            "keyvault2kube" = { assigned_to = ["kv_ro"] }
+            "metis" = { assigned_to = ["kv_ro"] }
+            "midas" = { assigned_to = ["kv_ro"] }
+        }
+        kube = {
+            enabled = true
+            authorized_ip_ranges = local.secure_origins,
+            pool_vm_size = "Standard_B4ms"
+            pool_os_disk_size_gb = 32
+        }
+        storage = {
+            enabled = true
+            rules = [
+                { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
+                { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
+                { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
+            ]
+        }
+    }
+}
+
+module "uksouth_retail" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.uksouth_sandbox
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "retail"
+        location = "uksouth"
+        cidr = "10.21.0.0/16"
+    }
+    iam = local.sandbox_common.iam
+    managed_identities = local.sandbox_common.managed_identities
+    kube = local.sandbox_common.kube
+    storage = local.sandbox_common.storage
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    redis = { enabled = false }
+}
+
+module "uksouth_barclays" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.uksouth_sandbox
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "barclays"
+        location = "uksouth"
+        cidr = "10.22.0.0/16"
+    }
+    iam = local.sandbox_common.iam
+    managed_identities = local.sandbox_common.managed_identities
+    kube = local.sandbox_common.kube
+    storage = local.sandbox_common.storage
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    redis = { enabled = false }
+}
+
+module "uksouth_lloyds" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.uksouth_sandbox
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "lloyds"
+        location = "uksouth"
+        cidr = "10.23.0.0/16"
+    }
+    iam = local.sandbox_common.iam
+    managed_identities = local.sandbox_common.managed_identities
+    kube = local.sandbox_common.kube
+    storage = local.sandbox_common.storage
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    redis = { enabled = false }
+}

@@ -219,6 +219,9 @@ module "uksouth-dns" {
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
         uksouth_staging = module.uksouth_staging.managed_identities.cert-manager
         uksouth_prod = module.uksouth_prod.managed_identities.cert-manager
+        uksouth_barclays = module.uksouth_barclays.managed_identities.cert-manager
+        uksouth_lloyds = module.uksouth_lloyds.managed_identities.cert-manager
+        uksouth_retail = module.uksouth_retail.managed_identities.cert-manager
     }
 }
 

@@ -71,72 +71,15 @@ module "uksouth_dev_environment" {
 
     loganalytics_id = module.uksouth_loganalytics.id
 
-    postgres_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Reader",
-        },
-    }
+    postgres_iam = {}
 
-    keyvault_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Reader",
-        },
-        QA = {
-            object_id = local.aad_group.qa,
-            role = "Reader",
-        },
-    }
+    keyvault_iam = {}
 
-    storage_iam = {
-        Backend = {
-            storage_id = "common",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        QA = {
-            storage_id = "common",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
-    }
+    storage_iam = {}
 
-    keyvault_users = {
-        Backend = local.aad_group.backend,
-        QA = local.aad_group.qa,
-        Architecture = local.aad_group.architecture
-        SecOps = local.aad_group.cyber_sec,
-    }
+    keyvault_users = {}
 
-    postgres_flexible_config = {
-        common = {
-            name = "bink-uksouth-dev"
-            version = "13"
-            sku_name = "GP_Standard_D2ds_v4"
-            storage_mb = 131072
-            high_availability = false
-            databases = [
-                "api_reflector",
-                "atlas",
-                "carina",
-                "eos",
-                "europa",
-                "hades",
-                "harmonia",
-                "helios",
-                "hermes",
-                "midas",
-                "polaris",
-                "pontus",
-                "postgres",
-                "vela",
-                "zagreus",
-                "snowstorm",
-                "cosmos",
-            ]
-        }
-    }
+    postgres_flexible_config = {}
 
     storage_config = {
         common = {
@@ -173,12 +116,5 @@ module "uksouth_dev_environment" {
 
     managed_identities = local.managed_identities
 
-    aks = {
-        # dev = merge(local.aks_config_defaults, {
-        #     name = "dev"
-        #     cidr = local.cidrs.uksouth.aks.dev
-        #     iam = merge(local.aks_iam_non_production, {})
-        #     firewall = merge(local.aks_firewall_defaults, {rule_priority = 1300})
-        # })
-    }
+    aks = {}
 }

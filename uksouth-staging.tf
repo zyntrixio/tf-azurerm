@@ -50,6 +50,7 @@ module "uksouth_staging" {
             { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
             { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
             { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
+            { name = "qareports", prefix_match = ["qareports/"], delete_after_days = 30},
         ]
     }
     loganalytics = { enabled = true }
@@ -76,64 +77,13 @@ module "uksouth_staging_environment" {
 
     postgres_iam = {}
 
-    keyvault_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role = "Reader",
-        },
-        QA = {
-            object_id = local.aad_group.qa,
-            role = "Reader",
-        },
-    }
+    keyvault_iam = {}
 
-    storage_iam = {
-        Backend = {
-            storage_id = "common",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        QA = {
-            storage_id = "common",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
-    }
+    storage_iam = {}
 
-    keyvault_users = {
-        Backend = local.aad_group.backend,
-        QA = local.aad_group.qa,
-        Architecture = local.aad_group.architecture
-        SecOps = local.aad_group.cyber_sec,
-    }
+    keyvault_users = {}
 
-    postgres_flexible_config = {
-        common = {
-            name = "bink-uksouth-staging"
-            version = "13"
-            sku_name = "GP_Standard_D2ds_v4"
-            storage_mb = 131072
-            high_availability = false
-            databases = [
-                "api_reflector",
-                "atlas",
-                "carina",
-                "eos",
-                "europa",
-                "hades",
-                "harmonia",
-                "hermes",
-                "midas",
-                "polaris",
-                "pontus",
-                "postgres",
-                "vela",
-                "zagreus",
-                "snowstorm",
-                "cosmos",
-            ]
-        }
-    }
+    postgres_flexible_config = {}
 
     storage_config = {
         common = {
