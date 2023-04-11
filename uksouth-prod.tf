@@ -1,3 +1,60 @@
+module "uksouth_prod" {
+    source = "./cluster"
+    providers = {
+        azurerm = azurerm.uksouth_production
+        azurerm.core = azurerm
+    }
+    common = {
+        name = "prod"
+        location = "uksouth"
+        cidr = "10.11.0.0/16"
+    }
+    iam = {
+        (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
+    }
+    managed_identities = {
+        "angelia" = { assigned_to = ["kv_ro"] }
+        "boreas" = { assigned_to = ["kv_ro"] }
+        "carina" = { assigned_to = ["kv_ro"] }
+        "cert-manager" = { assigned_to = [] }
+        "cosmos" = { assigned_to = ["kv_ro"] }
+        "eos" = { assigned_to = ["kv_ro"] }
+        "europa" = { assigned_to = ["kv_ro"] }
+        "event-horizon" = { assigned_to = ["kv_ro"] }
+        "harmonia" = { assigned_to = ["kv_ro"] }
+        "hermes" = { assigned_to = ["kv_ro"] }
+        "keyvault2kube" = { assigned_to = ["kv_ro"] }
+        "metis" = { assigned_to = ["kv_ro"] }
+        "midas" = { assigned_to = ["kv_ro"] }
+        "polaris" = { assigned_to = ["kv_ro"] }
+        "snowstorm" = { assigned_to = ["kv_ro"] }
+        "vela" = { assigned_to = ["kv_ro"] }
+        "zephyrus" = { assigned_to = ["kv_ro"] }
+    }
+    kube = {
+        enabled = true
+        sku_tier = "Standard"
+        automatic_channel_upgrade = "patch"
+        flux_enabled = false
+        authorized_ip_ranges = local.secure_origins
+    }
+    storage = {
+        enabled = true
+        rules = [
+            { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
+            { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
+            { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
+        ]
+    }
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = false }
+    redis = { enabled = false }
+}
+
 module "uksouth_prod_environment" {
     source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.0"
     providers = {
@@ -165,15 +222,6 @@ module "uksouth_prod_environment" {
             api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
             iam = merge(local.aks_iam_production, {})
             firewall = merge(local.aks_firewall_defaults, {rule_priority = 1100})
-        })
-        prod1 = merge(local.aks_config_defaults_prod, {
-            name = "prod1"
-            cidr = local.cidrs.uksouth.aks.prod1
-            dns = local.aks_dns.prod_defaults
-            maintenance_day = "Friday"
-            api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
-            iam = merge(local.aks_iam_production, {})
-            firewall = merge(local.aks_firewall_defaults, {rule_priority = 1110})
         })
     }
 }

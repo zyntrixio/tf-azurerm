@@ -16,7 +16,6 @@ locals {
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
         "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
         "uksouth_prod0" = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod0-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod0"
-        "uksouth_prod1" = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod1-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod1"
     }
 
     origin_groups = {
@@ -202,7 +201,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "stats.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "stats.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_kratos" = {
@@ -211,7 +209,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "kratos.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "kratos.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_link" = {
@@ -220,7 +217,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "link.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "link.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_help" = {
@@ -229,7 +225,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "help.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "help.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_bpl" = {
@@ -239,7 +234,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "bpl.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_policies" = {
@@ -248,7 +242,6 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
                 "policies.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "policies.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
         "uksouth_prod_api" = {
@@ -258,7 +251,6 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
                 "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
-                "api.prod1.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod1}
             }
         }
     }

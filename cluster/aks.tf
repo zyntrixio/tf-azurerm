@@ -4,10 +4,14 @@ resource "azurerm_user_assigned_identity" "aks" {
     resource_group_name = azurerm_resource_group.i.name
 }
 
-resource "azurerm_role_assignment" "aks" {
-    for_each = toset([azurerm_virtual_network.i.id, azurerm_route_table.i.id])
+resource "azurerm_role_assignment" "aks_vnet" {
+    scope = azurerm_virtual_network.i.id
+    role_definition_name = "Network Contributor"
+    principal_id = azurerm_user_assigned_identity.aks.principal_id
+}
 
-    scope = each.key
+resource "azurerm_role_assignment" "aks_rt" {
+    scope = azurerm_route_table.i.id
     role_definition_name = "Network Contributor"
     principal_id = azurerm_user_assigned_identity.aks.principal_id
 }

@@ -18,7 +18,7 @@ locals {
 
     aks_config_defaults_prod = merge(local.aks_config_defaults, {
         updates = "stable"
-        sku = "Paid"
+        sku = "Standard"
         maintenance_day = "Thursday"
         aad_admin_group_object_ids = null
     })
@@ -166,7 +166,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.49.0"
+            version = "3.51.0"
         }
         random = {
             source = "hashicorp/random"
@@ -218,6 +218,7 @@ module "uksouth-dns" {
     bink_sh_managed_identities = {
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
         uksouth_staging = module.uksouth_staging.managed_identities.cert-manager
+        uksouth_prod = module.uksouth_prod.managed_identities.cert-manager
     }
 }
 

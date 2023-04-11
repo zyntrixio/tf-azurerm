@@ -309,7 +309,7 @@ module "uksouth_sandbox_environment" {
             cidr = local.cidrs.uksouth.aks.sandbox
             dns = local.aks_dns.sandbox_defaults
             updates = "stable"
-            sku = "Paid"
+            sku = "Standard"
             node_max_count = 20
             maintenance_day = "Wednesday"
             zones = ["1","2","3"]
