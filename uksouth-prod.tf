@@ -38,7 +38,6 @@ module "uksouth_prod" {
         enabled = true
         sku_tier = "Standard"
         automatic_channel_upgrade = "patch"
-        flux_enabled = false
         authorized_ip_ranges = local.secure_origins
         additional_node_pools = {
             "rabbitmq" = {
