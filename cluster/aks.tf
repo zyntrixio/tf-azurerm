@@ -88,6 +88,21 @@ resource "azurerm_kubernetes_cluster" "i" {
     depends_on = [ azurerm_subnet_route_table_association.kube_nodes ]
 }
 
+resource "azurerm_kubernetes_cluster_node_pool" "i" {
+    for_each = var.kube.additional_node_pools
+
+    name = each.key
+    kubernetes_cluster_id = azurerm_kubernetes_cluster.i[0].id
+    vm_size = each.value.vm_size
+    node_count = each.value.node_count
+    node_taints = each.value.node_taints
+    os_sku = each.value.os_sku
+    os_disk_size_gb = each.value.os_disk_size_gb
+    os_disk_type = each.value.os_disk_type
+    zones = each.value.zones
+    vnet_subnet_id = azurerm_subnet.kube_nodes.id
+}
+
 resource "azurerm_role_assignment" "aks_mi_ro" {
     for_each = {
         for k, v in var.managed_identities : k => v

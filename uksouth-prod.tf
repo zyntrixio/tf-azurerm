@@ -40,6 +40,16 @@ module "uksouth_prod" {
         automatic_channel_upgrade = "patch"
         flux_enabled = false
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = {
+            "rabbitmq" = {
+                node_count = 3
+                node_taints = ["app=rabbitmq:NoSchedule"]
+            }
+            "tableau" = {
+                node_taints = ["app=tableau:NoSchedule"]
+                vm_size = "Standard_E16ads_v5"
+            }
+        }
     }
     storage = {
         enabled = true

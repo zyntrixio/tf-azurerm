@@ -109,5 +109,14 @@ variable "kube" {
         authorized_ip_ranges = optional(list(string))
         aad_admin_group_object_ids = optional(list(string), ["0140ccf4-f68c-4daa-b531-97e5292ec364"])
         maintenance_day = optional(string, "Monday")
+        additional_node_pools = optional(map(object({
+            vm_size = optional(string, "Standard_E4ads_v5")
+            node_count = optional(number, 1)
+            node_taints = list(string)
+            os_sku = optional(string, "Mariner")
+            os_disk_type = optional(string, "Ephemeral")
+            os_disk_size_gb = optional(number, 128)
+            zones = optional(list(string), ["1","2","3"])
+        })), {})
     })
 }
