@@ -187,7 +187,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         target_fqdns = [
             "versioncheck.linkerd.io",
             "helm.linkerd.io",
-            "api.buoyant.cloud"
+            "api.buoyant.cloud",
+            "helm.buoyant.cloud",
         ]
         protocol {
             port = "443"
