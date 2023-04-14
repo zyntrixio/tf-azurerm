@@ -60,8 +60,8 @@ module "uksouth_prod" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = false }
-    redis = { enabled = false }
+    postgres = { enabled = true, ha = false, storage_mb = 1048576 }
+    redis = { enabled = true }
 }
 
 module "uksouth_prod_environment" {
