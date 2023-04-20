@@ -117,37 +117,3 @@ provider "azurerm" {
 }
 
 provider "random" {}
-
-resource "azurerm_role_assignment" "devops" {
-  for_each = local.subscriptions
-
-  scope                = "/subscriptions/${each.value["id"]}"
-  role_definition_name = "Owner"
-  principal_id         = local.aad_group.devops
-}
-
-resource "azurerm_role_assignment" "qa" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Reader"
-  principal_id         = local.aad_group.qa
-}
-
-resource "azurerm_role_assignment" "jo_raine" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Billing Reader"
-  principal_id         = local.aad_user.jo_raine
-}
-
-resource "azurerm_role_assignment" "azure_frontdoor" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Contributor"
-  principal_id         = "f0222751-c786-45ca-bbfb-66037b63c4ac"
-}
-
-resource "azurerm_role_assignment" "architecture" {
-  for_each = local.subscriptions
-
-  scope                = "/subscriptions/${each.value["id"]}"
-  role_definition_name = "Reader"
-  principal_id         = local.aad_group.architecture
-}

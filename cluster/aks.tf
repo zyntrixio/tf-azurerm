@@ -28,7 +28,13 @@ resource "azurerm_kubernetes_cluster" "i" {
     dns_prefix = azurerm_resource_group.i.name
     sku_tier = var.kube.sku_tier
     azure_policy_enabled = false
+    oidc_issuer_enabled = true
+    workload_identity_enabled = true
     local_account_disabled = true
+
+    oms_agent {
+        log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+    }
 
     # Waiting on before proceeding with Azure Prometheus:
     #   https://github.com/hashicorp/terraform-provider-azurerm/issues/18809

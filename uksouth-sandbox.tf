@@ -329,11 +329,11 @@ locals {
         }
         managed_identities = {
             "angelia" = { assigned_to = ["kv_ro"] }
-            "cert-manager" = { assigned_to = [] }
+            "cert-manager" = { assigned_to = [], namespace = "cert-manager" }
             "europa" = { assigned_to = ["kv_ro"] }
             "harmonia" = { assigned_to = ["kv_ro"] }
             "hermes" = { assigned_to = ["kv_ro"] }
-            "keyvault2kube" = { assigned_to = ["kv_ro"] }
+            "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
             "metis" = { assigned_to = ["kv_ro"] }
             "midas" = { assigned_to = ["kv_ro"] }
         }

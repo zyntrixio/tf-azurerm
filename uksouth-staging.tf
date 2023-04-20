@@ -21,22 +21,22 @@ module "uksouth_staging" {
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
         "boreas" = { assigned_to = ["kv_ro"] }
-        "carina" = { assigned_to = ["kv_ro"] }
+        "carina" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "cert-manager" = { assigned_to = [] }
-        "cosmos" = { assigned_to = ["kv_ro"] }
+        "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }
-        "event-horizon" = { assigned_to = ["kv_ro"] }
+        "event-horizon" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
-        "keyvault2kube" = { assigned_to = ["kv_ro"] }
+        "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
-        "polaris" = { assigned_to = ["kv_ro"] }
+        "polaris" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "pyqa" = { assigned_to = ["kv_ro"] }
         "snowstorm" = { assigned_to = ["kv_ro"] }
         "styx" = { assigned_to = ["kv_ro"] }
-        "vela" = { assigned_to = ["kv_ro"] }
+        "vela" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "zephyrus" = { assigned_to = ["kv_ro"] }
     }
     kube = {
