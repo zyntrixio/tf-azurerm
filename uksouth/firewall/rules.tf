@@ -48,6 +48,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Falco"
+        source_addresses = ["*"]
+        target_fqdns = ["falcosecurity.github.io"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name =  "Datawarehouse"
         source_addresses = ["*"]
         target_fqdns = [ 
