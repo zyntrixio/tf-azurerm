@@ -35,6 +35,13 @@ locals {
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"bpl.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
+        "uksouth_dev_rewards" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "rewards.dev.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
+            "cert_name" = "acmebot-dev-gb-bink-com"
+            "origins" = {"rewards.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
+        }
         "uksouth_dev_reflector" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "reflector.dev.gb.bink.com"
