@@ -22,7 +22,7 @@ module "uksouth_staging" {
         "angelia" = { assigned_to = ["kv_ro"] }
         "boreas" = { assigned_to = ["kv_ro"] }
         "carina" = { assigned_to = ["kv_ro"], namespace = "bpl" }
-        "cert-manager" = { assigned_to = [] }
+        "cert-manager" = { namespace = "cert-manager" }
         "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }

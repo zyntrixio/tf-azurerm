@@ -329,7 +329,7 @@ locals {
         }
         managed_identities = {
             "angelia" = { assigned_to = ["kv_ro"] }
-            "cert-manager" = { assigned_to = [], namespace = "cert-manager" }
+            "cert-manager" = { namespace = "cert-manager" }
             "europa" = { assigned_to = ["kv_ro"] }
             "harmonia" = { assigned_to = ["kv_ro"] }
             "hermes" = { assigned_to = ["kv_ro"] }

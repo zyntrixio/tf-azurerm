@@ -6,6 +6,11 @@ terraform {
     }
 }
 
+variable "kiroshi_ids" {
+    type = list
+    default = []
+}
+
 resource "azurerm_resource_group" "i" {
     name = "uksouth-loganalytics"
     location = "uksouth"
@@ -72,7 +77,7 @@ locals {
 }
 
 resource "azurerm_role_assignment" "kiroshi" {
-    for_each = toset(local.kiroshi_principle_ids)
+    for_each = toset(var.kiroshi_ids)
     scope = azurerm_log_analytics_workspace.i.id
     role_definition_name = "Reader"
     principal_id = each.key

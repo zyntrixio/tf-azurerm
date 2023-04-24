@@ -23,7 +23,7 @@ variable "firewall" {
 
 variable "managed_identities" {
     type = map(object({
-        assigned_to = list(string)
+        assigned_to = optional(list(string), [])
         namespace = optional(string, "default")
     }))
 }
@@ -77,6 +77,7 @@ variable "postgres" {
             "harmonia",
             "helios",
             "hermes",
+            "kiroshi",
             "midas",
             "polaris",
             "pontus",
@@ -92,6 +93,13 @@ variable "redis" {
     type = object({
         enabled = bool
     })
+}
+
+variable "tableau" {
+    type = object({
+        enabled = optional(bool, false)
+    })
+    default = {}
 }
 
 variable "kube" {

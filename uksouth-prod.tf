@@ -19,7 +19,7 @@ module "uksouth_prod" {
         "angelia" = { assigned_to = ["kv_ro"] }
         "boreas" = { assigned_to = ["kv_ro"] }
         "carina" = { assigned_to = ["kv_ro"], namespace = "bpl" }
-        "cert-manager" = { assigned_to = [], namespace = "cert-manager" }
+        "cert-manager" = { namespace = "cert-manager" }
         "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }
@@ -27,6 +27,7 @@ module "uksouth_prod" {
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
+        "kiroshi" = { namespace = "devops" }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
         "polaris" = { assigned_to = ["kv_ro"], namespace = "bpl" }
@@ -44,10 +45,6 @@ module "uksouth_prod" {
                 node_count = 3
                 node_taints = ["app=rabbitmq:NoSchedule"]
             }
-            "tableau" = {
-                node_taints = ["app=tableau:NoSchedule"]
-                vm_size = "Standard_E16ads_v5"
-            }
         }
     }
     storage = {
@@ -62,6 +59,7 @@ module "uksouth_prod" {
     keyvault = { enabled = true }
     postgres = { enabled = true, ha = false, storage_mb = 1048576 }
     redis = { enabled = true }
+    tableau = { enabled = true }
 }
 
 module "uksouth_prod_environment" {

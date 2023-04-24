@@ -93,7 +93,7 @@ locals {
         "81.133.125.233/32", # Thenuja, not static, will rotate.
     ]
     secure_origins_v6 = [
-        "2001:8b0:b130:a52d::/64", # cpressland@bink.com
+        "2001:8b0:b130::/48", # cpressland@bink.com
         "2a05:87c1:017c::/64", # Ascot Primary - Giganet
         "2a00:23a8:50:1400::1/64", # Thenuja, should be static unless BT implemented IPv6 improperly
     ]
@@ -297,6 +297,9 @@ module "uksouth_sftp" {
 
 module "uksouth_loganalytics" {
     source = "./uksouth/loganalytics"
+    kiroshi_ids = [
+        module.uksouth_prod.managed_identities.kiroshi
+    ]
 }
 
 module "uksouth_wordpress" {

@@ -15,6 +15,7 @@ locals {
         "uksouth_dev" = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
         "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
+        "uksouth_prod" = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
         "uksouth_prod0" = "/subscriptions/79560fde-5831-481d-8c3c-e812ef5046e5/resourceGroups/uksouth-prod0-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod0"
     }
 
@@ -242,6 +243,14 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
                 "policies.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+            }
+        }
+        "uksouth_prod_tableau_admin" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "tableau-admin.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "tableau-admin.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_api" = {
