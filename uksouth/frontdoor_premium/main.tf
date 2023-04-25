@@ -215,7 +215,8 @@ locals {
             "domain" = "stats.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "stats.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "stats.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
+                "stats.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_kratos" = {
@@ -248,7 +249,8 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
+                "bpl.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_rewards" = {
@@ -257,7 +259,8 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "rewards.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "rewards.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
+                "rewards.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_policies" = {
@@ -290,7 +293,8 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
-                "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
+                "api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
     }
