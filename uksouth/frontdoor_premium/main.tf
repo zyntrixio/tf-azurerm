@@ -95,6 +95,13 @@ locals {
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"bpl.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
+        "uksouth_staging_rewards" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "rewards.staging.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
+            "cert_name" = "acmebot-staging-gb-bink-com"
+            "origins" = {"rewards.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
+        }
         "uksouth_staging_reflector" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "reflector.staging.gb.bink.com"
@@ -242,6 +249,15 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+            }
+        }
+        "uksouth_prod_rewards" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "rewards.gb.bink.com"
+            "cached_endpoints" = ["/content/*"]
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "rewards.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
             }
         }
         "uksouth_prod_policies" = {
