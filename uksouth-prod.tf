@@ -21,6 +21,7 @@ module "uksouth_prod" {
         "carina" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "cert-manager" = { namespace = "cert-manager" }
         "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "cyclops" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespace = "bpl" }
@@ -28,8 +29,10 @@ module "uksouth_prod" {
         "hermes" = { assigned_to = ["kv_ro"] }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
         "kiroshi" = { namespace = "devops" }
+        "kratos" = { assigned_to = ["kv_ro"] }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
+        "styx" = { assigned_to = ["kv_ro"] }
         "polaris" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "snowstorm" = { assigned_to = ["kv_ro"] }
         "vela" = { assigned_to = ["kv_ro"], namespace = "bpl" }
@@ -41,10 +44,7 @@ module "uksouth_prod" {
         automatic_channel_upgrade = "patch"
         authorized_ip_ranges = local.secure_origins
         additional_node_pools = {
-            "rabbitmq" = {
-                node_count = 3
-                node_taints = ["app=rabbitmq:NoSchedule"]
-            }
+            "rabbitmq" = { node_count = 3, node_taints = ["app=rabbitmq:NoSchedule"] }
         }
     }
     storage = {
@@ -57,7 +57,7 @@ module "uksouth_prod" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true, ha = false, storage_mb = 1048576 }
+    postgres = { enabled = true, sku = "GP_Standard_D8ds_v4" , ha = true, storage_mb = 1048576 }
     redis = { enabled = true }
     tableau = { enabled = true }
 }

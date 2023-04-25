@@ -36,6 +36,10 @@ resource "azurerm_kubernetes_cluster" "i" {
         log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
     }
 
+    key_vault_secrets_provider {
+        secret_rotation_enabled = true
+    }
+
     # Waiting on before proceeding with Azure Prometheus:
     #   https://github.com/hashicorp/terraform-provider-azurerm/issues/18809
     #   https://github.com/hashicorp/terraform-provider-azurerm/issues/20702
