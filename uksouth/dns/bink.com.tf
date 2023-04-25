@@ -16,22 +16,11 @@ locals {
             "api.dev.us" = "127.0.0.1",
             "api.staging.us" = "127.0.0.1",
 
-            # Bink Offices
-            "ascot" = "194.74.152.11",  # |
-            # | Duplicates
-            "hq" = "194.74.152.11",     # |
-
             # SFTP
             "sftpcluster" = "40.115.33.68",
             "sftp" = "178.238.141.18",
             "sftp.gb" = "51.132.44.255",
             "sftp.staging.gb" = "51.132.44.241",
-
-            # Random
-            "git" = "51.132.44.248",
-            "tableau.gb" = "51.132.44.252",
-            "tableau.sandbox.gb" = "51.132.44.253",
-            "help" = "138.68.154.237",
         }
         cname_records = {
             # Auth0

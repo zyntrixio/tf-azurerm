@@ -223,7 +223,7 @@ locals {
             "domain" = "service-api.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "kratos.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "kratos.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_link" = {
@@ -231,7 +231,7 @@ locals {
             "domain" = "link.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "link.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "link.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_help" = {
@@ -239,7 +239,7 @@ locals {
             "domain" = "help.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "help.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "help.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_bpl" = {
@@ -265,7 +265,7 @@ locals {
             "domain" = "policies.gb.bink.com"
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
-                "policies.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0}
+                "policies.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_tableau_admin" = {
@@ -274,6 +274,14 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
                 "tableau-admin.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
+        "uksouth_prod_tableau" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "tableau.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "tableau.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
         "uksouth_prod_api" = {

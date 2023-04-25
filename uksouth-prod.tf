@@ -36,6 +36,7 @@ module "uksouth_prod" {
         "polaris" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "snowstorm" = { assigned_to = ["kv_ro"] }
         "vela" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "wasabireporter" = { assigned_to = ["kv_ro"], namespace = "devops" }
         "zephyrus" = { assigned_to = ["kv_ro"] }
     }
     kube = {
