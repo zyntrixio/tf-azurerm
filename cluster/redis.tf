@@ -39,8 +39,8 @@ resource "azurerm_key_vault_secret" "rd" {
     key_vault_id = azurerm_key_vault.i[0].id
     content_type = "application/json"
     value = jsonencode({
-        "url_primary" = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].port}/0",
-        "url_secondary" = "rediss://:${azurerm_redis_cache.i[0].secondary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].port}/0",
+        "url_primary" = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0",
+        "url_secondary" = "rediss://:${azurerm_redis_cache.i[0].secondary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0",
     })
     tags = {
         k8s_secret_name = "azure-redis"
