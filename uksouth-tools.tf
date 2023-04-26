@@ -32,13 +32,7 @@ module "uksouth_tools_environment" {
         }
     }
 
-    storage_config = {
-        common = {
-            name = "binkuksouthtools",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
-    }
+    storage_config = {}
 
     bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
     bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id

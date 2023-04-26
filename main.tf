@@ -225,10 +225,6 @@ module "uksouth-dns" {
     }
 }
 
-module "uksouth-alerts" {
-    source = "./uksouth/alerts"
-}
-
 module "uksouth_frontdoor" {
     source = "./uksouth/frontdoor_premium"
     common = {

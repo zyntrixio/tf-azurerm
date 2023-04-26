@@ -104,26 +104,3 @@ resource "azurerm_linux_virtual_machine" "tableau" {
         version = "latest"
     }
 }
-
-resource "random_string" "tableau" {
-    count = var.tableau.enabled ? 1 : 0
-
-    length = 4
-    upper = false
-    special = false
-    min_numeric = 2
-}
-
-resource "azurerm_storage_account" "tableau" {
-    count = var.tableau.enabled ? 1 : 0
-
-    name = "${azurerm_resource_group.i.location}tableau${random_string.tableau[0].result}"
-    location = azurerm_resource_group.i.location
-    resource_group_name = azurerm_resource_group.i.name
-
-    cross_tenant_replication_enabled = false
-    account_tier = "Standard"
-    account_replication_type = "ZRS"
-    enable_https_traffic_only = true
-    min_tls_version = "TLS1_2"
-}

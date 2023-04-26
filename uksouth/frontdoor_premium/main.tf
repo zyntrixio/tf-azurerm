@@ -323,7 +323,7 @@ variable "common" {
     type = object({
         location = optional(string, "uksouth")
         loganalytics_id = string
-        response_timeout_seconds = optional(number, 16)
+        response_timeout_seconds = optional(number, 60)
         secure_origins = object({
             ipv4 = list(string)
             ipv6 = list(string)
