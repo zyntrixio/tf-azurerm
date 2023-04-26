@@ -249,7 +249,6 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "bpl.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
                 "bpl.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
@@ -259,7 +258,6 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {
-                "rewards.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
                 "rewards.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
@@ -293,7 +291,6 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {
-                "api.prod0.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod0} # TODO: Delete
                 "api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
