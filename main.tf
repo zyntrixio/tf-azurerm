@@ -147,6 +147,7 @@ locals {
         martin_marsh = "3c92809d-91a4-456f-a161-a8b9df4c01e1"
         stewart_prerrygove = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
         francesco_milani = "dbcb7a78-da53-4fb9-a5a0-4f5d9a1e664c"
+        tony_truong = "f66db5ed-a4e3-485f-9112-c42ee2fe85c5"
     }
     aad_apps = {}
 

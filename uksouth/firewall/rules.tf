@@ -738,29 +738,11 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
     action = "Dnat"
 
     rule {
-        name = "tableau_http"
-        source_addresses = ["*"]
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.101.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "tableau_https"
-        source_addresses = concat(var.secure_origins, var.lloyds_origins)
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.101.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-    rule {
         name = "tableau_psql"
-        source_addresses = concat(local.lumilinks_ips, var.secure_origins)
+        source_addresses = concat(var.secure_origins)
         destination_ports = ["5432"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
-        translated_address = "192.168.101.4"
+        translated_address = "10.11.131.4"
         translated_port = "5432"
         protocols = ["TCP"]
     }

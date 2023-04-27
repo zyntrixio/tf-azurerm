@@ -16,6 +16,7 @@ module "uksouth_prod" {
         (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
+        (local.aad_user.mick_latham) = { assigned_to = ["rg", "aks_rw"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
@@ -88,16 +89,7 @@ module "uksouth_prod_environment" {
     redis_iam = {}
     keyvault_users = {}
 
-    postgres_flexible_config = {
-        tableau = {
-            name = "bink-uksouth-tableau"
-            version = "13"
-            sku_name = "GP_Standard_D2ds_v4"
-            storage_mb = 1048576
-            high_availability = false
-            databases = ["postgres"]
-        },
-    }
+    postgres_flexible_config = {}
 
     redis_config = {}
     redis_patch_schedule = {

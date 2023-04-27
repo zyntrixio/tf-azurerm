@@ -23,6 +23,8 @@ resource "azurerm_network_security_group" "tableau" {
             "Allow_TCP_22" = {"priority": "100", "port": "22", "source": azurerm_subnet.kube_nodes.address_prefixes[0]},
             "Allow_TCP_80" = {"priority": "200", "port": "80", "source": azurerm_subnet.kube_nodes.address_prefixes[0]},
             "Allow_TCP_8850" = {"priority": "210", "port": "8850", "source": azurerm_subnet.kube_nodes.address_prefixes[0]},
+            "Allow_TCP_8000" = {"priority": "300", "port": "8000", "source": azurerm_subnet.kube_nodes.address_prefixes[0]},
+            "Allow_TCP_5432" = {"priority": "400", "port": "5432", "source": "192.168.0.0/24"},
         }
         content {
             name = security_rule.key

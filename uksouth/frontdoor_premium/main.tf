@@ -285,6 +285,14 @@ locals {
                 "tableau.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
+        "uksouth_prod_airbyte" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "airbyte.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "airbyte.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
         "uksouth_prod_api" = {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"

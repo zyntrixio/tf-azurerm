@@ -82,6 +82,7 @@ variable "postgres" {
             "polaris",
             "pontus",
             "postgres",
+            "prefect",
             "snowstorm",
             "vela",
             "zagreus"

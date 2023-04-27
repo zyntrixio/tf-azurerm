@@ -149,6 +149,20 @@ resource "azurerm_role_assignment" "aks_mi_su" {
     principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
+resource "azurerm_role_assignment" "aks_iam" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "aks_rw") ||
+               contains(v["assigned_to"], "aks_ro") ||
+               contains(v["assigned_to"], "aks_su") &&
+            var.kube.enabled
+    }
+
+    scope = azurerm_kubernetes_cluster.i[0].id
+    role_definition_name = "Azure Kubernetes Service Cluster User Role"
+    principal_id = each.key
+}
+
 resource "azurerm_role_assignment" "aks_iam_ro" {
     for_each = {
         for k, v in var.iam : k => v
