@@ -207,6 +207,7 @@ module "uksouth_sandbox_environment" {
                 "perf_txm_hermes",
                 "perf_bpl_api_reflector",
                 "perf_bpl_carina",
+                "perf_bpl_cosmos",
                 "perf_bpl_polaris",
                 "perf_bpl_vela",
                 "perf_data_api_reflector",
