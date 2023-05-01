@@ -87,6 +87,7 @@ variable "postgres" {
             "vela",
             "zagreus"
         ])
+        extra_databases = optional(list(string), [])
     })
 }
 

@@ -293,6 +293,46 @@ locals {
                 "airbyte.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
             }
         }
+        "uksouth_prod_prefect" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "prefect.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "prefect.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
+        "uksouth_prod_asset_register" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "asset-register.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "asset-register.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
+        "uksouth_prod_bridge" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "bridge.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "bridge.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
+        "uksouth_prod_pypi" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "pypi.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "pypi.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
+        "uksouth_prod_mobsf" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "mobsf.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {
+                "mobsf.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}
+            }
+        }
         "uksouth_prod_api" = {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"
@@ -529,13 +569,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "i" {
     name = replace(each.key, "_", "-")
     session_affinity_enabled = false
     cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
-
-    health_probe {
-        protocol = "Https"
-        interval_in_seconds = 120
-        request_type = "HEAD"
-        path = "/healthz"
-    }
 
     load_balancing {}
 }

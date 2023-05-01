@@ -7,3 +7,7 @@ output "managed_identities" {
         for k, v in azurerm_user_assigned_identity.i : k => v.principal_id
     }
 }
+
+output "storage" {
+    value = azurerm_storage_account.i[0]
+}

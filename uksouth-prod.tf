@@ -62,13 +62,19 @@ module "uksouth_prod" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true, sku = "GP_Standard_D8ds_v4" , ha = true, storage_mb = 1048576 }
+    postgres = {
+        enabled = true,
+        sku = "GP_Standard_D8ds_v4",
+        ha = true,
+        storage_mb = 1048576,
+        extra_databases = ["asset_register"],
+    }
     redis = { enabled = true }
     tableau = { enabled = true }
 }
 
 module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.1"
     providers = {
         azurerm = azurerm.uk_production
         azurerm.core = azurerm
@@ -111,37 +117,4 @@ module "uksouth_prod_environment" {
     managed_identities_loganalytics = {}
 
     aks = {}
-}
-
-module "uksouth_prod_datawarehouse" {
-    source = "./uksouth/datawarehouse"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
-    common = {
-        environment = "prod"
-        location = "uksouth"
-        cidr = local.cidrs.uksouth.datawarehouse.prod
-        private_dns = local.private_dns.prod_defaults
-        loganalytics_id = module.uksouth_loganalytics.id
-        firewall_ip = module.uksouth_firewall.firewall_ip
-        postgres_dns = module.uksouth_prod_environment.postgres_flexible_server_dns_link
-        vms = {
-            airbyte = { size = "Standard_D2as_v5" }
-            prefect = { size = "Standard_D2as_v5" }
-        }
-        peering = {
-            firewall = {
-                vnet_id = module.uksouth_firewall.peering.vnet_id
-                vnet_name = module.uksouth_firewall.peering.vnet_name
-                resource_group = module.uksouth_firewall.peering.rg_name
-            }
-            environment = {
-                vnet_id = module.uksouth_prod_environment.peering.vnet_id
-                vnet_name = module.uksouth_prod_environment.peering.vnet_name
-                resource_group = module.uksouth_prod_environment.peering.resource_group_name
-            }
-        }
-    }
 }

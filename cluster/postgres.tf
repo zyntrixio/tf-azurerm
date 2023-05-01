@@ -61,7 +61,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
 
     name = "azure.extensions"
     server_id = azurerm_postgresql_flexible_server.i[0].id
-    value = "UUID-OSSP"
+    value = "UUID-OSSP,PG_TRGM"
 }
 
 resource "azurerm_monitor_diagnostic_setting" "pg" {
@@ -109,7 +109,8 @@ resource "azurerm_key_vault_secret" "pg" {
     key_vault_id = azurerm_key_vault.i[0].id
     content_type = "application/json"
     value = jsonencode(merge({
-        for database in var.postgres.databases : "url_${database}" => "postgresql://${random_pet.pg.id}:${random_password.pg.result}@${azurerm_postgresql_flexible_server.i[0].fqdn}/${database}?sslmode=require"
+        for database in concat(var.postgres.databases, var.postgres.extra_databases) :
+            "url_${database}" => "postgresql://${random_pet.pg.id}:${random_password.pg.result}@${azurerm_postgresql_flexible_server.i[0].fqdn}/${database}?sslmode=require"
     }, {
         "server_host": azurerm_postgresql_flexible_server.i[0].fqdn,
         "server_user": random_pet.pg.id,

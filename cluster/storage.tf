@@ -120,6 +120,10 @@ resource "azurerm_key_vault_secret" "st" {
     value = jsonencode({
         "connection_string_primary" = azurerm_storage_account.i[0].primary_connection_string,
         "connection_string_secondary" = azurerm_storage_account.i[0].secondary_connection_string,
+        "account_name" = azurerm_storage_account.i[0].name,
+        "key_primary" = azurerm_storage_account.i[0].primary_access_key,
+        "key_secondary" = azurerm_storage_account.i[0].secondary_access_key,
+
     })
     tags = {
         k8s_secret_name = "azure-storage"

@@ -1,5 +1,5 @@
 module "uksouth_sandbox_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.0"
+    source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.4"
     providers = {
         azurerm = azurerm.uk_sandbox
         azurerm.core = azurerm
@@ -166,7 +166,7 @@ module "uksouth_sandbox_environment" {
         common = {
             name = "bink-uksouth-sandbox"
             version = "13"
-            sku_name = "GP_Standard_D8ds_v4"
+            sku_name = "GP_Standard_D2ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [
@@ -297,8 +297,8 @@ module "uksouth_sandbox_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
-
     }
+
     bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
     bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
 
@@ -311,7 +311,7 @@ module "uksouth_sandbox_environment" {
             dns = local.aks_dns.sandbox_defaults
             updates = "stable"
             sku = "Standard"
-            node_max_count = 20
+            node_count = 10
             maintenance_day = "Wednesday"
             zones = ["1","2","3"]
             iam = merge(local.aks_iam_non_production, {})
