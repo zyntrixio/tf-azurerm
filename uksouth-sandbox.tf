@@ -166,7 +166,7 @@ module "uksouth_sandbox_environment" {
         common = {
             name = "bink-uksouth-sandbox"
             version = "13"
-            sku_name = "GP_Standard_D2ds_v4"
+            sku_name = "GP_Standard_D8ds_v4"
             storage_mb = 1048576
             high_availability = false
             databases = [
