@@ -25,7 +25,7 @@ module "uksouth_staging" {
         "cert-manager" = { namespace = "cert-manager" }
         "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "eos" = { assigned_to = ["kv_ro"] }
-        "europa" = { assigned_to = ["kv_ro"] }
+        "europa" = { assigned_to = ["kv_rw"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespace = "bpl" }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
