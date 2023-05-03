@@ -607,6 +607,17 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
+        name = "Midas The Works HTTPS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "dev-dataconnect.givex.com",
+        ]
+        protocol {
+            port = "50104"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Harmonia HTTPS"
         source_addresses = ["*"]
         target_fqdns = [
