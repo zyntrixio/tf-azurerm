@@ -99,6 +99,15 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  alias           = "uksouth_performance"
+  subscription_id = "c49c2fde-9e7d-41c6-ac61-f85f9fa51416"
+  client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
+  client_secret   = var.azurerm_terraform_client_id
+  tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  features {}
+}
+
+provider "azurerm" {
   alias           = "uksouth_production"
   subscription_id = "42706d13-8023-4b0c-b98a-1a562cb9ac40"
   client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"

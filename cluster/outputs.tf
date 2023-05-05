@@ -1,5 +1,5 @@
 output "aks" {
-    value = azurerm_kubernetes_cluster.i[0]
+    value = var.kube.enabled ? azurerm_kubernetes_cluster.i[0] : null
 }
 
 output "managed_identities" {
@@ -9,5 +9,5 @@ output "managed_identities" {
 }
 
 output "storage" {
-    value = azurerm_storage_account.i[0]
+    value = var.storage.enabled ? azurerm_storage_account.i[0] : null
 }
