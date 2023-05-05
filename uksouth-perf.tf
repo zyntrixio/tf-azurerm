@@ -9,22 +9,27 @@ module "uksouth_perf" {
         location = "uksouth"
         cidr = "10.51.0.0/16"
     }
-
     iam = {
         (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
     }
-    managed_identities = {}
-
+    managed_identities = {
+        "cert-manager" = { namespace = "cert-manager" }
+        "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
+    }
     kube = {
-        enabled = false
+        enabled = true
+        sku_tier = "Standard"
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = {
+            "rabbitmq" = { node_count = 3, node_taints = ["app=rabbitmq:NoSchedule"] }
+        }
     }
     storage = { enabled = true }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = false }
-    redis = { enabled = false }
+    postgres = { enabled = true }
+    redis = { enabled = true }
 }
