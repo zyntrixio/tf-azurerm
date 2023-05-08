@@ -18,6 +18,11 @@ module "uksouth_perf" {
     managed_identities = {
         "cert-manager" = { namespace = "cert-manager" }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
+        "locust" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "angelia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "europa" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "hermes" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "midas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
     }
     kube = {
         enabled = true
@@ -30,6 +35,10 @@ module "uksouth_perf" {
     storage = { enabled = true }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true }
+    postgres = {
+        enabled = true,
+        sku = "GP_Standard_D8ds_v4",
+        storage_mb = 1048576,
+    }
     redis = { enabled = true }
 }

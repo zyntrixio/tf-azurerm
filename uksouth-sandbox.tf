@@ -14,31 +14,9 @@ module "uksouth_sandbox_environment" {
 
     loganalytics_id = module.uksouth_loganalytics.id
 
-    postgres_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role      = "Contributor",
-        },
-        QA = {
-            object_id = local.aad_group.qa,
-            role      = "Contributor",
-        },
-    }
+    postgres_iam = {}
 
-    keyvault_iam = {
-        Backend = {
-            object_id = local.aad_group.backend,
-            role      = "Reader",
-        },
-        QA = {
-            object_id = local.aad_group.qa,
-            role      = "Reader",
-        },
-        Architecture = {
-            object_id = local.aad_group.architecture,
-            role      = "Reader"
-        }
-    }
+    keyvault_iam = {}
 
     storage_iam = {
         common-backend = {
@@ -51,16 +29,6 @@ module "uksouth_sandbox_environment" {
             object_id = local.aad_group.qa,
             role = "Contributor",
         },
-        barclays-sit-backend = {
-            storage_id = "barclays-sit",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        barclays-sit-qa = {
-            storage_id = "barclays-sit",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
         barclays-oat-backend = {
             storage_id = "barclays-oat",
             object_id  = local.aad_group.backend,
@@ -68,16 +36,6 @@ module "uksouth_sandbox_environment" {
         },
         barclays-oat-qa = {
             storage_id = "barclays-oat",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
-        lloyds-sit-backend = {
-            storage_id = "lloyds-sit",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        lloyds-sit-qa = {
-            storage_id = "lloyds-sit",
             object_id = local.aad_group.qa,
             role = "Contributor",
         },
@@ -131,16 +89,6 @@ module "uksouth_sandbox_environment" {
             object_id  = local.aad_group.qa,
             role       = "Contributor",
         },
-        retail-backend = {
-            storage_id = "retail",
-            object_id = local.aad_group.backend,
-            role = "Contributor",
-        },
-        retail-qa = {
-            storage_id = "retail",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
     }
 
     keyvault_users = {
@@ -151,15 +99,12 @@ module "uksouth_sandbox_environment" {
     }
 
     additional_keyvaults = [
-        "bink-uksouth-barclay-sit",
         "bink-uksouth-barclay-oat",
-        "bink-uksouth-lloyds-sit",
         "bink-uksouth-perf-api-v1",
         "bink-uksouth-perf-api-v2",
         "bink-uksouth-perf-txm",
         "bink-uksouth-perf-bpl",
         "bink-uksouth-perf-data",
-        "bink-uksouth-retail"
     ]
 
     postgres_flexible_config = {
@@ -171,20 +116,6 @@ module "uksouth_sandbox_environment" {
             high_availability = false
             databases = [
                 "postgres",
-                "lloyds_sit_api_reflector",
-                "lloyds_sit_atlas",
-                "lloyds_sit_europa",
-                "lloyds_sit_hades",
-                "lloyds_sit_hermes",
-                "lloyds_sit_midas",
-                "lloyds_sit_pontus",
-                "barclays_sit_api_reflector",
-                "barclays_sit_atlas",
-                "barclays_sit_europa",
-                "barclays_sit_hades",
-                "barclays_sit_hermes",
-                "barclays_sit_midas",
-                "barclays_sit_pontus",
                 "barclays_oat_atlas",
                 "barclays_oat_europa",
                 "barclays_oat_hades",
@@ -219,13 +150,6 @@ module "uksouth_sandbox_environment" {
                 "perf_data_midas",
                 "perf_data_pontus",
                 "perf_data_tableau",
-                "retail_api_reflector",
-                "retail_atlas",
-                "retail_europa",
-                "retail_hades",
-                "retail_hermes",
-                "retail_midas",
-                "retail_pontus",
             ]
         },
         archive = {
@@ -252,18 +176,8 @@ module "uksouth_sandbox_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
-        barclays-sit = {
-            name = "binkuksouthbarclayssit",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
         barclays-oat = {
             name = "binkuksouthbarclaysoat",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
-        lloyds-sit = {
-            name = "binkuksouthlloydssit",
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
@@ -292,11 +206,6 @@ module "uksouth_sandbox_environment" {
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
-        retail = {
-            name = "binkuksouthretail",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
     }
 
     bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
@@ -311,7 +220,7 @@ module "uksouth_sandbox_environment" {
             dns = local.aks_dns.sandbox_defaults
             updates = "stable"
             sku = "Standard"
-            node_count = 10
+            node_count = 8
             maintenance_day = "Wednesday"
             zones = ["1","2","3"]
             iam = merge(local.aks_iam_non_production, {})
