@@ -166,6 +166,12 @@ locals {
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"prefect.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
+        "uksouth_staging_airbyte" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "airbyte.staging.gb.bink.com"
+            "cert_name" = "acmebot-staging-gb-bink-com"
+            "origins" = {"airbyte.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
+        }
 
         # Performance Environment
         "uksouth_perf_api" = {
