@@ -57,4 +57,8 @@ module "uksouth_staging" {
     keyvault = { enabled = true }
     postgres = { enabled = true }
     redis = { enabled = false }
+    tableau = { 
+        enabled = true
+        size = "Standard_E2ads_v5"
+    }
 }

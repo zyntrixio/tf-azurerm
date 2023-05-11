@@ -81,7 +81,7 @@ resource "azurerm_linux_virtual_machine" "tableau" {
     name = "${azurerm_resource_group.i.name}-tableau"
     resource_group_name = azurerm_resource_group.i.name
     location = azurerm_resource_group.i.location
-    size = "Standard_E16as_v5"
+    size = var.tableau.size
     admin_username = "tableau"
     network_interface_ids = [
         azurerm_network_interface.tableau[0].id,

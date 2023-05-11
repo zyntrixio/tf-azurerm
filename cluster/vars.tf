@@ -100,6 +100,7 @@ variable "redis" {
 variable "tableau" {
     type = object({
         enabled = optional(bool, false)
+        size = optional(string, "Standard_E16as_v5")
     })
     default = {}
 }
