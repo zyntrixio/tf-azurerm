@@ -82,7 +82,12 @@ locals {
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"cosmos.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
-
+        "uksouth_dev_retailer" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "retailer.dev.gb.bink.com"
+            "cert_name" = "acmebot-dev-gb-bink-com"
+            "origins" = {"retailer.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
+        }
         # Staging Envrionment
         "uksouth_staging_api" = {
             "endpoint" = "uksouth-nonprod"
@@ -159,6 +164,12 @@ locals {
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"cosmos.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
+        }
+        "uksouth_staging_retailer" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "retailer.staging.gb.bink.com"
+            "cert_name" = "acmebot-staging-gb-bink-com"
+            "origins" = {"retailer.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_prefect" = {
             "endpoint" = "uksouth-nonprod"
