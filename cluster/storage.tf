@@ -123,7 +123,6 @@ resource "azurerm_key_vault_secret" "st" {
         "account_name" = azurerm_storage_account.i[0].name,
         "key_primary" = azurerm_storage_account.i[0].primary_access_key,
         "key_secondary" = azurerm_storage_account.i[0].secondary_access_key,
-
     })
     tags = {
         k8s_secret_name = "azure-storage"

@@ -1050,6 +1050,23 @@ resource "azurerm_firewall_network_rule_collection" "tableau" {
     }
 }
 
+# TODO: Rewrite this to only use the IP Ranges for UK South
+resource "azurerm_firewall_network_rule_collection" "aks" {
+    name = "aks"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_resource_group.rg.name
+    priority = 450
+    action = "Allow"
+
+    rule {
+        name = "Azure Storage SMB"
+        source_addresses = ["10.0.0.0/8"]
+        destination_ports = ["445"]
+        destination_addresses = ["*"]
+        protocols = ["TCP"]
+    }
+}
+
 # The below is allows AKS clusters to be bootstrapped before the explicit
 # network rules are created. This is a non-ideal scenario, but it's livable.
 # Access is restricted to a 10/8 to prevent non-clusters from using this.
