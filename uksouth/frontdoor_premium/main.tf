@@ -190,26 +190,6 @@ locals {
             "origins" = {"tableau-admin.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
 
-        # Performance Environment
-        "uksouth_perf_api" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "api.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"olympus.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
-        "uksouth_perf_locustv1" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "locustv1.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"locustv1.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
-        "uksouth_perf_locustv2" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "locustv2.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"locustv2.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
-
         # Sandbox Environment
         "uksouth_sandbox_barclays_sit" = {
             "endpoint" = "uksouth-sandbox"
@@ -235,24 +215,68 @@ locals {
             "cert_name" = "acmebot-sandbox-gb-bink-com"
             "origins" = {"docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
-        # This should be removed in future once Kish confirms lloyds have moved to lloyds-sit.sandbox.gb.bink.com
-        "uksouth_sandbox_sit" = {
+
+
+        # Performance Environment
+        "uksouth_perf_api" = {
+            "endpoint" = "uksouth-perf"
+            "domain" = "api.perf.gb.bink.com"
+            "cert_name" = "acmebot-perf-gb-bink-com",
+            "origins" = {"olympus.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
+        }
+        "uksouth_perf_locustv1" = {
+            "endpoint" = "uksouth-perf"
+            "domain" = "locustv1.perf.gb.bink.com"
+            "cert_name" = "acmebot-perf-gb-bink-com",
+            "origins" = {"locustv1.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
+        }
+        "uksouth_perf_locustv2" = {
+            "endpoint" = "uksouth-perf"
+            "domain" = "locustv2.perf.gb.bink.com"
+            "cert_name" = "acmebot-perf-gb-bink-com",
+            "origins" = {"locustv2.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
+        }
+
+        # Lloyds Environment
+        "uksouth_lloyds_api" = {
             "endpoint" = "uksouth-sandbox"
-            "domain" = "sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
+            "domain" = "api.lloyds.gb.bink.com"
+            "cert_name" = "acmebot-lloyds-gb-bink-com"
             "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
-        "uksouth_sandbox_retail" = {
+        "uksouth_lloyds_docs" = {
             "endpoint" = "uksouth-sandbox"
-            "domain" = "retail.sandbox.gb.bink.com"
-            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "domain" = "docs.lloyds.gb.bink.com"
+            "cert_name" = "acmebot-lloyds-gb-bink-com"
+            "origins" = {"docs.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
+
+        # Barclays Environment
+        "uksouth_barclays_api" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "api.barclays.gb.bink.com"
+            "cert_name" = "acmebot-barclays-gb-bink-com"
+            "origins" = {"api.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
+        }
+        "uksouth_barclays_docs" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "docs.barclays.gb.bink.com"
+            "cert_name" = "acmebot-barclays-gb-bink-com"
+            "origins" = {"docs.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
+        }
+
+        # Retail Environment
+        "uksouth_retail_api" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "api.retail.gb.bink.com"
+            "cert_name" = "acmebot-retail-gb-bink-com"
             "origins" = {"api.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
         }
-        "uksouth_sandbox_sit_reflector" = {
+        "uksouth_retail_docs" = {
             "endpoint" = "uksouth-sandbox"
-            "domain" = "lloyds-sit-reflector.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
-            "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+            "domain" = "docs.retail.gb.bink.com"
+            "cert_name" = "acmebot-retail-gb-bink-com"
+            "origins" = {"docs.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
         }
 
         # Production Environment
@@ -355,6 +379,26 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
+
+        # DEPRECATED: Endpoints to remove after 17th of Jan 2024
+        "uksouth_sandbox_sit" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "sit.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
+        "uksouth_sandbox_retail" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "retail.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"api.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
+        }
+        "uksouth_sandbox_sit_reflector" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "lloyds-sit-reflector.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
     }
 
     endpoints = distinct([ for og in local.origin_groups : og.endpoint ])
@@ -376,6 +420,9 @@ locals {
             "acmebot-dev-gb-bink-com",
             "acmebot-staging-gb-bink-com",
             "acmebot-sandbox-gb-bink-com",
+            "acmebot-lloyds-gb-bink-com",
+            "acmebot-barclays-gb-bink-com",
+            "acmebot-retail-gb-bink-com",
             "acmebot-perf-gb-bink-com",
         ])
     )
