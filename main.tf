@@ -67,11 +67,10 @@ locals {
             tableau = "192.168.101.0/24"
             aks = {
                 tools = "10.50.0.0/16"
-                dev = "10.40.0.0/16"
-                staging = "10.30.0.0/16"
-                sandbox = "10.20.0.0/16"
-                prod0 = "10.10.0.0/16"
-                prod1 = "10.11.0.0/16"
+                dev = "10.41.0.0/16"
+                staging = "10.31.0.0/16"
+                sandbox = "10.21.0.0/16"
+                prod = "10.11.0.0/16"
             },
             amqp = {
                 prod = "192.168.50.0/24"
@@ -258,7 +257,7 @@ module "uksouth_firewall" {
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
-    production_cidrs = [ local.cidrs.uksouth.aks.prod0, local.cidrs.uksouth.aks.prod1 ]
+    production_cidrs = [ local.cidrs.uksouth.aks.prod ]
     aks_cidrs = local.cidrs.uksouth.aks
 }
 

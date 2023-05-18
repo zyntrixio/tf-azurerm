@@ -1023,12 +1023,11 @@ resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
         source_addresses = [var.aks_cidrs.tools]
         destination_ports = ["9090"]
         destination_addresses = [
-            cidrhost(var.aks_cidrs.prod0, 65534),
-            cidrhost(var.aks_cidrs.prod1, 65534),
-            cidrhost(var.aks_cidrs.sandbox, 65534),
-            cidrhost(var.aks_cidrs.staging, 65534),
-            cidrhost(var.aks_cidrs.dev, 65534),
-            cidrhost(var.aks_cidrs.tools, 65534),
+            cidrhost(cidrsubnet(var.aks_cidrs.prod, 1, 0), 32766),
+            cidrhost(cidrsubnet(var.aks_cidrs.sandbox, 1, 0), 32766),
+            cidrhost(cidrsubnet(var.aks_cidrs.staging, 1, 0), 32766),
+            cidrhost(cidrsubnet(var.aks_cidrs.dev, 1, 0), 32766),
+            cidrhost(cidrsubnet(var.aks_cidrs.tools, 1, 0), 32766),
         ]
         protocols = ["TCP"]
     }
