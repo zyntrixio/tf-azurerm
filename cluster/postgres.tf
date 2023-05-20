@@ -71,7 +71,6 @@ resource "azurerm_monitor_diagnostic_setting" "pg" {
     target_resource_id = azurerm_postgresql_flexible_server.i[0].id
     log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
 
-    enabled_log { category = "PostgreSQLLogs" }
     metric {
         enabled = true
         category = "AllMetrics"

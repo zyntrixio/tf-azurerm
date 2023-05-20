@@ -29,7 +29,7 @@ module "uksouth_tools_environment" {
             api_ip_ranges = concat(local.secure_origins, [module.uksouth_firewall.public_ip_prefix])
             cidr = local.cidrs.uksouth.aks.tools
             dns = local.aks_dns.core_defaults
-            node_count = 1
+            node_count = 3
             iam = {}
             firewall = merge(local.aks_firewall_defaults, {
                 rule_priority = 1600

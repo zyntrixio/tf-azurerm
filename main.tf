@@ -69,7 +69,7 @@ locals {
                 tools = "10.50.0.0/16"
                 dev = "10.41.0.0/16"
                 staging = "10.31.0.0/16"
-                sandbox = "10.21.0.0/16"
+                sandbox = "10.20.0.0/16"
                 prod = "10.11.0.0/16"
             },
             amqp = {
@@ -167,7 +167,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.55.0"
+            version = "3.57.0"
         }
         random = {
             source = "hashicorp/random"

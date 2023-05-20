@@ -209,13 +209,6 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
-        "uksouth_sandbox_docs" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "docs.sandbox.gb.bink.com"
-            "cert_name" = "acmebot-sandbox-gb-bink-com"
-            "origins" = {"docs.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
-        }
-
 
         # Performance Environment
         "uksouth_perf_api" = {
@@ -371,6 +364,12 @@ locals {
             "domain" = "mobsf.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"mobsf.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
+        }
+        "uksouth_prod_docs" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "docs.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {"docs.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_api" = {
             "endpoint" = "uksouth-prod"
