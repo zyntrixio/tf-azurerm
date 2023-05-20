@@ -41,7 +41,6 @@ resource "azurerm_kubernetes_cluster" "i" {
     }
 
     # Waiting on before proceeding with Azure Prometheus:
-    #   https://github.com/hashicorp/terraform-provider-azurerm/issues/18809
     #   https://github.com/hashicorp/terraform-provider-azurerm/issues/20702
     # monitor_metrics {}
 
@@ -96,6 +95,12 @@ resource "azurerm_kubernetes_cluster" "i" {
     }
 
     depends_on = [ azurerm_subnet_route_table_association.kube_nodes ]
+
+    lifecycle {
+        ignore_changes = [
+            monitor_metrics # This can be removed once #20702 is released.
+        ]
+    }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "i" {

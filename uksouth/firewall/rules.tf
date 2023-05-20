@@ -10,7 +10,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     action = "Allow"
 
     rule {
-        name = "Ubuntu APT Repos"
+        name = "Ubuntu"
         source_addresses = ["*"]
         target_fqdns = [
             "security.ubuntu.com",
@@ -18,30 +18,14 @@ resource "azurerm_firewall_application_rule_collection" "software" {
             "keyserver.ubuntu.com",
             "ppa.launchpad.net",
             "archive.ubuntu.com",
+            "api.snapcraft.io",
+            "*.cdn.snapcraftcontent.com",
+            "changelogs.ubuntu.com",
         ]
         protocol {
             port = "80"
             type = "Http"
         }
-    }
-    rule {
-        name = "Ubuntu Snap Repos"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "api.snapcraft.io",
-            "*.cdn.snapcraftcontent.com",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "OpenSearch"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "artifacts.opensearch.org"
-        ]
         protocol {
             port = "443"
             type = "Https"
@@ -62,17 +46,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         target_fqdns = [ 
             "xb90214.eu-west-2.aws.snowflakecomputing.com",
             "hub.getdbt.com",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Ubuntu Changelogs"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "changelogs.ubuntu.com",
         ]
         protocol {
             port = "443"
@@ -115,6 +88,19 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         ]
         protocol {
             port = "443"
+            type = "Https"
+        }
+    }
+    rule {
+        name = "Azure Monitor"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "global.handler.control.monitor.azure.com",
+            "*.uksouth.prometheus.monitor.azure.com",
+            "*.uksouth-1.metrics.ingest.monitor.azure.com",
+        ]
+        protocol {
+            port = 443
             type = "Https"
         }
     }
@@ -227,18 +213,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "xMatters"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "bink-np.xmatters.com",
-            "bink.xmatters.com",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Atlassian"
         source_addresses = ["*"]
         target_fqdns = [
@@ -324,29 +298,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "ClamAV"
         source_addresses = ["*"]
         target_fqdns = ["*.clamav.net"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "OpenDistroElasticsearch"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "d3g5vo6xdbdb9a.cloudfront.net",
-            "launchpad.net",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Aqua"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "*.aquasec.com"
-        ]
         protocol {
             port = "443"
             type = "Https"
@@ -458,7 +409,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Hermes HTTPS"
+        name = "Hermes"
         source_addresses = ["*"]
         target_fqdns = [
             "api.twitter.com",
@@ -472,7 +423,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Metis HTTPS"
+        name = "Metis"
         source_addresses = ["*"]
         target_fqdns = [
             "ws.mastercard.com",
@@ -493,7 +444,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Midas HTTPS"
+        name = "Midas"
         source_addresses = ["*"]
         target_fqdns = [
             "wasabiuat.wasabiworld.co.uk",
@@ -575,51 +526,25 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "wwws-uk2.givex.com",
             "virtserver.swaggerhub.com",
             "sm-uk.azure-api.net",
+            "statement.club-individual.co.uk",
+            "www.foyalty.co.uk",
+            "www.maximiles.co.uk",
+            "london-capi.ecrebo.com",
+            "london-capi-test.ecrebo.com",
+            "dev-dataconnect.givex.com",
+            "beta-dataconnect.givex.com",
         ]
+        protocol {
+            port = "80"
+            type = "Http"
+        }
         protocol {
             port = "443"
             type = "Https"
         }
     }
     rule {
-        name = "Midas HTTP"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "statement.club-individual.co.uk",
-            "www.foyalty.co.uk",
-            "www.maximiles.co.uk"
-        ]
-        protocol {
-            port = "80"
-            type = "Http"
-        }
-    }
-    rule {
-        name = "Midas Ecrebo HTTPS"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "london-capi.ecrebo.com",
-            "london-capi-test.ecrebo.com"
-        ]
-        protocol {
-            port = "2361"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Midas The Works HTTPS"
-        source_addresses = ["*"]
-        target_fqdns = [
-            "dev-dataconnect.givex.com",
-            "beta-dataconnect.givex.com",
-        ]
-        protocol {
-            port = "50104"
-            type = "Https"
-        }
-    }
-    rule {
-        name = "Harmonia HTTPS"
+        name = "Harmonia"
         source_addresses = ["*"]
         target_fqdns = [
             "tools.wasabi.atreemo.co.uk",
@@ -633,7 +558,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Athena HTTPS"
+        name = "Athena"
         source_addresses = ["*"]
         target_fqdns = [
             "api.appannie.com",
@@ -646,7 +571,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Carina HTTPS"
+        name = "Carina"
         source_addresses = ["*"]
         target_fqdns = [
             "api.jigsaw360.com",
@@ -658,7 +583,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         }
     }
     rule {
-        name = "Freshservice HTTPS"
+        name = "Freshservice"
         source_addresses = ["*"]
         target_fqdns = [
             "bink.freshservice.com",
