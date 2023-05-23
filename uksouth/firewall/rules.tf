@@ -531,8 +531,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "www.maximiles.co.uk",
             "london-capi.ecrebo.com",
             "london-capi-test.ecrebo.com",
-            "dev-dataconnect.givex.com",
-            "beta-dataconnect.givex.com",
         ]
         protocol {
             port = "80"
@@ -590,6 +588,18 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         ]
         protocol {
             port = "443"
+            type = "Https"
+        }
+    }
+    rule {
+        name = "Midas The Works"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "dev-dataconnect.givex.com",
+            "beta-dataconnect.givex.com",
+        ]
+        protocol {
+            port = "50104"
             type = "Https"
         }
     }
