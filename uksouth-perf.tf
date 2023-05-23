@@ -23,6 +23,7 @@ module "uksouth_perf" {
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
         "locust" = { assigned_to = ["kv_ro"], namespace = "olympus" }
         "angelia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "boreas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
         "europa" = { assigned_to = ["kv_rw"], namespace = "olympus" }
         "hermes" = { assigned_to = ["kv_ro"], namespace = "olympus" }
         "midas" = { assigned_to = ["kv_ro"], namespace = "olympus" }

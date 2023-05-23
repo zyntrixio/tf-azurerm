@@ -191,6 +191,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "internal" {
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_prefect"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_asset_register"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_bridge"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_reflector"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_locustv1"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_locustv2"].id,
                     ])
