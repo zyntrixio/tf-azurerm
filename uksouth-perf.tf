@@ -28,6 +28,7 @@ module "uksouth_perf" {
         "hermes" = { assigned_to = ["kv_ro"], namespace = "olympus" }
         "midas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
         "harmonia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespace = "olympus" }
     }
     kube = {
         enabled = true
