@@ -32,7 +32,7 @@ module "uksouth_prod" {
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
-        "kiroshi" = { namespace = "devops" }
+        "kiroshi" = { assigned_to = ["kv_ro"], namespace = "devops" }
         "kratos" = { assigned_to = ["kv_ro"] }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
