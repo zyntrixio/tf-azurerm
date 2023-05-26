@@ -174,7 +174,7 @@ resource "azurerm_lb_backend_address_pool" "pool" {
 }
 
 resource "azurerm_network_interface" "nic" {
-    count = 2
+    count = 1
     name = format("${var.common_name}%d-nic", count.index)
     location = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
@@ -192,7 +192,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "worker-bap-pools-assoc" {
-    count = 2
+    count = 1
     network_interface_id = element(azurerm_network_interface.nic.*.id, count.index)
     ip_configuration_name = "primary"
     backend_address_pool_id = azurerm_lb_backend_address_pool.pool.id
@@ -211,7 +211,7 @@ resource "azurerm_availability_set" "as" {
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-    count = 2
+    count = 1
     name = format("${var.common_name}%d", count.index)
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
