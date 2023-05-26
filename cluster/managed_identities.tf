@@ -16,3 +16,22 @@ resource "azurerm_federated_identity_credential" "i" {
     parent_id = azurerm_user_assigned_identity.i[each.key].id
     subject = "system:serviceaccount:${each.value.namespace}:${each.key}"
 }
+
+resource "azurerm_key_vault_secret" "mi" {
+    count = var.keyvault.enabled ? 1 : 0
+
+    name = "infra-managed-identity-details"
+    key_vault_id = azurerm_key_vault.i[0].id
+    content_type = "application/json"
+    value = jsonencode(
+        merge(
+            {"tenant_id" = data.azurerm_client_config.i.tenant_id},
+            {for k, v in azurerm_user_assigned_identity.i : "${replace(k, "-", "_")}_client_id" => v.client_id}
+        )
+    )
+    tags = {
+        k8s_secret_name = "azure-identities"
+    }
+
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
+}

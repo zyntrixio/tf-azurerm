@@ -167,6 +167,7 @@ resource "azurerm_key_vault_secret" "kv" {
     content_type = "application/json"
     value = jsonencode({
         "url" = azurerm_key_vault.i[0].vault_uri,
+        "keyvault_name" = azurerm_key_vault.i[0].name,
     })
     tags = {
         k8s_secret_name = "azure-keyvault"
