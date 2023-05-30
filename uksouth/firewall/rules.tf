@@ -602,6 +602,10 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             port = "50104"
             type = "Https"
         }
+        protocol {
+            port = "50099"
+            type = "Https"
+        }
     }
 }
 
