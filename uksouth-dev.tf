@@ -9,6 +9,10 @@ module "uksouth_dev" {
         location = "uksouth"
         cidr = "10.41.0.0/16"
     }
+    allowed_hosts = {
+        ipv4 = local.secure_origins
+        ipv6 = local.secure_origins_v6
+    }
     iam = {
         (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
         (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }

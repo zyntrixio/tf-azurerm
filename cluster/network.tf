@@ -42,6 +42,12 @@ resource "azurerm_subnet" "kube_nodes" {
     resource_group_name = azurerm_resource_group.i.name
     virtual_network_name = azurerm_virtual_network.i.name
     address_prefixes = [cidrsubnet(var.common.cidr, 1, 0)] # 10.0.0.0/17
+    service_endpoints = [ 
+        "Microsoft.AzureActiveDirectory",
+        "Microsoft.ContainerRegistry",
+        "Microsoft.KeyVault",
+        "Microsoft.Storage",
+     ]
 }
 
 resource "azurerm_subnet" "kube_controller" {

@@ -4,6 +4,10 @@ module "uksouth_staging" {
         azurerm = azurerm.uksouth_staging
         azurerm.core = azurerm
     }
+    allowed_hosts = {
+        ipv4 = local.secure_origins
+        ipv6 = local.secure_origins_v6
+    }
     common = {
         name = "staging"
         location = "uksouth"

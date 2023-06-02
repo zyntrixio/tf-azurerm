@@ -167,7 +167,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.57.0"
+            version = "3.59.0"
         }
         random = {
             source = "hashicorp/random"
@@ -264,19 +264,6 @@ module "uksouth_firewall" {
 module "uksouth-storage" {
     source = "./uksouth/storage"
     loganalytics_id = module.uksouth_loganalytics.id
-}
-
-module "uksouth_opensearch" {
-    source = "./uksouth/opensearch"
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth_firewall.vnet_id
-            vnet_name = module.uksouth_firewall.vnet_name
-            resource_group_name = module.uksouth_firewall.resource_group_name
-        }
-    }
-    private_dns = local.private_dns.root_defaults # OpenSearch requires CN changes to support moving this to core
-    ip_range = local.cidrs.uksouth.opensearch
 }
 
 module "uksouth_sftp" {

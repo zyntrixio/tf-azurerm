@@ -6,6 +6,13 @@ variable "common" {
     })
 }
 
+variable "allowed_hosts" {
+    type = object({
+        ipv4 = list(string),
+        ipv6 = list(string),
+    })
+}
+
 variable "firewall" {
     type = object({
         resource_group_name = string
@@ -118,7 +125,6 @@ variable "kube" {
         pool_os_disk_type = optional(string, "Ephemeral")
         pool_os_disk_size_gb = optional(number, 128)
         pool_os_sku = optional(string, "Mariner")
-        authorized_ip_ranges = optional(list(string))
         aad_admin_group_object_ids = optional(list(string), ["0140ccf4-f68c-4daa-b531-97e5292ec364"])
         maintenance_day = optional(string, "Monday")
         additional_node_pools = optional(map(object({

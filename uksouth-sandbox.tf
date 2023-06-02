@@ -231,6 +231,10 @@ module "uksouth_sandbox_environment" {
 
 locals {
     sandbox_common = {
+        allowed_hosts = {
+            ipv4 = local.secure_origins
+            ipv6 = local.secure_origins_v6
+        }
         iam = {
             (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
             (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
@@ -278,6 +282,7 @@ module "uksouth_retail" {
         location = "uksouth"
         cidr = "10.21.0.0/16"
     }
+    allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube
@@ -299,6 +304,7 @@ module "uksouth_barclays" {
         location = "uksouth"
         cidr = "10.22.0.0/16"
     }
+    allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube
@@ -320,6 +326,7 @@ module "uksouth_lloyds" {
         location = "uksouth"
         cidr = "10.23.0.0/16"
     }
+    allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube

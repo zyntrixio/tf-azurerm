@@ -59,7 +59,7 @@ resource "azurerm_kubernetes_cluster" "i" {
     }
 
     api_server_access_profile {
-        authorized_ip_ranges = var.kube.authorized_ip_ranges
+        authorized_ip_ranges = var.allowed_hosts.ipv4
         vnet_integration_enabled = true
         subnet_id = azurerm_subnet.kube_controller.id
     }
@@ -85,6 +85,10 @@ resource "azurerm_kubernetes_cluster" "i" {
         managed = true
         azure_rbac_enabled = true
         admin_group_object_ids = var.kube.aad_admin_group_object_ids
+    }
+
+    storage_profile {
+        blob_driver_enabled = true
     }
 
     maintenance_window {

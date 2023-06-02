@@ -19,7 +19,7 @@ resource "azurerm_storage_account" "i" {
     cross_tenant_replication_enabled = false
 }
 
-resource "azurerm_monitor_diagnostic_setting" "st" {
+resource "azurerm_monitor_diagnostic_setting" "blob" {
     count = var.storage.enabled && var.loganalytics.enabled ? 1 : 0
 
     name = "loganalytics"
@@ -109,38 +109,4 @@ resource "azurerm_storage_management_policy" "st" {
             }
         }
     }
-}
-
-resource "azurerm_key_vault_secret" "st" {
-    count = var.storage.enabled && var.keyvault.enabled ? 1 : 0
-
-    name = "infra-storage-connection-details"
-    key_vault_id = azurerm_key_vault.i[0].id
-    content_type = "application/json"
-    value = jsonencode({
-        "connection_string_primary" = azurerm_storage_account.i[0].primary_connection_string,
-        "connection_string_secondary" = azurerm_storage_account.i[0].secondary_connection_string,
-        "account_name" = azurerm_storage_account.i[0].name,
-        "key_primary" = azurerm_storage_account.i[0].primary_access_key,
-        "key_secondary" = azurerm_storage_account.i[0].secondary_access_key,
-    })
-    tags = {
-        k8s_secret_name = "azure-storage"
-    }
-
-    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
-}
-
-### Temporary permissions, delete after all service migrations are complete
-
-resource "azurerm_role_assignment" "st_iam_temp_1" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "st_rw") &&
-            var.storage.enabled
-    }
-
-    scope = azurerm_storage_account.i[0].id
-    role_definition_name = "Storage Blob Data Contributor"
-    principal_id = each.key
 }

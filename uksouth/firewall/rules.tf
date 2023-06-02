@@ -654,33 +654,6 @@ resource "azurerm_firewall_nat_rule_collection" "prod_bypass" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "opensearch" {
-    name = "opensearch"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 160
-    action = "Dnat"
-
-    rule {
-        name = "http"
-        source_addresses = ["*"] # Allow all hosts to let certbot check domain
-        destination_ports = ["80"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.1.4"
-        translated_port = "80"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "https"
-        source_addresses = var.secure_origins
-        destination_ports = ["443"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = "192.168.1.4"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -729,22 +702,6 @@ resource "azurerm_firewall_network_rule_collection" "bastion" {
         source_addresses = ["192.168.4.0/24"]
         destination_ports = ["22"]
         destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "opensearch" {
-    name = "rfc1918-to-opensearch"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 180
-    action = "Allow"
-
-    rule {
-        name = "opensearch"
-        source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-        destination_ports = ["9200"]
-        destination_addresses = ["192.168.1.0/24"]
         protocols = ["TCP"]
     }
 }
