@@ -20,7 +20,7 @@ module "uksouth_perf" {
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw"] }
         (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
-        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_ro", "kv_ro"] }
+        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     }
     managed_identities = {
         "cert-manager" = { namespace = "cert-manager" }
