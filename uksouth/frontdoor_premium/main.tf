@@ -266,13 +266,13 @@ locals {
 
         # Retail Environment
         "uksouth_retail_api" = {
-            "endpoint" = "uksouth-sandbox"
+            "endpoint" = "uksouth-retail"
             "domain" = "api.retail.gb.bink.com"
             "cert_name" = "acmebot-retail-gb-bink-com"
             "origins" = {"api.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
         }
         "uksouth_retail_docs" = {
-            "endpoint" = "uksouth-sandbox"
+            "endpoint" = "uksouth-retail"
             "domain" = "docs.retail.gb.bink.com"
             "cert_name" = "acmebot-retail-gb-bink-com"
             "origins" = {"docs.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
