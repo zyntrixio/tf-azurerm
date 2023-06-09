@@ -185,7 +185,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "internal" {
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_airbyte"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_prefect"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_retailer"].id,
-                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_policies"].id,
+                        # azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_policies"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_tableau_admin"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_airbyte"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_prefect"].id,

@@ -45,6 +45,8 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         source_addresses = ["*"]
         target_fqdns = [ 
             "xb90214.eu-west-2.aws.snowflakecomputing.com",
+            "ee39463.eu-west-2.aws.snowflakecomputing.com",
+            "ci34413.eu-west-2.aws.snowflakecomputing.com",
             "hub.getdbt.com",
         ]
         protocol {
