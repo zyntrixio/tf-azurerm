@@ -285,6 +285,12 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"stats.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
+        "uksouth_prod_grafana" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "grafana.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {"grafana.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
+        }
         "uksouth_prod_kratos" = {
             "endpoint" = "uksouth-prod"
             "domain" = "service-api.gb.bink.com"
