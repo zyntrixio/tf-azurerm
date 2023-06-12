@@ -931,6 +931,25 @@ resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
     }
 }
 
+resource "azurerm_firewall_network_rule_collection" "grafana_prometheus" {
+    name = "grafana_to_prometheus"
+    azure_firewall_name = azurerm_firewall.firewall.name
+    resource_group_name = azurerm_firewall.firewall.resource_group_name
+    priority = 310
+    action = "Allow"
+
+    rule {
+        name = "production"
+        source_addresses = [var.aks_cidrs.prod]
+        destination_ports = ["9090"]
+        destination_addresses = [
+            cidrhost(cidrsubnet(var.aks_cidrs.staging, 1, 0), 32766),
+            cidrhost(cidrsubnet(var.aks_cidrs.dev, 1, 0), 32766),
+        ]
+        protocols = ["TCP"]
+    }
+}
+
 resource "azurerm_firewall_network_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
