@@ -69,13 +69,7 @@ module "keyvault_acmebot" {
 
     auth_settings = {
         enabled = true
-        default_provider = "azureactivedirectory"
-        require_authentication = true
-        unauthenticated_action = "RedirectToLoginPage"
-        login = {
-            token_store_enabled = true
-        }
-        active_directory_v2 = {
+        active_directory = {
             client_id = "06cd27b7-0fe3-4dbc-9f04-690a64927438"
             allowed_audiences = ["api://06cd27b7-0fe3-4dbc-9f04-690a64927438"]
             tenant_auth_endpoint = "https://sts.windows.net/a6e2367a-92ea-4e5a-b565-723830bcc095/v2.0",
