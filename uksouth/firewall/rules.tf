@@ -599,6 +599,8 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
         target_fqdns = [
             "dev-dataconnect.givex.com",
             "beta-dataconnect.givex.com",
+            "dc-uk2.givex.com",
+            "dc-uk1.givex.com",
         ]
         protocol {
             port = "50104"
