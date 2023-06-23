@@ -388,6 +388,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "bpl.gb.bink.com",
             "bpl.staging.gb.bink.com",
             "bpl.dev.gb.bink.com",
+            "portal.staging.gb.bink.com",
             "*.bink.sh",
             "bink.com"
         ]
