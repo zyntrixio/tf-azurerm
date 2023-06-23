@@ -249,6 +249,12 @@ locals {
             "cert_name" = "acmebot-lloyds-gb-bink-com"
             "origins" = {"docs.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
+        "uksouth_lloyds_reflector" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "reflector.lloyds.gb.bink.com"
+            "cert_name" = "acmebot-lloyds-gb-bink-com"
+            "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
 
         # Barclays Environment
         "uksouth_barclays_api" = {
@@ -403,12 +409,6 @@ locals {
             "domain" = "retail.sandbox.gb.bink.com"
             "cert_name" = "acmebot-sandbox-gb-bink-com"
             "origins" = {"api.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
-        }
-        "uksouth_sandbox_sit_reflector" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "lloyds-sit-reflector.sandbox.gb.bink.com"
-            "cert_name" = "acmebot-sandbox-gb-bink-com"
-            "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
     }
 
