@@ -167,7 +167,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.62.0"
+            version = "3.62.1"
         }
         random = {
             source = "hashicorp/random"
@@ -282,8 +282,10 @@ module "uksouth_sftp" {
 
 module "uksouth_loganalytics" {
     source = "./uksouth/loganalytics"
-    kiroshi_ids = [
-        module.uksouth_prod.managed_identities.kiroshi
+    managed_identities = [
+        module.uksouth_prod.managed_identities.kiroshi,
+        module.uksouth_prod.managed_identities.snowstorm,
+        module.uksouth_staging.managed_identities.snowstorm,
     ]
 }
 
