@@ -1,5 +1,5 @@
 locals {
-    identity_namespace_map = merge(flatten(([
+    identity_namespace_map = merge(([
         for k, v in var.managed_identities : {
             for namespace in v["namespaces"] :
                 "${k}_${namespace}" => {
@@ -7,7 +7,7 @@ locals {
                     namespace = namespace
                 }
         }
-    ]))...)
+    ])...)
 }
 
 resource "azurerm_user_assigned_identity" "i" {
