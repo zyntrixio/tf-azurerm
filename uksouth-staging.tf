@@ -14,9 +14,9 @@ module "uksouth_staging" {
         cidr = "10.31.0.0/16"
     }
     iam = {
-        (local.aad_user.chris_pressland) = { assigned_to = ["st_rw", "kv_su"] }
-        (local.aad_user.nathan_read) = { assigned_to = ["st_rw", "kv_su"] }
-        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["st_rw", "kv_su"] }
+        (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
+        (local.aad_user.nathan_read) = { assigned_to = ["kv_su"] }
+        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw"] }
         (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_ro"] }
