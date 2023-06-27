@@ -1,3 +1,15 @@
+locals {
+    identity_namespace_map = merge(flatten(([
+        for k, v in var.managed_identities : {
+            for namespace in v["namespaces"] :
+                "${k}_${namespace}" => {
+                    identity = k
+                    namespace = namespace
+                }
+        }
+    ]))...)
+}
+
 resource "azurerm_user_assigned_identity" "i" {
     for_each = var.managed_identities
 
@@ -7,14 +19,14 @@ resource "azurerm_user_assigned_identity" "i" {
 }
 
 resource "azurerm_federated_identity_credential" "i" {
-    for_each = { for k, v in var.managed_identities : k => v if var.kube.enabled }
+    for_each = { for k, v in local.identity_namespace_map : k => v if var.kube.enabled}
 
-    name = "${azurerm_resource_group.i.name}-${each.key}"
+    name = "${azurerm_resource_group.i.name}-${each.value.identity}-${each.value.namespace}"
     resource_group_name = azurerm_resource_group.i.name
     audience = ["api://AzureADTokenExchange"]
     issuer = azurerm_kubernetes_cluster.i[0].oidc_issuer_url
-    parent_id = azurerm_user_assigned_identity.i[each.key].id
-    subject = "system:serviceaccount:${each.value.namespace}:${each.key}"
+    parent_id = azurerm_user_assigned_identity.i[each.value.identity].id
+    subject = "system:serviceaccount:${each.value.namespace}:${each.value.identity}"
 }
 
 resource "azurerm_key_vault_secret" "mi" {

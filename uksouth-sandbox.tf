@@ -245,14 +245,14 @@ locals {
             (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
         }
         managed_identities = {
-            "angelia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-            "cert-manager" = { namespace = "cert-manager" }
-            "europa" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-            "harmonia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-            "hermes" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-            "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
-            "metis" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-            "midas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+            "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "cert-manager" = { namespaces = ["cert-manager"] }
+            "europa" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
+            "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         }
         kube = {
             enabled = true

@@ -25,20 +25,20 @@ module "uksouth_dev" {
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
         "boreas" = { assigned_to = ["kv_ro"] }
-        "carina" = { assigned_to = ["kv_ro"], namespace = "bpl" }
-        "cert-manager" = { namespace = "cert-manager" }
-        "cosmos" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
+        "cert-manager" = { namespaces = ["cert-manager"] }
+        "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_rw"] }
-        "event-horizon" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
-        "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
+        "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }
-        "polaris" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "polaris" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "snowstorm" = { assigned_to = ["kv_ro"] }
-        "vela" = { assigned_to = ["kv_ro"], namespace = "bpl" }
+        "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "zephyrus" = { assigned_to = ["kv_ro"] }
     }
     kube = {

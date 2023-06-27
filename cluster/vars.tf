@@ -31,7 +31,7 @@ variable "firewall" {
 variable "managed_identities" {
     type = map(object({
         assigned_to = optional(list(string), [])
-        namespace = optional(string, "default")
+        namespaces = optional(list(string), ["default"])
     }))
 }
 

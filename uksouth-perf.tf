@@ -23,17 +23,17 @@ module "uksouth_perf" {
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     }
     managed_identities = {
-        "cert-manager" = { namespace = "cert-manager" }
-        "keyvault2kube" = { assigned_to = ["kv_ro"], namespace = "kube-system" }
-        "locust" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "angelia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "boreas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "europa" = { assigned_to = ["kv_rw"], namespace = "olympus" }
-        "hermes" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "midas" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "harmonia" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "zephyrus" = { assigned_to = ["kv_ro"], namespace = "olympus" }
-        "atalanta" = { assigned_to = ["kv_ro"], namespace = "olympus" }
+        "cert-manager" = { namespaces = ["cert-manager"] }
+        "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
+        "locust" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "europa" = { assigned_to = ["kv_rw"], namespaces = ["olympus"] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "atalanta" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     }
     kube = {
         enabled = true
