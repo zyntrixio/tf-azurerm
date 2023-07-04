@@ -891,7 +891,7 @@ resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
         name = "barclays"
         source_addresses = ["*"]
         destination_ports = ["10023"]
-        destination_addresses = ["157.83.104.20"]
+        destination_addresses = ["157.83.104.20", "167.203.3.33", "167.203.19.33"]
         protocols = ["TCP"]
     }
 }
