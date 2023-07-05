@@ -172,6 +172,20 @@ resource "azurerm_role_assignment" "aks_iam" {
     principal_id = each.key
 }
 
+resource "azurerm_role_assignment" "aks_iam_nodes" {
+    for_each = {
+        for k, v in var.iam : k => v
+            if contains(v["assigned_to"], "aks_ro") ||
+               contains(v["assigned_to"], "aks_rw") ||
+               contains(v["assigned_to"], "aks_su") &&
+            var.kube.enabled
+    }
+    
+    scope = azurerm_kubernetes_cluster.i[0].node_resource_group_id
+    role_definition_name = "Reader"
+    principal_id = each.key
+}
+
 resource "azurerm_role_assignment" "aks_iam_ro" {
     for_each = {
         for k, v in var.iam : k => v
