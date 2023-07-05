@@ -14,7 +14,7 @@ data:
           enabled = true
           exclude_namespaces = ["kube-system","gatekeeper-system"]
        [log_collection_settings.env_var]
-          enabled = true
+          enabled = false
        [log_collection_settings.enrich_container_logs]
           enabled = false
        [log_collection_settings.collect_all_kube_events]
