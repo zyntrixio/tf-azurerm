@@ -534,6 +534,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "www.maximiles.co.uk",
             "london-capi.ecrebo.com",
             "london-capi-test.ecrebo.com",
+            "atreemouat.itsucomms.com",
         ]
         protocol {
             port = "80"
