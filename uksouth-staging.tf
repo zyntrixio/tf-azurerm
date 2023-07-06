@@ -48,6 +48,22 @@ module "uksouth_staging" {
         enabled = true
         flux_enabled = true
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = {
+            "rabbitmq" = {
+                node_count = 3,
+                node_taints = ["app=rabbitmq:NoSchedule"],
+                os_sku = "AzureLinux",
+                vm_size = "Standard_B2s"
+                os_disk_size_gb = 30
+            }
+            "redis" = {
+                node_count = 1,
+                node_taints = ["app=redis:NoSchedule"],
+                os_sku = "AzureLinux",
+                vm_size = "Standard_B2s"
+                os_disk_size_gb = 30
+            }
+        }
     }
     storage = {
         enabled = true
