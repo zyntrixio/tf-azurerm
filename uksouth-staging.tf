@@ -43,6 +43,7 @@ module "uksouth_staging" {
         "styx" = { assigned_to = ["kv_ro"] }
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "zephyrus" = { assigned_to = ["kv_ro"] }
+        "prefect" = { assigned_to = ["kv_ro"] }
     }
     kube = {
         enabled = true
