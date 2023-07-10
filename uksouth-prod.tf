@@ -46,6 +46,7 @@ module "uksouth_prod" {
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "wasabireporter" = { assigned_to = ["kv_ro"], namespaces = ["devops"] }
         "zephyrus" = { assigned_to = ["kv_ro"] }
+        "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
     }
     kube = {
         enabled = true
