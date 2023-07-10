@@ -35,6 +35,12 @@ resource "azurerm_role_assignment" "mickpublic" {
     principal_id = "343299d4-0a39-4109-adce-973ad29d0183"  # Mick Latham
 }
 
+resource "azurerm_role_assignment" "danpublic" {
+    scope = azurerm_storage_account.binkpublic.id
+    role_definition_name = "Contributor"
+    principal_id = "103d8795-0975-4301-ae8c-795b21d80284"  # Dan Hodgson
+}
+
 resource "azurerm_storage_account" "binkarchives" {
     name = "binkarchives"
     resource_group_name = azurerm_resource_group.rg.name
