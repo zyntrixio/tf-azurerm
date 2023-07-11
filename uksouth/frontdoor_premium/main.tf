@@ -197,12 +197,6 @@ locals {
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
         }
-        "uksouth_sandbox_barclays_oat" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "barclays-oat.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
-            "origins" = {"barclays-oat.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
-        }
         "uksouth_sandbox_lloyds_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "lloyds-sit.sandbox.gb.bink.com"

@@ -29,16 +29,6 @@ module "uksouth_sandbox_environment" {
             object_id = local.aad_group.qa,
             role = "Contributor",
         },
-        barclays-oat-backend = {
-            storage_id = "barclays-oat",
-            object_id  = local.aad_group.backend,
-            role       = "Contributor",
-        },
-        barclays-oat-qa = {
-            storage_id = "barclays-oat",
-            object_id = local.aad_group.qa,
-            role = "Contributor",
-        },
         perf-api-v1-backend = {
             storage_id = "perf-api-v1",
             object_id = local.aad_group.backend,
@@ -99,7 +89,6 @@ module "uksouth_sandbox_environment" {
     }
 
     additional_keyvaults = [
-        "bink-uksouth-barclay-oat",
         "bink-uksouth-perf-api-v1",
         "bink-uksouth-perf-api-v2",
         "bink-uksouth-perf-txm",
@@ -116,12 +105,6 @@ module "uksouth_sandbox_environment" {
             high_availability = false
             databases = [
                 "postgres",
-                "barclays_oat_atlas",
-                "barclays_oat_europa",
-                "barclays_oat_hades",
-                "barclays_oat_hermes",
-                "barclays_oat_midas",
-                "barclays_oat_pontus",
                 "perf_api_v1_atlas",
                 "perf_api_v1_europa",
                 "perf_api_v1_hades",
@@ -141,15 +124,6 @@ module "uksouth_sandbox_environment" {
                 "perf_bpl_cosmos",
                 "perf_bpl_polaris",
                 "perf_bpl_vela",
-                "perf_data_api_reflector",
-                "perf_data_atlas",
-                "perf_data_europa",
-                "perf_data_hades",
-                "perf_data_harmonia",
-                "perf_data_hermes",
-                "perf_data_midas",
-                "perf_data_pontus",
-                "perf_data_tableau",
             ]
         },
         archive = {
@@ -173,11 +147,6 @@ module "uksouth_sandbox_environment" {
     storage_config = {
         common = {
             name = "binkuksouthsandbox",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
-        barclays-oat = {
-            name = "binkuksouthbarclaysoat",
             account_replication_type = "ZRS",
             account_tier = "Standard"
         },
