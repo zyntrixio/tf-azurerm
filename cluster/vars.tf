@@ -13,6 +13,13 @@ variable "allowed_hosts" {
     })
 }
 
+variable "backups" {
+    type = object({
+      redundancy = optional(string, "LocallyRedundant")
+    })
+    default = {}
+}
+
 variable "firewall" {
     type = object({
         resource_group_name = string
@@ -73,6 +80,7 @@ variable "postgres" {
         version = optional(number, 14)
         storage_mb = optional(number, 131072)
         ha = optional(bool, false)
+        backup_retention_days = optional(number, 7)
         databases = optional(list(string), [
             "api_reflector",
             "atlas",

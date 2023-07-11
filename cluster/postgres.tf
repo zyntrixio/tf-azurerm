@@ -43,6 +43,7 @@ resource "azurerm_postgresql_flexible_server" "i" {
     administrator_password = random_password.pg.result
 
     storage_mb = var.postgres.storage_mb
+    backup_retention_days = var.postgres.backup_retention_days
 
     dynamic "high_availability" {
         for_each = var.postgres.ha ? [1] : []

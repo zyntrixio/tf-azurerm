@@ -11,6 +11,9 @@ module "uksouth_prod" {
         location = "uksouth"
         cidr = "10.11.0.0/16"
     }
+    backups = {
+        redundancy = "GeoRedundant"
+    }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
@@ -72,6 +75,7 @@ module "uksouth_prod" {
         enabled = true,
         sku = "GP_Standard_D8ds_v4",
         ha = true,
+        backup_retention_days = 35
         storage_mb = 1048576,
         extra_databases = ["asset_register"],
     }
