@@ -29,6 +29,7 @@ module "uksouth_prod" {
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
         "boreas" = { assigned_to = ["kv_ro"] }
+        "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cert-manager" = { namespaces = ["cert-manager"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
