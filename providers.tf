@@ -125,4 +125,9 @@ provider "azurerm" {
   features {}
 }
 
+provider "cloudamqp" {
+    apikey = "09929459-8feb-476d-8831-d36daf691713"
+    enable_faster_instance_destroy = true
+}
+
 provider "random" {}

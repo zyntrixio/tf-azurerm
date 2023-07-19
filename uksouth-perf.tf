@@ -39,9 +39,11 @@ module "uksouth_perf" {
         enabled = true
         sku_tier = "Standard"
         authorized_ip_ranges = local.secure_origins
-        additional_node_pools = {
-            "rabbitmq" = { node_count = 3, node_taints = ["app=rabbitmq:NoSchedule"] }
-        }
+    }
+    cloudamqp = {
+        enabled = true
+        plan = "bunny-3"
+        vpc_id = module.uksouth_cloudamqp.vpc.id
     }
     storage = { enabled = true }
     loganalytics = { enabled = true }

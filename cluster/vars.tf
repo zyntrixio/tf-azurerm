@@ -112,6 +112,17 @@ variable "redis" {
     })
 }
 
+variable "cloudamqp" {
+    type = object({
+        enabled = optional(bool, false)
+        plan = optional(string, "squirrel-1")
+        region = optional(string, "azure-arm::uksouth")
+        vpc_id = optional(string)
+        subnet = optional(string, "192.168.1.0/24")
+    })
+    default = {}
+}
+
 variable "tableau" {
     type = object({
         enabled = optional(bool, false)

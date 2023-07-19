@@ -60,13 +60,12 @@ locals {
     cidrs = {
         uksouth = {
             firewall = "192.168.0.0/24"
-            opensearch = "192.168.1.0/24"
+            cloudamqp = "192.168.1.0/24"
             wireguard = "192.168.2.0/24"
             bastion = "192.168.4.0/24"
             sftp = "192.168.20.0/24"
             tableau = "192.168.101.0/24"
             aks = {
-                tools = "10.50.0.0/16"
                 dev = "10.41.0.0/16"
                 staging = "10.31.0.0/16"
                 sandbox = "10.20.0.0/16"
@@ -168,7 +167,10 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.64.0"
+            version = "3.65.0"
+        }
+        cloudamqp = {
+            source = "cloudamqp/cloudamqp"
         }
         random = {
             source = "hashicorp/random"
@@ -180,6 +182,11 @@ data "azurerm_subscription" "primary" {}
 
 module "uksouth-core" {
     source = "./uksouth/core"
+}
+
+module "uksouth_cloudamqp" {
+    source = "./cloudamqp"
+    subnet = local.cidrs.uksouth.cloudamqp
 }
 
 module "uksouth_bastion" {

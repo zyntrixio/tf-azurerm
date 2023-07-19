@@ -98,6 +98,13 @@ resource "azurerm_subnet" "tableau" {
     address_prefixes = [cidrsubnet(var.common.cidr, 8, 131)] #10.0.131.0/24
 }
 
+resource "azurerm_subnet" "cloudamqp" {
+    name = "CloudAMQP"
+    resource_group_name = azurerm_resource_group.i.name
+    virtual_network_name = azurerm_virtual_network.i.name
+    address_prefixes = [cidrsubnet(var.common.cidr, 8, 132)] #10.0.132.0/24
+}
+
 resource "azurerm_route_table" "i" {
     name = azurerm_resource_group.i.name
     resource_group_name = azurerm_resource_group.i.name

@@ -51,6 +51,10 @@ module "uksouth_staging" {
         flux_enabled = true
         authorized_ip_ranges = local.secure_origins
     }
+    cloudamqp = {
+        enabled = true
+        vpc_id = module.uksouth_cloudamqp.vpc.id
+    }
     storage = {
         enabled = true
         rules = [

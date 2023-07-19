@@ -227,15 +227,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
-        name = "RabbitMQ"
-        source_addresses = ["*"]
-        target_fqdns = ["dl.cloudsmith.io"]
-        protocol {
-            port = "443"
-            type = "Https"
-        }
-    }
-    rule {
         name = "Azure Endpoints"
         source_addresses = ["*"]
         # From https://docs.microsoft.com/en-us/azure/azure-monitor/platform/om-agents#network
@@ -356,17 +347,6 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         protocol {
           port = "443"
           type = "Https"
-        }
-    }
-    rule {
-        name = "MobSF"
-        source_addresses = [var.aks_cidrs.tools]
-        target_fqdns = [
-            "www.baidu.com",
-        ]
-        protocol {
-            port = "443"
-            type = "Https"
         }
     }
 }
@@ -909,28 +889,6 @@ resource "azurerm_firewall_network_rule_collection" "prod_amqp" {
         source_addresses = var.production_cidrs
         destination_ports = ["5671", "15671"]
         destination_addresses = ["192.168.22.0/24"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "tools_prom_access" {
-    name = "tools_prom_access"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 300
-    action = "Allow"
-
-    rule {
-        name = "http"
-        source_addresses = [var.aks_cidrs.tools]
-        destination_ports = ["9090"]
-        destination_addresses = [
-            cidrhost(cidrsubnet(var.aks_cidrs.prod, 1, 0), 32766),
-            cidrhost(cidrsubnet(var.aks_cidrs.sandbox, 1, 0), 32766),
-            cidrhost(cidrsubnet(var.aks_cidrs.staging, 1, 0), 32766),
-            cidrhost(cidrsubnet(var.aks_cidrs.dev, 1, 0), 32766),
-            cidrhost(cidrsubnet(var.aks_cidrs.tools, 1, 0), 32766),
-        ]
         protocols = ["TCP"]
     }
 }

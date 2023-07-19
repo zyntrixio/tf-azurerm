@@ -229,6 +229,10 @@ locals {
             pool_vm_size = "Standard_B4ms"
             pool_os_disk_size_gb = 32
         }
+        cloudamqp = {
+            enabled = true
+            vpc_id = module.uksouth_cloudamqp.vpc.id
+        }
         storage = {
             enabled = true
             rules = [
@@ -255,6 +259,7 @@ module "uksouth_retail" {
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube
+    cloudamqp = local.sandbox_common.cloudamqp
     storage = local.sandbox_common.storage
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
@@ -277,6 +282,7 @@ module "uksouth_barclays" {
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube
+    cloudamqp = local.sandbox_common.cloudamqp
     storage = local.sandbox_common.storage
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
@@ -299,6 +305,7 @@ module "uksouth_lloyds" {
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
     kube = local.sandbox_common.kube
+    cloudamqp = local.sandbox_common.cloudamqp
     storage = local.sandbox_common.storage
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
