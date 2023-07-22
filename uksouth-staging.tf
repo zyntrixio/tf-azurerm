@@ -67,7 +67,12 @@ module "uksouth_staging" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true }
-    redis = { enabled = false }
+    redis = {
+        enabled = true
+        capacity = 0
+        family = "C"
+        sku_name = "Basic"
+    }
     tableau = { 
         enabled = true
         size = "Standard_E2ads_v5"

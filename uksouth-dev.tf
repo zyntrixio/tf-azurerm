@@ -61,5 +61,10 @@ module "uksouth_dev" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true }
-    redis = { enabled = false }
+    redis = {
+        enabled = true
+        capacity = 0
+        family = "C"
+        sku_name = "Basic"
+    }
 }

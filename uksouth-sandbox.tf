@@ -233,6 +233,12 @@ locals {
             enabled = true
             vpc_id = module.uksouth_cloudamqp.vpc.id
         }
+        redis = {
+            enabled = true
+            capacity = 0
+            family = "C"
+            sku_name = "Basic"
+        }
         storage = {
             enabled = true
             rules = [
@@ -264,7 +270,7 @@ module "uksouth_retail" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
-    redis = { enabled = false }
+    redis = local.sandbox_common.redis
 }
 
 module "uksouth_barclays" {
@@ -287,7 +293,7 @@ module "uksouth_barclays" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
-    redis = { enabled = false }
+    redis = local.sandbox_common.redis
 }
 
 module "uksouth_lloyds" {
@@ -310,5 +316,5 @@ module "uksouth_lloyds" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
-    redis = { enabled = false }
+    redis = local.sandbox_common.redis
 }

@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "amqp" {
         "pass" = local.amqp_credentials.pass
         "host" = cloudamqp_instance.i[0].host
         "vhost" = local.amqp_credentials.user
-        "admin" = "https://${cloudamqp_instance.i[0].host}/"
+        "admin" = "https://${cloudamqp_instance.i[0].host}/\n"
     })
     tags = {
         k8s_secret_name = "azure-cloudamqp"

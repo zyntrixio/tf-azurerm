@@ -29,11 +29,3 @@ resource "azurerm_role_assignment" "la_iam" {
     role_definition_name = "Reader"
     principal_id = each.key
 }
-
-resource "azurerm_monitor_workspace" "i" {
-    count = var.loganalytics.enabled ? 1 : 0
-
-    name = azurerm_resource_group.i.name
-    location = azurerm_resource_group.i.location
-    resource_group_name = azurerm_resource_group.i.name
-}

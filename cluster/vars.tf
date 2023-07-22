@@ -109,6 +109,9 @@ variable "postgres" {
 variable "redis" {
     type = object({
         enabled = bool
+        capacity = optional(number, 1)
+        family = optional(string, "P")
+        sku_name = optional(string, "Premium")
     })
 }
 
