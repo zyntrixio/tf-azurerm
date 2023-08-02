@@ -131,6 +131,7 @@ locals {
         cyber_sec = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
         devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
         backend = "219194f6-b186-4146-9be7-34b731e19001"
+        ba = "27678d85-c6b3-49b5-b1b7-0792940f4e13"
     }
     aad_user = {
         chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"

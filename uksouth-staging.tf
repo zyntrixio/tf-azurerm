@@ -21,6 +21,7 @@ module "uksouth_staging" {
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw"] }
         (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_ro"] }
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
+        (local.aad_group.ba) = { assigned_to = ["st_rw"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
