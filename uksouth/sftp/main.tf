@@ -98,34 +98,19 @@ resource "azurerm_network_security_group" "nsg" {
         direction = "Inbound"
     }
 
-    dynamic security_rule {
-        for_each = {
-            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "*"},
-            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
-        }
-        content {
-            name = security_rule.key
-            priority = security_rule.value.priority
-            access = "Allow"
-            protocol = "Tcp"
-            direction = "Inbound"
-            source_port_range = "*"
-            source_address_prefix = security_rule.value.source
-            destination_port_range = security_rule.value.port
-            destination_address_prefix = var.ip_range
-        }
+    security_rule {
+        name = "Allow_TCP_22"
+        priority = "100"
+        access = "Allow"
+        protocol = "Tcp"
+        direction = "Inbound"
+        source_port_range = "*"
+        source_address_prefix = "*"
+        destination_port_range = "22"
+        destination_address_prefix = var.ip_range
     }
 
     tags = var.tags
-}
-
-resource "azurerm_monitor_diagnostic_setting" "nsg" {
-    name = "binkuksouthlogs"
-    target_resource_id = azurerm_network_security_group.nsg.id
-    log_analytics_workspace_id = var.loganalytics_id
-
-    enabled_log { category = "NetworkSecurityGroupEvent" }
-    enabled_log { category = "NetworkSecurityGroupRuleCounter" }
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg-assoc" {

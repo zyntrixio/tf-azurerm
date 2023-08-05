@@ -16,25 +16,13 @@ variable common {
 
 variable "dns" {
     type = object({
-        record = string
         resource_group_name = string
         zone_name = string
     })
 }
 
-locals {
-    storage_allowed_ips = [for ip in var.common.secure_origins_v4: replace(ip, "/32", "")]
-}
-
-output "ip_addresses" {
-    value = {
-        ipv4 = azurerm_public_ip.v4.ip_address
-        ipv6 = azurerm_public_ip.v6.ip_address
-    }
-}
-
 resource "azurerm_resource_group" "i" {
-    name = "${var.common.location}-vpn"
+    name = "${var.common.location}-website"
     location = var.common.location
 }
 
@@ -58,16 +46,48 @@ resource "azurerm_public_ip" "v6" {
     zones = [ "1", "2", "3" ]
 }
 
-resource "azurerm_dns_a_record" "i" {
-    name = var.dns.record
+resource "azurerm_dns_a_record" "apex" {
+    name = "@"
     zone_name = var.dns.zone_name
     resource_group_name = var.dns.resource_group_name
     ttl = 3600
     records = [azurerm_public_ip.v4.ip_address]
 }
 
-resource "azurerm_dns_aaaa_record" "i" {
-    name = var.dns.record
+resource "azurerm_dns_aaaa_record" "apex" {
+    name = "@"
+    zone_name = var.dns.zone_name
+    resource_group_name = var.dns.resource_group_name
+    ttl = 3600
+    records = [azurerm_public_ip.v6.ip_address]
+}
+
+resource "azurerm_dns_a_record" "www" {
+    name = "www"
+    zone_name = var.dns.zone_name
+    resource_group_name = var.dns.resource_group_name
+    ttl = 3600
+    records = [azurerm_public_ip.v4.ip_address]
+}
+
+resource "azurerm_dns_aaaa_record" "www" {
+    name = "www"
+    zone_name = var.dns.zone_name
+    resource_group_name = var.dns.resource_group_name
+    ttl = 3600
+    records = [azurerm_public_ip.v6.ip_address]
+}
+
+resource "azurerm_dns_a_record" "rc" {
+    name = "rc"
+    zone_name = var.dns.zone_name
+    resource_group_name = var.dns.resource_group_name
+    ttl = 3600
+    records = [azurerm_public_ip.v4.ip_address]
+}
+
+resource "azurerm_dns_aaaa_record" "rc" {
+    name = "rc"
     zone_name = var.dns.zone_name
     resource_group_name = var.dns.resource_group_name
     ttl = 3600
@@ -89,29 +109,6 @@ resource "azurerm_subnet" "i" {
     service_endpoints = [ "Microsoft.Storage" ]
 }
 
-resource "azurerm_storage_account" "i" {
-    name = "bink${var.common.location}vpn"
-    resource_group_name = azurerm_resource_group.i.name
-    location = azurerm_resource_group.i.location
-
-    cross_tenant_replication_enabled = false
-    account_tier = "Standard"
-    account_replication_type = "ZRS"
-
-    network_rules {
-        default_action = "Deny"
-        ip_rules = local.storage_allowed_ips
-        virtual_network_subnet_ids = [azurerm_subnet.i.id]
-    }
-}
-
-resource "azurerm_storage_share" "users" {
-  name = "users"
-  access_tier = "TransactionOptimized"
-  storage_account_name = azurerm_storage_account.i.name
-  quota = 50
-}
-
 resource "azurerm_network_security_group" "i" {
     name = azurerm_resource_group.i.name
     resource_group_name = azurerm_resource_group.i.name
@@ -129,20 +126,24 @@ resource "azurerm_network_security_group" "i" {
         destination_port_range = "*"
     }
 
-    security_rule {
-        name = "Wireguard"
-        access = "Allow"
-        priority = 200
-        direction = "Inbound"
-        protocol = "Udp"
-        source_address_prefix = "*"
-        source_port_range = "*"
-        destination_address_prefix = "*"
-        destination_port_range = "51820"
+
+    dynamic security_rule {
+        for_each = { for id, port in ["80", "443"] : port => id }
+        content {
+            name = "Port_${security_rule.key}"
+            access = "Allow"
+            priority = security_rule.value + 200
+            direction = "Inbound"
+            protocol = "Tcp"
+            source_address_prefix = "*"
+            source_port_range = "*"
+            destination_address_prefix = "*"
+            destination_port_range = security_rule.key
+        }
     }
 
     dynamic security_rule {
-        for_each = { for id, cidr in concat(var.common.secure_origins_v4, var.common.secure_origins_v6): cidr => id}
+        for_each = { for id, cidr in concat(var.common.secure_origins_v4, var.common.secure_origins_v6) : cidr => id }
         content {
             name = "SSH_Rule_${security_rule.value}"
             access = "Allow"

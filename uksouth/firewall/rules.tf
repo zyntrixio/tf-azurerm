@@ -1,7 +1,3 @@
-locals {
-    lumilinks_ips = ["51.182.84.85", "152.37.65.88"]
-}
-
 resource "azurerm_firewall_application_rule_collection" "software" {
     name = "Software"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -613,33 +609,6 @@ resource "azurerm_firewall_nat_rule_collection" "sftp" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "prod_bypass" {
-    name = "prod_bypass"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 105
-    action = "Dnat"
-
-    rule {
-        name = "prod0"
-        source_addresses = concat(var.secure_origins, ["167.172.61.234/32", "167.172.53.20/32"])
-        destination_ports = ["4000"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.10.255.254"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "prod1"
-        source_addresses = concat(var.secure_origins, ["167.172.61.234/32", "167.172.53.20/32"])
-        destination_ports = ["4001"]
-        destination_addresses = [azurerm_public_ip.pips.0.ip_address]
-        translated_address = "10.11.255.254"
-        translated_port = "443"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -649,7 +618,7 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
 
     rule {
         name = "tableau_psql"
-        source_addresses = concat(var.secure_origins)
+        source_addresses = var.secure_origins
         destination_ports = ["5432"]
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "10.11.131.4"
@@ -672,38 +641,6 @@ resource "azurerm_firewall_nat_rule_collection" "tableau" {
         destination_addresses = [azurerm_public_ip.pips.12.ip_address]
         translated_address = "192.168.200.5"
         translated_port = "4200"
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "bastion" {
-    name = "rfc1918-to-bastion"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 100
-    action = "Allow"
-
-    rule {
-        name = "ssh"
-        source_addresses = ["192.168.4.0/24"]
-        destination_ports = ["22"]
-        destination_addresses = ["*"]
-        protocols = ["TCP"]
-    }
-}
-
-resource "azurerm_firewall_network_rule_collection" "tools" {
-    name = "rfc1918-to-tools"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 190
-    action = "Allow"
-
-    rule {
-        name = "http"
-        source_addresses = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-        destination_ports = ["80", "443"]
-        destination_addresses = ["10.50.255.254/32"]
         protocols = ["TCP"]
     }
 }
@@ -731,6 +668,13 @@ resource "azurerm_firewall_network_rule_collection" "sftp" {
     priority = 120
     action = "Allow"
 
+    rule {
+        name = "secure_origins"
+        source_addresses = var.secure_origins
+        destination_ports = ["22"]
+        destination_addresses = ["52.213.204.110/32"]
+        protocols = ["TCP"]
+    }
     rule {
         name = "ecrebo"
         source_addresses = ["*"]

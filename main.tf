@@ -1,76 +1,14 @@
 locals {
-    aks_config_defaults = {
-        updates = "rapid"
-        node_max_count = 10
-        maintenance_day = "Monday"
-        dns = local.aks_dns.dev_defaults
-        aad_admin_group_object_ids = [ "0140ccf4-f68c-4daa-b531-97e5292ec364" ] # Kubernetes - Non-Prod - Admins
-    }
-
-    aks_config_defaults_prod = merge(local.aks_config_defaults, {
-        updates = "stable"
-        sku = "Standard"
-        maintenance_day = "Thursday"
-        aad_admin_group_object_ids = null
-    })
-
-    aks_iam_non_production = {
-        "readers" = {
-            object_id = "763319e1-e8d3-4a71-91eb-8ff980a55302",
-            role = "Azure Kubernetes Service RBAC Reader",
-        }
-        "writers" = {
-            object_id = "34f05ce7-fdbe-49bf-b285-2937c548aab5",
-            role = "Azure Kubernetes Service RBAC Writer",
-        }
-        "admins" = {
-            object_id = "0140ccf4-f68c-4daa-b531-97e5292ec364",
-            role = "Azure Kubernetes Service RBAC Admin",
-        }
-    }
-
-    aks_iam_production = {
-        "readers" = {
-            object_id = "6fd82111-210c-461a-bce3-8ea6ff0c1313"
-            role = "Azure Kubernetes Service RBAC Reader",
-        }
-        "writers" = {
-            object_id = "3c1cbd27-81ce-4938-a4c8-fd2171971d4e",
-            role = "Azure Kubernetes Service RBAC Writer",
-        }
-        "admins" = {
-            object_id = "d3a25905-88a1-4820-9384-9e6b2d05283f",
-            role = "Azure Kubernetes Service RBAC Admin",
-        }
-    }
-
-    aks_firewall_defaults = {
-        config = module.uksouth_firewall.config
-    }
-
     cidrs = {
         uksouth = {
-            firewall = "192.168.0.0/24"
-            wireguard = "192.168.2.0/24"
-            bastion = "192.168.4.0/24"
-            sftp = "192.168.20.0/24"
-            tableau = "192.168.101.0/24"
             aks = {
                 dev = "10.41.0.0/16"
                 staging = "10.31.0.0/16"
                 sandbox = "10.20.0.0/16"
                 prod = "10.11.0.0/16"
             },
-            amqp = {
-                prod = "192.168.50.0/24"
-            }
-            datawarehouse = {
-                staging = "192.168.201.0/24"
-                prod = "192.168.200.0/24"
-            }
-        }
+        },
     }
-
     secure_origins = [
         "62.64.135.206/32", # Ascot Primary - Giganet
         "80.87.29.254/32",  # London Primary - Scrub Office
@@ -145,8 +83,6 @@ locals {
         michael_morar = "8288a1d3-0bfb-4561-a91b-30f58045ca73"
     }
     aad_apps = {}
-
-    prod_cluster_ingress_subdomains = [ "api", "policies", "help", "link", "data", "api2-docs", "bpl" ]
 }
 
 terraform {
@@ -162,7 +98,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.65.0"
+            version = "3.67.0"
         }
         cloudamqp = {
             source = "cloudamqp/cloudamqp"
@@ -175,7 +111,7 @@ terraform {
 
 data "azurerm_subscription" "primary" {}
 
-module "uksouth-core" {
+module "uksouth_core" {
     source = "./uksouth/core"
 }
 
@@ -184,41 +120,28 @@ module "uksouth_cloudamqp" {
     subnet = "192.168.1.0/24"
 }
 
-module "uksouth_bastion" {
-    source = "./uksouth/bastion"
-
-    common = {
-        firewall = {
-            name = module.uksouth_firewall.firewall_name
-            resource_group = module.uksouth_firewall.resource_group_name
-            ip_address = module.uksouth_firewall.firewall_ip
-            public_ip = module.uksouth_firewall.public_ips.0.ip_address
-            vnet_name = module.uksouth_firewall.vnet_name
-            vnet_id = module.uksouth_firewall.vnet_id
-        }
-        private_dns = local.private_dns.core_defaults
-        cidr = local.cidrs.uksouth.bastion
-        loganalytics_id = module.uksouth_loganalytics.id
-    }
-}
-
 module "uksouth_vpn" {
     source = "./vpn"
     common = {
         secure_origins_v4 = local.secure_origins
         secure_origins_v6 = local.secure_origins_v6
     }
+    dns = {
+        record = "vpn.gb"
+        resource_group_name = module.uksouth_dns.resource_group_name
+        zone_name = module.uksouth_dns.bink_com_zone
+    }
 }
 
-module "ukwest_vpn" {
-    source = "./vpn"
-    providers = {
-        azurerm = azurerm.ukwest_disasterrecovery
-    }
+module "uksouth_website" {
+    source = "./website"
     common = {
-        location = "ukwest"
         secure_origins_v4 = local.secure_origins
         secure_origins_v6 = local.secure_origins_v6
+    }
+    dns = {
+        resource_group_name = module.uksouth_dns.resource_group_name
+        zone_name = module.uksouth_dns.bink_com_zone
     }
 }
 
@@ -232,17 +155,15 @@ module "uksouth_wireguard" {
             vnet_id = module.uksouth_firewall.vnet_id
         }
         private_dns = local.private_dns.core_defaults
-        cidr = local.cidrs.uksouth.wireguard
+        cidr = "192.168.2.0/24"
         loganalytics_id = module.uksouth_loganalytics.id
+        secure_origins_v4 = local.secure_origins
+        secure_origins_v6 = local.secure_origins_v6
     }
 }
 
-module "uksouth-dns" {
+module "uksouth_dns" {
     source = "./uksouth/dns"
-    vpn_ips = {
-        ipv4 = [module.uksouth_vpn.ip_addresses.ipv4, module.ukwest_vpn.ip_addresses.ipv4]
-        ipv6 = [module.uksouth_vpn.ip_addresses.ipv6, module.ukwest_vpn.ip_addresses.ipv6]
-    }
     bink_sh_managed_identities = {
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
         uksouth_perf = module.uksouth_perf.managed_identities.cert-manager
@@ -255,12 +176,12 @@ module "uksouth-dns" {
 }
 
 module "uksouth_frontdoor" {
-    source = "./uksouth/frontdoor_premium"
+    source = "./uksouth/frontdoor"
     common = {
         dns_zone = {
-            id = module.uksouth-dns.dns_zones.bink_com.root.id
-            name = module.uksouth-dns.dns_zones.bink_com.root.name
-            resource_group = module.uksouth-dns.dns_zones.resource_group.name
+            id = module.uksouth_dns.dns_zones.bink_com.root.id
+            name = module.uksouth_dns.dns_zones.bink_com.root.name
+            resource_group = module.uksouth_dns.dns_zones.resource_group.name
         }
         loganalytics_id = module.uksouth_loganalytics.id
         secure_origins = {
@@ -279,7 +200,7 @@ module "uksouth_frontdoor" {
 module "uksouth_firewall" {
     source = "./uksouth/firewall"
 
-    ip_range = local.cidrs.uksouth.firewall
+    ip_range = "192.168.0.0/24"
     sftp_ip_address = module.uksouth_sftp.ip_address
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
@@ -288,7 +209,7 @@ module "uksouth_firewall" {
     aks_cidrs = local.cidrs.uksouth.aks
 }
 
-module "uksouth-storage" {
+module "uksouth_storage" {
     source = "./uksouth/storage"
     loganalytics_id = module.uksouth_loganalytics.id
 }
@@ -304,7 +225,7 @@ module "uksouth_sftp" {
     }
     loganalytics_id = module.uksouth_loganalytics.id
     private_dns = local.private_dns.core_defaults
-    ip_range = local.cidrs.uksouth.sftp
+    ip_range = "192.168.20.0/24"
 }
 
 module "uksouth_loganalytics" {
@@ -314,14 +235,4 @@ module "uksouth_loganalytics" {
         module.uksouth_prod.managed_identities.snowstorm,
         module.uksouth_staging.managed_identities.snowstorm,
     ]
-}
-
-module "uksouth_wordpress" {
-    source = "./uksouth/wordpress"
-    secure_origins = local.secure_origins
-    loganalytics_id = module.uksouth_loganalytics.id
-    dns = {
-        zone = module.uksouth-dns.dns_zones.bink_com.root.name
-        resource_group = module.uksouth-dns.dns_zones.resource_group.name
-    }
 }

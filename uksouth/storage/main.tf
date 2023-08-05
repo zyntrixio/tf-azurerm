@@ -29,12 +29,6 @@ resource "azurerm_storage_account" "binkpublic" {
     min_tls_version = "TLS1_2"
 }
 
-resource "azurerm_role_assignment" "mickpublic" {
-    scope = azurerm_storage_account.binkpublic.id
-    role_definition_name = "Contributor"
-    principal_id = "343299d4-0a39-4109-adce-973ad29d0183"  # Mick Latham
-}
-
 resource "azurerm_role_assignment" "danpublic" {
     scope = azurerm_storage_account.binkpublic.id
     role_definition_name = "Contributor"
@@ -53,7 +47,6 @@ resource "azurerm_storage_account" "binkarchives" {
     enable_https_traffic_only = true
     min_tls_version = "TLS1_2"
 }
-
 
 resource "azurerm_storage_account" "binkpypi" {
     name = "binkpypi"

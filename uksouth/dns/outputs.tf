@@ -21,3 +21,15 @@ output "dns_zones" {
         }
     }
 }
+
+output "resource_group_name" {
+    value = azurerm_resource_group.rg.name
+}
+
+output "bink_com_zone" {
+    value = azurerm_dns_zone.bink-com.name
+}
+
+output "bink_sh_zone" {
+    value = azurerm_dns_zone.bink-sh.name
+}

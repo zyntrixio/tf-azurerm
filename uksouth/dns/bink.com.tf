@@ -298,23 +298,3 @@ resource "azurerm_dns_txt_record" "bink_com_txt" {
         }
     }
 }
-
-resource "azurerm_dns_a_record" "vpn" {
-    count = var.vpn_ips.ipv4 != null ? 1 : 0
-
-    name = "vpn.gb"
-    zone_name = azurerm_dns_zone.bink-com.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 3600
-    records = var.vpn_ips.ipv4
-}
-
-resource "azurerm_dns_aaaa_record" "vpn" {
-    count = var.vpn_ips.ipv6 != null ? 1 : 0
-
-    name = "vpn.gb"
-    zone_name = azurerm_dns_zone.bink-com.name
-    resource_group_name = azurerm_resource_group.rg.name
-    ttl = 3600
-    records = var.vpn_ips.ipv6
-}

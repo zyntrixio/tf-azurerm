@@ -24,10 +24,12 @@ variable "common" {
         vm_size = optional(string, "Standard_D2as_v5")
         tags = optional(map(string), {
             Environment = "Core"
-            Role = "Bastion"
+            Role = "Wireguard"
         })
         cidr = string
         loganalytics_id = string
+        secure_origins_v4 = list(string)
+        secure_origins_v6 = list(string)
     })
 }
 
@@ -120,20 +122,17 @@ resource "azurerm_network_security_group" "i" {
     }
 
     dynamic security_rule {
-        for_each = {
-            "Allow_TCP_22" = {"priority": "100", "port": "22", "source": "192.168.4.0/24"},
-            "Allow_TCP_9100" = {"priority": "110", "port": "9100", "source": "10.50.0.0/16"},
-        }
+        for_each = { for id, cidr in concat(var.common.secure_origins_v4, var.common.secure_origins_v6): cidr => id}
         content {
-            name = security_rule.key
-            priority = security_rule.value.priority
+            name = "SSH_Rule_${security_rule.value}"
             access = "Allow"
-            protocol = "Tcp"
+            priority = security_rule.value + 500
             direction = "Inbound"
+            protocol = "Tcp"
+            source_address_prefix = security_rule.key
             source_port_range = "*"
-            source_address_prefix = security_rule.value.source
-            destination_port_range = security_rule.value.port
-            destination_address_prefix = var.common.cidr
+            destination_address_prefix = "*"
+            destination_port_range = "22"
         }
     }
 
@@ -169,13 +168,6 @@ resource "azurerm_route_table" "i" {
     location = azurerm_resource_group.i.location
     resource_group_name = azurerm_resource_group.i.name
     disable_bgp_route_propagation = true
-
-    route {
-        name = "bastion"
-        address_prefix = "192.168.4.0/24"
-        next_hop_type = "VirtualAppliance"
-        next_hop_in_ip_address = var.common.firewall.ip_address
-    }
 
     route {
         name = "barclays_sftp"
