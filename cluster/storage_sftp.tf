@@ -6,7 +6,7 @@ resource "random_string" "sftp" {
 }
 
 resource "azurerm_storage_account" "sftp" {
-    count = var.storage.enabled ? 1 : 0
+    count = var.storage.sftp_enabled ? 1 : 0
 
     name = "${replace(azurerm_resource_group.i.name, "-", "")}sftp${random_string.sftp.result}"
     location = azurerm_resource_group.i.location
@@ -23,7 +23,7 @@ resource "azurerm_storage_account" "sftp" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "sftp" {
-    count = var.storage.enabled && var.loganalytics.enabled ? 1 : 0
+    count = var.storage.sftp_enabled && var.loganalytics.enabled ? 1 : 0
 
     name = "loganalytics"
     target_resource_id = "${azurerm_storage_account.sftp[0].id}/blobServices/default"
@@ -46,7 +46,7 @@ resource "azurerm_role_assignment" "sftp_iam_ro" {
     for_each = {
         for k, v in var.iam : k => v
             if contains(v["assigned_to"], "st_ro") &&
-            var.storage.enabled
+            var.storage.sftp_enabled
     }
 
     scope = azurerm_storage_account.sftp[0].id
@@ -58,7 +58,7 @@ resource "azurerm_role_assignment" "sftp_iam_rw" {
     for_each = {
         for k, v in var.iam : k => v
             if contains(v["assigned_to"], "st_rw") &&
-            var.storage.enabled
+            var.storage.sftp_enabled
     }
 
     scope = azurerm_storage_account.sftp[0].id

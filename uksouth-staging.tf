@@ -19,7 +19,6 @@ module "uksouth_staging" {
         (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw"] }
-        (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_ro"] }
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
         (local.aad_group.ba) = { assigned_to = ["st_rw"] }
     }
@@ -58,6 +57,8 @@ module "uksouth_staging" {
     }
     storage = {
         enabled = true
+        sftp_enabled = true
+        nfs_enabled = true
         rules = [
             { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
             { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
@@ -68,12 +69,7 @@ module "uksouth_staging" {
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = { enabled = true }
-    redis = {
-        enabled = true
-        capacity = 0
-        family = "C"
-        sku_name = "Basic"
-    }
+    redis = { enabled = true }
     tableau = { 
         enabled = true
         size = "Standard_E2ads_v5"

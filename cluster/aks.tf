@@ -32,8 +32,11 @@ resource "azurerm_kubernetes_cluster" "i" {
     workload_identity_enabled = true
     local_account_disabled = true
 
-    oms_agent {
-        log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+    dynamic oms_agent {
+        for_each = var.loganalytics.enabled ? [1] : []
+        content {
+            log_analytics_workspace_id = try(azurerm_log_analytics_workspace.i[0].id, "")
+        }
     }
 
     key_vault_secrets_provider {
@@ -55,6 +58,7 @@ resource "azurerm_kubernetes_cluster" "i" {
         os_disk_size_gb = var.kube.pool_os_disk_size_gb
         os_sku = var.kube.pool_os_sku
         vnet_subnet_id = azurerm_subnet.kube_nodes.id
+        temporary_name_for_rotation = "temp"
         max_pods = 100
     }
 
@@ -98,7 +102,11 @@ resource "azurerm_kubernetes_cluster" "i" {
         }
     }
 
-    depends_on = [ azurerm_subnet_route_table_association.kube_nodes ]
+    depends_on = [
+        azurerm_subnet_route_table_association.kube_nodes,
+        azurerm_virtual_network_peering.local,
+        azurerm_virtual_network_peering.remote,
+    ]
 
     lifecycle {
         ignore_changes = [
@@ -184,6 +192,7 @@ resource "azurerm_role_assignment" "aks_iam_nodes" {
     scope = azurerm_kubernetes_cluster.i[0].node_resource_group_id
     role_definition_name = "Reader"
     principal_id = each.key
+    depends_on = [ azurerm_kubernetes_cluster.i ]
 }
 
 resource "azurerm_role_assignment" "aks_iam_ro" {

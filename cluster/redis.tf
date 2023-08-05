@@ -47,7 +47,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "rd" {
 }
 
 resource "azurerm_private_endpoint" "rd" {
-    count = var.redis.enabled && var.redis.sku_name == "Premium" ? 0 : 1
+    count = var.redis.enabled && var.redis.sku_name != "Premium" ? 1 : 0
     name = "${azurerm_resource_group.i.name}-${random_string.rd.result}"
     location = azurerm_resource_group.i.location
     resource_group_name = azurerm_resource_group.i.name

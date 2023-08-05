@@ -65,6 +65,8 @@ module "uksouth_prod" {
     }
     storage = {
         enabled = true
+        sftp_enabled = true
+        nfs_enabled = true
         rules = [
             { name = "bridge", prefix_match = ["bridge"], delete_after_days = 14 },
             { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
@@ -82,52 +84,11 @@ module "uksouth_prod" {
         storage_mb = 1048576,
         extra_databases = ["asset_register"],
     }
-    redis = { enabled = true }
+    redis = {
+        enabled = true
+        capacity = 1
+        family = "P"
+        sku_name = "Premium"
+    }
     tableau = { enabled = true }
-}
-
-module "uksouth_prod_environment" {
-    source = "github.com/binkhq/tf-azurerm_environment?ref=5.19.1"
-    providers = {
-        azurerm = azurerm.uk_production
-        azurerm.core = azurerm
-    }
-    resource_group_name = "uksouth-prod"
-    location = "uksouth"
-    tags = {
-        "Environment" = "Production",
-    }
-
-    vnet_cidr = "192.168.100.0/24"
-
-    loganalytics_id = module.uksouth_loganalytics.id
-
-    postgres_iam = {}
-    keyvault_iam = {}
-    storage_iam = {}
-    redis_iam = {}
-    keyvault_users = {}
-
-    postgres_flexible_config = {}
-
-    redis_config = {}
-    redis_patch_schedule = {
-        day_of_week    = "Wednesday"
-        start_hour_utc = 1
-    }
-    storage_config = {
-        common = {
-            name = "binkuksouthprod",
-            account_replication_type = "ZRS",
-            account_tier = "Standard"
-        },
-    }
-    storage_management_policy_config = {}
-    bink_sh_zone_id = module.uksouth-dns.dns_zones.bink_sh.root.id
-    bink_host_zone_id = module.uksouth-dns.dns_zones.bink_host.public.id
-
-    managed_identities = merge()
-    managed_identities_loganalytics = {}
-
-    aks = {}
 }

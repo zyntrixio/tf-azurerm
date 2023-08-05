@@ -10,7 +10,7 @@ resource "random_string" "nfs" {
 }
 
 resource "azurerm_storage_account" "nfs" {
-    count = var.storage.enabled ? 1 : 0
+    count = var.storage.nfs_enabled ? 1 : 0
 
     name = "${replace(azurerm_resource_group.i.name, "-", "")}nfs${random_string.nfs.result}"
     location = azurerm_resource_group.i.location
@@ -35,7 +35,7 @@ resource "azurerm_storage_account" "nfs" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nfs" {
-    count = var.storage.enabled && var.loganalytics.enabled ? 1 : 0
+    count = var.storage.nfs_enabled && var.loganalytics.enabled ? 1 : 0
 
     name = "loganalytics"
     target_resource_id = "${azurerm_storage_account.nfs[0].id}/blobServices/default"
@@ -58,7 +58,7 @@ resource "azurerm_role_assignment" "nfs_iam_ro" {
     for_each = {
         for k, v in var.iam : k => v
             if contains(v["assigned_to"], "st_ro") &&
-            var.storage.enabled
+            var.storage.nfs_enabled
     }
 
     scope = azurerm_storage_account.nfs[0].id
@@ -70,7 +70,7 @@ resource "azurerm_role_assignment" "nfs_iam_rw" {
     for_each = {
         for k, v in var.iam : k => v
             if contains(v["assigned_to"], "st_rw") &&
-            var.storage.enabled
+            var.storage.nfs_enabled
     }
 
     scope = azurerm_storage_account.nfs[0].id

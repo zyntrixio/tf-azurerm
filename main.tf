@@ -1,13 +1,4 @@
 locals {
-    subscriptions = {
-        uk_core = { id = "0add5c8e-50a6-4821-be0f-7a47c879b009" },
-        uk_production = { id = "79560fde-5831-481d-8c3c-e812ef5046e5" },
-        uk_preprod = { id = "6e685cd8-73f6-4aa6-857c-04ed9b21d17d" },
-        uk_staging = { id = "457b0db5-6680-480f-9e77-2dafb06bd9dc" },
-        uk_dev = { id = "794aa787-ec6a-40dd-ba82-0ad64ed51639" },
-        uk_sandbox = { id = "957523d8-bbe2-4f68-8fae-95975157e91c" },
-    }
-
     aks_config_defaults = {
         updates = "rapid"
         node_max_count = 10
@@ -60,7 +51,6 @@ locals {
     cidrs = {
         uksouth = {
             firewall = "192.168.0.0/24"
-            cloudamqp = "192.168.1.0/24"
             wireguard = "192.168.2.0/24"
             bastion = "192.168.4.0/24"
             sftp = "192.168.20.0/24"
@@ -89,11 +79,15 @@ locals {
         "31.125.46.20/32",  # nread@bink.com
         "51.105.20.158/32",  # Wireguard IP TODO: Bring this from module
         "81.133.125.233/32", # Thenuja, not static, will rotate.
+        "20.49.208.61/32", # module.uksouth_vpn.ip_addresses.ipv4,
+        "51.142.188.173/32", # module.ukwest_vpn.ip_addresses.ipv4,
     ]
     secure_origins_v6 = [
         "2001:8b0:b130::/48", # cpressland@bink.com
-        "2a05:87c1:017c::/64", # Ascot Primary - Giganet
-        "2a00:23a8:50:1400::1/64", # Thenuja, should be static unless BT implemented IPv6 improperly
+        "2a05:87c1:17c::/48", # Ascot Primary - Giganet
+        "2a00:23a8:50:1400::/64", # Thenuja, should be static unless BT implemented IPv6 improperly
+        "2603:1020:702:3::3a/128", # module.uksouth_vpn.ip_addresses.ipv6,
+        "2603:1020:600::12c/128", # module.ukwest_vpn.ip_addresses.ipv6,
     ]
     lloyds_origins_v4 = [
         "141.92.129.40/29", # Peterborough
@@ -187,7 +181,7 @@ module "uksouth-core" {
 
 module "uksouth_cloudamqp" {
     source = "./cloudamqp"
-    subnet = local.cidrs.uksouth.cloudamqp
+    subnet = "192.168.1.0/24"
 }
 
 module "uksouth_bastion" {
@@ -208,6 +202,26 @@ module "uksouth_bastion" {
     }
 }
 
+module "uksouth_vpn" {
+    source = "./vpn"
+    common = {
+        secure_origins_v4 = local.secure_origins
+        secure_origins_v6 = local.secure_origins_v6
+    }
+}
+
+module "ukwest_vpn" {
+    source = "./vpn"
+    providers = {
+        azurerm = azurerm.ukwest_disasterrecovery
+    }
+    common = {
+        location = "ukwest"
+        secure_origins_v4 = local.secure_origins
+        secure_origins_v6 = local.secure_origins_v6
+    }
+}
+
 module "uksouth_wireguard" {
     source = "./uksouth/wireguard"
     common = {
@@ -225,6 +239,10 @@ module "uksouth_wireguard" {
 
 module "uksouth-dns" {
     source = "./uksouth/dns"
+    vpn_ips = {
+        ipv4 = [module.uksouth_vpn.ip_addresses.ipv4, module.ukwest_vpn.ip_addresses.ipv4]
+        ipv6 = [module.uksouth_vpn.ip_addresses.ipv6, module.ukwest_vpn.ip_addresses.ipv6]
+    }
     bink_sh_managed_identities = {
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
         uksouth_perf = module.uksouth_perf.managed_identities.cert-manager

@@ -19,7 +19,6 @@ module "uksouth_perf" {
         (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw"] }
-        (local.aad_group.qa) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     }
     managed_identities = {
@@ -45,7 +44,11 @@ module "uksouth_perf" {
         plan = "bunny-3"
         vpc_id = module.uksouth_cloudamqp.vpc.id
     }
-    storage = { enabled = true }
+    storage = {
+        enabled = true
+        sftp_enabled = true
+        nfs_enabled = true
+    }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = {
@@ -53,5 +56,10 @@ module "uksouth_perf" {
         sku = "GP_Standard_D8ds_v4",
         storage_mb = 1048576,
     }
-    redis = { enabled = true }
+    redis = {
+        enabled = true
+        capacity = 1
+        family = "P"
+        sku_name = "Premium"
+    }
 }

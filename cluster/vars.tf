@@ -65,6 +65,8 @@ variable "keyvault" {
 variable "storage" {
     type = object({
         enabled = bool
+        sftp_enabled = bool
+        nfs_enabled = bool
         rules = optional(list(object({
             name = string
             prefix_match = list(string)
@@ -109,9 +111,9 @@ variable "postgres" {
 variable "redis" {
     type = object({
         enabled = bool
-        capacity = optional(number, 1)
-        family = optional(string, "P")
-        sku_name = optional(string, "Premium")
+        capacity = optional(number, 0)
+        family = optional(string, "C")
+        sku_name = optional(string, "Basic")
     })
 }
 
