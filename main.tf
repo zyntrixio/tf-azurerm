@@ -93,12 +93,12 @@ terraform {
         access_key = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
     }
 
-    required_version = ">= 1.4.0"
+    required_version = ">= 1.5.4"
 
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.67.0"
+            version = "3.68.0"
         }
         cloudamqp = {
             source = "cloudamqp/cloudamqp"
