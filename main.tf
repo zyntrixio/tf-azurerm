@@ -69,6 +69,7 @@ locals {
         chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"
         nathan_read = "bba71e03-172e-4d07-8ee4-aad029d9031d"
         thenuja_viknarajah = "e69fd5a7-8b6c-4ac5-8df0-c88c77df0a12"
+        daniel_hodgson = "103d8795-0975-4301-ae8c-795b21d80284"
         terraform = "4869640a-3727-4496-a8eb-f7fae0872410"
         jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
         mick_latham = "343299d4-0a39-4109-adce-973ad29d0183"
@@ -81,6 +82,7 @@ locals {
         francesco_milani = "dbcb7a78-da53-4fb9-a5a0-4f5d9a1e664c"
         tony_truong = "f66db5ed-a4e3-485f-9112-c42ee2fe85c5"
         michael_morar = "8288a1d3-0bfb-4561-a91b-30f58045ca73"
+        navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
     }
     aad_apps = {}
 }
@@ -131,6 +133,9 @@ module "uksouth_vpn" {
         resource_group_name = module.uksouth_dns.resource_group_name
         zone_name = module.uksouth_dns.bink_com_zone
     }
+    iam = [
+        local.aad_user.daniel_hodgson,
+    ]
 }
 
 module "uksouth_website" {

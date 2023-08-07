@@ -22,6 +22,10 @@ variable "dns" {
     })
 }
 
+variable "iam" {
+    type = list(string)
+}
+
 locals {
     storage_allowed_ips = [for ip in var.common.secure_origins_v4: replace(ip, "/32", "")]
 }
@@ -103,6 +107,13 @@ resource "azurerm_storage_account" "i" {
         ip_rules = local.storage_allowed_ips
         virtual_network_subnet_ids = [azurerm_subnet.i.id]
     }
+}
+
+resource "azurerm_role_assignment" "i" {
+    for_each = toset(var.iam)
+    scope = azurerm_storage_account.i.id
+    role_definition_name = "Reader"
+    principal_id = each.value
 }
 
 resource "azurerm_storage_share" "users" {
