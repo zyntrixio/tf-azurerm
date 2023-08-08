@@ -122,12 +122,22 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
     kubernetes_cluster_id = azurerm_kubernetes_cluster.i[0].id
     vm_size = each.value.vm_size
     node_count = each.value.node_count
+    node_labels = each.value.node_labels
     node_taints = each.value.node_taints
     os_sku = each.value.os_sku
     os_disk_size_gb = each.value.os_disk_size_gb
     os_disk_type = each.value.os_disk_type
     zones = each.value.zones
     vnet_subnet_id = azurerm_subnet.kube_nodes.id
+
+    priority = each.value.priority
+    spot_max_price = each.value.spot_max_price
+    eviction_policy = each.value.eviction_policy
+
+    enable_auto_scaling = each.value.enable_auto_scaling
+    max_count = each.value.max_count
+    min_count = each.value.min_count
+    max_pods = 100
 }
 
 resource "azurerm_role_assignment" "aks_mi_ro" {
