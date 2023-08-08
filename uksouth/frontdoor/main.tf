@@ -303,12 +303,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"link.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
-        "uksouth_prod_help" = {
-            "endpoint" = "uksouth-prod"
-            "domain" = "help.gb.bink.com"
-            "cert_name" = "acmebot-gb-bink-com"
-            "origins" = {"help.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
-        }
         "uksouth_prod_bpl" = {
             "endpoint" = "uksouth-prod"
             "domain" = "bpl.gb.bink.com"
