@@ -134,12 +134,6 @@ locals {
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"docs.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
-        "uksouth_staging_link" = {
-            "endpoint" = "uksouth-nonprod"
-            "domain" = "link.staging.gb.bink.com"
-            "cert_name" = "acmebot-staging-gb-bink-com"
-            "origins" = {"link.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
-        }
         "uksouth_staging_portal" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "portal.staging.gb.bink.com"
@@ -296,12 +290,6 @@ locals {
             "domain" = "service-api.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"kratos.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
-        }
-        "uksouth_prod_link" = {
-            "endpoint" = "uksouth-prod"
-            "domain" = "link.gb.bink.com"
-            "cert_name" = "acmebot-gb-bink-com"
-            "origins" = {"link.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_bpl" = {
             "endpoint" = "uksouth-prod"
