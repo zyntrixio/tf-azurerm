@@ -122,12 +122,6 @@ locals {
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"policies.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
-        "uksouth_staging_help" = {
-            "endpoint" = "uksouth-nonprod"
-            "domain" = "help.staging.gb.bink.com"
-            "cert_name" = "acmebot-staging-gb-bink-com"
-            "origins" = {"help.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
-        }
         "uksouth_staging_docs" = {
             "endpoint" = "uksouth-nonprod"
             "domain" = "docs.staging.gb.bink.com"
