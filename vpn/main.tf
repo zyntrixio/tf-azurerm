@@ -112,7 +112,7 @@ resource "azurerm_storage_account" "i" {
 resource "azurerm_role_assignment" "i" {
     for_each = toset(var.iam)
     scope = azurerm_storage_account.i.id
-    role_definition_name = "Reader"
+    role_definition_name = "Contributor"
     principal_id = each.value
 }
 
