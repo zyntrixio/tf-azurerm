@@ -100,7 +100,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.68.0"
+            version = "3.69.0"
         }
         cloudamqp = {
             source = "cloudamqp/cloudamqp"

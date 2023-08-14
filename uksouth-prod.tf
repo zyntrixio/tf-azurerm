@@ -79,6 +79,7 @@ module "uksouth_prod" {
     postgres = {
         enabled = true,
         sku = "GP_Standard_D8ds_v4",
+        version = 14
         ha = true,
         backup_retention_days = 35
         storage_mb = 1048576,

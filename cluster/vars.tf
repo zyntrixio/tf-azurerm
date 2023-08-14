@@ -79,7 +79,7 @@ variable "postgres" {
     type = object({
         enabled = bool
         sku = optional(string, "GP_Standard_D2ds_v4")
-        version = optional(number, 14)
+        version = optional(number, 15)
         storage_mb = optional(number, 131072)
         ha = optional(bool, false)
         backup_retention_days = optional(number, 7)
