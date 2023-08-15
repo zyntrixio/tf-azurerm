@@ -170,6 +170,7 @@ module "uksouth_wireguard" {
 module "uksouth_dns" {
     source = "./uksouth/dns"
     bink_sh_managed_identities = {
+        uksouth_ait = module.uksouth_ait.managed_identities.cert-manager
         uksouth_dev = module.uksouth_dev.managed_identities.cert-manager
         uksouth_perf = module.uksouth_perf.managed_identities.cert-manager
         uksouth_prod = module.uksouth_prod.managed_identities.cert-manager
