@@ -142,7 +142,7 @@ variable "kube" {
         flux_enabled = optional(bool, true)
         automatic_channel_upgrade = optional(string, "rapid")
         sku_tier = optional(string, "Free")
-        pool_min_count = optional(number, 3)
+        pool_min_count = optional(number, 1)
         pool_max_count = optional(number, 10)
         pool_vm_size = optional(string, "Standard_E4ads_v5")
         pool_zones = optional(list(string), ["1","2","3"])

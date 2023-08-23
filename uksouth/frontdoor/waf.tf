@@ -28,6 +28,19 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "olympus" {
             )
         }
     }
+    custom_rule {
+        name = "AppBlock"
+        enabled = true
+        priority = 2
+        type = "MatchRule"
+        action = "Block"
+
+        match_condition {
+            match_variable = "RequestUri"
+            operator = "Contains"
+            match_values = ["/users/me", "/users/magic_links", "/users/magic_links/access_tokens"]
+        }
+    }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "olympus" {

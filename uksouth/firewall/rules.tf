@@ -28,6 +28,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Debian"
+        source_addresses = ["*"]
+        target_fqdns = ["deb.debian.org"]
+        protocol {
+            port = "80"
+            type = "Http"
+        }
+    }
+    rule {
         name = "Falco"
         source_addresses = ["*"]
         target_fqdns = ["falcosecurity.github.io"]
