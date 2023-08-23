@@ -511,7 +511,9 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "london-capi.ecrebo.com",
             "london-capi-test.ecrebo.com",
             "atreemouat.itsucomms.com",
+            "atreemo.itsucomms.com",
             "beta-api.pepperhq.com",
+            "api.pepperhq.com",
         ]
         protocol {
             port = "80"
