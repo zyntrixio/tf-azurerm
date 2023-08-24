@@ -45,7 +45,7 @@ module "uksouth_ait" {
     storage = {
         enabled = true
         sftp_enabled = false
-        nfs_enabled = true
+        nfs_enabled = false
     }
     loganalytics = { enabled = false }
     keyvault = { enabled = true }
