@@ -523,6 +523,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "atreemo.itsucomms.com",
             "beta-api.pepperhq.com",
             "api.pepperhq.com",
+            "demoapi.podifi.com",
         ]
         protocol {
             port = "80"
