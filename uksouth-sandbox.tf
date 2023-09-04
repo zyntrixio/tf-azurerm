@@ -22,6 +22,7 @@ locals {
             "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
             "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+            "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         }
         kube = {
             enabled = true
