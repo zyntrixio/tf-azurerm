@@ -265,7 +265,12 @@ locals {
             "cert_name" = "acmebot-retail-gb-bink-com"
             "origins" = {"docs.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
         }
-
+        "uksouth_retail_retailer" = {
+            "endpoint" = "uksouth-retail"
+            "domain" = "retailer.retail.gb.bink.com"
+            "cert_name" = "acmebot-retail-gb-bink-com"
+            "origins" = {"retailer.retail.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_retail}}
+        }
         # Production Environment
         "uksouth_prod_stats" = {
             "endpoint" = "uksouth-prod"
