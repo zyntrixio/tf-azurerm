@@ -10,6 +10,21 @@ resource "azurerm_app_configuration" "i" {
     resource_group_name = azurerm_resource_group.i.name
     location = azurerm_resource_group.i.location
     sku = "standard"
+    public_network_access = "Enabled"
+}
+
+resource "azurerm_monitor_diagnostic_setting" "ac" {
+    count = var.loganalytics.enabled ? 1 : 0
+
+    name = "loganalytics"
+    target_resource_id = azurerm_app_configuration.i.id
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+
+    enabled_log { category = "HttpRequest" }
+    metric {
+        category = "AllMetrics"
+        enabled = false
+    }
 }
 
 resource "azurerm_role_assignment" "ac_iam_ro" {
@@ -33,4 +48,23 @@ resource "azurerm_role_assignment" "ac_iam_rw" {
     scope = azurerm_app_configuration.i.id
     role_definition_name = "Contributor"
     principal_id = each.key
+}
+
+resource "azurerm_key_vault_secret" "ac" {
+    count = var.keyvault.enabled ? 1 : 0
+
+    name = "infra-app-config-connection-details"
+    key_vault_id = azurerm_key_vault.i[0].id
+    content_type = "application/json"
+    value = jsonencode({
+        "primary_write_connection_string" = azurerm_app_configuration.i.primary_write_key[0]
+        "primary_read_connection_string" = azurerm_app_configuration.i.primary_read_key[0]
+        "secondary_write_connection_string" = azurerm_app_configuration.i.secondary_write_key[0]
+        "secondary_read_connection_string" = azurerm_app_configuration.i.secondary_read_key[0]
+    })
+    tags = {
+        k8s_secret_name = "azure-app-config"
+    }
+
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
 }
