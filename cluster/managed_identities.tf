@@ -30,7 +30,7 @@ resource "azurerm_federated_identity_credential" "i" {
 }
 
 resource "azurerm_key_vault_secret" "mi" {
-    count = var.keyvault.enabled ? 1 : 0
+    count = var.keyvault.enabled && var.kube.enabled ? 1 : 0
 
     name = "infra-managed-identity-details"
     key_vault_id = azurerm_key_vault.i[0].id
@@ -38,6 +38,7 @@ resource "azurerm_key_vault_secret" "mi" {
     value = jsonencode(
         merge(
             {"tenant_id" = data.azurerm_client_config.i.tenant_id},
+            {"oidc_issuer_url" = azurerm_kubernetes_cluster.i[0].oidc_issuer_url},
             {for k, v in azurerm_user_assigned_identity.i : "${replace(k, "-", "_")}_client_id" => v.client_id}
         )
     )

@@ -57,10 +57,10 @@ resource "azurerm_key_vault_secret" "ac" {
     key_vault_id = azurerm_key_vault.i[0].id
     content_type = "application/json"
     value = jsonencode({
-        "primary_write_connection_string" = azurerm_app_configuration.i.primary_write_key[0]
-        "primary_read_connection_string" = azurerm_app_configuration.i.primary_read_key[0]
-        "secondary_write_connection_string" = azurerm_app_configuration.i.secondary_write_key[0]
-        "secondary_read_connection_string" = azurerm_app_configuration.i.secondary_read_key[0]
+        "primary_write_connection_string" = azurerm_app_configuration.i.primary_write_key[0].connection_string
+        "primary_read_connection_string" = azurerm_app_configuration.i.primary_read_key[0].connection_string
+        "secondary_write_connection_string" = azurerm_app_configuration.i.secondary_write_key[0].connection_string
+        "secondary_read_connection_string" = azurerm_app_configuration.i.secondary_read_key[0].connection_string
     })
     tags = {
         k8s_secret_name = "azure-app-config"

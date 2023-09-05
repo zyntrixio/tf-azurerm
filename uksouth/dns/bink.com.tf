@@ -157,6 +157,7 @@ locals {
             "krs._domainkey" = [
                 "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXaLcjQPHqSBx6irwtyku9CyXMDQy/tLYJZ/isCuvVLLHIz90t9UUBAe+JHX3pG9flVCioLoEAYwLNIJz1HkNZKrzQYmGuRDU6FJmpa+UcfTV2iO+tjMRh9Bb++fjH57zUMSBtc7DleazuVArdxFharZkeMt6vm7RyQE5F3sHwUwIDAQAB"
             ]
+            "_dmarc" = [ "v=DMARC1; p=reject" ]
             "zendeskverification" = [
                 "182c696aec4aa197",
             ]
@@ -286,7 +287,7 @@ resource "azurerm_dns_txt_record" "bink_com_txt" {
     name = each.key
     zone_name = azurerm_dns_zone.bink-com.name
     resource_group_name = azurerm_resource_group.rg.name
-    ttl = 300
+    ttl = 3600
 
     dynamic "record" {
         for_each = [for i in each.value : {

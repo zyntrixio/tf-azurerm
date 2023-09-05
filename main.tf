@@ -111,8 +111,6 @@ terraform {
     }
 }
 
-data "azurerm_subscription" "primary" {}
-
 module "uksouth_core" {
     source = "./uksouth/core"
 }
