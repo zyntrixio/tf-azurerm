@@ -584,18 +584,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "i" {
     }
 }
 
-resource "azurerm_dns_txt_record" "i" {
-    for_each = azurerm_cdn_frontdoor_custom_domain.i
-    name = "_dnsauth.${trimsuffix(each.value.host_name, ".bink.com")}"
-    zone_name = var.common.dns_zone.name
-    resource_group_name = var.common.dns_zone.resource_group
-    ttl = 3600
-
-    record {
-        value = each.value.validation_token == "" ? "validation_token_missing" : each.value.validation_token
-    }
-}
-
 resource "azurerm_dns_cname_record" "i" {
     for_each = local.origin_groups
     name = trimsuffix(each.value.domain, ".bink.com")
