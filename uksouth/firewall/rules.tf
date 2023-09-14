@@ -542,6 +542,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "wasabi.atreemo.co.uk",
             "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal Dev
             "uk-bink-transactions.azurewebsites.net", # Squaremeal Prod
+            "pos.sandbox.uk.eagleeye.com", # Slim Chicken Dev
         ]
         protocol {
             port = "443"
