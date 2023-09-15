@@ -25,6 +25,20 @@ module "uksouth_ait" {
     managed_identities = {
         "cert-manager" = { namespaces = ["cert-manager"] }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
+        "starbug" = { assigned_to = ["rg_su"], namespaces = ["starbug"] }
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "bullsquid" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "cosmos" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "eos" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "europa" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "kiroshi" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "metis" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "snowstorm" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespaces = [] }
     }
     kube = {
         enabled = true
