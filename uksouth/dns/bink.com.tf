@@ -48,12 +48,6 @@ locals {
             # e2e Office 365
             "autodiscover.e2e" = "autodiscover.outlook.com",
 
-            # Zendesk
-            "zendesk1" = "mail1.zendesk.com",
-            "zendesk2" = "mail2.zendesk.com",
-            "zendesk3" = "mail3.zendesk.com",
-            "zendesk4" = "mail4.zendesk.com",
-
             # Mailchimp
             "k1._domainkey" = "dkim.mcsv.net",
 
@@ -71,13 +65,11 @@ locals {
             "fs3._domainkey" = "wl210509s3.domainkey.freshemail.io"
             "fsdkim" = "spfmx3.domainkey.freshemail.io"
 
-            # Comodo
-            "_269338E7B46614F4519C798978A0A1BB" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
-            "_269338E7B46614F4519C798978A0A1BB.gb" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
-            "_269338E7B46614F4519C798978A0A1BB.preprod.gb" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
-            "_269338E7B46614F4519C798978A0A1BB.staging.gb" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
-            "_269338E7B46614F4519C798978A0A1BB.sandbox.gb" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
-            "_269338E7B46614F4519C798978A0A1BB.dev.gb" = "638E5F951396752170874278010B6F68.AB882BF0472064C2FBBFE3A9B35A910F.5F5955W255v5Ey8C5mJQ.sectigo.com"
+            # FreshDesk
+            "gx7cl._domainkey" = "wl223331s1.domainkey.freshemail.io"
+            "op8nc._domainkey" = "wl223331s2.domainkey.freshemail.io"
+            "1s3._domainkey" = "wl223331s3.domainkey.freshemail.io"
+            "fwdkim1" = "spfmx1.domainkey.freshemail.io"
         }
         mx_records = {
             "@" = [
