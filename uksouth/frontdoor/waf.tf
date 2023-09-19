@@ -16,7 +16,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "olympus" {
 
         match_condition {
             match_variable = "RequestUri"
-            operator = "BeginsWith"
+            operator = "Contains"
             match_values = ["/admin"]
         }
         match_condition {
@@ -102,7 +102,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "prod_olympus" {
             match_variable = "RemoteAddr"
             operator = "IPMatch"
             negation_condition = true
-            match_values = concat(["157.83.0.0/16"], var.common.secure_origins.checkly)
+            match_values = concat(["157.83.0.0/16"], var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly)
         }
     }
 }
