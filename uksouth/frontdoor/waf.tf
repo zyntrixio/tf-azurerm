@@ -16,7 +16,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "olympus" {
 
         match_condition {
             match_variable = "RequestUri"
-            operator = "Contains"
+            operator = "BeginsWith"
             match_values = ["/admin"]
         }
         match_condition {
