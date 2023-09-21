@@ -15,12 +15,6 @@ locals {
             "api.us" = "127.0.0.1",
             "api.dev.us" = "127.0.0.1",
             "api.staging.us" = "127.0.0.1",
-
-            # SFTP
-            "sftpcluster" = "40.115.33.68",
-            "sftp" = "178.238.141.18",
-            "sftp.gb" = "51.132.44.255",
-            "sftp.staging.gb" = "51.132.44.241",
         }
         cname_records = {
             # Auth0

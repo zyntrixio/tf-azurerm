@@ -605,24 +605,6 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     }
 }
 
-resource "azurerm_firewall_nat_rule_collection" "sftp" {
-    name = "sftp"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 110
-    action = "Dnat"
-
-    rule {
-        name = "ssh"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = [azurerm_public_ip.pips.15.ip_address]
-        translated_address = var.sftp_ip_address
-        translated_port = "22"
-        protocols = ["TCP"]
-    }
-}
-
 resource "azurerm_firewall_nat_rule_collection" "tableau" {
     name = "tableau"
     azure_firewall_name = azurerm_firewall.firewall.name
@@ -683,31 +665,10 @@ resource "azurerm_firewall_network_rule_collection" "sftp" {
     action = "Allow"
 
     rule {
-        name = "secure_origins"
-        source_addresses = var.secure_origins
-        destination_ports = ["22"]
-        destination_addresses = ["52.213.204.110/32"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "ecrebo"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = ["52.213.204.110/32"]
-        protocols = ["TCP"]
-    }
-    rule {
         name = "amex"
         source_addresses = ["*"]
         destination_ports = ["22"]
         destination_addresses = ["148.173.107.23"]
-        protocols = ["TCP"]
-    }
-    rule {
-        name = "wasabi"
-        source_addresses = ["*"]
-        destination_ports = ["22"]
-        destination_addresses = ["185.113.19.116/32"]
         protocols = ["TCP"]
     }
     rule {
