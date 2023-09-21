@@ -205,7 +205,6 @@ module "uksouth_firewall" {
     source = "./uksouth/firewall"
 
     ip_range = "192.168.0.0/24"
-    sftp_ip_address = module.uksouth_sftp.ip_address
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = local.secure_origins
     lloyds_origins = local.lloyds_origins_v4
@@ -216,20 +215,6 @@ module "uksouth_firewall" {
 module "uksouth_storage" {
     source = "./uksouth/storage"
     loganalytics_id = module.uksouth_loganalytics.id
-}
-
-module "uksouth_sftp" {
-    source = "./uksouth/sftp"
-    peers = {
-        firewall = {
-            vnet_id = module.uksouth_firewall.vnet_id
-            vnet_name = module.uksouth_firewall.vnet_name
-            resource_group_name = module.uksouth_firewall.resource_group_name
-        }
-    }
-    loganalytics_id = module.uksouth_loganalytics.id
-    private_dns = local.private_dns.core_defaults
-    ip_range = "192.168.20.0/24"
 }
 
 module "uksouth_loganalytics" {

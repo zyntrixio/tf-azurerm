@@ -6,7 +6,6 @@ variable "tags" {
 }
 
 variable "ip_range" { type = string }
-variable "sftp_ip_address" {}
 
 variable "production_cidrs" {
   type = list
