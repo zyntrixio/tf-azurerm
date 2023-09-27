@@ -348,7 +348,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         target_fqdns = [
             "bink.eu.auth0.com",
             "auth.bink.com",            # currently used by the non-prod Auth0 tenant. deprecated.
-            "auth.nonprod.gb.bink.com"  # to be used by the non-prod Auth0 tenant.
+            "auth.nonprod.gb.bink.com",  # to be used by the non-prod Auth0 tenant.
             "auth.gb.bink.com",         # to be used by the prod Auth0 tenant.
         ]
         protocol {
@@ -526,6 +526,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "beta-api.pepperhq.com",
             "api.pepperhq.com",
             "demoapi.podifi.com",
+            "merchantportal.podifi.com",
         ]
         protocol {
             port = "80"
@@ -546,6 +547,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal Dev
             "uk-bink-transactions.azurewebsites.net", # Squaremeal Prod
             "pos.sandbox.uk.eagleeye.com", # Slim Chicken Dev
+            "portal.uk.eagleeye.com", # Slim Chicken Prod
         ]
         protocol {
             port = "443"
