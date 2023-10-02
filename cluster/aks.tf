@@ -24,6 +24,7 @@ resource "azurerm_kubernetes_cluster" "i" {
     location = azurerm_resource_group.i.location
 
     automatic_channel_upgrade = var.kube.automatic_channel_upgrade
+    node_os_channel_upgrade = var.kube.node_os_channel_upgrade
     node_resource_group = "${azurerm_resource_group.i.name}-nodes"
     dns_prefix = azurerm_resource_group.i.name
     sku_tier = var.kube.sku_tier

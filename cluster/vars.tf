@@ -141,6 +141,7 @@ variable "kube" {
         enabled = bool
         flux_enabled = optional(bool, true)
         automatic_channel_upgrade = optional(string, "rapid")
+        node_os_channel_upgrade = optional(string, "NodeImage")
         sku_tier = optional(string, "Free")
         pool_min_count = optional(number, 1)
         pool_max_count = optional(number, 10)
