@@ -526,7 +526,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "beta-api.pepperhq.com",
             "api.pepperhq.com",
             "demoapi.podifi.com",
-            "merchantportal.podifi.com",
+            "api.podifi.com",
         ]
         protocol {
             port = "80"
