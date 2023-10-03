@@ -366,6 +366,13 @@ locals {
             "origins" = {"api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
 
+        "uksouth_prod_portal" = {
+            "endpoint" = "uksouth-prod"
+            "domain" = "portal.gb.bink.com"
+            "cert_name" = "acmebot-gb-bink-com"
+            "origins" = {"portal.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
+        }
+
         # DEPRECATED: Endpoints to remove after 17th of Jan 2024
         "uksouth_sandbox_sit" = {
             "endpoint" = "uksouth-sandbox"
