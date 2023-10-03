@@ -347,6 +347,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         source_addresses = ["*"]
         target_fqdns = [
             "bink.eu.auth0.com",
+            "bink-prod.uk.auth0.com",
             "auth.bink.com",            # currently used by the non-prod Auth0 tenant. deprecated.
             "auth.nonprod.gb.bink.com",  # to be used by the non-prod Auth0 tenant.
             "auth.gb.bink.com",         # to be used by the prod Auth0 tenant.
