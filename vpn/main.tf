@@ -209,7 +209,7 @@ resource "azurerm_linux_virtual_machine" "i" {
 
     admin_ssh_key {
         username   = "terraform"
-        public_key = file("~/.ssh/id_bink_azure_terraform.pub")
+        public_key = file("ssh.pub")
     }
 
     os_disk {
