@@ -17,6 +17,9 @@ locals {
             "api.staging.us" = "127.0.0.1",
         }
         cname_records = {
+            # GitHub
+            "logos" = "binkhq.github.io",
+
             # Auth0
             "auth" = "bink-cd-x0ncx4gd7fxbncmx.edge.tenants.eu.auth0.com",
 
