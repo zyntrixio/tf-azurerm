@@ -546,6 +546,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "tools.wasabi.atreemo.co.uk",
             "wasabi.atreemo.co.uk",
             "rihanna.atreemo.uk",
+            "binkwebhook.atreemo.uk",
             "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal Dev
             "uk-bink-transactions.azurewebsites.net", # Squaremeal Prod
             "pos.sandbox.uk.eagleeye.com", # Slim Chicken Dev
