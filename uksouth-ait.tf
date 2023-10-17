@@ -25,7 +25,7 @@ module "uksouth_ait" {
     managed_identities = {
         "cert-manager" = { namespaces = ["cert-manager"] }
         "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
-        "starbug" = { assigned_to = ["rg_su"], namespaces = ["starbug"] }
+        "starbug" = { assigned_to = ["mi"], namespaces = ["starbug"] } #TODO figure out how to set this without owner permissions
         "angelia" = { assigned_to = ["kv_ro"], namespaces = [] }
         "boreas" = { assigned_to = ["kv_ro"], namespaces = [] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = [] }
@@ -63,6 +63,6 @@ module "uksouth_ait" {
     }
     loganalytics = { enabled = false }
     keyvault = { enabled = true }
-    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
-    redis = { enabled = true }
+    postgres = { enabled = false }
+    redis = { enabled = false }
 }

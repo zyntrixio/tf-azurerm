@@ -11,7 +11,7 @@ locals {
     # The below list should be dynamically generated, but alas, this was easier given the
     # time constaints
     private_link_ids = {
-        "uksouth_tools" = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-tools-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-tools"
+        "uksouth_ait" = "/subscriptions/0b92124d-e5fe-4c9a-a898-1fdf02502e01/resourceGroups/uksouth-ait-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-ait"
         "uksouth_dev" = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
         "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
@@ -23,6 +23,13 @@ locals {
     }
 
     origin_groups = {
+        # AIT Environment
+        "uksouth_ait_starbug" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "starbug.ait.gb.bink.com"
+            "cert_name" = "acmebot-ait-gb-bink-com"
+            "origins" = {"starbug.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
+        }
         # Dev Environment
         "uksouth_dev_api" = {
             "endpoint" = "uksouth-nonprod"
@@ -429,6 +436,7 @@ locals {
         fileset("${path.module}/certificates", "*.pfx"),
         toset([
             "acmebot-gb-bink-com",
+            "acmebot-ait-gb-bink-com",
             "acmebot-dev-gb-bink-com",
             "acmebot-staging-gb-bink-com",
             "acmebot-sandbox-gb-bink-com",

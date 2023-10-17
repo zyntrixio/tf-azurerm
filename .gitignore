@@ -3,3 +3,4 @@
 out
 terraform
 .vscode
+.env

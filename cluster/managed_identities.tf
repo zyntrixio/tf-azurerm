@@ -18,6 +18,17 @@ resource "azurerm_user_assigned_identity" "i" {
     resource_group_name = azurerm_resource_group.i.name
 }
 
+resource "azurerm_role_assignment" "mi_mi" {
+    for_each = {
+        for k, v in var.managed_identities : k => v
+            if contains(v["assigned_to"], "mi")
+    }
+
+    scope = azurerm_resource_group.i.id
+    role_definition_name = "Owner"
+    principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
 resource "azurerm_federated_identity_credential" "i" {
     for_each = { for k, v in local.identity_namespace_map : k => v if var.kube.enabled}
 
