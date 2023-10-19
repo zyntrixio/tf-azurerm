@@ -529,6 +529,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
             "api.pepperhq.com",
             "demoapi.podifi.com",
             "api.podifi.com",
+            "rhianna.atreemo.uk",
         ]
         protocol {
             port = "80"
