@@ -25,7 +25,7 @@ module "uksouth_prod" {
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_user.mick_latham) = { assigned_to = ["rg", "aks_rw", "st_rw"] }
         (local.aad_group.backend) = { assigned_to = ["la"] }
-        (local.add_user.carla_gouws) = { assigned_to = ["aks_ro"] }
+        (local.aad_user.carla_gouws) = { assigned_to = ["aks_ro"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
