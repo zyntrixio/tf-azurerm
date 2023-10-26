@@ -83,6 +83,7 @@ locals {
         tony_truong = "f66db5ed-a4e3-485f-9112-c42ee2fe85c5"
         michael_morar = "8288a1d3-0bfb-4561-a91b-30f58045ca73"
         navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
+        carla_gouws = "d14223a9-b07a-41ba-96c7-cf5526f6987b"
     }
     aad_apps = {}
 }
