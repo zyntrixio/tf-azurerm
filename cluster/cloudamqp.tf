@@ -84,8 +84,11 @@ resource "azurerm_key_vault_secret" "amqp" {
     value = jsonencode({
         "url" = "amqps://${local.amqp_credentials.user}:${local.amqp_credentials.pass}@${cloudamqp_instance.i[0].host}/${local.amqp_credentials.user}"
         "user" = local.amqp_credentials.user
+        "cloudamqp_user" = local.amqp_credentials.user
         "pass" = local.amqp_credentials.pass
+        "cloudamqp_pass" = local.amqp_credentials.pass
         "host" = cloudamqp_instance.i[0].host
+        "cloudamqp_host" = cloudamqp_instance.i[0].host
         "vhost" = local.amqp_credentials.user
         "admin" = "https://${cloudamqp_instance.i[0].host}/\n"
     })
