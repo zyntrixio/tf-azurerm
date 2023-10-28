@@ -71,29 +71,6 @@ module "uksouth_retail" {
     redis = local.sandbox_common.redis
 }
 
-module "uksouth_barclays" {
-    source = "./cluster"
-    providers = {
-        azurerm = azurerm.uksouth_sandbox
-        azurerm.core = azurerm
-    }
-    common = {
-        name = "barclays"
-        location = "uksouth"
-        cidr = "10.22.0.0/16"
-    }
-    allowed_hosts = local.sandbox_common.allowed_hosts
-    iam = local.sandbox_common.iam
-    managed_identities = local.sandbox_common.managed_identities
-    kube = local.sandbox_common.kube
-    cloudamqp = local.sandbox_common.cloudamqp
-    storage = local.sandbox_common.storage
-    loganalytics = { enabled = true }
-    keyvault = { enabled = true }
-    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
-    redis = local.sandbox_common.redis
-}
-
 module "uksouth_lloyds" {
     source = "./cluster"
     providers = {

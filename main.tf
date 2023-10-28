@@ -101,7 +101,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.76.0"
+            version = "3.78.0"
         }
         cloudamqp = {
             source = "cloudamqp/cloudamqp"
@@ -176,7 +176,6 @@ module "uksouth_dns" {
         uksouth_lloyds = module.uksouth_lloyds.managed_identities.cert-manager
         uksouth_retail = module.uksouth_retail.managed_identities.cert-manager
         uksouth_staging = module.uksouth_staging.managed_identities.cert-manager
-        uksouth_barclays = module.uksouth_barclays.managed_identities.cert-manager
     }
 }
 

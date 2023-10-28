@@ -144,7 +144,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "olympus" {
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_api"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_api"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_lloyds_sit"].id,
-                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_barclays_sit"].id,
                     ])
                     content {
                         cdn_frontdoor_domain_id = domain.key

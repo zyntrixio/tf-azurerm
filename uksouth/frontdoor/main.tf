@@ -16,7 +16,6 @@ locals {
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
         "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
         "uksouth_perf" = "/subscriptions/c49c2fde-9e7d-41c6-ac61-f85f9fa51416/resourceGroups/uksouth-perf-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-perf"
-        "uksouth_barclays" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-barclays-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-barclays"
         "uksouth_lloyds" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-lloyds-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-lloyds"
         "uksouth_retail" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-retail-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-retail"
         "uksouth_prod" = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
@@ -198,12 +197,6 @@ locals {
         }
 
         # Sandbox Environment
-        "uksouth_sandbox_barclays_sit" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "barclays-sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
-            "origins" = {"api.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
-        }
         "uksouth_sandbox_lloyds_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "lloyds-sit.sandbox.gb.bink.com"
@@ -255,20 +248,6 @@ locals {
             "domain" = "reflector.lloyds.gb.bink.com"
             "cert_name" = "acmebot-lloyds-gb-bink-com"
             "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
-        }
-
-        # Barclays Environment
-        "uksouth_barclays_api" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "api.barclays.gb.bink.com"
-            "cert_name" = "acmebot-barclays-gb-bink-com"
-            "origins" = {"api.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
-        }
-        "uksouth_barclays_docs" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "docs.barclays.gb.bink.com"
-            "cert_name" = "acmebot-barclays-gb-bink-com"
-            "origins" = {"docs.barclays.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_barclays}}
         }
 
         # Retail Environment
@@ -441,7 +420,6 @@ locals {
             "acmebot-staging-gb-bink-com",
             "acmebot-sandbox-gb-bink-com",
             "acmebot-lloyds-gb-bink-com",
-            "acmebot-barclays-gb-bink-com",
             "acmebot-retail-gb-bink-com",
             "acmebot-perf-gb-bink-com",
         ])
@@ -687,7 +665,7 @@ resource "azurerm_cdn_frontdoor_route" "cache" {
     cdn_frontdoor_endpoint_id = azurerm_cdn_frontdoor_endpoint.i[each.value.endpoint].id
     cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.i[each.key].id
     cdn_frontdoor_origin_ids = [
-        for k, v in each.value.origins : azurerm_cdn_frontdoor_origin.i["${each.key}-${k}"].id 
+        for k, v in each.value.origins : azurerm_cdn_frontdoor_origin.i["${each.key}-${k}"].id
     ]
     cdn_frontdoor_rule_set_ids = [azurerm_cdn_frontdoor_rule_set.standard.id]
     enabled = true
