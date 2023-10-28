@@ -217,12 +217,6 @@ locals {
             "cert_name" = "acmebot-perf-gb-bink-com",
             "origins" = {"reflector.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
         }
-        "uksouth_perf_locustv1" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "locustv1.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"locustv1.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
         "uksouth_perf_locustv2" = {
             "endpoint" = "uksouth-perf"
             "domain" = "locustv2.perf.gb.bink.com"

@@ -74,22 +74,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "prod_olympus" {
         }
     }
     custom_rule {
-        name = "AppBlock"
-        enabled = true
-        priority = 2
-        type = "MatchRule"
-        action = "Block"
-
-        match_condition {
-            match_variable = "RequestUri"
-            operator = "Contains"
-            match_values = ["/users/me", "/users/magic_links", "/users/magic_links/access_tokens"]
-        }
-    }
-    custom_rule {
         name = "Ubiquity"
         enabled = true
-        priority = 3
+        priority = 2
         type = "MatchRule"
         action = "Block"
 
@@ -343,7 +330,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "internal" {
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_asset_register"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_bridge"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_grafana"].id,
-                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_locustv1"].id,
                         azurerm_cdn_frontdoor_custom_domain.i["uksouth_perf_locustv2"].id,
                     ])
                     content {
