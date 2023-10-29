@@ -33,7 +33,7 @@ module "uksouth_ait" {
         "eos" = { assigned_to = ["kv_ro"], namespaces = [] }
         "europa" = { assigned_to = ["kv_ro"], namespaces = [] }
         "harmonia" = { assigned_to = ["kv_ro"], namespaces = [] }
-        "hermes" = { assigned_to = ["kv_ro"], namespaces = [] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["configuration"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = [] }
         "metis" = { assigned_to = ["kv_ro"], namespaces = [] }
         "midas" = { assigned_to = ["kv_ro"], namespaces = [] }

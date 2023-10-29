@@ -29,6 +29,12 @@ locals {
             "cert_name" = "acmebot-ait-gb-bink-com"
             "origins" = {"starbug.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
         }
+        "uksouth_ait_configuration" = {
+            "endpoint" = "uksouth-nonprod"
+            "domain" = "configuration.ait.gb.bink.com"
+            "cert_name" = "acmebot-ait-gb-bink-com"
+            "origins" = {"configuration.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
+        }
         # Dev Environment
         "uksouth_dev_api" = {
             "endpoint" = "uksouth-nonprod"
