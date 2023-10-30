@@ -31,6 +31,7 @@ module "uksouth_perf" {
         "europa" = { assigned_to = ["kv_rw"], namespaces = ["olympus"] }
         "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "atalanta" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
