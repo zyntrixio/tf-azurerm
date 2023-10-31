@@ -4,6 +4,11 @@ locals {
     ) : {}
 }
 
+data "cloudamqp_nodes" "i" {
+  count = var.cloudamqp.enabled && var.keyvault.enabled ? 1 : 0
+  instance_id = cloudamqp_instance.i[0].id
+}
+
 resource "cloudamqp_instance" "i" {
     count = var.cloudamqp.enabled ? 1 : 0
     name = azurerm_resource_group.i.name
@@ -91,6 +96,7 @@ resource "azurerm_key_vault_secret" "amqp" {
         "cloudamqp_host" = cloudamqp_instance.i[0].host
         "vhost" = local.amqp_credentials.user
         "admin" = "https://${cloudamqp_instance.i[0].host}/\n"
+        "cloudamqp_nodes" = [for each in data.cloudamqp_nodes.i[0].nodes : each.hostname]
     })
     tags = {
         k8s_secret_name = "azure-cloudamqp"
