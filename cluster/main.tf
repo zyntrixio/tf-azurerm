@@ -40,14 +40,3 @@ resource "azurerm_role_assignment" "rg_iam" {
     role_definition_name = "Reader"
     principal_id = each.key
 }
-
-resource "azurerm_role_assignment" "sub_owner" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "sc_ow")
-    }
-
-    scope = data.azurerm_subscription.i.id
-    role_definition_name = "Owner"
-    principal_id = each.key
-}
