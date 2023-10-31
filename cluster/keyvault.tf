@@ -72,9 +72,10 @@ resource "azurerm_role_assignment" "kv_iam_ro" {
 resource "azurerm_role_assignment" "kv_iam_rw" {
     for_each = {
         for k, v in var.iam : k => v
-             if contains(v["assigned_to"], "kv_su") ||
-                contains(v["assigned_to"], "kv_rw") &&
-                var.keyvault.enabled
+             if var.keyvault.enabled && (
+                contains(v["assigned_to"], "kv_su") ||
+                contains(v["assigned_to"], "kv_rw")
+             )
     }
 
     scope = azurerm_key_vault.i[0].id

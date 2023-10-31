@@ -1,3 +1,31 @@
+locals {
+    aks_mi_readers = {
+        for k, v in var.managed_identities : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_ro")
+    }
+    aks_mi_writers = {
+        for k, v in var.managed_identities : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_rw")
+    }
+    aks_mi_admins = {
+        for k, v in var.managed_identities : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_su")
+    }
+    aks_readers = {
+        for k, v in var.iam : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_ro")
+    }
+    aks_writers = {
+        for k, v in var.iam : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_rw")
+    }
+    aks_admins = {
+        for k, v in var.iam : k => v
+            if var.kube.enabled && contains(v["assigned_to"], "aks_su")
+    }
+    aks_users = merge(local.aks_readers, local.aks_writers, local.aks_admins)
+}
+
 resource "azurerm_user_assigned_identity" "aks" {
     name = "${azurerm_resource_group.i.name}-aks"
     location = azurerm_resource_group.i.location
@@ -142,11 +170,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
 }
 
 resource "azurerm_role_assignment" "aks_mi_ro" {
-    for_each = {
-        for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "aks_ro") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_mi_readers
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Reader"
@@ -154,11 +178,7 @@ resource "azurerm_role_assignment" "aks_mi_ro" {
 }
 
 resource "azurerm_role_assignment" "aks_mi_rw" {
-    for_each = {
-        for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "aks_rw") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_mi_writers
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Writer"
@@ -166,11 +186,7 @@ resource "azurerm_role_assignment" "aks_mi_rw" {
 }
 
 resource "azurerm_role_assignment" "aks_mi_su" {
-    for_each = {
-        for k, v in var.managed_identities : k => v
-            if contains(v["assigned_to"], "aks_su") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_mi_admins
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Admin"
@@ -178,13 +194,7 @@ resource "azurerm_role_assignment" "aks_mi_su" {
 }
 
 resource "azurerm_role_assignment" "aks_iam" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "aks_rw") ||
-               contains(v["assigned_to"], "aks_ro") ||
-               contains(v["assigned_to"], "aks_su") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_users
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service Cluster User Role"
@@ -192,14 +202,8 @@ resource "azurerm_role_assignment" "aks_iam" {
 }
 
 resource "azurerm_role_assignment" "aks_iam_nodes" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "aks_ro") ||
-               contains(v["assigned_to"], "aks_rw") ||
-               contains(v["assigned_to"], "aks_su") &&
-            var.kube.enabled
-    }
-    
+    for_each = local.aks_users
+
     scope = azurerm_kubernetes_cluster.i[0].node_resource_group_id
     role_definition_name = "Reader"
     principal_id = each.key
@@ -207,11 +211,7 @@ resource "azurerm_role_assignment" "aks_iam_nodes" {
 }
 
 resource "azurerm_role_assignment" "aks_iam_ro" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "aks_ro") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_readers
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Reader"
@@ -219,11 +219,7 @@ resource "azurerm_role_assignment" "aks_iam_ro" {
 }
 
 resource "azurerm_role_assignment" "aks_iam_rw" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "aks_rw") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_writers
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Writer"
@@ -231,11 +227,7 @@ resource "azurerm_role_assignment" "aks_iam_rw" {
 }
 
 resource "azurerm_role_assignment" "aks_iam_su" {
-    for_each = {
-        for k, v in var.iam : k => v
-            if contains(v["assigned_to"], "aks_su") &&
-            var.kube.enabled
-    }
+    for_each = local.aks_admins
 
     scope = azurerm_kubernetes_cluster.i[0].id
     role_definition_name = "Azure Kubernetes Service RBAC Admin"
@@ -291,11 +283,11 @@ resource "null_resource" "flux_install" {
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 
             az account set --subscription ${data.azurerm_subscription.i.subscription_id}
-            
+
             az aks get-credentials --overwrite-existing \
                 --resource-group ${azurerm_resource_group.i.name} \
                 --name ${azurerm_resource_group.i.name}
-            
+
             kubectl apply -f ${path.module}/aks_templates/container-azm-ms-agentconfig.yaml
             kubectl apply -f ${path.module}/aks_templates/gotk-components.yaml
             kubectl apply -f /tmp/${azurerm_resource_group.i.name}.yaml

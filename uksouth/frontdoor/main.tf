@@ -15,7 +15,6 @@ locals {
         "uksouth_dev" = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
         "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
-        "uksouth_perf" = "/subscriptions/c49c2fde-9e7d-41c6-ac61-f85f9fa51416/resourceGroups/uksouth-perf-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-perf"
         "uksouth_lloyds" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-lloyds-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-lloyds"
         "uksouth_retail" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-retail-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-retail"
         "uksouth_prod" = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
@@ -208,26 +207,6 @@ locals {
             "domain" = "lloyds-sit.sandbox.gb.bink.com"
             "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
-        }
-
-        # Performance Environment
-        "uksouth_perf_api" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "api.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"olympus.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
-        "uksouth_perf_reflector" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "reflector.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"reflector.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
-        }
-        "uksouth_perf_locustv2" = {
-            "endpoint" = "uksouth-perf"
-            "domain" = "locustv2.perf.gb.bink.com"
-            "cert_name" = "acmebot-perf-gb-bink-com",
-            "origins" = {"locustv2.perf.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_perf}}
         }
 
         # Lloyds Environment

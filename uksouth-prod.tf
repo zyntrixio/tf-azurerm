@@ -33,7 +33,7 @@ module "uksouth_prod" {
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cert-manager" = { namespaces = ["cert-manager"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "cyclops" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
+        "cyclops" = { assigned_to = ["kv_ro"] }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
