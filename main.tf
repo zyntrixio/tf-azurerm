@@ -239,5 +239,6 @@ module "uksouth_subscription" {
         chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"
         nathan_read = "bba71e03-172e-4d07-8ee4-aad029d9031d"
         thenuja_viknarajah = "e69fd5a7-8b6c-4ac5-8df0-c88c77df0a12"
+        navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
     }
 }
