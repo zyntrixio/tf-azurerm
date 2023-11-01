@@ -1,0 +1,3 @@
+module "entra" {
+    source = "./entra"
+}
