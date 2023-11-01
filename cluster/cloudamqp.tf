@@ -96,7 +96,7 @@ resource "azurerm_key_vault_secret" "amqp" {
         "cloudamqp_host" = cloudamqp_instance.i[0].host
         "vhost" = local.amqp_credentials.user
         "admin" = "https://${cloudamqp_instance.i[0].host}/\n"
-        "cloudamqp_nodes" = [for each in data.cloudamqp_nodes.i[0].nodes : each.hostname]
+        "cloudamqp_nodes" = join(",", [for each in data.cloudamqp_nodes.i[0].nodes : each.hostname])
     })
     tags = {
         k8s_secret_name = "azure-cloudamqp"
