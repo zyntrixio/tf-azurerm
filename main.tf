@@ -11,6 +11,7 @@ locals {
     }
     secure_origins = [
         "62.64.135.206/32", # Ascot Primary - Giganet
+        "194.74.152.11/32", # Ascot Secondary - BT
         "80.87.29.254/32",  # London Primary - Scrub Office
         "217.169.3.233/32",  # cpressland@bink.com
         "81.2.99.144/29",  # cpressland@bink.com
