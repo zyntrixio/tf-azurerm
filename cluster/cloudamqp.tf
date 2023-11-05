@@ -113,7 +113,7 @@ resource "azurerm_key_vault_secret" "amqp" {
         "cloudamqp_nodes" = join(",", [for each in data.cloudamqp_nodes.i[0].nodes : each.hostname])
     })
     tags = {
-        k8s_secret_name = "azure-cloudamqp"
+        kube_secret_name = "azure-cloudamqp"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

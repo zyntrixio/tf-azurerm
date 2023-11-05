@@ -35,7 +35,7 @@ resource "azurerm_key_vault_secret" "st" {
         "sftp_key_secondary" = try(azurerm_storage_account.sftp[0].secondary_access_key, ""),
     })
     tags = {
-        k8s_secret_name = "azure-storage"
+        kube_secret_name = "azure-storage"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

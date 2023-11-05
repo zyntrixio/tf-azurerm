@@ -54,7 +54,7 @@ resource "azurerm_key_vault_secret" "mi" {
         )
     )
     tags = {
-        k8s_secret_name = "azure-identities"
+        kube_secret_name = "azure-identities"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

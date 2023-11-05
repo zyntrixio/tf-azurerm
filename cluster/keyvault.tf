@@ -171,7 +171,7 @@ resource "azurerm_key_vault_secret" "kv" {
         "keyvault_name" = azurerm_key_vault.i[0].name,
     })
     tags = {
-        k8s_secret_name = "azure-keyvault"
+        kube_secret_name = "azure-keyvault"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

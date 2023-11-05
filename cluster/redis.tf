@@ -81,7 +81,7 @@ resource "azurerm_key_vault_secret" "rd" {
         "access_key_secondary" = azurerm_redis_cache.i[0].secondary_access_key
     })
     tags = {
-        k8s_secret_name = "azure-redis"
+        kube_secret_name = "azure-redis"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

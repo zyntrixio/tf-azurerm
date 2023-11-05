@@ -63,7 +63,7 @@ resource "azurerm_key_vault_secret" "ac" {
         "secondary_read_connection_string" = azurerm_app_configuration.i.secondary_read_key[0].connection_string
     })
     tags = {
-        k8s_secret_name = "azure-app-config"
+        kube_secret_name = "azure-app-config"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]

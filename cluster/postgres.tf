@@ -118,7 +118,7 @@ resource "azurerm_key_vault_secret" "pg" {
         "url_placeholder": "postgresql://${random_pet.pg.id}:${random_password.pg.result}@${azurerm_postgresql_flexible_server.i[0].fqdn}/{}?sslmode=require"
     }))
     tags = {
-        k8s_secret_name = "azure-postgres"
+        kube_secret_name = "azure-postgres"
     }
 
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]
