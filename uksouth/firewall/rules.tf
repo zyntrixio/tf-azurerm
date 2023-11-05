@@ -37,6 +37,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "CloudAmqp"
+        source_addresses = ["*"]
+        target_fqdns = ["*.cloudamqp.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Falco"
         source_addresses = ["*"]
         target_fqdns = ["falcosecurity.github.io"]

@@ -4,11 +4,6 @@ locals {
     ) : {}
 }
 
-data "cloudamqp_nodes" "i" {
-  count = var.cloudamqp.enabled && var.keyvault.enabled ? 1 : 0
-  instance_id = cloudamqp_instance.i[0].id
-}
-
 resource "cloudamqp_instance" "i" {
     count = var.cloudamqp.enabled ? 1 : 0
     name = azurerm_resource_group.i.name
@@ -16,6 +11,16 @@ resource "cloudamqp_instance" "i" {
     region = var.cloudamqp.region
     vpc_id = var.cloudamqp.vpc_id
     keep_associated_vpc = true
+}
+
+data "cloudamqp_nodes" "i" {
+  count = var.cloudamqp.enabled && var.keyvault.enabled ? 1 : 0
+  instance_id = cloudamqp_instance.i[0].id
+}
+
+data "dns_a_record_set" "cloudamqp_nodes" {
+    for_each = {for k, v in try(data.cloudamqp_nodes.i[0].nodes, {}) : k => v}
+    host = each.value.hostname
 }
 
 resource "cloudamqp_privatelink_azure" "i" {
@@ -34,7 +39,7 @@ resource "cloudamqp_security_firewall" "i" {
         services = ["AMQPS", "HTTPS"]
     }
     dynamic "rules" {
-        for_each = var.allowed_hosts.ipv4
+        for_each = concat(var.allowed_hosts.ipv4, [var.firewall.v4_prefix])
         content {
             ip = rules.value
             services = ["HTTPS"]
@@ -78,6 +83,15 @@ resource "azurerm_private_dns_a_record" "ampq" {
     resource_group_name = azurerm_resource_group.i.name
     ttl = 300
     records = [azurerm_private_endpoint.amqp[0].private_service_connection[0].private_ip_address]
+}
+
+resource "azurerm_private_dns_a_record" "https" {
+    for_each = {for k, v in data.dns_a_record_set.cloudamqp_nodes : k => v}
+    name = "${split(".", each.value.host)[0]}.${split(".", each.value.host)[1]}"
+    zone_name = azurerm_private_dns_zone.amqp.name
+    resource_group_name = azurerm_resource_group.i.name
+    ttl = 300
+    records = each.value.addrs
 }
 
 resource "azurerm_key_vault_secret" "amqp" {

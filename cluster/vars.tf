@@ -26,12 +26,14 @@ variable "firewall" {
         vnet_name = string
         vnet_id = string
         ip = string
+        v4_prefix = string
     })
     default = {
         resource_group_name = "uksouth-firewall"
         ip = "192.168.0.4"
         vnet_id = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-firewall/providers/Microsoft.Network/virtualNetworks/firewall-vnet"
         vnet_name = "firewall-vnet"
+        v4_prefix = "51.132.44.240/28"
     }
 }
 
