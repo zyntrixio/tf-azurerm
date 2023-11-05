@@ -280,6 +280,7 @@ resource "null_resource" "flux_install" {
             export CLUSTER_PLS_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
             export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}
             export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
+            export KEYVAULT_KV_TO_KUBE=${try(azurerm_key_vault.i[0].name, "")}
 
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 
