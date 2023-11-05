@@ -41,7 +41,7 @@ resource "azurerm_monitor_diagnostic_setting" "blob" {
 
 resource "azurerm_role_assignment" "st_mi_ro" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "st_ro") &&
             var.storage.enabled
     }
@@ -53,7 +53,7 @@ resource "azurerm_role_assignment" "st_mi_ro" {
 
 resource "azurerm_role_assignment" "st_mi_rw" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "st_rw") &&
             var.storage.enabled
     }

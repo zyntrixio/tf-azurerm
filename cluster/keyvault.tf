@@ -34,7 +34,7 @@ resource "azurerm_monitor_diagnostic_setting" "kv" {
 
 resource "azurerm_role_assignment" "kv_mi_ro" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
              if contains(v["assigned_to"], "kv_ro") &&
                 var.keyvault.enabled
     }
@@ -46,7 +46,7 @@ resource "azurerm_role_assignment" "kv_mi_ro" {
 
 resource "azurerm_role_assignment" "kv_mi_rw" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
              if contains(v["assigned_to"], "kv_su") ||
                 contains(v["assigned_to"], "kv_rw") &&
                 var.keyvault.enabled
@@ -85,7 +85,7 @@ resource "azurerm_role_assignment" "kv_iam_rw" {
 
 resource "azurerm_key_vault_access_policy" "mi_ro" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "kv_ro") && var.keyvault.enabled
     }
 
@@ -98,7 +98,7 @@ resource "azurerm_key_vault_access_policy" "mi_ro" {
 
 resource "azurerm_key_vault_access_policy" "mi_rw" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "kv_rw") && var.keyvault.enabled
     }
 

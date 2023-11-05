@@ -1,14 +1,14 @@
 locals {
     aks_mi_readers = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if var.kube.enabled && contains(v["assigned_to"], "aks_ro")
     }
     aks_mi_writers = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if var.kube.enabled && contains(v["assigned_to"], "aks_rw")
     }
     aks_mi_admins = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if var.kube.enabled && contains(v["assigned_to"], "aks_su")
     }
     aks_readers = {
@@ -245,7 +245,7 @@ resource "azurerm_role_assignment" "aks_nodes_contributor" {
 
 # Required for AAD Pod Identity
 resource "azurerm_role_assignment" "aks_identity_assignment" {
-    for_each = { for k, v in var.managed_identities : k => v if var.kube.enabled }
+    for_each = { for k, v in local.identities : k => v if var.kube.enabled }
 
     scope = azurerm_user_assigned_identity.i[each.key].id
     role_definition_name = "Managed Identity Operator"
@@ -279,6 +279,7 @@ resource "null_resource" "flux_install" {
             export CLUSTER_LB_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)}"
             export CLUSTER_PLS_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
             export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}
+            export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
 
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 
@@ -287,6 +288,8 @@ resource "null_resource" "flux_install" {
             az aks get-credentials --overwrite-existing \
                 --resource-group ${azurerm_resource_group.i.name} \
                 --name ${azurerm_resource_group.i.name}
+
+            kubelogin convert-kubeconfig -l azurecli
 
             kubectl apply -f ${path.module}/aks_templates/container-azm-ms-agentconfig.yaml
             kubectl apply -f ${path.module}/aks_templates/gotk-components.yaml

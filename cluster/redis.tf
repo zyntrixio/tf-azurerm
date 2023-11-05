@@ -89,7 +89,7 @@ resource "azurerm_key_vault_secret" "rd" {
 
 resource "azurerm_role_assignment" "rd_mi" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "rd") &&
             var.redis.enabled
     }

@@ -1,6 +1,10 @@
 locals {
+    default_identities = {
+        kv-to-kube = { namespaces = ["kv-to-kube"], assigned_to = ["kv_ro"] }
+    }
+    identities = merge(local.default_identities, var.managed_identities)
     identity_namespace_map = merge(([
-        for k, v in var.managed_identities : {
+        for k, v in local.identities : {
             for namespace in v["namespaces"] :
                 "${k}_${namespace}" => {
                     identity = k
@@ -11,7 +15,7 @@ locals {
 }
 
 resource "azurerm_user_assigned_identity" "i" {
-    for_each = var.managed_identities
+    for_each = local.identities
 
     name = "${azurerm_resource_group.i.name}-${each.key}"
     location = azurerm_resource_group.i.location
@@ -20,7 +24,7 @@ resource "azurerm_user_assigned_identity" "i" {
 
 resource "azurerm_role_assignment" "mi_mi" {
     for_each = {
-        for k, v in var.managed_identities : k => v
+        for k, v in local.identities : k => v
             if contains(v["assigned_to"], "mi")
     }
 
