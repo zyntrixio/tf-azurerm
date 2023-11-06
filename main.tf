@@ -85,6 +85,7 @@ locals {
         michael_morar = "8288a1d3-0bfb-4561-a91b-30f58045ca73"
         navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
         carla_gouws = "d14223a9-b07a-41ba-96c7-cf5526f6987b"
+        navin_odedra = "74b467c5-d302-4a05-9423-47aa0d08682e"
     }
     aad_apps = {}
 }

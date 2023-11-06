@@ -27,6 +27,7 @@ module "uksouth_prod" {
         (local.aad_user.mick_latham) = { assigned_to = ["rg", "aks_rw", "st_rw"] }
         (local.aad_group.backend) = { assigned_to = ["la"] }
         (local.aad_user.michael_morar) = { assigned_to = ["la"] }
+        (local.aad_user.navin_odedra) = { assigned_to = ["la"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"] }
