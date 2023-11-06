@@ -16,17 +16,14 @@ locals {
         "217.169.3.233/32",  # cpressland@bink.com
         "81.2.99.144/29",  # cpressland@bink.com
         "31.125.46.20/32",  # nread@bink.com
-        "51.105.20.158/32",  # Wireguard IP TODO: Bring this from module
         "81.133.125.233/32", # Thenuja, not static, will rotate.
         "20.49.208.61/32", # module.uksouth_vpn.ip_addresses.ipv4,
-        "51.142.188.173/32", # module.ukwest_vpn.ip_addresses.ipv4,
     ]
     secure_origins_v6 = [
         "2001:8b0:b130::/48", # cpressland@bink.com
         "2a05:87c1:17c::/48", # Ascot Primary - Giganet
         "2a00:23a8:50:1400::/64", # Thenuja, should be static unless BT implemented IPv6 improperly
         "2603:1020:702:3::3a/128", # module.uksouth_vpn.ip_addresses.ipv6,
-        "2603:1020:600::12c/128", # module.ukwest_vpn.ip_addresses.ipv6,
     ]
     lloyds_origins_v4 = [
         "141.92.129.40/29", # Peterborough
@@ -152,23 +149,6 @@ module "uksouth_website" {
     dns = {
         resource_group_name = module.uksouth_dns.resource_group_name
         zone_name = module.uksouth_dns.bink_com_zone
-    }
-}
-
-module "uksouth_wireguard" {
-    source = "./uksouth/wireguard"
-    common = {
-        firewall = {
-            resource_group = module.uksouth_firewall.resource_group_name
-            ip_address = module.uksouth_firewall.firewall_ip
-            vnet_name = module.uksouth_firewall.vnet_name
-            vnet_id = module.uksouth_firewall.vnet_id
-        }
-        private_dns = local.private_dns.core_defaults
-        cidr = "192.168.2.0/24"
-        loganalytics_id = module.uksouth_loganalytics.id
-        secure_origins_v4 = local.secure_origins
-        secure_origins_v6 = local.secure_origins_v6
     }
 }
 

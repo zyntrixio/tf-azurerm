@@ -234,25 +234,6 @@ resource "azurerm_role_assignment" "aks_iam_su" {
     principal_id = each.key
 }
 
-# Required for AAD Pod Identity
-resource "azurerm_role_assignment" "aks_nodes_contributor" {
-    count = var.kube.enabled ? 1 : 0
-
-    scope = azurerm_kubernetes_cluster.i[0].node_resource_group_id
-    role_definition_name = "Virtual Machine Contributor"
-    principal_id = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
-}
-
-# Required for AAD Pod Identity
-resource "azurerm_role_assignment" "aks_identity_assignment" {
-    for_each = { for k, v in local.identities : k => v if var.kube.enabled }
-
-    scope = azurerm_user_assigned_identity.i[each.key].id
-    role_definition_name = "Managed Identity Operator"
-    principal_id = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
-}
-
-
 resource "azurerm_monitor_diagnostic_setting" "aks" {
     count = var.kube.enabled && var.loganalytics.enabled ? 1 : 0
 

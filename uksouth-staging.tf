@@ -21,7 +21,7 @@ module "uksouth_staging" {
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
-        (local.aad_group.ba) = { assigned_to = ["st_rw"] }
+        (local.aad_group.ba) = { assigned_to = ["st_rw", "la"] }
         (local.aad_user.michael_morar) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
@@ -36,7 +36,6 @@ module "uksouth_staging" {
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
-        "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["default","devops","bpl"]}
         "metis" = { assigned_to = ["kv_ro"] }
         "midas" = { assigned_to = ["kv_ro"] }

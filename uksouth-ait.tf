@@ -24,7 +24,6 @@ module "uksouth_ait" {
     }
     managed_identities = {
         "cert-manager" = { namespaces = ["cert-manager"] }
-        "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
         "starbug" = { assigned_to = ["mi"], namespaces = ["starbug"] } #TODO figure out how to set this without owner permissions
         "angelia" = { assigned_to = ["kv_ro"], namespaces = [] }
         "boreas" = { assigned_to = ["kv_ro"], namespaces = [] }

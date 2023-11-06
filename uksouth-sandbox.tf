@@ -20,7 +20,6 @@ locals {
             "europa" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
-            "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
             "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }

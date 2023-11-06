@@ -42,7 +42,6 @@ module "uksouth_prod" {
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "harmonia" = { assigned_to = ["kv_ro"] }
         "hermes" = { assigned_to = ["kv_ro"] }
-        "keyvault2kube" = { assigned_to = ["kv_ro"], namespaces = ["kube-system"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["devops"] }
         "kratos" = { assigned_to = ["kv_ro"] }
         "metis" = { assigned_to = ["kv_ro"] }
