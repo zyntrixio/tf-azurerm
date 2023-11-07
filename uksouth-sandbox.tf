@@ -48,6 +48,22 @@ locals {
     }
 }
 
+module "uksouth_sandbox" {
+    source = "./cluster"
+    providers = { azurerm = azurerm.uksouth_sandbox, azurerm.core = azurerm }
+    common = { name = "sandbox", location = "uksouth", cidr = "10.20.0.0/16" }
+    allowed_hosts = local.sandbox_common.allowed_hosts
+    iam = local.sandbox_common.iam
+    managed_identities = local.sandbox_common.managed_identities
+    kube = { enabled = true, authorized_ip_ranges = local.secure_origins }
+    cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
+    storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
+    loganalytics = { enabled = true }
+    keyvault = { enabled = true }
+    postgres = { enabled = false }
+    redis = { enabled = false }
+}
+
 module "uksouth_retail" {
     source = "./cluster"
     providers = {
