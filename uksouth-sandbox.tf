@@ -16,7 +16,6 @@ locals {
         }
         managed_identities = {
             "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
-            "cert-manager" = { namespaces = ["cert-manager"] }
             "europa" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
             "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
@@ -52,6 +51,7 @@ module "uksouth_sandbox" {
     source = "./cluster"
     providers = { azurerm = azurerm.uksouth_sandbox, azurerm.core = azurerm }
     common = { name = "sandbox", location = "uksouth", cidr = "10.20.0.0/16" }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
@@ -75,6 +75,7 @@ module "uksouth_retail" {
         location = "uksouth"
         cidr = "10.21.0.0/16"
     }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities
@@ -98,6 +99,7 @@ module "uksouth_lloyds" {
         location = "uksouth"
         cidr = "10.23.0.0/16"
     }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
     managed_identities = local.sandbox_common.managed_identities

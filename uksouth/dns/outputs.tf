@@ -33,3 +33,8 @@ output "bink_com_zone" {
 output "bink_sh_zone" {
     value = azurerm_dns_zone.bink-sh.name
 }
+
+output "bink_sh_id" {
+    value = azurerm_dns_zone.bink-sh.id
+
+}

@@ -1,6 +1,7 @@
 locals {
     default_identities = {
         kv-to-kube = { namespaces = ["kv-to-kube"], assigned_to = ["kv_ro"] }
+        cert-manager = { namespaces = ["cert-manager"], assigned_to = [] }
     }
     identities = merge(local.default_identities, var.managed_identities)
     identity_namespace_map = merge(([

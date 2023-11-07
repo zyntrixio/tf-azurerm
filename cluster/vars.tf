@@ -64,6 +64,12 @@ variable "keyvault" {
     })
 }
 
+variable "dns" {
+    type = object({
+        id = string
+    })
+}
+
 variable "storage" {
     type = object({
         enabled = bool

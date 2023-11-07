@@ -9,6 +9,7 @@ module "uksouth_dev" {
         location = "uksouth"
         cidr = "10.41.0.0/16"
     }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
@@ -28,7 +29,6 @@ module "uksouth_dev" {
         "boreas" = { assigned_to = ["kv_ro"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "cert-manager" = { namespaces = ["cert-manager"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_rw"] }

@@ -133,11 +133,3 @@ resource "azurerm_dns_caa_record" "root" {
         value = "mailto:devops@bink.com"
     }
 }
-
-resource "azurerm_role_assignment" "bink_sh_managed_identities" {
-    for_each = var.bink_sh_managed_identities
-
-    scope = azurerm_dns_zone.bink-sh.id
-    role_definition_name = "DNS Zone Contributor"
-    principal_id = each.value
-}

@@ -14,6 +14,7 @@ module "uksouth_prod" {
     backups = {
         redundancy = "GeoRedundant"
     }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
@@ -34,7 +35,6 @@ module "uksouth_prod" {
         "boreas" = { assigned_to = ["kv_ro"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "cert-manager" = { namespaces = ["cert-manager"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cyclops" = { assigned_to = ["kv_ro"] }
         "eos" = { assigned_to = ["kv_ro"] }

@@ -9,6 +9,7 @@ module "uksouth_ait" {
         location = "uksouth"
         cidr = "10.61.0.0/16"
     }
+    dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
@@ -23,7 +24,6 @@ module "uksouth_ait" {
         (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     }
     managed_identities = {
-        "cert-manager" = { namespaces = ["cert-manager"] }
         "starbug" = { assigned_to = ["mi"], namespaces = ["starbug"] } #TODO figure out how to set this without owner permissions
         "angelia" = { assigned_to = ["kv_ro"], namespaces = [] }
         "boreas" = { assigned_to = ["kv_ro"], namespaces = [] }

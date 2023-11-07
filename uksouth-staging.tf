@@ -4,14 +4,15 @@ module "uksouth_staging" {
         azurerm = azurerm.uksouth_staging
         azurerm.core = azurerm
     }
-    allowed_hosts = {
-        ipv4 = local.secure_origins
-        ipv6 = local.secure_origins_v6
-    }
     common = {
         name = "staging"
         location = "uksouth"
         cidr = "10.31.0.0/16"
+    }
+    dns = { id = module.uksouth_dns.bink_sh_id }
+    allowed_hosts = {
+        ipv4 = local.secure_origins
+        ipv6 = local.secure_origins_v6
     }
     iam = {
         (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
@@ -29,7 +30,6 @@ module "uksouth_staging" {
         "boreas" = { assigned_to = ["kv_ro"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "cert-manager" = { namespaces = ["cert-manager"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_rw"] }
