@@ -36,5 +36,4 @@ output "bink_sh_zone" {
 
 output "bink_sh_id" {
     value = azurerm_dns_zone.bink-sh.id
-
 }
