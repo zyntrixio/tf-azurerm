@@ -54,7 +54,9 @@ module "uksouth_sandbox" {
     dns = { id = module.uksouth_dns.bink_sh_id }
     allowed_hosts = local.sandbox_common.allowed_hosts
     iam = local.sandbox_common.iam
-    managed_identities = local.sandbox_common.managed_identities
+    managed_identities = {
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+    }
     kube = { enabled = true, authorized_ip_ranges = local.secure_origins }
     cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
     storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
