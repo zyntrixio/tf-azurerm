@@ -13,3 +13,7 @@ resource "azurerm_container_registry" "binkcore" {
         location = "ukwest"
     }
 }
+
+output "acr_id" {
+    value = azurerm_container_registry.binkcore.id
+}

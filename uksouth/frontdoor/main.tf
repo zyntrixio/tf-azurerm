@@ -14,7 +14,7 @@ locals {
         "uksouth_ait" = "/subscriptions/0b92124d-e5fe-4c9a-a898-1fdf02502e01/resourceGroups/uksouth-ait-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-ait"
         "uksouth_dev" = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
         "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
-        "uksouth_sandbox" = "/subscriptions/957523d8-bbe2-4f68-8fae-95975157e91c/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
+        "uksouth_sandbox" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
         "uksouth_lloyds" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-lloyds-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-lloyds"
         "uksouth_retail" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-retail-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-retail"
         "uksouth_prod" = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
@@ -202,11 +202,17 @@ locals {
         }
 
         # Sandbox Environment
-        "uksouth_sandbox_lloyds_sit" = {
-            "endpoint" = "uksouth-sandbox"
-            "domain" = "lloyds-sit.sandbox.gb.bink.com"
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
-            "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        "uksouth_sandbox_api" = {
+            "endpoint" = "uksouth-sandbox",
+            "domain" = "api.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"api.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
+        }
+        "uksouth_sandbox_retailer" = {
+            "endpoint" = "uksouth-sandbox",
+            "domain" = "retailer.sandbox.gb.bink.com"
+            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "origins" = {"retailer.sandbox.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_sandbox}}
         }
 
         # Lloyds Environment
@@ -364,6 +370,12 @@ locals {
         }
 
         # DEPRECATED: Endpoints to remove after 17th of Jan 2024
+        "uksouth_sandbox_lloyds_sit" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "lloyds-sit.sandbox.gb.bink.com"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
+            "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
         "uksouth_sandbox_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "sit.sandbox.gb.bink.com"

@@ -10,6 +10,7 @@ module "uksouth_dev" {
         cidr = "10.41.0.0/16"
     }
     dns = { id = module.uksouth_dns.bink_sh_id }
+    acr = { id = module.uksouth_core.acr_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6

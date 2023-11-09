@@ -70,6 +70,12 @@ variable "dns" {
     })
 }
 
+variable "acr" {
+    type = object({
+        id = string
+    })
+}
+
 variable "storage" {
     type = object({
         enabled = bool

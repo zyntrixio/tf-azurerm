@@ -15,6 +15,7 @@ module "uksouth_prod" {
         redundancy = "GeoRedundant"
     }
     dns = { id = module.uksouth_dns.bink_sh_id }
+    acr = { id = module.uksouth_core.acr_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6

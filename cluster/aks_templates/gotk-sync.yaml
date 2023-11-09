@@ -50,3 +50,4 @@ data:
   environment_keyvault: $ENVIRONMENT_KEYVAULT
   identity_kv_to_kube: $IDENTITY_KV_TO_KUBE
   keyvault_kv_to_kube: $KEYVAULT_KV_TO_KUBE
+  identity_flux: $IDENTITY_FLUX

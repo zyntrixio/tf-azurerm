@@ -177,6 +177,18 @@ resource "azurerm_role_assignment" "aks_mi_ro" {
     principal_id = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
+resource "azurerm_role_assignment" "aks-acr" {
+    scope = var.acr.id
+    role_definition_name = "AcrPull"
+    principal_id = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
+}
+
+resource "azurerm_role_assignment" "flux-acr" {
+    scope = var.acr.id
+    role_definition_name = "AcrPull"
+    principal_id = azurerm_user_assigned_identity.i["image-reflector-controller"].principal_id
+}
+
 resource "azurerm_role_assignment" "aks_mi_rw" {
     for_each = local.aks_mi_writers
 
@@ -262,6 +274,7 @@ resource "null_resource" "flux_install" {
             export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}
             export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
             export KEYVAULT_KV_TO_KUBE=${try(azurerm_key_vault.i[0].name, "")}
+            export IDENTITY_FLUX=${azurerm_user_assigned_identity.i["image-reflector-controller"].client_id}
 
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 

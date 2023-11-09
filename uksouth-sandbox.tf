@@ -3,6 +3,7 @@ module "uksouth_sandbox" {
     providers = { azurerm = azurerm.uksouth_sandbox, azurerm.core = azurerm }
     common = { name = "sandbox", location = "uksouth", cidr = "10.20.0.0/16" }
     dns = { id = module.uksouth_dns.bink_sh_id }
+    acr = { id = module.uksouth_core.acr_id }
     allowed_hosts = { ipv4 = local.secure_origins, ipv6 = local.secure_origins_v6 }
     iam = {
         (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
@@ -39,6 +40,7 @@ module "uksouth_retail" {
         cidr = "10.21.0.0/16"
     }
     dns = { id = module.uksouth_dns.bink_sh_id }
+    acr = { id = module.uksouth_core.acr_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
@@ -98,6 +100,7 @@ module "uksouth_lloyds" {
         cidr = "10.23.0.0/16"
     }
     dns = { id = module.uksouth_dns.bink_sh_id }
+    acr = { id = module.uksouth_core.acr_id }
     allowed_hosts = {
         ipv4 = local.secure_origins
         ipv6 = local.secure_origins_v6
