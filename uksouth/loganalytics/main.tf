@@ -11,6 +11,11 @@ variable "managed_identities" {
     default = []
 }
 
+variable "iam" {
+    type = list
+    default = []
+}
+
 resource "azurerm_resource_group" "i" {
     name = "uksouth-loganalytics"
     location = "uksouth"
@@ -24,28 +29,11 @@ resource "azurerm_log_analytics_workspace" "i" {
     retention_in_days = 365
 }
 
-resource "azurerm_role_assignment" "backend" {
+resource "azurerm_role_assignment" "iam" {
+    for_each = toset(var.iam)
     scope = azurerm_log_analytics_workspace.i.id
-    role_definition_name = "Contributor"
-    principal_id = "219194f6-b186-4146-9be7-34b731e19001"
-}
-
-resource "azurerm_role_assignment" "qa" {
-    scope = azurerm_log_analytics_workspace.i.id
-    role_definition_name = "Contributor"
-    principal_id = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
-}
-
-resource "azurerm_role_assignment" "datamanagement" {
-    scope = azurerm_log_analytics_workspace.i.id
-    role_definition_name = "Contributor"
-    principal_id = "13876e0a-d625-42ff-89aa-3f6904b2f073"
-}
-
-resource "azurerm_role_assignment" "architecture" {
-    scope = azurerm_log_analytics_workspace.i.id
-    role_definition_name = "Contributor"
-    principal_id = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
+    role_definition_name = "Log Analytics Reader"
+    principal_id = each.key
 }
 
 resource "azurerm_role_assignment" "cluster_ids" {

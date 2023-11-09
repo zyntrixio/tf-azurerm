@@ -56,12 +56,11 @@ locals {
 
     aad_group = {
         architecture = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
-        data_mgmt = "13876e0a-d625-42ff-89aa-3f6904b2f073"
-        qa = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
-        cyber_sec = "b56bc76d-1af5-4e44-8784-7ee7a44cc0c1"
-        devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
-        backend = "219194f6-b186-4146-9be7-34b731e19001"
         ba = "27678d85-c6b3-49b5-b1b7-0792940f4e13"
+        backend = "219194f6-b186-4146-9be7-34b731e19001"
+        devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
+        qa = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
+        service = "bc1be8d0-5243-41b8-b384-bd9fedcd7720"
     }
     aad_user = {
         chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"
@@ -200,6 +199,11 @@ module "uksouth_loganalytics" {
         module.uksouth_prod.managed_identities.kiroshi,
         module.uksouth_prod.managed_identities.snowstorm,
         module.uksouth_staging.managed_identities.snowstorm,
+    ]
+    iam = [
+        local.aad_group.architecture,
+        local.aad_group.backend,
+        local.aad_group.service,
     ]
 }
 
