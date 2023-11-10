@@ -45,7 +45,9 @@ module "uksouth_dev" {
     }
     kube = {
         enabled = true
+        cilium_enabled = true
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = { spot = {} }
     }
     cloudamqp = {
         enabled = true

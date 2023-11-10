@@ -61,6 +61,7 @@ module "uksouth_prod" {
         sku_tier = "Standard"
         automatic_channel_upgrade = "patch"
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = { spot = {} }
     }
     cloudamqp = {
         enabled = true

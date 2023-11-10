@@ -17,7 +17,7 @@ module "uksouth_sandbox" {
     managed_identities = {
         "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     }
-    kube = { enabled = true, authorized_ip_ranges = local.secure_origins }
+    kube = { enabled = true, authorized_ip_ranges = local.secure_origins, additional_node_pools = { spot = {} } }
     cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
     storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
     loganalytics = { enabled = true }
@@ -67,6 +67,7 @@ module "uksouth_retail" {
         enabled = true
         authorized_ip_ranges = local.secure_origins,
         pool_os_disk_size_gb = 32
+        additional_node_pools = { spot = {} }
     }
     cloudamqp = {
         enabled = true
@@ -127,6 +128,7 @@ module "uksouth_lloyds" {
         enabled = true
         authorized_ip_ranges = local.secure_origins,
         pool_os_disk_size_gb = 32
+        additional_node_pools = { spot = {} }
     }
     cloudamqp = {
         enabled = true

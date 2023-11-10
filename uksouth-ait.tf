@@ -44,15 +44,7 @@ module "uksouth_ait" {
         enabled = true
         authorized_ip_ranges = local.secure_origins
         additional_node_pools = {
-            starbug = {
-                vm_size = "Standard_E32ads_v5"
-                enable_auto_scaling = true
-                min_count = 0
-                max_count = 3
-                priority = "Spot"
-                node_labels = {"kubernetes.azure.com/scalesetpriority" = "spot"}
-                node_taints = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
-            }
+            starbug = { vm_size = "Standard_E32ads_v5" }
         }
     }
     cloudamqp = { enabled = false }

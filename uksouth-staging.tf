@@ -50,8 +50,8 @@ module "uksouth_staging" {
     }
     kube = {
         enabled = true
-        flux_enabled = true
         authorized_ip_ranges = local.secure_origins
+        additional_node_pools = { spot = {} }
     }
     cloudamqp = {
         enabled = true
