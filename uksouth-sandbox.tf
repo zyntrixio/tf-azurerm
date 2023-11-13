@@ -22,7 +22,7 @@ module "uksouth_sandbox" {
     storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = false }
+    postgres = { enabled = false, sku = "B_Standard_B1ms", storage_mb = 32768 }
     redis = { enabled = false }
 }
 

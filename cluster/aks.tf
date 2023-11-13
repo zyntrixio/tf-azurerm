@@ -86,8 +86,7 @@ resource "azurerm_kubernetes_cluster" "i" {
         os_disk_type = var.kube.pool_os_disk_type
         os_disk_size_gb = var.kube.pool_os_disk_size_gb
         os_sku = var.kube.pool_os_sku
-        vnet_subnet_id = var.kube.cilium_enabled ? azurerm_subnet.aks_nodes.id : azurerm_subnet.kube_nodes.id
-        pod_subnet_id = var.kube.cilium_enabled ? azurerm_subnet.kube_nodes.id : null
+        vnet_subnet_id = azurerm_subnet.kube_nodes.id
         temporary_name_for_rotation = "temp"
         max_pods = var.kube.cilium_enabled ? 250 : 100
     }
@@ -100,8 +99,10 @@ resource "azurerm_kubernetes_cluster" "i" {
 
     network_profile {
         network_plugin = "azure"
+        network_plugin_mode = var.kube.cilium_enabled ? "overlay" : null
         ebpf_data_plane = var.kube.cilium_enabled ? "cilium" : null
         service_cidr = "172.16.0.0/16"
+        pod_cidr = var.kube.cilium_enabled ? "172.20.0.0/14" : null
         dns_service_ip = "172.16.0.10"
         outbound_type = "userDefinedRouting"
         load_balancer_sku = "standard"
@@ -159,8 +160,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
     os_disk_size_gb = each.value.os_disk_size_gb
     os_disk_type = each.value.os_disk_type
     zones = each.value.zones
-    vnet_subnet_id = var.kube.cilium_enabled ? azurerm_subnet.aks_nodes.id : azurerm_subnet.kube_nodes.id
-    pod_subnet_id = var.kube.cilium_enabled ? azurerm_subnet.kube_nodes.id : null
+    vnet_subnet_id = azurerm_subnet.kube_nodes.id
 
     priority = each.value.priority
     spot_max_price = each.value.spot_max_price
@@ -272,8 +272,8 @@ resource "null_resource" "flux_install" {
             export CLUSTER_NAME="${var.common.name}"
             export CLUSTER_LOCATION="${azurerm_resource_group.i.location}"
             export CLUSTER_API_HOST="https://${azurerm_kubernetes_cluster.i[0].fqdn}:443"
-            export CLUSTER_LB_IP="${var.kube.cilium_enabled ? cidrhost(cidrsubnet(var.common.cidr, 4, 15), 4094) : cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)}"
-            export CLUSTER_PLS_IP="${var.kube.cilium_enabled ? cidrhost(cidrsubnet(var.common.cidr, 4, 15), 4093) : cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
+            export CLUSTER_LB_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)}"
+            export CLUSTER_PLS_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
             export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}
             export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
             export KEYVAULT_KV_TO_KUBE=${try(azurerm_key_vault.i[0].name, "")}

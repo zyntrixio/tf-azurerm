@@ -110,19 +110,6 @@ resource "azurerm_subnet" "cloudamqp" {
     address_prefixes = [cidrsubnet(var.common.cidr, 8, 132)] #10.0.132.0/24
 }
 
-resource "azurerm_subnet" "aks_nodes" {
-    name = "AzureKubernetesServiceNodes"
-    resource_group_name = azurerm_resource_group.i.name
-    virtual_network_name = azurerm_virtual_network.i.name
-    address_prefixes = [cidrsubnet(var.common.cidr, 4, 15)] #10.0.240.0/20
-    service_endpoints = [
-        "Microsoft.AzureActiveDirectory",
-        "Microsoft.ContainerRegistry",
-        "Microsoft.KeyVault",
-        "Microsoft.Storage",
-     ]
-}
-
 resource "azurerm_route_table" "i" {
     name = azurerm_resource_group.i.name
     resource_group_name = azurerm_resource_group.i.name
@@ -139,11 +126,6 @@ resource "azurerm_route_table" "i" {
 
 resource "azurerm_subnet_route_table_association" "kube_nodes" {
     subnet_id = azurerm_subnet.kube_nodes.id
-    route_table_id = azurerm_route_table.i.id
-}
-
-resource "azurerm_subnet_route_table_association" "aks_nodes" {
-    subnet_id = azurerm_subnet.aks_nodes.id
     route_table_id = azurerm_route_table.i.id
 }
 

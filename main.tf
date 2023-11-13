@@ -82,6 +82,7 @@ locals {
         navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
         carla_gouws = "d14223a9-b07a-41ba-96c7-cf5526f6987b"
         navin_odedra = "74b467c5-d302-4a05-9423-47aa0d08682e"
+        andy_hill = "e36a7290-36c8-424e-9dde-90ea0c77f770"
     }
     aad_apps = {}
 }
@@ -99,7 +100,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.78.0"
+            version = "3.80.0"
         }
         azuread = {
             source  = "hashicorp/azuread"
@@ -204,6 +205,7 @@ module "uksouth_loganalytics" {
         local.aad_group.architecture,
         local.aad_group.backend,
         local.aad_group.service,
+        local.aad_user.andy_hill,
     ]
 }
 

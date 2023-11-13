@@ -23,179 +23,179 @@ locals {
     origin_groups = {
         # AIT Environment
         "uksouth_ait_starbug" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-ait"
             "domain" = "starbug.ait.gb.bink.com"
             "cert_name" = "acmebot-ait-gb-bink-com"
             "origins" = {"starbug.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
         }
         "uksouth_ait_configuration" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-ait"
             "domain" = "configuration.ait.gb.bink.com"
             "cert_name" = "acmebot-ait-gb-bink-com"
             "origins" = {"configuration.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
         }
         # Dev Environment
         "uksouth_dev_api" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "api.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"api.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_bpl" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "bpl.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"bpl.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_rewards" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "rewards.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"rewards.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_reflector" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "reflector.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"reflector.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_audit" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "audit.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"audit.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_docs" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "docs.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"docs.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_portal" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "portal.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"portal.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_wallet" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "wallet.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"web-bink.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_wasabi" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "wasabi.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"web-wasabi.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_cosmos" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "cosmos.dev.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"cosmos.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         "uksouth_dev_retailer" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-dev"
             "domain" = "retailer.dev.gb.bink.com"
             "cert_name" = "acmebot-dev-gb-bink-com"
             "origins" = {"retailer.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         # Staging Envrionment
         "uksouth_staging_api" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "api.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"api.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_bpl" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "bpl.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"bpl.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_rewards" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "rewards.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"rewards.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_reflector" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "reflector.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"reflector.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_audit" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "audit.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"audit.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_policies" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "policies.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"policies.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_docs" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "docs.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"docs.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_portal" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "portal.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"portal.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_wallet" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "wallet.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"web-bink.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_wasabi" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "wasabi.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"web-wasabi.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_cosmos" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "cosmos.staging.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"cosmos.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_retailer" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "retailer.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"retailer.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_prefect" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "prefect.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"prefect.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_airbyte" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "airbyte.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"airbyte.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
         }
         "uksouth_staging_tableau_admin" = {
-            "endpoint" = "uksouth-nonprod"
+            "endpoint" = "uksouth-staging"
             "domain" = "tableau-admin.staging.gb.bink.com"
             "cert_name" = "acmebot-staging-gb-bink-com"
             "origins" = {"tableau-admin.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
