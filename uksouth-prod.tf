@@ -60,6 +60,7 @@ module "uksouth_prod" {
         enabled = true
         sku_tier = "Standard"
         automatic_channel_upgrade = "patch"
+        pool_max_count = 20
         authorized_ip_ranges = local.secure_origins
         cilium_enabled = false
         additional_node_pools = { spot = {} }
