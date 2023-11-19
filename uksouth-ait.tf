@@ -42,6 +42,7 @@ module "uksouth_ait" {
     }
     kube = {
         enabled = true
+        automatic_channel_upgrade = "patch"
         additional_node_pools = {
             starbug = { vm_size = "Standard_E32ads_v5" }
         }

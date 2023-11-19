@@ -61,14 +61,8 @@ resource "azurerm_subnet" "kube_controller" {
     virtual_network_name = azurerm_virtual_network.i.name
     address_prefixes = [cidrsubnet(var.common.cidr, 8, 128)] #10.0.128.0/24
 
-    delegation {
-        name = "aks-delegation"
-        service_delegation {
-            name = "Microsoft.ContainerService/managedClusters"
-            actions = [
-                "Microsoft.Network/virtualNetworks/subnets/join/action",
-            ]
-        }
+    lifecycle {
+        ignore_changes = [ delegation ]
     }
 }
 
