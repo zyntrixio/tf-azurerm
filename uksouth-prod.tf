@@ -63,7 +63,7 @@ module "uksouth_prod" {
         automatic_channel_upgrade = "patch"
         pool_max_count = 20
         cilium_enabled = false
-        additional_node_pools = { spot = {vm_size = "Standard_E32ads_v5"} }
+        additional_node_pools = { spot = {vm_size = "Standard_D32ads_v5"} }
     }
     cloudamqp = {
         enabled = true
