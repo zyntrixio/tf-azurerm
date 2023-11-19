@@ -63,7 +63,7 @@ module "uksouth_prod" {
         automatic_channel_upgrade = "patch"
         pool_max_count = 20
         cilium_enabled = false
-        additional_node_pools = { spot = {} }
+        additional_node_pools = { spot = {vm_size = "Standard_E32ads_v5"} }
     }
     cloudamqp = {
         enabled = true
@@ -85,7 +85,7 @@ module "uksouth_prod" {
     keyvault = { enabled = true }
     postgres = {
         enabled = true,
-        sku = "GP_Standard_D8ds_v4",
+        sku = "GP_Standard_D16ds_v4",
         version = 15
         ha = true,
         backup_retention_days = 35
