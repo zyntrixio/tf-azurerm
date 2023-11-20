@@ -96,7 +96,7 @@ module "uksouth_prod" {
     }
     redis = {
         enabled = true
-        capacity = 5
+        capacity = 4
         family = "P"
         sku_name = "Premium"
     }
