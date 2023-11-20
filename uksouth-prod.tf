@@ -61,6 +61,8 @@ module "uksouth_prod" {
         enabled = true
         sku_tier = "Standard"
         automatic_channel_upgrade = "patch"
+        pool_vm_size = "Standard_D4ads_v5"
+        pool_os_disk_size_gb = 128
         pool_min_count = 3
         pool_max_count = 20
         additional_node_pools = { spot = {vm_size = "Standard_D32ads_v5"} }

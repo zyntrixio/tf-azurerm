@@ -65,7 +65,6 @@ module "uksouth_retail" {
     }
     kube = {
         enabled = true
-        pool_os_disk_size_gb = 32
         additional_node_pools = { spot = {} }
     }
     cloudamqp = {
@@ -125,7 +124,6 @@ module "uksouth_lloyds" {
     }
     kube = {
         enabled = true
-        pool_os_disk_size_gb = 32
         additional_node_pools = { spot = {} }
     }
     cloudamqp = {
