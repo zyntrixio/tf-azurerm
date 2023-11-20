@@ -34,7 +34,7 @@ module "uksouth_dev" {
         "eos" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "europa" = { assigned_to = ["kv_rw"], namespaces = ["default", "olympus"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["default", "txm"] }
         "hermes" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "metis" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "midas" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
