@@ -159,7 +159,7 @@ variable "kube" {
         sku_tier = optional(string, "Free")
         pool_min_count = optional(number, 1)
         pool_max_count = optional(number, 10)
-        pool_vm_size = optional(string, "Standard_E4ads_v5")
+        pool_vm_size = optional(string, "Standard_D4ads_v5")
         pool_zones = optional(list(string), ["1","2","3"])
         pool_os_disk_type = optional(string, "Ephemeral")
         pool_os_disk_size_gb = optional(number, 128)
@@ -167,7 +167,7 @@ variable "kube" {
         aad_admin_group_object_ids = optional(list(string), ["0140ccf4-f68c-4daa-b531-97e5292ec364"])
         maintenance_day = optional(string, "Monday")
         additional_node_pools = optional(map(object({
-            vm_size = optional(string, "Standard_E4ads_v5")
+            vm_size = optional(string, "Standard_D4ads_v5")
             node_count = optional(number)
             node_labels = optional(map(string), {"kubernetes.azure.com/scalesetpriority" = "spot"})
             node_taints = optional(list(string), ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"])

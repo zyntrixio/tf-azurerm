@@ -44,7 +44,7 @@ module "uksouth_ait" {
         enabled = true
         automatic_channel_upgrade = "patch"
         additional_node_pools = {
-            starbug = { vm_size = "Standard_E32ads_v5" }
+            starbug = { vm_size = "Standard_D32ads_v5" }
         }
     }
     cloudamqp = { enabled = false }
