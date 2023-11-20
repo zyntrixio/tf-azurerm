@@ -73,6 +73,6 @@ module "uksouth_staging" {
     redis = { enabled = true }
     tableau = {
         enabled = true
-        size = "Standard_E2ads_v5"
+        size = "Standard_D2ads_v5"
     }
 }
