@@ -26,22 +26,22 @@ module "uksouth_dev" {
         (local.aad_user.michael_morar) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
-        "angelia" = { assigned_to = ["kv_ro"] }
-        "boreas" = { assigned_to = ["kv_ro"] }
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "eos" = { assigned_to = ["kv_ro"] }
-        "europa" = { assigned_to = ["kv_rw"] }
+        "eos" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "europa" = { assigned_to = ["kv_rw"], namespaces = ["default", "olympus"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "harmonia" = { assigned_to = ["kv_ro"] }
-        "hermes" = { assigned_to = ["kv_ro"] }
-        "metis" = { assigned_to = ["kv_ro"] }
-        "midas" = { assigned_to = ["kv_ro"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "metis" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "polaris" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "snowstorm" = { assigned_to = ["kv_ro"] }
+        "snowstorm" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "zephyrus" = { assigned_to = ["kv_ro"] }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
     }
     kube = {
         enabled = true
