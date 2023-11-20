@@ -88,7 +88,7 @@ resource "azurerm_kubernetes_cluster" "i" {
         os_sku = var.kube.pool_os_sku
         vnet_subnet_id = azurerm_subnet.kube_nodes.id
         temporary_name_for_rotation = "temp"
-        max_pods = var.kube.cilium_enabled ? 250 : 100
+        max_pods = 250
     }
 
     api_server_access_profile {
@@ -99,10 +99,10 @@ resource "azurerm_kubernetes_cluster" "i" {
 
     network_profile {
         network_plugin = "azure"
-        network_plugin_mode = var.kube.cilium_enabled ? "overlay" : null
-        ebpf_data_plane = var.kube.cilium_enabled ? "cilium" : null
+        network_plugin_mode = "overlay"
+        ebpf_data_plane = "cilium"
         service_cidr = "172.16.0.0/16"
-        pod_cidr = var.kube.cilium_enabled ? "172.20.0.0/14" : null
+        pod_cidr = "172.20.0.0/14"
         dns_service_ip = "172.16.0.10"
         outbound_type = "userDefinedRouting"
         load_balancer_sku = "standard"
@@ -169,7 +169,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
     enable_auto_scaling = each.value.enable_auto_scaling
     max_count = each.value.max_count
     min_count = each.value.min_count
-    max_pods = var.kube.cilium_enabled ? 250 : 100
+    max_pods = 250
 }
 
 resource "azurerm_role_assignment" "aks_mi_ro" {

@@ -157,7 +157,6 @@ variable "kube" {
         automatic_channel_upgrade = optional(string, "rapid")
         node_os_channel_upgrade = optional(string, "NodeImage")
         sku_tier = optional(string, "Free")
-        cilium_enabled = optional(bool, true)
         pool_min_count = optional(number, 1)
         pool_max_count = optional(number, 10)
         pool_vm_size = optional(string, "Standard_E4ads_v5")
