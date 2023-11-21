@@ -63,9 +63,29 @@ module "uksouth_prod" {
         automatic_channel_upgrade = "patch"
         pool_vm_size = "Standard_D4ads_v5"
         pool_os_disk_size_gb = 128
-        pool_min_count = 3
+        pool_min_count = 2
         pool_max_count = 20
-        additional_node_pools = { spot = {vm_size = "Standard_D32ads_v5"} }
+        additional_node_pools = {
+            spot = { vm_size = "Standard_D32ads_v5", os_disk_size_gb = 128 }
+            bpl = {
+                vm_size = "Standard_D2ads_v5",
+                node_labels = {"bink.com/workload" = "bpl"}
+                node_taints = ["bink.com/workload=bpl:NoSchedule"]
+                priority = "Regular"
+            }
+            olympus = {
+                vm_size = "Standard_D2ads_v5"
+                node_labels = {"bink.com/workload" = "olympus"}
+                node_taints = ["bink.com/workload=olympus:NoSchedule"]
+                priority = "Regular"
+            }
+            txm = {
+                vm_size = "Standard_D32ads_v5"
+                node_labels = {"bink.com/workload" = "txm", "kubernetes.azure.com/scalesetpriority" = "spot"}
+                node_taints = ["bink.com/workload=txm:NoSchedule", "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
+                os_disk_size_gb = 1024
+            }
+        }
     }
     cloudamqp = {
         enabled = true

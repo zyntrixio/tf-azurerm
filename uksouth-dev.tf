@@ -45,7 +45,7 @@ module "uksouth_dev" {
     }
     kube = {
         enabled = true
-        additional_node_pools = { spot = {} }
+        additional_node_pools = { spot = { vm_size = "Standard_D4ads_v5", os_disk_size_gb = "128" } }
     }
     cloudamqp = {
         enabled = true

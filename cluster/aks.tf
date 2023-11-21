@@ -164,12 +164,15 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
 
     priority = each.value.priority
     spot_max_price = each.value.spot_max_price
-    eviction_policy = each.value.eviction_policy
 
     enable_auto_scaling = each.value.enable_auto_scaling
     max_count = each.value.max_count
     min_count = each.value.min_count
     max_pods = 250
+
+    lifecycle {
+        ignore_changes = [ eviction_policy ]
+    }
 }
 
 resource "azurerm_role_assignment" "aks_mi_ro" {
