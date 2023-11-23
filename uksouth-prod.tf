@@ -43,7 +43,7 @@ module "uksouth_prod" {
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_ro"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "harmonia" = { assigned_to = ["kv_ro"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["txm"] }
         "hermes" = { assigned_to = ["kv_ro"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["devops"] }
         "kratos" = { assigned_to = ["kv_ro"] }
@@ -107,7 +107,7 @@ module "uksouth_prod" {
     keyvault = { enabled = true }
     postgres = {
         enabled = true,
-        sku = "GP_Standard_D16ds_v4",
+        sku = "GP_Standard_D32ds_v4",
         version = 15
         ha = true,
         backup_retention_days = 35
