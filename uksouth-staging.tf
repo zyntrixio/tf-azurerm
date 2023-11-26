@@ -48,10 +48,7 @@ module "uksouth_staging" {
         "zephyrus" = { assigned_to = ["kv_ro"] }
         "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
     }
-    kube = {
-        enabled = true
-        additional_node_pools = { spot = { vm_size = "Standard_D4ads_v5", os_disk_size_gb = "128" } }
-    }
+    kube = { enabled = true, additional_node_pools = { spot = { } } }
     cloudamqp = {
         enabled = true
         vpc_id = module.uksouth_cloudamqp.vpc.id
