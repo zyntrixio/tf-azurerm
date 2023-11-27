@@ -27,7 +27,7 @@ module "uksouth_staging" {
         (local.aad_user.michael_morar) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
-        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["default","olympus"] }
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "boreas" = { assigned_to = ["kv_ro"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
@@ -35,10 +35,10 @@ module "uksouth_staging" {
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_rw"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["default","txm"] }
-        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["default","olympus"] }
-        "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["default","devops","bpl"]}
-        "metis" = { assigned_to = ["kv_ro"], namespaces = ["default","olympus"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["txm"] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["devops","bpl","olympus"]}
+        "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "midas" = { assigned_to = ["kv_ro"] }
         "polaris" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "pyqa" = { assigned_to = ["kv_ro"] }
