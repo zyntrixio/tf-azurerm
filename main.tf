@@ -83,6 +83,7 @@ locals {
         carla_gouws = "d14223a9-b07a-41ba-96c7-cf5526f6987b"
         navin_odedra = "74b467c5-d302-4a05-9423-47aa0d08682e"
         andy_hill = "e36a7290-36c8-424e-9dde-90ea0c77f770"
+        lewis_hamilton = "bba7dd86-31db-4311-b863-fc58ff9f9827"
     }
     aad_apps = {}
 }

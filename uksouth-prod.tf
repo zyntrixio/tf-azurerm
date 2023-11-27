@@ -27,7 +27,9 @@ module "uksouth_prod" {
         (local.aad_user.navya_james) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
         (local.aad_user.mick_latham) = { assigned_to = ["rg", "aks_rw", "st_rw"] }
-        (local.aad_user.carla_gouws) = { assigned_to = ["aks_ro"] }
+        (local.aad_user.francesco_milani) = { assigned_to = ["aks_rw"] }
+        (local.aad_user.lewis_hamilton) = { assigned_to = ["aks_rw"] }
+        (local.aad_user.carla_gouws) = { assigned_to = ["aks_rw"] }
         (local.aad_group.backend) = { assigned_to = ["la"] }
         (local.aad_user.michael_morar) = { assigned_to = ["la"] }
         (local.aad_user.navin_odedra) = { assigned_to = ["la"] }
