@@ -35,7 +35,7 @@ module "uksouth_staging" {
         "eos" = { assigned_to = ["kv_ro"] }
         "europa" = { assigned_to = ["kv_rw"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "harmonia" = { assigned_to = ["kv_ro"] }
+        "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["default","txm"] }
         "hermes" = { assigned_to = ["kv_ro"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["default","devops","bpl"]}
         "metis" = { assigned_to = ["kv_ro"] }
