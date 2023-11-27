@@ -234,6 +234,12 @@ locals {
             "cert_name" = "acmebot-lloyds-gb-bink-com"
             "origins" = {"reflector.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
+        "uksouth_lloyds_audit" = {
+            "endpoint" = "uksouth-sandbox"
+            "domain" = "audit.lloyds.gb.bink.com"
+            "cert_name" = "acmebot-lloyds-gb-bink-com"
+            "origins" = {"audit.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
+        }
 
         # Retail Environment
         "uksouth_retail_api" = {
