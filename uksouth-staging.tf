@@ -28,24 +28,24 @@ module "uksouth_staging" {
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
-        "boreas" = { assigned_to = ["kv_ro"] }
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "eos" = { assigned_to = ["kv_ro"] }
-        "europa" = { assigned_to = ["kv_rw"] }
+        "eos" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
+        "europa" = { assigned_to = ["kv_rw"], namespaces = ["olympus"]  }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["txm"] }
         "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["devops","bpl","olympus"]}
         "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
-        "midas" = { assigned_to = ["kv_ro"] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "polaris" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "pyqa" = { assigned_to = ["kv_ro"] }
-        "snowstorm" = { assigned_to = ["kv_ro"] }
-        "styx" = { assigned_to = ["kv_ro"] }
+        "pyqa" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
+        "snowstorm" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
+        "styx" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "zephyrus" = { assigned_to = ["kv_ro"] }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
         "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
     }
     kube = { enabled = true, additional_node_pools = { spot = { } } }
