@@ -98,6 +98,7 @@ variable "postgres" {
         ha = optional(bool, false)
         backup_retention_days = optional(number, 7)
         databases = optional(list(string), [
+            "airbyte",
             "api_reflector",
             "atlas",
             "carina",

@@ -27,6 +27,7 @@ module "uksouth_staging" {
         (local.aad_user.michael_morar) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
+        "airbyte" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
