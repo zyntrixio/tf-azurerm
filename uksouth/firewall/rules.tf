@@ -55,6 +55,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Airbyte"
+        source_addresses = ["*"]
+        target_fqdns = [ "airbytehq.github.io" ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "Falco"
         source_addresses = ["*"]
         target_fqdns = ["falcosecurity.github.io"]

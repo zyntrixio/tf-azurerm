@@ -47,7 +47,7 @@ module "uksouth_staging" {
         "styx" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"]  }
-        "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
+        "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse", "airbyte"] }
     }
     kube = { enabled = true, additional_node_pools = { spot = { } } }
     cloudamqp = {
