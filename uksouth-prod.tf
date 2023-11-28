@@ -69,7 +69,7 @@ module "uksouth_prod" {
         pool_min_count = 2
         pool_max_count = 20
         additional_node_pools = {
-            spot = { vm_size = "Standard_D32ads_v5", os_disk_size_gb = 128 }
+            spot = { vm_size = "Standard_D4ads_v5" }
             bpl = {
                 node_labels = {"bink.com/workload" = "bpl"}
                 node_taints = ["bink.com/workload=bpl:NoSchedule"]
@@ -81,10 +81,9 @@ module "uksouth_prod" {
                 priority = "Regular"
             }
             txm = {
-                vm_size = "Standard_D32ads_v5"
+                vm_size = "Standard_D4ads_v5"
                 node_labels = {"bink.com/workload" = "txm", "kubernetes.azure.com/scalesetpriority" = "spot"}
                 node_taints = ["bink.com/workload=txm:NoSchedule", "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
-                os_disk_size_gb = 1024
             }
         }
     }
@@ -117,7 +116,7 @@ module "uksouth_prod" {
     }
     redis = {
         enabled = true
-        capacity = 4
+        capacity = 2
         family = "P"
         sku_name = "Premium"
     }
