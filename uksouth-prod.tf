@@ -82,6 +82,7 @@ module "uksouth_prod" {
             }
             txm = {
                 vm_size = "Standard_D4ads_v5"
+                max_count = 20
                 node_labels = {"bink.com/workload" = "txm", "kubernetes.azure.com/scalesetpriority" = "spot"}
                 node_taints = ["bink.com/workload=txm:NoSchedule", "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
             }
