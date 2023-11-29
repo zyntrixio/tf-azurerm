@@ -33,30 +33,15 @@ resource "random_string" "pg" {
     min_numeric = 2
 }
 
-moved {
-    from = random_string.pg
-    to = random_string.pg["core"]
-}
-
 resource "random_pet" "pg" {
     for_each = var.postgres
     length = 1
-}
-
-moved {
-    from = random_pet.pg
-    to = random_pet.pg["core"]
 }
 
 resource "random_password" "pg" {
     for_each = var.postgres
     length = 24
     special = false
-}
-
-moved {
-    from = random_password.pg
-    to = random_password.pg["core"]
 }
 
 resource "azurerm_postgresql_flexible_server" "i" {
@@ -90,22 +75,12 @@ resource "azurerm_postgresql_flexible_server" "i" {
     }
 }
 
-moved {
-    from = azurerm_postgresql_flexible_server.i[0]
-    to = azurerm_postgresql_flexible_server.i["core"]
-}
-
 resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
     for_each = var.postgres
 
     name = "azure.extensions"
     server_id = azurerm_postgresql_flexible_server.i[each.key].id
     value = "UUID-OSSP,PG_TRGM"
-}
-
-moved {
-    from = azurerm_postgresql_flexible_server_configuration.extensions[0]
-    to = azurerm_postgresql_flexible_server_configuration.extensions["core"]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "pg" {
@@ -119,11 +94,6 @@ resource "azurerm_monitor_diagnostic_setting" "pg" {
         enabled = true
         category = "AllMetrics"
     }
-}
-
-moved {
-    from = azurerm_monitor_diagnostic_setting.pg[0]
-    to = azurerm_monitor_diagnostic_setting.pg["core"]
 }
 
 resource "azurerm_role_assignment" "pg_mi" {
