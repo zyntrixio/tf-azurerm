@@ -60,6 +60,6 @@ module "uksouth_dev" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true }
+    postgres = { core = {} }
     redis = { enabled = true }
 }

@@ -22,7 +22,7 @@ module "uksouth_sandbox" {
     storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = false, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    postgres = {}
     redis = { enabled = false }
 }
 
@@ -84,7 +84,7 @@ module "uksouth_retail" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768 } }
     redis = { enabled = true }
 }
 
@@ -144,6 +144,6 @@ module "uksouth_lloyds" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true, sku = "B_Standard_B1ms", storage_mb = 32768 }
+    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768 } }
     redis = { enabled = true }
 }

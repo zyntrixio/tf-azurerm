@@ -67,7 +67,7 @@ module "uksouth_staging" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { enabled = true }
+    postgres = { core = {} }
     redis = { enabled = true }
     tableau = {
         enabled = true
