@@ -118,7 +118,6 @@ resource "azurerm_monitor_diagnostic_setting" "rd" {
     target_resource_id = azurerm_redis_cache.i[0].id
     log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
 
-    enabled_log { category = "ConnectedClientList" }
     metric {
         category = "AllMetrics"
         enabled = false
