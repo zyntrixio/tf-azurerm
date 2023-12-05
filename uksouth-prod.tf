@@ -36,27 +36,27 @@ module "uksouth_prod" {
         (local.aad_group.service) = { assigned_to = ["la"] }
     }
     managed_identities = {
-        "angelia" = { assigned_to = ["kv_ro"] }
-        "boreas" = { assigned_to = ["kv_ro"] }
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "bullsquid" = { assigned_to = ["kv_ro"], namespaces = ["portal"] }
         "carina" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "cosmos" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "cyclops" = { assigned_to = ["kv_ro"] }
-        "eos" = { assigned_to = ["kv_ro"] }
-        "europa" = { assigned_to = ["kv_ro"] }
+        "cyclops" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "eos" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "europa" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "event-horizon" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "harmonia" = { assigned_to = ["kv_ro"], namespaces = ["txm"] }
-        "hermes" = { assigned_to = ["kv_ro"] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "kiroshi" = { assigned_to = ["kv_ro"], namespaces = ["devops"] }
-        "kratos" = { assigned_to = ["kv_ro"] }
-        "metis" = { assigned_to = ["kv_ro"] }
-        "midas" = { assigned_to = ["kv_ro"] }
-        "styx" = { assigned_to = ["kv_ro"] }
+        "kratos" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "metis" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "styx" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "polaris" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
-        "snowstorm" = { assigned_to = ["kv_ro"] }
+        "snowstorm" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "vela" = { assigned_to = ["kv_ro"], namespaces = ["bpl"] }
         "wasabireporter" = { assigned_to = ["kv_ro"], namespaces = ["devops"] }
-        "zephyrus" = { assigned_to = ["kv_ro"] }
+        "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
         "prefect" = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
     }
     kube = {
