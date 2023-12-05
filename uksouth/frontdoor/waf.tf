@@ -183,6 +183,61 @@ resource "azurerm_cdn_frontdoor_security_policy" "bpl" {
     }
 }
 
+resource "azurerm_cdn_frontdoor_firewall_policy" "traefik" {
+    name = "traefik"
+    resource_group_name = azurerm_resource_group.i.name
+    sku_name = azurerm_cdn_frontdoor_profile.i.sku_name
+    enabled = true
+    mode = "Prevention"
+    custom_block_response_status_code = 403
+    custom_block_response_body = "eyJlcnJvciI6ICJBY2Nlc3MgRGVuaWVkIiwgImV4cGxhbmF0aW9uIjogImh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9ZFF3NHc5V2dYY1EifQo="
+
+    custom_rule {
+        name = "AllEndpoints"
+        enabled = true
+        priority = 1
+        type = "MatchRule"
+        action = "Block"
+
+        match_condition {
+            match_variable = "RequestUri"
+            operator = "Contains"
+            match_values = ["/dashboard", "/api"]
+        }
+        match_condition {
+            match_variable = "RemoteAddr"
+            operator = "IPMatch"
+            negation_condition = true
+            match_values = concat(
+                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+            )
+        }
+    }
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "traefik" {
+    name = "traefik"
+    cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
+
+    security_policies {
+        firewall {
+            cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.traefik.id
+            association {
+                patterns_to_match = ["/*"]
+                dynamic domain {
+                    for_each = toset([
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_traefik"].id,
+                        azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_traefik"].id,
+                    ])
+                    content {
+                        cdn_frontdoor_domain_id = domain.key
+                    }
+                }
+            }
+        }
+    }
+}
+
 resource "azurerm_cdn_frontdoor_firewall_policy" "internal" {
     name = "internal"
     resource_group_name = azurerm_resource_group.i.name
