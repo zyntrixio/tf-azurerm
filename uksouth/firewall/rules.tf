@@ -37,6 +37,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "Tailscale"
+        source_addresses = ["*"]
+        target_fqdns = ["api.tailscale.com"]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         name = "CloudAmqp"
         source_addresses = ["*"]
         target_fqdns = ["*.cloudamqp.com"]

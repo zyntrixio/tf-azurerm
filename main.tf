@@ -101,11 +101,11 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = "3.80.0"
+            version = "3.84.0"
         }
         azuread = {
             source  = "hashicorp/azuread"
-            version = "2.45.0"
+            version = "2.46.0"
         }
         cloudamqp = {
             source = "cloudamqp/cloudamqp"
