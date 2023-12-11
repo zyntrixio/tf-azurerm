@@ -39,7 +39,10 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     rule {
         name = "Tailscale"
         source_addresses = ["*"]
-        target_fqdns = ["api.tailscale.com"]
+        target_fqdns = [
+            "*.tailscale.com",
+            "*.tailscale.io",
+        ]
         protocol {
             port = "443"
             type = "Https"
