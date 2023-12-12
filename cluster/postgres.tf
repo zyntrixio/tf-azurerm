@@ -63,6 +63,12 @@ resource "azurerm_postgresql_flexible_server" "i" {
     storage_mb = each.value.storage_mb
     backup_retention_days = each.value.backup_retention_days
 
+    authentication {
+        active_directory_auth_enabled = each.value.entra_id_enabled
+        password_auth_enabled = true
+        tenant_id = each.value.entra_id_enabled ? "a6e2367a-92ea-4e5a-b565-723830bcc095" : null
+    }
+
     dynamic "high_availability" {
         for_each = each.value.ha ? [1] : []
         content {
