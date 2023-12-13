@@ -146,6 +146,19 @@ module "uksouth_vpn" {
     ]
 }
 
+module "uksouth_tailscale" {
+    source = "./tailscale"
+    common = {
+        secure_origins_v4 = local.secure_origins
+        secure_origins_v6 = local.secure_origins_v6
+    }
+    dns = {
+        record = "tailscale.gb"
+        resource_group_name = module.uksouth_dns.resource_group_name
+        zone_name = module.uksouth_dns.bink_com_zone
+    }
+}
+
 module "uksouth_website" {
     source = "./website"
     common = {
@@ -174,6 +187,7 @@ module "uksouth_frontdoor" {
         secure_origins = {
           ipv4 = local.secure_origins
           ipv6 = local.secure_origins_v6
+          tailscale = [module.uksouth_tailscale.ip_addresses.ipv4, module.uksouth_tailscale.ip_addresses.ipv6]
         }
         key_vault = {
             admin_object_ids = {

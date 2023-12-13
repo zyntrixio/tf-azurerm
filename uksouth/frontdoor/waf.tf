@@ -24,7 +24,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "olympus" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.checkly,
+                var.common.secure_origins.tailscale,
             )
         }
     }
@@ -81,7 +84,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "audit" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.tailscale,
             )
         }
     }
@@ -137,7 +142,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "bpl" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.checkly,
+                var.common.secure_origins.tailscale,
             )
         }
     }
@@ -209,7 +217,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "traefik" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.checkly,
+                var.common.secure_origins.tailscale,
             )
         }
     }
@@ -264,7 +275,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "internal" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.checkly,
+                var.common.secure_origins.tailscale,
             )
         }
     }
@@ -337,7 +351,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "api_reflector" {
             operator = "IPMatch"
             negation_condition = true
             match_values = concat(
-                var.common.secure_origins.ipv4, var.common.secure_origins.ipv6, var.common.secure_origins.checkly
+                var.common.secure_origins.ipv4,
+                var.common.secure_origins.ipv6,
+                var.common.secure_origins.checkly,
+                var.common.secure_origins.tailscale,
             )
         }
     }

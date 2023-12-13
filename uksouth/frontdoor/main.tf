@@ -436,6 +436,7 @@ variable "common" {
             ipv4 = list(string)
             ipv6 = list(string)
             checkly = optional(list(string), ["167.172.61.234/32", "167.172.53.20/32"])
+            tailscale = optional(list(string), [])
         })
         dns_zone = object({
             id = string
