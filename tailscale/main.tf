@@ -22,10 +22,6 @@ variable "dns" {
     })
 }
 
-locals {
-    storage_allowed_ips = [for ip in var.common.secure_origins_v4: replace(ip, "/32", "")]
-}
-
 output "ip_addresses" {
     value = {
         ipv4 = azurerm_public_ip.v4.ip_address
@@ -114,7 +110,7 @@ resource "azurerm_network_security_group" "i" {
         source_address_prefix = "*"
         source_port_range = "*"
         destination_address_prefix = "*"
-        destination_port_range = "51820"
+        destination_port_range = "41641"
     }
 
     dynamic security_rule {
