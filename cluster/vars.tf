@@ -97,7 +97,7 @@ variable "postgres" {
         ha = optional(bool, false)
         backup_retention_days = optional(number, 7)
         databases = optional(list(string), [])
-        entra_id_enabled = optional(bool, false)
+        entra_id_admins = optional(list(map(string)), [])
     }))
 }
 

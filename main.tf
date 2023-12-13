@@ -29,6 +29,7 @@ locals {
         "141.92.129.40/29", # Peterborough
         "141.92.67.40/29", # Horizon
     ]
+    entra_users = { for k, v in data.azuread_users.all.users : v.user_principal_name => v }
     managed_identities = {
         fakicorp = { kv_access = "rw" },
         angelia = { kv_access = "ro" },
@@ -114,6 +115,10 @@ terraform {
             source = "hashicorp/random"
         }
     }
+}
+
+data "azuread_users" "all" {
+    return_all = true
 }
 
 module "uksouth_core" {

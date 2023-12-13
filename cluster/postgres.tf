@@ -11,6 +11,19 @@ locals {
                 "${pg_key}-${iam_key}" => {postgres_server = pg_key, identity = iam_key}
                 if contains(iam_value["assigned_to"], "pg") }
     ])...)
+    postgres_entra_admins = merge(flatten([
+        for pg_key, pg_value in var.postgres : {
+            for admin in pg_value.entra_id_admins :
+                "${pg_key}-${admin.mail}" => {
+                    postgres_server = pg_key,
+                    email = admin.mail,
+                    object_id = admin.object_id,
+                }}
+    ])...)
+}
+
+output "test" {
+    value = local.postgres_entra_admins
 }
 
 resource "azurerm_private_dns_zone" "pg" {
@@ -64,9 +77,9 @@ resource "azurerm_postgresql_flexible_server" "i" {
     backup_retention_days = each.value.backup_retention_days
 
     authentication {
-        active_directory_auth_enabled = each.value.entra_id_enabled
+        active_directory_auth_enabled = length(each.value.entra_id_admins) > 0 ? true : false
         password_auth_enabled = true
-        tenant_id = each.value.entra_id_enabled ? "a6e2367a-92ea-4e5a-b565-723830bcc095" : null
+        tenant_id = length(each.value.entra_id_admins) > 0 ? "a6e2367a-92ea-4e5a-b565-723830bcc095" : null
     }
 
     dynamic "high_availability" {
@@ -79,6 +92,17 @@ resource "azurerm_postgresql_flexible_server" "i" {
     lifecycle {
         ignore_changes = [zone, high_availability.0.standby_availability_zone]
     }
+}
+
+resource "azurerm_postgresql_flexible_server_active_directory_administrator" "i" {
+    for_each = local.postgres_entra_admins
+
+    server_name = azurerm_postgresql_flexible_server.i[each.value.postgres_server].name
+    resource_group_name = azurerm_resource_group.i.name
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    object_id = each.value.object_id
+    principal_name = each.value.email
+    principal_type = "User"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
