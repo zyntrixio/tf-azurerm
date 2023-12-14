@@ -25,7 +25,9 @@ variable "dns" {
 output "ip_addresses" {
     value = {
         ipv4 = azurerm_public_ip.v4.ip_address
+        ipv4_cidr = "${azurerm_public_ip.v4.ip_address}/32"
         ipv6 = azurerm_public_ip.v6.ip_address
+        ipv6_cidr = "${azurerm_public_ip.v6.ip_address}/128"
     }
 }
 
@@ -114,7 +116,14 @@ resource "azurerm_network_security_group" "i" {
     }
 
     dynamic security_rule {
-        for_each = { for id, cidr in concat(var.common.secure_origins_v4, var.common.secure_origins_v6): cidr => id}
+        for_each = { for id, cidr in concat(
+            var.common.secure_origins_v4,
+            var.common.secure_origins_v6,
+            [
+                "${azurerm_public_ip.v4.ip_address}/32", # Allow SSH from the public IP because Tailscale Routing.
+                "${azurerm_public_ip.v6.ip_address}/128", # Allow SSH from the public IP because Tailscale Routing.
+            ],
+        ): cidr => id}
         content {
             name = "SSH_Rule_${security_rule.value}"
             access = "Allow"
