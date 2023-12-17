@@ -30,63 +30,13 @@ locals {
         "141.92.67.40/29", # Horizon
     ]
     entra_users = { for k, v in data.azuread_users.all.users : v.user_principal_name => v }
-    managed_identities = {
-        fakicorp = { kv_access = "rw" },
-        angelia = { kv_access = "ro" },
-        europa = { kv_access = "rw" },
-        harmonia = { kv_access = "ro" },
-        hermes = { kv_access = "ro" },
-        eos = { kv_access = "ro" },
-        polaris = { kv_access = "ro" },
-        event-horizon = { kv_access = "ro" },
-        metis = { kv_access = "ro" },
-        midas = { kv_access = "ro" },
-        azuregcpvaultsync = { kv_access = "ro" },
-        pyqa = { kv_access = "ro" },
-        vela = { kv_access = "ro" },
-        zephyrus = { kv_access = "ro" },
-        carina = { kv_access = "ro" },
-        styx = { kv_access = "ro" },
-        cyclops = { kv_access = "ro" },
-        snowstorm = { kv_access = "ro" },
-        cosmos = { kv_access = "ro" },
-        kiroshi = {kv_access = "ro"},
-        boreas = {kv_access = "ro"},
-        prefect = {kv_access = "ro"},
-    }
-
-    aad_group = {
-        architecture = "fb26c586-72a5-4fbc-b2b0-e1c28ef4fce1"
-        ba = "27678d85-c6b3-49b5-b1b7-0792940f4e13"
-        backend = "219194f6-b186-4146-9be7-34b731e19001"
-        devops = "aac28b59-8ac3-4443-bccc-3fb820165a08"
-        qa = "2e3dc1d0-e6b8-4ceb-b1ae-d7ce15e2150d"
-        service = "bc1be8d0-5243-41b8-b384-bd9fedcd7720"
+    entra_groups = {
+        for group_name in distinct(data.azuread_groups.all.display_names) : group_name =>
+            data.azuread_groups.all.object_ids[index(data.azuread_groups.all.display_names, group_name)]
     }
     aad_user = {
-        chris_pressland = "48aca6b1-4d56-4a15-bc92-8aa9d97300df"
-        nathan_read = "bba71e03-172e-4d07-8ee4-aad029d9031d"
-        thenuja_viknarajah = "e69fd5a7-8b6c-4ac5-8df0-c88c77df0a12"
-        daniel_hodgson = "103d8795-0975-4301-ae8c-795b21d80284"
         terraform = "4869640a-3727-4496-a8eb-f7fae0872410"
-        jo_raine = "ac4c9b34-2e1b-4e46-bfca-2d64e1a3adbc"
-        mick_latham = "343299d4-0a39-4109-adce-973ad29d0183"
-        chris_latham = "607482a3-07fa-4b24-8af0-5b84df6ca7c6"
-        christian_prior = "ae282437-d730-4342-8914-c936e8289cdc"
-        azhar_khan = "6f0e18dc-210c-405d-847e-cad38d195115"
-        kashim_aziz = "b004c980-3e08-4237-b8e2-d6e65d2bef3f"
-        martin_marsh = "3c92809d-91a4-456f-a161-a8b9df4c01e1"
-        stewart_prerrygove = "c7c13573-de9a-443e-a1a7-cc272cb26e2e"
-        francesco_milani = "dbcb7a78-da53-4fb9-a5a0-4f5d9a1e664c"
-        tony_truong = "f66db5ed-a4e3-485f-9112-c42ee2fe85c5"
-        michael_morar = "8288a1d3-0bfb-4561-a91b-30f58045ca73"
-        navya_james = "35632f94-054f-41d1-9006-9e34fa04210f"
-        carla_gouws = "d14223a9-b07a-41ba-96c7-cf5526f6987b"
-        navin_odedra = "74b467c5-d302-4a05-9423-47aa0d08682e"
-        andy_hill = "e36a7290-36c8-424e-9dde-90ea0c77f770"
-        lewis_hamilton = "bba7dd86-31db-4311-b863-fc58ff9f9827"
     }
-    aad_apps = {}
 }
 
 terraform {
@@ -121,6 +71,10 @@ data "azuread_users" "all" {
     return_all = true
 }
 
+data "azuread_groups" "all" {
+    return_all = true
+}
+
 module "uksouth_core" {
     source = "./uksouth/core"
 }
@@ -141,9 +95,7 @@ module "uksouth_vpn" {
         resource_group_name = module.uksouth_dns.resource_group_name
         zone_name = module.uksouth_dns.bink_com_zone
     }
-    iam = [
-        local.aad_user.daniel_hodgson,
-    ]
+    iam = []
 }
 
 module "uksouth_tailscale" {
@@ -191,7 +143,7 @@ module "uksouth_frontdoor" {
         }
         key_vault = {
             admin_object_ids = {
-                "devops" = local.aad_group.devops
+                "devops" = local.entra_groups["DevOps"]
             }
             admin_ips = local.secure_origins
         }
@@ -222,10 +174,10 @@ module "uksouth_loganalytics" {
         module.uksouth_staging.managed_identities.snowstorm,
     ]
     iam = [
-        local.aad_group.architecture,
-        local.aad_group.backend,
-        local.aad_group.service,
-        local.aad_user.andy_hill,
+        local.entra_groups["Architecture"],
+        local.entra_groups["Backend"],
+        local.entra_groups["Service"],
+        local.entra_users["ah@bink.com"].object_id,
     ]
 }
 

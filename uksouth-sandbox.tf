@@ -9,13 +9,13 @@ module "uksouth_sandbox" {
         ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
     }
     iam = {
-        (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
-        (local.aad_user.nathan_read) = { assigned_to = ["kv_su"] }
-        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
-        (local.aad_user.navya_james) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
-        (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
-        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
+        (local.entra_users["cpressland@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["nread@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["njames@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_groups["Backend"]) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
+        (local.entra_groups["Architecture"]) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
         "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
@@ -52,13 +52,13 @@ module "uksouth_retail" {
         ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
     }
     iam = {
-        (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
-        (local.aad_user.nathan_read) = { assigned_to = ["kv_su"] }
-        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
-        (local.aad_user.navya_james) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
-        (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
-        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
+        (local.entra_users["cpressland@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["nread@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["njames@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_groups["Backend"]) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
+        (local.entra_groups["Architecture"]) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
@@ -112,13 +112,13 @@ module "uksouth_lloyds" {
         ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
     }
     iam = {
-        (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
-        (local.aad_user.nathan_read) = { assigned_to = ["kv_su"] }
-        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
-        (local.aad_user.navya_james) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
-        (local.aad_group.backend) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
-        (local.aad_group.architecture) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
+        (local.entra_users["cpressland@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["nread@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["njames@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_groups["Backend"]) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
+        (local.entra_groups["Architecture"]) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }

@@ -21,19 +21,19 @@ module "uksouth_prod" {
         ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
     }
     iam = {
-        (local.aad_user.chris_pressland) = { assigned_to = ["kv_su"] }
-        (local.aad_user.nathan_read) = { assigned_to = ["kv_su"] }
-        (local.aad_user.thenuja_viknarajah) = { assigned_to = ["kv_su"] }
-        (local.aad_user.navya_james) = { assigned_to = ["kv_su"] }
         (local.aad_user.terraform) = { assigned_to = ["kv_su"] }
-        (local.aad_user.mick_latham) = { assigned_to = ["rg", "aks_rw", "st_rw"] }
-        (local.aad_user.francesco_milani) = { assigned_to = ["aks_rw"] }
-        (local.aad_user.lewis_hamilton) = { assigned_to = ["aks_rw"] }
-        (local.aad_user.carla_gouws) = { assigned_to = ["aks_rw"] }
-        (local.aad_group.backend) = { assigned_to = ["la"] }
-        (local.aad_user.michael_morar) = { assigned_to = ["la"] }
-        (local.aad_user.navin_odedra) = { assigned_to = ["la"] }
-        (local.aad_group.service) = { assigned_to = ["la"] }
+        (local.entra_users["cpressland@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["nread@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["njames@bink.com"].object_id) = { assigned_to = ["kv_su"] }
+        (local.entra_users["ml@bink.com"].object_id) = { assigned_to = ["rg", "aks_rw", "st_rw"] }
+        (local.entra_users["fmilani@bink.com"].object_id) = { assigned_to = ["aks_rw"] }
+        (local.entra_users["lhamilton@bink.com"].object_id) = { assigned_to = ["aks_rw"] }
+        (local.entra_users["cgouws@bink.com"].object_id) = { assigned_to = ["aks_rw"] }
+        (local.entra_users["mmorar@bink.com"].object_id) = { assigned_to = ["la"] }
+        (local.entra_users["nodedra@bink.com"].object_id) = { assigned_to = ["la"] }
+        (local.entra_groups["Backend"]) = { assigned_to = ["la"] }
+        (local.entra_groups["Service"]) = { assigned_to = ["la"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
