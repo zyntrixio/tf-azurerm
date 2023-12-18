@@ -99,6 +99,20 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "ocsp-domains"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "ocsp.r2m01.amazontrust.com",
+            "ocsp.rootca1.amazontrust.com",
+            "ocsp.rootg2.amazontrust.com",
+            "o.ss2.us",
+        ]
+        protocol {
+            port = "80"
+            type = "Http"
+        }
+    }
+    rule {
         name = "GitHub"
         source_addresses = ["*"]
         target_fqdns = ["github.com", "*.s3.amazonaws.com", "*.github.com", "*.githubusercontent.com"]
