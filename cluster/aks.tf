@@ -228,12 +228,20 @@ resource "azurerm_role_assignment" "aks_iam_nodes" {
     depends_on = [ azurerm_kubernetes_cluster.i ]
 }
 
-resource "azurerm_role_assignment" "aks_iam_ro" {
-    for_each = local.aks_readers
+data "azurerm_role_definition" "aks_reader" {
+  name = "Azure Kubernetes Service RBAC Reader"
+}
 
+resource "azurerm_pim_eligible_role_assignment" "aks_iam_ro" {
+    for_each = local.aks_readers
     scope = azurerm_kubernetes_cluster.i[0].id
-    role_definition_name = "Azure Kubernetes Service RBAC Reader"
     principal_id = each.key
+    role_definition_id = "${data.azurerm_subscription.i.id}${data.azurerm_role_definition.aks_reader.id}"
+    schedule {
+        expiration {
+            duration_hours = 0
+            }
+    }
 }
 
 resource "azurerm_role_assignment" "aks_iam_rw" {

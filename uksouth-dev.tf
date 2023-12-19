@@ -24,6 +24,7 @@ module "uksouth_dev" {
         (local.entra_users["mmorar@bink.com"].object_id) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
         (local.entra_groups["Backend"]) = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
         (local.entra_groups["Architecture"]) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
+        (local.entra_users["jirving@bink.com"].object_id) = { assigned_to = ["aks_ro"] }
     }
     managed_identities = {
         "angelia" = { assigned_to = ["kv_ro"], namespaces = ["default", "olympus"] }
