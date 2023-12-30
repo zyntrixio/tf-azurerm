@@ -18,9 +18,14 @@ module "uksouth_sandbox" {
         (local.entra_groups["Architecture"]) = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     }
     managed_identities = {
+        "angelia" = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
         "boreas" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+        "europa" = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
+        "hermes" = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
+        "metis" = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
+        "midas" = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
     }
-    kube = { enabled = true, additional_node_pools = { spot = { } } }
+    kube = { enabled = true, additional_node_pools = {spot = {}, retail = {}, lloyds = {}} }
     cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
     storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
     loganalytics = { enabled = true }
