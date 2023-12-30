@@ -37,6 +37,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        # Via: https://tailscale.com/kb/1082
         name = "Tailscale"
         source_addresses = ["*"]
         target_fqdns = [
@@ -843,35 +844,27 @@ resource "azurerm_firewall_network_rule_collection" "smtp" {
     }
 }
 
-resource "azurerm_firewall_network_rule_collection" "outbound_sftp" {
-    name = "outbound_sftp"
+resource "azurerm_firewall_network_rule_collection" "tailscale" {
+    # Via: https://tailscale.com/kb/1082
+    name = "tailscale"
     azure_firewall_name = azurerm_firewall.firewall.name
     resource_group_name = azurerm_resource_group.rg.name
-    priority = 170
+    priority = 180
     action = "Allow"
 
     rule {
-        name = "barclays"
+        name = "Wireguard"
         source_addresses = ["*"]
-        destination_ports = ["10023"]
-        destination_addresses = ["157.83.104.20", "167.203.3.33", "167.203.19.33"]
-        protocols = ["TCP"]
+        destination_ports = ["41641"]
+        destination_addresses = ["*"]
+        protocols = ["UDP"]
     }
-}
-
-resource "azurerm_firewall_network_rule_collection" "prod_amqp" {
-    name = "prod_amqp"
-    azure_firewall_name = azurerm_firewall.firewall.name
-    resource_group_name = azurerm_resource_group.rg.name
-    priority = 210
-    action = "Allow"
-
     rule {
-        name = "amqp"
-        source_addresses = var.production_cidrs
-        destination_ports = ["5671", "15671"]
-        destination_addresses = ["192.168.22.0/24"]
-        protocols = ["TCP"]
+        name = "STUN"
+        source_addresses = ["*"]
+        destination_ports = ["3478"]
+        destination_addresses = ["*"]
+        protocols = ["UDP"]
     }
 }
 
