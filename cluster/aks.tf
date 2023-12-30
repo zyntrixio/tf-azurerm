@@ -281,6 +281,8 @@ resource "null_resource" "flux_install" {
             export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
             export KEYVAULT_KV_TO_KUBE=${try(azurerm_key_vault.i[0].name, "")}
             export IDENTITY_FLUX=${azurerm_user_assigned_identity.i["image-reflector-controller"].client_id}
+            export POSTGRES_SUBNET=${one(azurerm_subnet.postgres.address_prefixes)}
+            export REDIS_SUBNET=${one(azurerm_subnet.redis.address_prefixes)}
 
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 
