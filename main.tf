@@ -17,13 +17,11 @@ locals {
         "81.2.99.144/29",  # cpressland@bink.com
         "31.125.46.20/32",  # nread@bink.com
         "81.133.125.233/32", # Thenuja, not static, will rotate.
-        "20.49.208.61/32", # module.uksouth_vpn.ip_addresses.ipv4,
     ]
     secure_origins_v6 = [
         "2001:8b0:b130::/48", # cpressland@bink.com
         "2a05:87c1:17c::/48", # Ascot Primary - Giganet
         "2a00:23a8:50:1400::/64", # Thenuja, should be static unless BT implemented IPv6 improperly
-        "2603:1020:702:3::3a/128", # module.uksouth_vpn.ip_addresses.ipv6,
     ]
     lloyds_origins_v4 = [
         "141.92.129.40/29", # Peterborough
@@ -82,20 +80,6 @@ module "uksouth_core" {
 module "uksouth_cloudamqp" {
     source = "./cloudamqp"
     subnet = "192.168.1.0/24"
-}
-
-module "uksouth_vpn" {
-    source = "./vpn"
-    common = {
-        secure_origins_v4 = local.secure_origins
-        secure_origins_v6 = local.secure_origins_v6
-    }
-    dns = {
-        record = "vpn.gb"
-        resource_group_name = module.uksouth_dns.resource_group_name
-        zone_name = module.uksouth_dns.bink_com_zone
-    }
-    iam = []
 }
 
 module "uksouth_tailscale" {
