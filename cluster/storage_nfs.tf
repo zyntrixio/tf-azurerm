@@ -29,7 +29,7 @@ resource "azurerm_storage_account" "nfs" {
         ip_rules = local.nfs_ips
         virtual_network_subnet_ids = [
             azurerm_subnet.kube_nodes.id,
-            "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-vpn/providers/Microsoft.Network/virtualNetworks/uksouth-vpn/subnets/subnet"
+            "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-tailscale/providers/Microsoft.Network/virtualNetworks/uksouth-tailscale/subnets/subnet"
         ]
     }
 }

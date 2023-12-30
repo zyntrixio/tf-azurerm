@@ -84,6 +84,7 @@ resource "azurerm_subnet" "i" {
     resource_group_name = azurerm_resource_group.i.name
     virtual_network_name = azurerm_virtual_network.i.name
     address_prefixes = ["192.168.1.0/24", "ace:cab:deca:deed::/64"]
+    service_endpoints = [ "Microsoft.Storage" ]
 }
 
 resource "azurerm_network_security_group" "i" {
