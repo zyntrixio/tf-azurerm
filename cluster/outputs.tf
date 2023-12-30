@@ -11,3 +11,14 @@ output "managed_identities" {
 output "storage" {
     value = var.storage.enabled ? azurerm_storage_account.i[0] : null
 }
+
+output "subnets" {
+    value = {
+        kube_nodes = azurerm_subnet.kube_nodes.address_prefixes,
+        kube_controller = azurerm_subnet.kube_controller.address_prefixes,
+        postgres = azurerm_subnet.postgres.address_prefixes,
+        redis = azurerm_subnet.redis.address_prefixes,
+        tableau = azurerm_subnet.tableau.address_prefixes,
+        cloudamqp = azurerm_subnet.cloudamqp.address_prefixes,
+    }
+}
