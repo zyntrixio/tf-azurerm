@@ -15,7 +15,9 @@ variable "allowed_hosts" {
 
 variable "backups" {
     type = object({
-      redundancy = optional(string, "LocallyRedundant")
+        enabled = optional(bool, false)
+        redundancy = optional(string, "LocallyRedundant")
+        blob_retention_period = optional(string, "P3M")
     })
     default = {}
 }
