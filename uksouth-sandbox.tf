@@ -95,7 +95,20 @@ module "uksouth_retail" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768 } }
+    postgres = { core = {
+        sku = "B_Standard_B1ms",
+        storage_mb = 32768,
+        databases = [
+            "api_reflector",
+            "atlas",
+            "europa",
+            "hades",
+            "hermes",
+            "midas",
+            "postgres",
+            "snowstorm",
+        ]
+    } }
     redis = { enabled = true }
 }
 
@@ -155,6 +168,19 @@ module "uksouth_lloyds" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768 } }
+    postgres = { core = {
+        sku = "B_Standard_B1ms",
+        storage_mb = 32768
+        databases = [
+            "api_reflector",
+            "atlas",
+            "europa",
+            "hades",
+            "hermes",
+            "midas",
+            "postgres",
+            "snowstorm",
+        ]
+    } }
     redis = { enabled = true }
 }

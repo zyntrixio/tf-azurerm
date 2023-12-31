@@ -67,7 +67,30 @@ module "uksouth_staging" {
     }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
-    postgres = { core = {} }
+    postgres = { core = {
+        databases = [
+            "airbyte",
+            "api_reflector",
+            "atlas",
+            "carina",
+            "cosmos",
+            "eos",
+            "europa",
+            "hades",
+            "harmonia",
+            "helios",
+            "hermes",
+            "kiroshi",
+            "midas",
+            "polaris",
+            "pontus",
+            "postgres",
+            "prefect",
+            "snowstorm",
+            "vela",
+            "zagreus",
+        ]
+    } }
     redis = { enabled = true }
     tableau = { enabled = false }
 }

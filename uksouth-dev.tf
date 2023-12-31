@@ -65,6 +65,28 @@ module "uksouth_dev" {
             local.entra_users["cpressland@bink.com"],
             local.entra_users["nread@bink.com"],
         ]
+        databases = [
+            "airbyte",
+            "api_reflector",
+            "atlas",
+            "carina",
+            "cosmos",
+            "eos",
+            "europa",
+            "hades",
+            "harmonia",
+            "helios",
+            "hermes",
+            "kiroshi",
+            "midas",
+            "polaris",
+            "pontus",
+            "postgres",
+            "prefect",
+            "snowstorm",
+            "vela",
+            "zagreus",
+        ]
     } }
     redis = { enabled = true }
 }

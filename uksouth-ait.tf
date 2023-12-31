@@ -53,6 +53,6 @@ module "uksouth_ait" {
     }
     loganalytics = { enabled = false }
     keyvault = { enabled = true }
-    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768 } }
+    postgres = { core = { sku = "B_Standard_B1ms", storage_mb = 32768, databases = ["hermes", "europa"] } }
     redis = { enabled = false }
 }

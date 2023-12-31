@@ -20,6 +20,32 @@ locals {
                     object_id = admin.object_id,
                 }}
     ])...)
+    postgres_secret_json = merge(flatten([[
+        for k, v in var.postgres:
+            k == "core" ? {
+                    for db in v.databases: "url_${db}" => "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/${db}?sslmode=require"
+                } : {
+                    for db in v.databases: "url_${k}_${db}" => "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/${db}?sslmode=require"
+                }
+    ], [
+        for k, v in var.postgres:
+            k == "core" ? {
+                "server_username" = "${random_pet.pg[k].id}",
+                "server_password" = "${random_password.pg[k].result}",
+                "server_host" = "${azurerm_postgresql_flexible_server.i[k].fqdn}",
+                "url_placeholder" = "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/{}?sslmode=require",
+            } : {
+                "${k}_server_username" = "${random_pet.pg[k].id}",
+                "${k}_server_password" = "${random_password.pg[k].result}",
+                "${k}_server_host" = "${azurerm_postgresql_flexible_server.i[k].fqdn}",
+                "${k}_url_placeholder" = "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/{}?sslmode=require",
+            }
+    ]])...)
+    postgres_secret_uri = merge(flatten([
+        for k, v in var.postgres: {
+            for db in v.databases: "${k}-${db}" => "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/${db}"
+        }
+    ])...)
 }
 
 output "test" {
@@ -143,23 +169,21 @@ resource "azurerm_role_assignment" "pg_iam" {
 }
 
 resource "azurerm_key_vault_secret" "pg" {
-    for_each = var.postgres
-
-    name = "infra-postgres-connection-details-${each.key}"
+    name = "infra-postgres-connection-details"
     key_vault_id = azurerm_key_vault.i[0].id
     content_type = "application/json"
-    value = jsonencode(merge({
-        for database in concat(each.value.databases) :
-            "url_${database}" => "postgresql://${random_pet.pg[each.key].id}:${random_password.pg[each.key].result}@${azurerm_postgresql_flexible_server.i[each.key].fqdn}/${database}?sslmode=require"
-    }, {
-        "server_host": azurerm_postgresql_flexible_server.i[each.key].fqdn,
-        "server_user": random_pet.pg[each.key].id,
-        "server_pass": random_password.pg[each.key].result,
-        "url_placeholder": "postgresql://${random_pet.pg[each.key].id}:${random_password.pg[each.key].result}@${azurerm_postgresql_flexible_server.i[each.key].fqdn}/{}?sslmode=require"
-    }))
+    value = jsonencode(local.postgres_secret_json)
     tags = {
-        kube_secret_name = "azure-postgres-${each.key}"
+        kube_secret_name = "azure-postgres"
     }
+    depends_on = [ azurerm_key_vault_access_policy.iam_su ]
+}
 
+resource "azurerm_key_vault_secret" "pg_uri" {
+    for_each = local.postgres_secret_uri
+    name = "infra-postgres-connection-uri-${replace(each.key, "_", "-")}"
+    key_vault_id = azurerm_key_vault.i[0].id
+    content_type = "text/plain"
+    value = each.value
     depends_on = [ azurerm_key_vault_access_policy.iam_su ]
 }
