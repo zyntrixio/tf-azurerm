@@ -129,7 +129,7 @@ module "uksouth_frontdoor" {
             admin_object_ids = {
                 "devops" = local.entra_groups["DevOps"]
             }
-            admin_ips = local.secure_origins
+            admin_ips = concat(local.secure_origins, [module.uksouth_tailscale.ip_addresses.ipv4])
         }
     }
 }
