@@ -30,13 +30,13 @@ locals {
     ], [
         for k, v in var.postgres:
             k == "core" ? {
-                "server_username" = "${random_pet.pg[k].id}",
-                "server_password" = "${random_password.pg[k].result}",
+                "server_user" = "${random_pet.pg[k].id}",
+                "server_pass" = "${random_password.pg[k].result}",
                 "server_host" = "${azurerm_postgresql_flexible_server.i[k].fqdn}",
                 "url_placeholder" = "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/{}?sslmode=require",
             } : {
-                "${k}_server_username" = "${random_pet.pg[k].id}",
-                "${k}_server_password" = "${random_password.pg[k].result}",
+                "${k}_server_user" = "${random_pet.pg[k].id}",
+                "${k}_server_pass" = "${random_password.pg[k].result}",
                 "${k}_server_host" = "${azurerm_postgresql_flexible_server.i[k].fqdn}",
                 "${k}_url_placeholder" = "postgresql://${random_pet.pg[k].id}:${random_password.pg[k].result}@${azurerm_postgresql_flexible_server.i[k].fqdn}/{}?sslmode=require",
             }
