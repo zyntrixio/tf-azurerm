@@ -347,12 +347,6 @@ locals {
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"bridge.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
-        "uksouth_prod_pypi" = {
-            "endpoint" = "uksouth-prod"
-            "domain" = "pypi.gb.bink.com"
-            "cert_name" = "acmebot-gb-bink-com"
-            "origins" = {"pypi.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
-        }
         "uksouth_prod_docs" = {
             "endpoint" = "uksouth-prod"
             "domain" = "docs.gb.bink.com"
