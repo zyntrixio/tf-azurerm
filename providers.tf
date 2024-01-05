@@ -94,4 +94,8 @@ provider "cloudamqp" {
     enable_faster_instance_destroy = true
 }
 
+provider "nextdns" {
+    api_key = "d2af762e854b3499bf7eda52fb01d1b51700f02c"
+}
+
 provider "random" {}
