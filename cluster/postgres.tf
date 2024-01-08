@@ -103,9 +103,9 @@ resource "azurerm_postgresql_flexible_server" "i" {
     backup_retention_days = each.value.backup_retention_days
 
     authentication {
-        active_directory_auth_enabled = length(each.value.entra_id_admins) > 0 ? true : false
+        active_directory_auth_enabled = true
         password_auth_enabled = true
-        tenant_id = length(each.value.entra_id_admins) > 0 ? "a6e2367a-92ea-4e5a-b565-723830bcc095" : null
+        tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
     }
 
     dynamic "high_availability" {
@@ -129,6 +129,17 @@ resource "azurerm_postgresql_flexible_server_active_directory_administrator" "i"
     object_id = each.value.object_id
     principal_name = each.value.email
     principal_type = "User"
+}
+
+resource "azurerm_postgresql_flexible_server_active_directory_administrator" "brendan" {
+    for_each = var.postgres
+
+    server_name = azurerm_postgresql_flexible_server.i[each.key].name
+    resource_group_name = azurerm_resource_group.i.name
+    tenant_id = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+    object_id = azurerm_user_assigned_identity.i["brendan"].principal_id
+    principal_name = "brendan"
+    principal_type = "ServicePrincipal"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
