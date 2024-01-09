@@ -41,6 +41,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         name = "Tailscale"
         source_addresses = ["*"]
         target_fqdns = [
+            "tailscale.com",
             "*.tailscale.com",
             "*.tailscale.io",
         ]
