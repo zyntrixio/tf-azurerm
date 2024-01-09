@@ -37,6 +37,18 @@ resource "azurerm_firewall_application_rule_collection" "software" {
         }
     }
     rule {
+        name = "NextDNS"
+        source_addresses = ["*"]
+        target_fqdns = [
+            "api.nextdns.io",
+            "dns.nextdns.io",
+        ]
+        protocol {
+            port = "443"
+            type = "Https"
+        }
+    }
+    rule {
         # Via: https://tailscale.com/kb/1082
         name = "Tailscale"
         source_addresses = ["*"]
