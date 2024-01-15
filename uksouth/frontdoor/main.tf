@@ -302,7 +302,7 @@ locals {
         "uksouth_prod_policies" = {
             "endpoint" = "uksouth-prod"
             "domain" = "policies.gb.bink.com"
-            "cert_name" = "acmebot-gb-bink-com"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"policies.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_tableau_admin" = {
@@ -363,7 +363,7 @@ locals {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
-            "cert_name" = "acmebot-gb-bink-com"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_portal" = {
@@ -383,7 +383,7 @@ locals {
         "uksouth_sandbox_lloyds_sit" = {
             "endpoint" = "uksouth-sandbox"
             "domain" = "lloyds-sit.sandbox.gb.bink.com"
-            "cert_name" = "acmebot-sandbox-gb-bink-com"
+            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
             "origins" = {"api.lloyds.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_lloyds}}
         }
         "uksouth_sandbox_sit" = {
