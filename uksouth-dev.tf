@@ -50,7 +50,7 @@ module "uksouth_dev" {
     }
     storage = {
         enabled = true
-        sftp_enabled = true
+        sftp_enabled = false
         nfs_enabled = true
         rules = [
             { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },

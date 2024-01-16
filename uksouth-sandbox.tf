@@ -27,7 +27,7 @@ module "uksouth_sandbox" {
     }
     kube = { enabled = true, additional_node_pools = {spot = {}, retail = {}, lloyds = {}} }
     cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
-    storage = { enabled = false, nfs_enabled = false, sftp_enabled = false }
+    storage = { enabled = false, nfs_enabled = false, sftp_enabled = true }
     loganalytics = { enabled = true }
     keyvault = { enabled = true }
     postgres = {
