@@ -35,12 +35,6 @@ locals {
             "origins" = {"configuration.ait.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_ait}}
         }
         # Dev Environment
-        "uksouth_dev_traefik" = {
-            "endpoint" = "uksouth-dev"
-            "domain" = "traefik.dev.gb.bink.com"
-            "cert_name" = "acmebot-dev-gb-bink-com"
-            "origins" = {"traefik.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
-        }
         "uksouth_dev_api" = {
             "endpoint" = "uksouth-dev"
             "domain" = "api.dev.gb.bink.com"
@@ -112,12 +106,6 @@ locals {
             "origins" = {"retailer.dev.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_dev}}
         }
         # Staging Envrionment
-        "uksouth_staging_traefik" = {
-            "endpoint" = "uksouth-staging"
-            "domain" = "traefik.staging.gb.bink.com"
-            "cert_name" = "acmebot-staging-gb-bink-com"
-            "origins" = {"traefik.staging.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_staging}}
-        }
         "uksouth_staging_api" = {
             "endpoint" = "uksouth-staging"
             "domain" = "api.staging.gb.bink.com"
@@ -304,12 +292,6 @@ locals {
             "domain" = "policies.gb.bink.com"
             "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"policies.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
-        }
-        "uksouth_prod_tableau_admin" = {
-            "endpoint" = "uksouth-prod"
-            "domain" = "tableau-admin.gb.bink.com"
-            "cert_name" = "acmebot-gb-bink-com"
-            "origins" = {"tableau-admin.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_tableau" = {
             "endpoint" = "uksouth-prod"
