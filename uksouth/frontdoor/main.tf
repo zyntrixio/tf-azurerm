@@ -363,7 +363,7 @@ locals {
             "endpoint" = "uksouth-prod"
             "domain" = "api.gb.bink.com"
             "cached_endpoints" = ["/content/*"]
-            "cert_name" = "env-gb-bink-com-2023-2024.pfx"
+            "cert_name" = "acmebot-gb-bink-com"
             "origins" = {"api.prod.uksouth.bink.sh" = {"id" = local.private_link_ids.uksouth_prod}}
         }
         "uksouth_prod_portal" = {
@@ -412,19 +412,16 @@ locals {
             }
     ]))...)
 
-    kv_certs = setunion(
-        fileset("${path.module}/certificates", "*.pfx"),
-        toset([
-            "acmebot-gb-bink-com",
-            "acmebot-ait-gb-bink-com",
-            "acmebot-dev-gb-bink-com",
-            "acmebot-staging-gb-bink-com",
-            "acmebot-sandbox-gb-bink-com",
-            "acmebot-lloyds-gb-bink-com",
-            "acmebot-retail-gb-bink-com",
-            "acmebot-perf-gb-bink-com",
-        ])
-    )
+    kv_certs = toset([
+        "acmebot-gb-bink-com",
+        "acmebot-ait-gb-bink-com",
+        "acmebot-dev-gb-bink-com",
+        "acmebot-staging-gb-bink-com",
+        "acmebot-sandbox-gb-bink-com",
+        "acmebot-lloyds-gb-bink-com",
+        "acmebot-retail-gb-bink-com",
+        "acmebot-perf-gb-bink-com",
+    ])
 }
 
 variable "common" {
@@ -522,18 +519,6 @@ resource "azurerm_monitor_diagnostic_setting" "kv" {
     }
 }
 
-resource "azurerm_key_vault_certificate" "i" {
-    for_each = fileset("${path.module}/certificates", "*.pfx")
-
-    name = split(".", each.key)[0]
-    key_vault_id = azurerm_key_vault.i.id
-
-    certificate {
-        contents = filebase64("${path.module}/certificates/${each.key}")
-        password = ""
-    }
-}
-
 data "azurerm_key_vault_certificate" "i" {
     for_each = local.kv_certs
     name = split(".", each.key)[0]
@@ -569,9 +554,6 @@ resource "azurerm_cdn_frontdoor_rule_set" "standard" {
     cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
 }
 
-# If this is crashy after adding a new cert to the certificates folder, you can call the dependant
-# resource with a plan first, example:
-# $ terraform plan -out=out -target='module.uksouth_frontdoor.azurerm_key_vault_certificate.i'
 resource "azurerm_cdn_frontdoor_secret" "i" {
     for_each = data.azurerm_key_vault_certificate.i
     name = each.value.name
