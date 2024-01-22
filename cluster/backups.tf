@@ -1,22 +1,22 @@
 resource "azurerm_data_protection_backup_vault" "i" {
-    count = var.backups.enabled ? 1 : 0
+  count = var.backups.enabled ? 1 : 0
 
-    name = azurerm_resource_group.i.name
-    resource_group_name = azurerm_resource_group.i.name
-    location = azurerm_resource_group.i.location
-    datastore_type = "VaultStore"
-    redundancy = var.backups.redundancy
-    identity {
-        type = "SystemAssigned"
-    }
+  name                = azurerm_resource_group.i.name
+  resource_group_name = azurerm_resource_group.i.name
+  location            = azurerm_resource_group.i.location
+  datastore_type      = "VaultStore"
+  redundancy          = var.backups.redundancy
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
 resource "azurerm_role_assignment" "backups_storage" {
-    count = var.backups.enabled ? 1 : 0
+  count = var.backups.enabled ? 1 : 0
 
-    scope = azurerm_storage_account.i[0].id
-    role_definition_name = "Storage Account Backup Contributor"
-    principal_id = azurerm_data_protection_backup_vault.i[0].identity[0].principal_id
+  scope                = azurerm_storage_account.i[0].id
+  role_definition_name = "Storage Account Backup Contributor"
+  principal_id         = azurerm_data_protection_backup_vault.i[0].identity[0].principal_id
 }
 
 # This cannot be enabled until support for Vaulted Backups is added to Terraform.

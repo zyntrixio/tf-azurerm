@@ -1,32 +1,32 @@
 variable "tags" {
-    type = map
-    default = {
-        Environment = "Production"
-    }
+  type = map(any)
+  default = {
+    Environment = "Production"
+  }
 }
 
 variable "ip_range" { type = string }
 
 variable "production_cidrs" {
-  type = list
+  type    = list(any)
   default = []
 }
 
 variable "secure_origins" {
-    type = list
-    default = []
+  type    = list(any)
+  default = []
 }
 
 variable "lloyds_origins" {
-    type = list
-    default = [] 
+  type    = list(any)
+  default = []
 }
 
 variable "loganalytics_id" {
-    type = string
+  type = string
 }
 
 variable "aks_cidrs" {
-    type = map
-    default = {}
+  type    = map(any)
+  default = {}
 }

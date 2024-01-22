@@ -17,8 +17,13 @@ variable "permissions" {
     admins        = list(string)
     editors       = optional(list(string), [])
     readers       = optional(list(string), [])
-    subscriptions = optional(list(string), [])
+    subscriptions = optional(map(string), {})
   })
+}
+
+variable "workspace_integrations" {
+  type    = list(string)
+  default = []
 }
 
 resource "azurerm_resource_group" "i" {
@@ -38,12 +43,19 @@ resource "azurerm_dashboard_grafana" "i" {
   identity {
     type = "SystemAssigned"
   }
+
+  dynamic "azure_monitor_workspace_integrations" {
+    for_each = var.workspace_integrations
+    content {
+      resource_id = azure_monitor_workspace_integrations.value
+    }
+  }
 }
 
 resource "azurerm_role_assignment" "subscriptions" {
-  for_each             = toset(var.permissions.subscriptions)
-  scope                = each.value
-  role_definition_name = "Reader"
+  for_each             = var.permissions.subscriptions
+  scope                = "/subscriptions/${each.value}"
+  role_definition_name = "Monitoring Reader"
   principal_id         = azurerm_dashboard_grafana.i.identity[0].principal_id
 }
 
