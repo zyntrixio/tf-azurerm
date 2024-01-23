@@ -104,6 +104,13 @@ resource "azurerm_subnet" "cloudamqp" {
   address_prefixes     = [cidrsubnet(var.common.cidr, 8, 132)] #10.0.132.0/24
 }
 
+resource "azurerm_subnet" "grafana" {
+  name                 = "Grafana"
+  resource_group_name  = azurerm_resource_group.i.name
+  virtual_network_name = azurerm_virtual_network.i.name
+  address_prefixes     = [cidrsubnet(var.common.cidr, 8, 133)] #10.0.133.0/24
+}
+
 resource "azurerm_route_table" "i" {
   name                          = azurerm_resource_group.i.name
   resource_group_name           = azurerm_resource_group.i.name

@@ -53,3 +53,4 @@ data:
   identity_flux: $IDENTITY_FLUX
   postgres_subnet: $POSTGRES_SUBNET
   redis_subnet: $REDIS_SUBNET
+  grafana_subnet: $GRAFANA_SUBNET

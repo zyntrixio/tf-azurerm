@@ -279,6 +279,7 @@ resource "null_resource" "flux_install" {
             export IDENTITY_FLUX=${azurerm_user_assigned_identity.i["image-reflector-controller"].client_id}
             export POSTGRES_SUBNET=${one(azurerm_subnet.postgres.address_prefixes)}
             export REDIS_SUBNET=${one(azurerm_subnet.redis.address_prefixes)}
+            export GRAFANA_SUBNET=${one(azurerm_subnet.grafana.address_prefixes)}
 
             envsubst < ${path.module}/aks_templates/gotk-sync.yaml > /tmp/${azurerm_resource_group.i.name}.yaml
 

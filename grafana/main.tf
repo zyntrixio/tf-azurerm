@@ -26,6 +26,10 @@ variable "workspace_integrations" {
   default = []
 }
 
+output "grafana_id" {
+  value = azurerm_dashboard_grafana.i.id
+}
+
 resource "azurerm_resource_group" "i" {
   name     = "${var.common.location}-grafana"
   location = var.common.location
@@ -36,8 +40,8 @@ resource "azurerm_dashboard_grafana" "i" {
   resource_group_name               = azurerm_resource_group.i.name
   location                          = var.common.location
   api_key_enabled                   = true
-  deterministic_outbound_ip_enabled = true
-  public_network_access_enabled     = true
+  deterministic_outbound_ip_enabled = false
+  public_network_access_enabled     = false
   grafana_major_version             = 10
 
   identity {

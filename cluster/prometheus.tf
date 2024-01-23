@@ -11,6 +11,21 @@ resource "azurerm_monitor_data_collection_endpoint" "i" {
   kind                = "Linux"
 }
 
+resource "azurerm_private_endpoint" "grafana" {
+  count               = azurerm_resource_group.i.name == "uksouth-prod" ? 1 : 0
+  name                = "${var.common.location}-${var.common.name}-grafana"
+  location            = azurerm_resource_group.i.location
+  resource_group_name = azurerm_resource_group.i.name
+  subnet_id           = azurerm_subnet.grafana.id
+
+  private_service_connection {
+    name                           = "grafana"
+    private_connection_resource_id = var.grafana_id
+    subresource_names              = ["grafana"]
+    is_manual_connection           = false
+  }
+}
+
 resource "azurerm_monitor_data_collection_rule" "i" {
   name                        = "MSProm-${azurerm_resource_group.i.name}"
   resource_group_name         = azurerm_resource_group.i.name

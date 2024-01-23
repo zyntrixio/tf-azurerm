@@ -13,6 +13,11 @@ variable "allowed_hosts" {
   })
 }
 
+variable "grafana_id" {
+  type    = string
+  default = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-grafana/providers/Microsoft.Dashboard/grafana/uksouth-grafana"
+}
+
 variable "backups" {
   type = object({
     enabled               = optional(bool, false)
