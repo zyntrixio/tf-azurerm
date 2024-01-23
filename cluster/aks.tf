@@ -179,6 +179,7 @@ resource "azurerm_role_assignment" "aks_mi_ro" {
 }
 
 resource "azurerm_role_assignment" "aks-acr" {
+  count                = var.kube.enabled ? 1 : 0
   scope                = var.acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
