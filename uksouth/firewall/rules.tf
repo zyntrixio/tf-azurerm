@@ -762,6 +762,13 @@ resource "azurerm_firewall_network_rule_collection" "sftp" {
     destination_addresses = ["216.119.219.66/32"]
     protocols             = ["TCP"]
   }
+  rule {
+    name                  = "partners.tgifridays.co.uk"
+    source_addresses      = ["*"]
+    destination_ports     = ["22"]
+    destination_addresses = ["185.64.224.12"]
+    protocols             = ["TCP"]
+  }
 }
 
 resource "azurerm_firewall_network_rule_collection" "cloudflare" {

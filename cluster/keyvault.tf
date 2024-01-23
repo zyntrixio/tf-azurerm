@@ -146,6 +146,10 @@ resource "azurerm_key_vault_access_policy" "iam_su" {
   object_id    = each.key
 
   secret_permissions = ["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Recover", "Backup", "Restore", "Purge", "Release",
+    "Decrypt", "Encrypt", "UnwrapKey", "WrapKey", "Verify", "Sign", "Rotate", "GetRotationPolicy", "SetRotationPolicy",
+  ]
 }
 
 resource "azurerm_key_vault_access_policy" "aks" {
