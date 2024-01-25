@@ -180,6 +180,7 @@ module "uksouth_lloyds" {
       "midas",
       "postgres",
       "snowstorm",
+      "kiroshi",
     ]
   } }
   redis = { enabled = true }
