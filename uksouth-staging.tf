@@ -25,6 +25,7 @@ module "uksouth_staging" {
     (local.entra_groups["Backend"])                       = { assigned_to = ["rg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
     (local.entra_groups["Architecture"])                  = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     (local.entra_groups["Business Analysis"])             = { assigned_to = ["st_rw", "la"] }
+    (local.entra_groups["Data Engineers"])                = { assigned_to = ["st_ro"] }
   }
   managed_identities = {
     "airbyte"       = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
