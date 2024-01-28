@@ -46,7 +46,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "olympus" {
           for_each = toset([
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_api"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_api"].id,
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_api"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_sandbox_lloyds_sit"].id,
           ])
           content {
@@ -319,6 +318,46 @@ resource "azurerm_cdn_frontdoor_security_policy" "api_reflector" {
           content {
             cdn_frontdoor_domain_id = domain.key
           }
+        }
+      }
+    }
+  }
+}
+
+##### Temporary rules for Tailscale Rewrites #####
+
+resource "azurerm_cdn_frontdoor_firewall_policy" "tailscale_staging_hermes" {
+  name                = "tailscalestaginghermes"
+  resource_group_name = azurerm_resource_group.i.name
+  sku_name            = azurerm_cdn_frontdoor_profile.i.sku_name
+  enabled             = true
+  mode                = "Prevention"
+  redirect_url        = "https://hermes.staging.uksouth.bink.sh/admin/"
+  custom_rule {
+    name     = "admin"
+    enabled  = true
+    priority = 1
+    type     = "MatchRule"
+    action   = "Redirect"
+    match_condition {
+      match_variable = "RequestUri"
+      operator       = "Contains"
+      match_values   = ["/admin"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "tailscale_staging_hermes" {
+  name                     = "tailscalestaginghermes"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
+
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.tailscale_staging_hermes.id
+      association {
+        patterns_to_match = ["/*"]
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_api"].id
         }
       }
     }
