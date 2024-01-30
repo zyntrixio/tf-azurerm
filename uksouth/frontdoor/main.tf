@@ -254,6 +254,7 @@ locals {
       "cert_name" = "acmebot-retail-gb-bink-com"
       "origins"   = { "retailer.retail.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_retail } }
     }
+
     # Production Environment
     "uksouth_prod_stats" = {
       "endpoint"  = "uksouth-prod"
@@ -361,24 +362,12 @@ locals {
       "origins"   = { "retailer.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
     }
 
-    # DEPRECATED: Endpoints to remove after 17th of Jan 2024
-    "uksouth_sandbox_lloyds_sit" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "lloyds-sit.sandbox.gb.bink.com"
-      "cert_name" = "acmebot-sandbox-gb-bink-com"
-      "origins"   = { "api.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
+    # DEPRECATED: Endpoints to be removed after new naming convention is decided
     "uksouth_sandbox_sit" = {
       "endpoint"  = "uksouth-sandbox"
       "domain"    = "sit.sandbox.gb.bink.com"
       "cert_name" = "acmebot-sandbox-gb-bink-com"
       "origins"   = { "api.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
-    "uksouth_sandbox_retail" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "retail.sandbox.gb.bink.com"
-      "cert_name" = "acmebot-sandbox-gb-bink-com"
-      "origins"   = { "api.retail.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_retail } }
     }
   }
 
