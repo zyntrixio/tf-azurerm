@@ -24,15 +24,15 @@ provider "registry.terraform.io/amalucelli/nextdns" {
 }
 
 provider "registry.terraform.io/cloudamqp/cloudamqp" {
-  version = "1.29.2"
+  version = "1.29.3"
   hashes = [
-    "h1:uPhqPZvZMrwy10CBXkXXhSPXLf/ir9kviRN0GRvYlw4=",
-    "zh:0a48eb901d8f4ac869a2e0dc744230afc671b92de42694c3c0c92a837a8ddfc7",
-    "zh:11fef1ad8964ca6f5f6863552e99d836c51bb77092c080c68e0f4fe23f83c78d",
-    "zh:33ed23bf847e1674b742acfd77ed3327e8d494b4b1eead7c72a2cfc2d0fdee07",
-    "zh:801dda090fc8a90dbf3ced6e03dc8b9fa5122718d98d6911bc7b8f583edc35eb",
-    "zh:8034a01a3674a70937a71dbc27b0814091b1e3a1a5bc8bed84074246bce19c7b",
-    "zh:972dbaa23fa4139629bba2bbdd16ef1b28a42d55fda4aaf2825e98bd9daf77fd",
+    "h1:XomUFlX3vOOI6rr1Q0E4grAkQgbj5wU7nhdw1YdMOE4=",
+    "zh:20e1069a4e344cc2201d084cab403cce655fe3d319760a0ccc6f290ea56bce66",
+    "zh:36253b620d59c98e4e818b0cdd128ecfe9e8ee22a74bd8a87b9ecedb37bc42b5",
+    "zh:8e0c3bcb0f79b817533f7ea021218e36c1c3e9c7d267022ed4cee67752bcec72",
+    "zh:c14347c8f8b5de62d5903a7e92c3c76df7057ad988987b93dd676c04b61a38ea",
+    "zh:c5af943ccda6cb96b76512601c3f887d936a311da8608cd9ccc00eb5a4a4b6e0",
+    "zh:efe689e9b37437a9d394cc7935b691623a0eb1dee1ab60fe198ba95606ae745e",
   ]
 }
 

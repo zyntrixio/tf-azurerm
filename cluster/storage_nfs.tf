@@ -57,8 +57,9 @@ resource "azurerm_monitor_diagnostic_setting" "nfs" {
 resource "azurerm_role_assignment" "nfs_iam_ro" {
   for_each = {
     for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "st_ro") &&
-    var.storage.nfs_enabled
+    if var.storage.sftp_enabled &&
+    contains(v["assigned_to"], "nfs_ro") ||
+    contains(v["assigned_to"], "st_ro")
   }
 
   scope                = azurerm_storage_account.nfs[0].id
@@ -69,8 +70,9 @@ resource "azurerm_role_assignment" "nfs_iam_ro" {
 resource "azurerm_role_assignment" "nfs_iam_rw" {
   for_each = {
     for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "st_rw") &&
-    var.storage.nfs_enabled
+    if var.storage.sftp_enabled &&
+    contains(v["assigned_to"], "nfs_rw") ||
+    contains(v["assigned_to"], "st_rw")
   }
 
   scope                = azurerm_storage_account.nfs[0].id
