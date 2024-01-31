@@ -35,7 +35,7 @@ module "uksouth_prod" {
     (local.entra_users["mmorar@bink.com"].object_id)      = { assigned_to = ["la"] }
     (local.entra_users["nodedra@bink.com"].object_id)     = { assigned_to = ["la"] }
     (local.entra_groups["Backend"])                       = { assigned_to = ["la"] }
-    (local.entra_groups["Service"])                       = { assigned_to = ["la"] }
+    (local.entra_groups["Service"])                       = { assigned_to = ["la", "sftp_rw"] }
   }
   managed_identities = {
     "angelia"        = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
