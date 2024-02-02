@@ -131,14 +131,14 @@ resource "azurerm_postgresql_flexible_server_active_directory_administrator" "i"
   principal_type      = "User"
 }
 
-resource "azurerm_postgresql_flexible_server_active_directory_administrator" "brendan" {
+resource "azurerm_postgresql_flexible_server_active_directory_administrator" "nightcity" {
   for_each = var.postgres
 
   server_name         = azurerm_postgresql_flexible_server.i[each.key].name
   resource_group_name = azurerm_resource_group.i.name
   tenant_id           = "a6e2367a-92ea-4e5a-b565-723830bcc095"
-  object_id           = azurerm_user_assigned_identity.i["brendan"].principal_id
-  principal_name      = "brendan"
+  object_id           = azurerm_user_assigned_identity.i["nightcity"].principal_id
+  principal_name      = "nightcity"
   principal_type      = "ServicePrincipal"
 }
 
