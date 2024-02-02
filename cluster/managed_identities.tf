@@ -66,3 +66,8 @@ resource "azurerm_key_vault_secret" "mi" {
 
   depends_on = [azurerm_key_vault_access_policy.iam_su]
 }
+
+resource "azuread_directory_role_assignment" "nightcity" {
+  role_id             = "5d6b6bb7-de71-4623-b4af-96380a352509"
+  principal_object_id = azurerm_user_assigned_identity.i["nightcity"].principal_id
+}
