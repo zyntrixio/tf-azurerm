@@ -3,7 +3,7 @@ locals {
     cert-manager               = { namespaces = ["cert-manager"], assigned_to = [] }
     kv-to-kube                 = { namespaces = ["kv-to-kube"], assigned_to = ["kv_ro"] }
     image-reflector-controller = { namespaces = ["flux-system"], assigned_to = [] }
-    nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro"] }
+    nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro", "sftp_rw"] }
   }
   identities = merge(local.default_identities, var.managed_identities)
   identity_namespace_map = merge(([

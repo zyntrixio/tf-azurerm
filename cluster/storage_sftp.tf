@@ -42,6 +42,30 @@ resource "azurerm_monitor_diagnostic_setting" "sftp" {
   }
 }
 
+resource "azurerm_role_assignment" "sftp_mi_ro" {
+  for_each = {
+    for k, v in local.identities : k => v
+    if contains(v["assigned_to"], "sftp_ro") &&
+    var.storage.sftp_enabled
+  }
+
+  scope                = azurerm_storage_account.sftp[0].id
+  role_definition_name = "Reader"
+  principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "sftp_mi_rw" {
+  for_each = {
+    for k, v in local.identities : k => v
+    if contains(v["assigned_to"], "sftp_rw") &&
+    var.storage.sftp_enabled
+  }
+
+  scope                = azurerm_storage_account.sftp[0].id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
 resource "azurerm_role_assignment" "sftp_iam_ro" {
   for_each = {
     for k, v in var.iam : k => v

@@ -54,6 +54,30 @@ resource "azurerm_monitor_diagnostic_setting" "nfs" {
   }
 }
 
+resource "azurerm_role_assignment" "nfs_mi_ro" {
+  for_each = {
+    for k, v in local.identities : k => v
+    if contains(v["assigned_to"], "nfs_ro") &&
+    var.storage.nfs_enabled
+  }
+
+  scope                = azurerm_storage_account.nfs[0].id
+  role_definition_name = "Reader"
+  principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
+resource "azurerm_role_assignment" "nfs_mi_rw" {
+  for_each = {
+    for k, v in local.identities : k => v
+    if contains(v["assigned_to"], "nfs_rw") &&
+    var.storage.nfs_enabled
+  }
+
+  scope                = azurerm_storage_account.nfs[0].id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
+}
+
 resource "azurerm_role_assignment" "nfs_iam_ro" {
   for_each = {
     for k, v in var.iam : k => v
