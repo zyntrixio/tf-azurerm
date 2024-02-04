@@ -11,7 +11,6 @@ locals {
   # The below list should be dynamically generated, but alas, this was easier given the
   # time constaints
   private_link_ids = {
-    "uksouth_ait"     = "/subscriptions/0b92124d-e5fe-4c9a-a898-1fdf02502e01/resourceGroups/uksouth-ait-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-ait"
     "uksouth_dev"     = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
     "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
     "uksouth_sandbox" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
@@ -21,19 +20,6 @@ locals {
   }
 
   origin_groups = {
-    # AIT Environment
-    "uksouth_ait_starbug" = {
-      "endpoint"  = "uksouth-ait"
-      "domain"    = "starbug.ait.gb.bink.com"
-      "cert_name" = "acmebot-ait-gb-bink-com"
-      "origins"   = { "starbug.ait.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_ait } }
-    }
-    "uksouth_ait_configuration" = {
-      "endpoint"  = "uksouth-ait"
-      "domain"    = "configuration.ait.gb.bink.com"
-      "cert_name" = "acmebot-ait-gb-bink-com"
-      "origins"   = { "configuration.ait.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_ait } }
-    }
     # Dev Environment
     "uksouth_dev_api" = {
       "endpoint"         = "uksouth-dev"
@@ -379,7 +365,6 @@ locals {
 
   kv_certs = toset([
     "acmebot-gb-bink-com",
-    "acmebot-ait-gb-bink-com",
     "acmebot-dev-gb-bink-com",
     "acmebot-staging-gb-bink-com",
     "acmebot-sandbox-gb-bink-com",

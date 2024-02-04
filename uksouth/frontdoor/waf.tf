@@ -235,8 +235,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "internal" {
         patterns_to_match = ["/*"]
         dynamic "domain" {
           for_each = toset([
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_ait_starbug"].id,
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_ait_configuration"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_docs"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_wallet"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_wasabi"].id,
