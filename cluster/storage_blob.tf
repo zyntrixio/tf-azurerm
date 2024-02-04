@@ -47,7 +47,7 @@ resource "azurerm_role_assignment" "st_mi_ro" {
   }
 
   scope                = azurerm_storage_account.i[0].id
-  role_definition_name = "Reader"
+  role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
@@ -59,7 +59,7 @@ resource "azurerm_role_assignment" "st_mi_rw" {
   }
 
   scope                = azurerm_storage_account.i[0].id
-  role_definition_name = "Contributor"
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
