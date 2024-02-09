@@ -33,7 +33,6 @@ module "uksouth_sandbox" {
   kube      = { additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
   cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
   storage   = { sftp_enabled = true }
-  keyvault  = { enabled = true }
   postgres  = { sku = "B_Standard_B1ms", storage_mb = 32768 }
   redis     = { enabled = false }
 }
@@ -88,8 +87,7 @@ module "uksouth_retail" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage  = { sftp_enabled = false }
-  keyvault = { enabled = true }
+  storage = { sftp_enabled = false }
   postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768,
@@ -155,8 +153,7 @@ module "uksouth_lloyds" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage  = { sftp_enabled = false }
-  keyvault = { enabled = true }
+  storage = { sftp_enabled = false }
   postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768

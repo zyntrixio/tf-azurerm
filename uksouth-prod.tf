@@ -100,7 +100,6 @@ module "uksouth_prod" {
       { name = "bridge", prefix_match = ["bridge"], delete_after_days = 14 },
     ]
   }
-  keyvault = { enabled = true }
   postgres = {
     sku                   = "GP_Standard_D32ds_v4",
     version               = 15

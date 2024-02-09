@@ -67,7 +67,6 @@ module "uksouth_staging" {
       { name = "qareports", prefix_match = ["qareports/"], delete_after_days = 30 },
     ]
   }
-  keyvault = { enabled = true }
   postgres = {
     databases = [
       "airbyte",

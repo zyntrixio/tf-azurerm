@@ -67,12 +67,6 @@ variable "loganalytics" {
   default = {}
 }
 
-variable "keyvault" {
-  type = object({
-    enabled = bool
-  })
-}
-
 variable "dns" {
   type = object({
     id = string

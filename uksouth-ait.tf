@@ -51,7 +51,6 @@ module "uksouth_ait" {
   }
   cloudamqp = { enabled = false }
   storage   = { sftp_enabled = false }
-  keyvault  = { enabled = true }
   postgres  = { sku = "B_Standard_B1ms", storage_mb = 32768, databases = ["api_reflector", "europa", "hermes", "postgres"] }
   redis     = { enabled = false }
 }
