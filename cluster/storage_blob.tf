@@ -17,11 +17,6 @@ resource "azurerm_storage_account" "i" {
   cross_tenant_replication_enabled = false
 }
 
-moved {
-  from = azurerm_storage_account.i[0]
-  to   = azurerm_storage_account.i
-}
-
 resource "azurerm_monitor_diagnostic_setting" "blob" {
   count = var.loganalytics.enabled ? 1 : 0
 

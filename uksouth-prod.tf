@@ -104,43 +104,34 @@ module "uksouth_prod" {
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
   postgres = {
-    core = {
-      sku                   = "GP_Standard_D32ds_v4",
-      version               = 15
-      ha                    = true,
-      backup_retention_days = 35
-      storage_mb            = 1048576,
-      databases = [
-        "apistats",
-        "asset_register",
-        "atlas",
-        "bullsquid",
-        "carina",
-        "eos",
-        "europa",
-        "hades",
-        "harmonia",
-        "hermes",
-        "hubble",
-        "kiroshi",
-        "midas",
-        "polaris",
-        "pontus",
-        "postgres",
-        "prefect",
-        "snowstorm",
-        "thanatos",
-        "vela",
-        "zagreus",
-      ]
-    }
-    # txm = {
-    #     sku = "GP_Standard_D64ds_v4",
-    #     version = 15
-    #     backup_retention_days = 35,
-    #     storage_mb = 1048576,
-    #     databases = ["harmonia"]
-    # }
+    sku                   = "GP_Standard_D32ds_v4",
+    version               = 15
+    ha                    = true,
+    backup_retention_days = 35
+    storage_mb            = 1048576,
+    databases = [
+      "apistats",
+      "asset_register",
+      "atlas",
+      "bullsquid",
+      "carina",
+      "eos",
+      "europa",
+      "hades",
+      "harmonia",
+      "hermes",
+      "hubble",
+      "kiroshi",
+      "midas",
+      "polaris",
+      "pontus",
+      "postgres",
+      "prefect",
+      "snowstorm",
+      "thanatos",
+      "vela",
+      "zagreus",
+    ]
   }
   redis = {
     enabled  = true

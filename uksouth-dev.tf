@@ -58,7 +58,7 @@ module "uksouth_dev" {
   }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
-  postgres = { core = {
+  postgres = {
     entra_id_admins = [
       local.entra_users["cpressland@bink.com"],
       local.entra_users["nread@bink.com"],
@@ -85,6 +85,6 @@ module "uksouth_dev" {
       "vela",
       "zagreus",
     ]
-  } }
+  }
   redis = { enabled = true }
 }

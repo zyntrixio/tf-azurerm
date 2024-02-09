@@ -35,11 +35,8 @@ module "uksouth_sandbox" {
   storage      = { sftp_enabled = true }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
-  postgres = {
-    lloyds = { sku = "B_Standard_B1ms", storage_mb = 32768 }
-    retail = { sku = "B_Standard_B1ms", storage_mb = 32768 }
-  }
-  redis = { enabled = false }
+  postgres     = { sku = "B_Standard_B1ms", storage_mb = 32768 }
+  redis        = { enabled = false }
 }
 
 ## Legacy Sandboxes
@@ -96,7 +93,7 @@ module "uksouth_retail" {
   storage      = { sftp_enabled = false }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
-  postgres = { core = {
+  postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768,
     databases = [
@@ -109,7 +106,7 @@ module "uksouth_retail" {
       "postgres",
       "snowstorm",
     ]
-  } }
+  }
   redis = { enabled = true }
 }
 
@@ -165,7 +162,7 @@ module "uksouth_lloyds" {
   storage      = { sftp_enabled = false }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
-  postgres = { core = {
+  postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768
     databases = [
@@ -179,6 +176,6 @@ module "uksouth_lloyds" {
       "snowstorm",
       "kiroshi",
     ]
-  } }
+  }
   redis = { enabled = true }
 }

@@ -97,15 +97,15 @@ variable "storage" {
 }
 
 variable "postgres" {
-  type = map(object({
+  type = object({
     sku                   = optional(string, "GP_Standard_D2ds_v4")
     version               = optional(number, 15)
     storage_mb            = optional(number, 131072)
     ha                    = optional(bool, false)
     backup_retention_days = optional(number, 7)
     databases             = optional(list(string), [])
-    entra_id_admins       = optional(list(map(string)), [])
-  }))
+    entra_id_admins       = optional(list(object({ object_id = string, mail = string })), [])
+  })
 }
 
 variable "redis" {

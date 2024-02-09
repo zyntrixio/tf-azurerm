@@ -69,7 +69,7 @@ module "uksouth_staging" {
   }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
-  postgres = { core = {
+  postgres = {
     databases = [
       "airbyte",
       "api_reflector",
@@ -92,7 +92,7 @@ module "uksouth_staging" {
       "vela",
       "zagreus",
     ]
-  } }
+  }
   redis   = { enabled = true }
   tableau = { enabled = false }
 }
