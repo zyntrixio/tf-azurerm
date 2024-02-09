@@ -50,10 +50,9 @@ module "uksouth_ait" {
     automatic_channel_upgrade = "patch"
     additional_node_pools     = { starbug = { vm_size = "Standard_D32ads_v5", os_disk_size_gb = 1024 } }
   }
-  cloudamqp    = { enabled = false }
-  storage      = { sftp_enabled = false }
-  loganalytics = { enabled = false }
-  keyvault     = { enabled = true }
-  postgres     = { sku = "B_Standard_B1ms", storage_mb = 32768, databases = ["api_reflector", "europa", "hermes", "postgres"] }
-  redis        = { enabled = false }
+  cloudamqp = { enabled = false }
+  storage   = { sftp_enabled = false }
+  keyvault  = { enabled = true }
+  postgres  = { sku = "B_Standard_B1ms", storage_mb = 32768, databases = ["api_reflector", "europa", "hermes", "postgres"] }
+  redis     = { enabled = false }
 }

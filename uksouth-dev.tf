@@ -56,8 +56,7 @@ module "uksouth_dev" {
   storage = {
     sftp_enabled = false
   }
-  loganalytics = { enabled = true }
-  keyvault     = { enabled = true }
+  keyvault = { enabled = true }
   postgres = {
     entra_id_admins = [
       local.entra_users["cpressland@bink.com"],

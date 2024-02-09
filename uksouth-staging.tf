@@ -67,8 +67,7 @@ module "uksouth_staging" {
       { name = "qareports", prefix_match = ["qareports/"], delete_after_days = 30 },
     ]
   }
-  loganalytics = { enabled = true }
-  keyvault     = { enabled = true }
+  keyvault = { enabled = true }
   postgres = {
     databases = [
       "airbyte",

@@ -64,6 +64,7 @@ variable "loganalytics" {
     sku               = optional(string, "PerGB2018")
     retention_in_days = optional(number, 30)
   })
+  default = {}
 }
 
 variable "keyvault" {

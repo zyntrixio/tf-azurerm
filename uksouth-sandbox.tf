@@ -30,13 +30,12 @@ module "uksouth_sandbox" {
     "metis"   = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
     "midas"   = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
   }
-  kube         = { enabled = true, additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
-  cloudamqp    = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
-  storage      = { sftp_enabled = true }
-  loganalytics = { enabled = true }
-  keyvault     = { enabled = true }
-  postgres     = { sku = "B_Standard_B1ms", storage_mb = 32768 }
-  redis        = { enabled = false }
+  kube      = { enabled = true, additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
+  cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
+  storage   = { sftp_enabled = true }
+  keyvault  = { enabled = true }
+  postgres  = { sku = "B_Standard_B1ms", storage_mb = 32768 }
+  redis     = { enabled = false }
 }
 
 ## Legacy Sandboxes
@@ -90,9 +89,8 @@ module "uksouth_retail" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage      = { sftp_enabled = false }
-  loganalytics = { enabled = true }
-  keyvault     = { enabled = true }
+  storage  = { sftp_enabled = false }
+  keyvault = { enabled = true }
   postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768,
@@ -159,9 +157,8 @@ module "uksouth_lloyds" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage      = { sftp_enabled = false }
-  loganalytics = { enabled = true }
-  keyvault     = { enabled = true }
+  storage  = { sftp_enabled = false }
+  keyvault = { enabled = true }
   postgres = {
     sku        = "B_Standard_B1ms",
     storage_mb = 32768

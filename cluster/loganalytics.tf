@@ -6,11 +6,6 @@ resource "azurerm_log_analytics_workspace" "i" {
   retention_in_days   = var.loganalytics.retention_in_days
 }
 
-moved {
-  from = azurerm_log_analytics_workspace.i[0]
-  to   = azurerm_log_analytics_workspace.i
-}
-
 resource "azurerm_role_assignment" "la_mi" {
   for_each = {
     for k, v in local.identities : k => v
