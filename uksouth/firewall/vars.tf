@@ -1,10 +1,3 @@
-variable "tags" {
-  type = map(any)
-  default = {
-    Environment = "Production"
-  }
-}
-
 variable "ip_range" { type = string }
 
 variable "production_cidrs" {

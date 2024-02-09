@@ -3,8 +3,6 @@ resource "azurerm_virtual_network" "vnet" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = [var.ip_range]
-
-  tags = var.tags
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -20,8 +18,6 @@ resource "azurerm_public_ip_prefix" "prefix" {
   location            = azurerm_resource_group.rg.location
   prefix_length       = 28
   zones               = ["1", "2", "3"]
-
-  tags = var.tags
 }
 
 resource "azurerm_public_ip" "pips" {
@@ -34,8 +30,6 @@ resource "azurerm_public_ip" "pips" {
   idle_timeout_in_minutes = 5
   public_ip_prefix_id     = azurerm_public_ip_prefix.prefix.id
   zones                   = ["1", "2", "3"]
-
-  tags = var.tags
 }
 
 # TODO: Cleanup the below IP Config Blocks by using Terraform 0.12 Syntax
@@ -111,17 +105,26 @@ resource "azurerm_firewall" "firewall" {
     name                 = "ipconfig15"
     public_ip_address_id = azurerm_public_ip.pips.15.id
   }
-
-  tags = var.tags
 }
 
-resource "azurerm_monitor_diagnostic_setting" "diags" {
-  name                       = "binkuksouthlogs"
-  target_resource_id         = azurerm_firewall.firewall.id
-  log_analytics_workspace_id = var.loganalytics_id
+resource "azurerm_monitor_diagnostic_setting" "i" {
+  name                           = "loganalytics"
+  target_resource_id             = azurerm_firewall.firewall.id
+  log_analytics_workspace_id     = azurerm_log_analytics_workspace.i.id
+  log_analytics_destination_type = "Dedicated"
 
-  enabled_log { category = "AzureFirewallApplicationRule" }
-  enabled_log { category = "AzureFirewallNetworkRule" }
+  enabled_log { category = "AZFWNetworkRule" }
+  enabled_log { category = "AZFWApplicationRule" }
+  enabled_log { category = "AZFWNatRule" }
+  enabled_log { category = "AZFWThreatIntel" }
+  enabled_log { category = "AZFWIdpsSignature" }
+  enabled_log { category = "AZFWDnsQuery" }
+  enabled_log { category = "AZFWFqdnResolveFailure" }
+  enabled_log { category = "AZFWFatFlow" }
+  enabled_log { category = "AZFWFlowTrace" }
+  enabled_log { category = "AZFWApplicationRuleAggregation" }
+  enabled_log { category = "AZFWNetworkRuleAggregation" }
+  enabled_log { category = "AZFWNatRuleAggregation" }
   metric {
     category = "AllMetrics"
     enabled  = false

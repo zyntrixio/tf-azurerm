@@ -407,6 +407,14 @@ resource "azurerm_resource_group" "i" {
   tags = var.common.tags
 }
 
+resource "azurerm_log_analytics_workspace" "i" {
+  name                = azurerm_resource_group.i.name
+  location            = azurerm_resource_group.i.location
+  resource_group_name = azurerm_resource_group.i.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 90
+}
+
 resource "azurerm_key_vault" "i" {
   name                          = "bink-${azurerm_resource_group.i.name}"
   resource_group_name           = azurerm_resource_group.i.name
@@ -453,7 +461,7 @@ resource "azurerm_key_vault_access_policy" "cdn" {
 resource "azurerm_monitor_diagnostic_setting" "kv" {
   name                       = "binkuksouthlogs"
   target_resource_id         = azurerm_key_vault.i.id
-  log_analytics_workspace_id = var.common.loganalytics_id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "AuditEvent" }
   enabled_log { category = "AzurePolicyEvaluationDetails" }
@@ -481,7 +489,7 @@ resource "azurerm_cdn_frontdoor_profile" "i" {
 resource "azurerm_monitor_diagnostic_setting" "afd" {
   name                       = "binkuksouthlogs"
   target_resource_id         = azurerm_cdn_frontdoor_profile.i.id
-  log_analytics_workspace_id = var.common.loganalytics_id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "FrontDoorAccessLog" }
   enabled_log { category = "FrontDoorHealthProbeLog" }
