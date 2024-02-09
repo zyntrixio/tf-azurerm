@@ -239,7 +239,7 @@ resource "azurerm_monitor_diagnostic_setting" "aks" {
 }
 
 resource "null_resource" "flux_install" {
-  count = var.keyvault.enabled && var.kube.flux_enabled ? 1 : 0
+  count = var.kube.flux_enabled ? 1 : 0
   provisioner "local-exec" {
     command     = <<-EOF
             export CLUSTER_NAME="${var.common.name}"
@@ -247,9 +247,9 @@ resource "null_resource" "flux_install" {
             export CLUSTER_API_HOST="https://${azurerm_kubernetes_cluster.i.fqdn}:443"
             export CLUSTER_LB_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)}"
             export CLUSTER_PLS_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
-            export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}
+            export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i.vault_uri}
             export IDENTITY_KV_TO_KUBE=${azurerm_user_assigned_identity.i["kv-to-kube"].client_id}
-            export KEYVAULT_KV_TO_KUBE=${try(azurerm_key_vault.i[0].name, "")}
+            export KEYVAULT_KV_TO_KUBE=${azurerm_key_vault.i.name}
             export IDENTITY_FLUX=${azurerm_user_assigned_identity.i["image-reflector-controller"].client_id}
             export POSTGRES_SUBNET=${one(azurerm_subnet.postgres.address_prefixes)}
             export REDIS_SUBNET=${one(azurerm_subnet.redis.address_prefixes)}

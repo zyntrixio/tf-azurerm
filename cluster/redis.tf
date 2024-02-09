@@ -67,10 +67,10 @@ resource "azurerm_private_endpoint" "rd" {
 }
 
 resource "azurerm_key_vault_secret" "rd" {
-  count = var.redis.enabled && var.keyvault.enabled ? 1 : 0
+  count = var.redis.enabled ? 1 : 0
 
   name         = "infra-redis-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
     "url_primary"          = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0",

@@ -49,10 +49,8 @@ resource "azurerm_role_assignment" "ac_iam_rw" {
 }
 
 resource "azurerm_key_vault_secret" "ac" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name         = "infra-app-config-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
     "primary_write_connection_string"   = azurerm_app_configuration.i.primary_write_key[0].connection_string

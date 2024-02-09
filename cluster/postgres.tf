@@ -131,7 +131,7 @@ resource "azurerm_role_assignment" "pg_iam" {
 
 resource "azurerm_key_vault_secret" "pg" {
   name         = "infra-postgres-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value        = jsonencode(local.postgres_secret_json)
   tags = {
@@ -143,7 +143,7 @@ resource "azurerm_key_vault_secret" "pg" {
 resource "azurerm_key_vault_secret" "pg_uri" {
   for_each     = local.postgres_secret_uri
   name         = "infra-postgres-connection-uri-${replace(each.key, "_", "-")}"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "text/plain"
   value        = each.value
   depends_on   = [azurerm_key_vault_access_policy.iam_su]

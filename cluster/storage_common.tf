@@ -1,8 +1,6 @@
 resource "azurerm_key_vault_secret" "st" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name         = "infra-storage-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
     # old keys

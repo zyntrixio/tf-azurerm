@@ -14,7 +14,7 @@ resource "cloudamqp_instance" "i" {
 }
 
 data "cloudamqp_nodes" "i" {
-  count       = var.cloudamqp.enabled && var.keyvault.enabled ? 1 : 0
+  count       = var.cloudamqp.enabled ? 1 : 0
   instance_id = cloudamqp_instance.i[0].id
 }
 
@@ -95,10 +95,10 @@ resource "azurerm_private_dns_a_record" "https" {
 }
 
 resource "azurerm_key_vault_secret" "amqp" {
-  count = var.cloudamqp.enabled && var.keyvault.enabled ? 1 : 0
+  count = var.cloudamqp.enabled ? 1 : 0
 
   name         = "infra-cloudamqp-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
     "url"             = "amqps://${local.amqp_credentials.user}:${local.amqp_credentials.pass}@${cloudamqp_instance.i[0].host}/${local.amqp_credentials.user}"

@@ -6,8 +6,6 @@ resource "random_string" "kv" {
 }
 
 resource "azurerm_key_vault" "i" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name                = "${azurerm_resource_group.i.name}-${random_string.kv.result}"
   location            = azurerm_resource_group.i.location
   resource_group_name = azurerm_resource_group.i.name
@@ -19,10 +17,8 @@ resource "azurerm_key_vault" "i" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "kv" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name                       = "loganalytics"
-  target_resource_id         = azurerm_key_vault.i[0].id
+  target_resource_id         = azurerm_key_vault.i.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "AuditEvent" }
@@ -33,63 +29,41 @@ resource "azurerm_monitor_diagnostic_setting" "kv" {
 }
 
 resource "azurerm_role_assignment" "kv_mi_ro" {
-  for_each = {
-    for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "kv_ro") &&
-    var.keyvault.enabled
-  }
+  for_each = { for k, v in local.identities : k => v if contains(v["assigned_to"], "kv_ro") }
 
-  scope                = azurerm_key_vault.i[0].id
+  scope                = azurerm_key_vault.i.id
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
 resource "azurerm_role_assignment" "kv_mi_rw" {
-  for_each = {
-    for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "kv_su") ||
-    contains(v["assigned_to"], "kv_rw") &&
-    var.keyvault.enabled
-  }
+  for_each = { for k, v in local.identities : k => v if contains(v["assigned_to"], "kv_su") || contains(v["assigned_to"], "kv_rw") }
 
-  scope                = azurerm_key_vault.i[0].id
+  scope                = azurerm_key_vault.i.id
   role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
 resource "azurerm_role_assignment" "kv_iam_ro" {
-  for_each = {
-    for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "kv_ro") &&
-    var.keyvault.enabled
-  }
+  for_each = { for k, v in var.iam : k => v if contains(v["assigned_to"], "kv_ro") }
 
-  scope                = azurerm_key_vault.i[0].id
+  scope                = azurerm_key_vault.i.id
   role_definition_name = "Reader"
   principal_id         = each.key
 }
 
 resource "azurerm_role_assignment" "kv_iam_rw" {
-  for_each = {
-    for k, v in var.iam : k => v
-    if var.keyvault.enabled && (
-      contains(v["assigned_to"], "kv_su") ||
-      contains(v["assigned_to"], "kv_rw")
-    )
-  }
+  for_each = { for k, v in var.iam : k => v if contains(v["assigned_to"], "kv_su") || contains(v["assigned_to"], "kv_rw") }
 
-  scope                = azurerm_key_vault.i[0].id
+  scope                = azurerm_key_vault.i.id
   role_definition_name = "Contributor"
   principal_id         = each.key
 }
 
 resource "azurerm_key_vault_access_policy" "mi_ro" {
-  for_each = {
-    for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "kv_ro") && var.keyvault.enabled
-  }
+  for_each = { for k, v in local.identities : k => v if contains(v["assigned_to"], "kv_ro") }
 
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = azurerm_user_assigned_identity.i[each.key].principal_id
 
@@ -97,12 +71,9 @@ resource "azurerm_key_vault_access_policy" "mi_ro" {
 }
 
 resource "azurerm_key_vault_access_policy" "mi_rw" {
-  for_each = {
-    for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "kv_rw") && var.keyvault.enabled
-  }
+  for_each = { for k, v in local.identities : k => v if contains(v["assigned_to"], "kv_rw") }
 
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = azurerm_user_assigned_identity.i[each.key].principal_id
 
@@ -110,12 +81,9 @@ resource "azurerm_key_vault_access_policy" "mi_rw" {
 }
 
 resource "azurerm_key_vault_access_policy" "iam_ro" {
-  for_each = {
-    for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "kv_ro") && var.keyvault.enabled
-  }
+  for_each = { for k, v in var.iam : k => v if contains(v["assigned_to"], "kv_ro") }
 
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = each.key
 
@@ -123,12 +91,9 @@ resource "azurerm_key_vault_access_policy" "iam_ro" {
 }
 
 resource "azurerm_key_vault_access_policy" "iam_rw" {
-  for_each = {
-    for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "kv_rw") && var.keyvault.enabled
-  }
+  for_each = { for k, v in var.iam : k => v if contains(v["assigned_to"], "kv_rw") }
 
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = each.key
 
@@ -136,12 +101,9 @@ resource "azurerm_key_vault_access_policy" "iam_rw" {
 }
 
 resource "azurerm_key_vault_access_policy" "iam_su" {
-  for_each = {
-    for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "kv_su") && var.keyvault.enabled
-  }
+  for_each = { for k, v in var.iam : k => v if contains(v["assigned_to"], "kv_su") }
 
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = each.key
 
@@ -153,9 +115,7 @@ resource "azurerm_key_vault_access_policy" "iam_su" {
 }
 
 resource "azurerm_key_vault_access_policy" "aks" {
-  count = var.keyvault.enabled ? 1 : 0
-
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   tenant_id    = data.azurerm_client_config.i.tenant_id
   object_id    = azurerm_kubernetes_cluster.i.kubelet_identity[0].object_id
 
@@ -165,14 +125,12 @@ resource "azurerm_key_vault_access_policy" "aks" {
 }
 
 resource "azurerm_key_vault_secret" "kv" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name         = "infra-keyvault-connection-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
-    "url"           = azurerm_key_vault.i[0].vault_uri,
-    "keyvault_name" = azurerm_key_vault.i[0].name,
+    "url"           = azurerm_key_vault.i.vault_uri,
+    "keyvault_name" = azurerm_key_vault.i.name,
   })
   tags = {
     kube_secret_name = "azure-keyvault"

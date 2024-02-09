@@ -49,10 +49,8 @@ resource "azurerm_federated_identity_credential" "i" {
 }
 
 resource "azurerm_key_vault_secret" "mi" {
-  count = var.keyvault.enabled ? 1 : 0
-
   name         = "infra-managed-identity-details"
-  key_vault_id = azurerm_key_vault.i[0].id
+  key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode(
     merge(
