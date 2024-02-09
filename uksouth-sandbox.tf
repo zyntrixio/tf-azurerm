@@ -32,7 +32,7 @@ module "uksouth_sandbox" {
   }
   kube         = { enabled = true, additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
   cloudamqp    = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
-  storage      = { enabled = false, nfs_enabled = false, sftp_enabled = true }
+  storage      = { sftp_enabled = true }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
   postgres = {
@@ -93,16 +93,7 @@ module "uksouth_retail" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage = {
-    enabled      = true
-    nfs_enabled  = true
-    sftp_enabled = false
-    rules = [
-      { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
-      { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
-      { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
-    ]
-  }
+  storage      = { sftp_enabled = false }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
   postgres = { core = {
@@ -171,16 +162,7 @@ module "uksouth_lloyds" {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
-  storage = {
-    enabled      = true
-    nfs_enabled  = true
-    sftp_enabled = false
-    rules = [
-      { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
-      { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
-      { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
-    ]
-  }
+  storage      = { sftp_enabled = false }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
   postgres = { core = {

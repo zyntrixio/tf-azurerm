@@ -88,7 +88,6 @@ variable "acr" {
 variable "storage" {
   type = object({
     sftp_enabled = bool
-    nfs_enabled  = bool
     rules = optional(list(object({
       name              = string
       prefix_match      = list(string)

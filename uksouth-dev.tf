@@ -54,14 +54,7 @@ module "uksouth_dev" {
     vpc_id  = module.uksouth_cloudamqp.vpc.id
   }
   storage = {
-    enabled      = true
     sftp_enabled = false
-    nfs_enabled  = true
-    rules = [
-      { name = "backupshourly", prefix_match = ["backups/hourly"], delete_after_days = 30 },
-      { name = "backupsweekly", prefix_match = ["backups/weekly"], delete_after_days = 90 },
-      { name = "backupsyearly", prefix_match = ["backups/yearly"], delete_after_days = 1095 },
-    ]
   }
   loganalytics = { enabled = true }
   keyvault     = { enabled = true }
