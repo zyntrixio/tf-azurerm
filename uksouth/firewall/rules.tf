@@ -380,7 +380,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
   rule {
     name             = "Checkly"
     source_addresses = ["*"]
-    target_fqdns     = ["api.checklyhq.com", "ping.checklyhq.com"]
+    target_fqdns     = ["api.checklyhq.com", "ping.checklyhq.com", "agent.checklyhq.com"]
     protocol {
       port = "443"
       type = "Https"
