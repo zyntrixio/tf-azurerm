@@ -9,6 +9,11 @@ module "uksouth_dev" {
     location = "uksouth"
     cidr     = "10.41.0.0/16"
   }
+  backups = {
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
+  }
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {

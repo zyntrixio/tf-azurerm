@@ -1,46 +1,42 @@
-resource "azurerm_data_protection_backup_vault" "i" {
-  count = var.backups.enabled ? 1 : 0
-
-  name                = azurerm_resource_group.i.name
-  resource_group_name = azurerm_resource_group.i.name
-  location            = azurerm_resource_group.i.location
-  datastore_type      = "VaultStore"
-  redundancy          = var.backups.redundancy
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
 resource "azurerm_role_assignment" "backups_storage" {
-  count = var.backups.enabled ? 1 : 0
-
-  scope                = azurerm_storage_account.i[0].id
+  scope                = azurerm_resource_group.i.id
   role_definition_name = "Storage Account Backup Contributor"
-  principal_id         = azurerm_data_protection_backup_vault.i[0].identity[0].principal_id
+  principal_id         = var.backups.principal_id
 }
 
-# This cannot be enabled until support for Vaulted Backups is added to Terraform.
-# The backup process should be as follows:
-#   Operational Backups (daily) -> Vaulted Backups (weekly) -> Long Term Backups (monthly)
-# Retention periods should be:
-#   Operational Backups: 30 days
-#   Vaulted Backups: 90 days
-#   Long Term Backups: 3 years
+resource "azurerm_role_assignment" "backups_postgres" {
+  scope                = azurerm_resource_group.i.id
+  role_definition_name = "PostgreSQL Flexible Server Long Term Retention Backup Role"
+  principal_id         = var.backups.principal_id
+}
 
-# resource "azurerm_data_protection_backup_policy_blob_storage" "i" {
-#     count = var.backups.enabled ? 1 : 0
+# This one shouldn't be required, but the Postgres Flexible Role lacks required permissions.
+# If the following gets fixed in future versions, this resource can be removed.
+# Current JSON:
+# "actions": [
+#     "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupOperations/read",
+#     "Microsoft.DBforPostgreSQL/flexibleServers/ltrPreBackup/action",
+#     "Microsoft.DBforPostgreSQL/flexibleServers/startLtrBackup/action",
+#     "Microsoft.DBforPostgreSQL/locations/azureAsyncOperation/read",
+#     "Microsoft.DBforPostgreSQL/locations/operationResults/read",
+#     "Microsoft.Resources/subscriptions/read",
+#     "Microsoft.Resources/subscriptions/resourceGroups/read"
+# ],
+# Missing: "Microsoft.DBforPostgreSQL/flexibleServers/read"
+resource "azurerm_role_assignment" "backups_reader" {
+  scope                = azurerm_resource_group.i.id
+  role_definition_name = "Reader"
+  principal_id         = var.backups.principal_id
+}
 
-#     name = "BlobStorage"
-#     vault_id = azurerm_data_protection_backup_vault.i[0].id
-#     retention_duration = var.backups.blob_retention_period
-# }
+resource "azurerm_data_protection_backup_instance_blob_storage" "i" {
+  provider = azurerm.core
 
-# resource "azurerm_data_protection_backup_instance_blob_storage" "i" {
-#     name               = "blob_storage"
-#     vault_id           = azurerm_data_protection_backup_vault.i.id
-#     location           = azurerm_resource_group.i.location
-#     storage_account_id = azurerm_storage_account.i[0].id
-#     backup_policy_id   = azurerm_data_protection_backup_policy_blob_storage.i.id
+  name               = azurerm_storage_account.i.name
+  vault_id           = var.backups.resource_id
+  location           = azurerm_resource_group.i.location
+  storage_account_id = azurerm_storage_account.i.id
+  backup_policy_id   = var.backups.policies.blob_storage
 
-#     depends_on = [azurerm_role_assignment.backups_storage]
-# }
+  depends_on = [azurerm_role_assignment.backups_storage]
+}

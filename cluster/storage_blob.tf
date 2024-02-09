@@ -6,8 +6,6 @@ resource "random_string" "st" {
 }
 
 resource "azurerm_storage_account" "i" {
-  count = var.storage.enabled ? 1 : 0
-
   name                = "${replace(azurerm_resource_group.i.name, "-", "")}${random_string.st.result}"
   location            = azurerm_resource_group.i.location
   resource_group_name = azurerm_resource_group.i.name
@@ -19,11 +17,16 @@ resource "azurerm_storage_account" "i" {
   cross_tenant_replication_enabled = false
 }
 
+moved {
+  from = azurerm_storage_account.i[0]
+  to   = azurerm_storage_account.i
+}
+
 resource "azurerm_monitor_diagnostic_setting" "blob" {
-  count = var.storage.enabled && var.loganalytics.enabled ? 1 : 0
+  count = var.loganalytics.enabled ? 1 : 0
 
   name                       = "loganalytics"
-  target_resource_id         = "${azurerm_storage_account.i[0].id}/blobServices/default"
+  target_resource_id         = "${azurerm_storage_account.i.id}/blobServices/default"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
 
   enabled_log { category = "StorageRead" }
@@ -42,11 +45,10 @@ resource "azurerm_monitor_diagnostic_setting" "blob" {
 resource "azurerm_role_assignment" "st_mi_ro" {
   for_each = {
     for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "st_ro") &&
-    var.storage.enabled
+    if contains(v["assigned_to"], "st_ro")
   }
 
-  scope                = azurerm_storage_account.i[0].id
+  scope                = azurerm_storage_account.i.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
@@ -54,11 +56,10 @@ resource "azurerm_role_assignment" "st_mi_ro" {
 resource "azurerm_role_assignment" "st_mi_rw" {
   for_each = {
     for k, v in local.identities : k => v
-    if contains(v["assigned_to"], "st_rw") &&
-    var.storage.enabled
+    if contains(v["assigned_to"], "st_rw")
   }
 
-  scope                = azurerm_storage_account.i[0].id
+  scope                = azurerm_storage_account.i.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
@@ -66,11 +67,10 @@ resource "azurerm_role_assignment" "st_mi_rw" {
 resource "azurerm_role_assignment" "st_iam_ro" {
   for_each = {
     for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "st_ro") &&
-    var.storage.enabled
+    if contains(v["assigned_to"], "st_ro")
   }
 
-  scope                = azurerm_storage_account.i[0].id
+  scope                = azurerm_storage_account.i.id
   role_definition_name = "Reader"
   principal_id         = each.key
 }
@@ -78,19 +78,18 @@ resource "azurerm_role_assignment" "st_iam_ro" {
 resource "azurerm_role_assignment" "st_iam_rw" {
   for_each = {
     for k, v in var.iam : k => v
-    if contains(v["assigned_to"], "st_rw") &&
-    var.storage.enabled
+    if contains(v["assigned_to"], "st_rw")
   }
 
-  scope                = azurerm_storage_account.i[0].id
+  scope                = azurerm_storage_account.i.id
   role_definition_name = "Contributor"
   principal_id         = each.key
 }
 
 resource "azurerm_storage_management_policy" "st" {
-  count = var.storage.enabled && length(var.storage.rules) > 0 ? 1 : 0
+  count = length(var.storage.rules) > 0 ? 1 : 0
 
-  storage_account_id = azurerm_storage_account.i[0].id
+  storage_account_id = azurerm_storage_account.i.id
 
   dynamic "rule" {
     for_each = var.storage.rules

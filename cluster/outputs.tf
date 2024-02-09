@@ -9,7 +9,7 @@ output "managed_identities" {
 }
 
 output "storage" {
-  value = var.storage.enabled ? azurerm_storage_account.i[0] : null
+  value = azurerm_storage_account.i
 }
 
 output "subnets" {

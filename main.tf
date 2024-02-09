@@ -80,6 +80,13 @@ module "uksouth_core" {
   source = "./uksouth/core"
 }
 
+module "uksouth_backups" {
+  source = "./backups"
+  common = {
+    location = "uksouth"
+  }
+}
+
 module "uksouth_cloudamqp" {
   source = "./cloudamqp"
   subnet = "192.168.1.0/24"

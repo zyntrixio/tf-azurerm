@@ -9,6 +9,11 @@ module "uksouth_staging" {
     location = "uksouth"
     cidr     = "10.31.0.0/16"
   }
+  backups = {
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
+  }
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {
@@ -26,7 +31,7 @@ module "uksouth_staging" {
     (local.entra_groups["Architecture"])                  = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
     (local.entra_groups["Business Analysis"])             = { assigned_to = ["st_rw", "la"] }
     (local.entra_groups["Data Engineers"])                = { assigned_to = ["st_ro"] }
-    (local.entra_groups["Service"])                       = { assigned_to = ["sftp_ro"]}
+    (local.entra_groups["Service"])                       = { assigned_to = ["sftp_ro"] }
   }
   managed_identities = {
     "airbyte"       = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }

@@ -20,11 +20,13 @@ variable "grafana_id" {
 
 variable "backups" {
   type = object({
-    enabled               = optional(bool, false)
-    redundancy            = optional(string, "LocallyRedundant")
-    blob_retention_period = optional(string, "P3M")
+    resource_id  = string
+    principal_id = string
+    policies = object({
+      blob_storage = string,
+      postgres     = string,
+    })
   })
-  default = {}
 }
 
 variable "firewall" {
@@ -85,7 +87,6 @@ variable "acr" {
 
 variable "storage" {
   type = object({
-    enabled      = bool
     sftp_enabled = bool
     nfs_enabled  = bool
     rules = optional(list(object({

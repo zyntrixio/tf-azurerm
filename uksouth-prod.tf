@@ -12,9 +12,9 @@ module "uksouth_prod" {
     cidr     = "10.11.0.0/16"
   }
   backups = {
-    enabled               = true
-    redundancy            = "GeoRedundant"
-    blob_retention_period = "P3Y"
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
   }
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }

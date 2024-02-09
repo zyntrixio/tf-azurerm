@@ -2,8 +2,13 @@ module "uksouth_sandbox" {
   source    = "./cluster"
   providers = { azurerm = azurerm.uksouth_sandbox, azurerm.core = azurerm }
   common    = { name = "sandbox", location = "uksouth", cidr = "10.20.0.0/16" }
-  dns       = { id = module.uksouth_dns.bink_sh_id }
-  acr       = { id = module.uksouth_core.acr_id }
+  backups = {
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
+  }
+  dns = { id = module.uksouth_dns.bink_sh_id }
+  acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {
     ipv4 = concat(local.secure_origins, [module.uksouth_tailscale.ip_addresses.ipv4_cidr])
     ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
@@ -49,6 +54,11 @@ module "uksouth_retail" {
     name     = "retail"
     location = "uksouth"
     cidr     = "10.21.0.0/16"
+  }
+  backups = {
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
   }
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }
@@ -122,6 +132,11 @@ module "uksouth_lloyds" {
     name     = "lloyds"
     location = "uksouth"
     cidr     = "10.23.0.0/16"
+  }
+  backups = {
+    resource_id  = module.uksouth_backups.resource_id
+    principal_id = module.uksouth_backups.principal_id
+    policies     = module.uksouth_backups.policies
   }
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }
