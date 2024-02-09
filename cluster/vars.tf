@@ -138,7 +138,6 @@ variable "tableau" {
 
 variable "kube" {
   type = object({
-    enabled                    = bool
     flux_enabled               = optional(bool, true)
     automatic_channel_upgrade  = optional(string, "rapid")
     node_os_channel_upgrade    = optional(string, "NodeImage")

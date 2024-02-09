@@ -30,7 +30,7 @@ module "uksouth_sandbox" {
     "metis"   = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
     "midas"   = { assigned_to = ["kv_ro"], namespaces = ["retail", "lloyds"] }
   }
-  kube      = { enabled = true, additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
+  kube      = { additional_node_pools = { spot = {}, retail = {}, lloyds = {} } }
   cloudamqp = { enabled = true, vpc_id = module.uksouth_cloudamqp.vpc.id }
   storage   = { sftp_enabled = true }
   keyvault  = { enabled = true }
@@ -81,7 +81,6 @@ module "uksouth_retail" {
     "midas"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
   }
   kube = {
-    enabled               = true
     additional_node_pools = { spot = {} }
     ebpf_enabled          = false
   }
@@ -149,7 +148,6 @@ module "uksouth_lloyds" {
     "midas"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
   }
   kube = {
-    enabled               = true
     additional_node_pools = { spot = {} }
     ebpf_enabled          = false
   }

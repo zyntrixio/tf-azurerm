@@ -56,7 +56,7 @@ module "uksouth_staging" {
     "zephyrus"      = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     "prefect"       = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse", "airbyte"] }
   }
-  kube = { enabled = true, additional_node_pools = { spot = {} } }
+  kube = { additional_node_pools = { spot = {} } }
   cloudamqp = {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id

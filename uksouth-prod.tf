@@ -62,7 +62,6 @@ module "uksouth_prod" {
     "prefect"        = { assigned_to = ["kv_ro"], namespaces = ["datawarehouse"] }
   }
   kube = {
-    enabled                   = true
     sku_tier                  = "Standard"
     automatic_channel_upgrade = "patch"
     pool_vm_size              = "Standard_D4ads_v5"

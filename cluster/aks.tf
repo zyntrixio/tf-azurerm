@@ -1,29 +1,11 @@
 locals {
-  aks_mi_readers = {
-    for k, v in local.identities : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_ro")
-  }
-  aks_mi_writers = {
-    for k, v in local.identities : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_rw")
-  }
-  aks_mi_admins = {
-    for k, v in local.identities : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_su")
-  }
-  aks_readers = {
-    for k, v in var.iam : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_ro")
-  }
-  aks_writers = {
-    for k, v in var.iam : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_rw")
-  }
-  aks_admins = {
-    for k, v in var.iam : k => v
-    if var.kube.enabled && contains(v["assigned_to"], "aks_su")
-  }
-  aks_users = merge(local.aks_readers, local.aks_writers, local.aks_admins)
+  aks_mi_readers = { for k, v in local.identities : k => v if contains(v["assigned_to"], "aks_ro") }
+  aks_mi_writers = { for k, v in local.identities : k => v if contains(v["assigned_to"], "aks_rw") }
+  aks_mi_admins  = { for k, v in local.identities : k => v if contains(v["assigned_to"], "aks_su") }
+  aks_readers    = { for k, v in var.iam : k => v if contains(v["assigned_to"], "aks_ro") }
+  aks_writers    = { for k, v in var.iam : k => v if contains(v["assigned_to"], "aks_rw") }
+  aks_admins     = { for k, v in var.iam : k => v if contains(v["assigned_to"], "aks_su") }
+  aks_users      = merge(local.aks_readers, local.aks_writers, local.aks_admins)
 }
 
 resource "azurerm_user_assigned_identity" "aks" {
@@ -45,8 +27,6 @@ resource "azurerm_role_assignment" "aks_rt" {
 }
 
 resource "azurerm_kubernetes_cluster" "i" {
-  count = var.kube.enabled ? 1 : 0
-
   name                = azurerm_resource_group.i.name
   resource_group_name = azurerm_resource_group.i.name
   location            = azurerm_resource_group.i.location
@@ -143,7 +123,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
   for_each = var.kube.additional_node_pools
 
   name                  = each.key
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.i[0].id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.i.id
   vm_size               = each.value.vm_size
   node_count            = each.value.node_count
   node_labels           = each.value.node_labels
@@ -170,16 +150,15 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
 resource "azurerm_role_assignment" "aks_mi_ro" {
   for_each = local.aks_mi_readers
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Reader"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
 
 resource "azurerm_role_assignment" "aks-acr" {
-  count                = var.kube.enabled ? 1 : 0
   scope                = var.acr.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
+  principal_id         = azurerm_kubernetes_cluster.i.kubelet_identity[0].object_id
 }
 
 resource "azurerm_role_assignment" "flux-acr" {
@@ -191,7 +170,7 @@ resource "azurerm_role_assignment" "flux-acr" {
 resource "azurerm_role_assignment" "aks_mi_rw" {
   for_each = local.aks_mi_writers
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Writer"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
@@ -199,7 +178,7 @@ resource "azurerm_role_assignment" "aks_mi_rw" {
 resource "azurerm_role_assignment" "aks_mi_su" {
   for_each = local.aks_mi_admins
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Admin"
   principal_id         = azurerm_user_assigned_identity.i[each.key].principal_id
 }
@@ -207,7 +186,7 @@ resource "azurerm_role_assignment" "aks_mi_su" {
 resource "azurerm_role_assignment" "aks_iam" {
   for_each = local.aks_users
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service Cluster User Role"
   principal_id         = each.key
 }
@@ -215,7 +194,7 @@ resource "azurerm_role_assignment" "aks_iam" {
 resource "azurerm_role_assignment" "aks_iam_nodes" {
   for_each = local.aks_users
 
-  scope                = azurerm_kubernetes_cluster.i[0].node_resource_group_id
+  scope                = azurerm_kubernetes_cluster.i.node_resource_group_id
   role_definition_name = "Reader"
   principal_id         = each.key
   depends_on           = [azurerm_kubernetes_cluster.i]
@@ -224,7 +203,7 @@ resource "azurerm_role_assignment" "aks_iam_nodes" {
 resource "azurerm_role_assignment" "aks_iam_ro" {
   for_each = local.aks_readers
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Reader"
   principal_id         = each.key
 }
@@ -232,7 +211,7 @@ resource "azurerm_role_assignment" "aks_iam_ro" {
 resource "azurerm_role_assignment" "aks_iam_rw" {
   for_each = local.aks_writers
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Writer"
   principal_id         = each.key
 }
@@ -240,16 +219,14 @@ resource "azurerm_role_assignment" "aks_iam_rw" {
 resource "azurerm_role_assignment" "aks_iam_su" {
   for_each = local.aks_admins
 
-  scope                = azurerm_kubernetes_cluster.i[0].id
+  scope                = azurerm_kubernetes_cluster.i.id
   role_definition_name = "Azure Kubernetes Service RBAC Admin"
   principal_id         = each.key
 }
 
 resource "azurerm_monitor_diagnostic_setting" "aks" {
-  count = var.kube.enabled ? 1 : 0
-
   name                       = "loganalytics"
-  target_resource_id         = azurerm_kubernetes_cluster.i[0].id
+  target_resource_id         = azurerm_kubernetes_cluster.i.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "kube-apiserver" }
@@ -262,12 +239,12 @@ resource "azurerm_monitor_diagnostic_setting" "aks" {
 }
 
 resource "null_resource" "flux_install" {
-  count = var.kube.enabled && var.keyvault.enabled && var.kube.flux_enabled ? 1 : 0
+  count = var.keyvault.enabled && var.kube.flux_enabled ? 1 : 0
   provisioner "local-exec" {
     command     = <<-EOF
             export CLUSTER_NAME="${var.common.name}"
             export CLUSTER_LOCATION="${azurerm_resource_group.i.location}"
-            export CLUSTER_API_HOST="https://${azurerm_kubernetes_cluster.i[0].fqdn}:443"
+            export CLUSTER_API_HOST="https://${azurerm_kubernetes_cluster.i.fqdn}:443"
             export CLUSTER_LB_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)}"
             export CLUSTER_PLS_IP="${cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32765)}"
             export ENVIRONMENT_KEYVAULT=${azurerm_key_vault.i[0].vault_uri}

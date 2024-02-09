@@ -1,5 +1,5 @@
 output "aks" {
-  value = var.kube.enabled ? azurerm_kubernetes_cluster.i[0] : null
+  value = azurerm_kubernetes_cluster.i
 }
 
 output "managed_identities" {

@@ -153,11 +153,11 @@ resource "azurerm_key_vault_access_policy" "iam_su" {
 }
 
 resource "azurerm_key_vault_access_policy" "aks" {
-  count = var.keyvault.enabled && var.kube.enabled ? 1 : 0
+  count = var.keyvault.enabled ? 1 : 0
 
   key_vault_id = azurerm_key_vault.i[0].id
   tenant_id    = data.azurerm_client_config.i.tenant_id
-  object_id    = azurerm_kubernetes_cluster.i[0].kubelet_identity[0].object_id
+  object_id    = azurerm_kubernetes_cluster.i.kubelet_identity[0].object_id
 
   secret_permissions      = ["Get"]
   certificate_permissions = ["Get"]
