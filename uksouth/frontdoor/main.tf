@@ -42,18 +42,6 @@ locals {
       "cert_name"        = "acmebot-dev-gb-bink-com"
       "origins"          = { "rewards.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
     }
-    "uksouth_dev_reflector" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "reflector.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "reflector.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_audit" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "audit.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "audit.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
     "uksouth_dev_docs" = {
       "endpoint"  = "uksouth-dev"
       "domain"    = "docs.dev.gb.bink.com"
@@ -112,18 +100,6 @@ locals {
       "cached_endpoints" = ["/content/*"]
       "cert_name"        = "acmebot-staging-gb-bink-com"
       "origins"          = { "rewards.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_reflector" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "reflector.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "reflector.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_audit" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "audit.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "audit.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
     }
     "uksouth_staging_policies" = {
       "endpoint"  = "uksouth-staging"
@@ -207,18 +183,6 @@ locals {
       "domain"    = "docs.lloyds.gb.bink.com"
       "cert_name" = "acmebot-lloyds-gb-bink-com"
       "origins"   = { "docs.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
-    "uksouth_lloyds_reflector" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "reflector.lloyds.gb.bink.com"
-      "cert_name" = "acmebot-lloyds-gb-bink-com"
-      "origins"   = { "reflector.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
-    "uksouth_lloyds_audit" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "audit.lloyds.gb.bink.com"
-      "cert_name" = "acmebot-lloyds-gb-bink-com"
-      "origins"   = { "audit.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
     }
 
     # Retail Environment
