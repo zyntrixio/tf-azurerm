@@ -77,7 +77,8 @@ data "azuread_groups" "all" {
 }
 
 module "uksouth_core" {
-  source = "./uksouth/core"
+  source                    = "./uksouth/core"
+  loganalytics_workspace_id = module.uksouth_loganalytics.id
 }
 
 module "uksouth_backups" {
