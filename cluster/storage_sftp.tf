@@ -23,11 +23,11 @@ resource "azurerm_storage_account" "sftp" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "sftp" {
-  count = var.storage.sftp_enabled && var.loganalytics.enabled ? 1 : 0
+  count = var.storage.sftp_enabled ? 1 : 0
 
   name                       = "loganalytics"
   target_resource_id         = "${azurerm_storage_account.sftp[0].id}/blobServices/default"
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "StorageRead" }
   enabled_log { category = "StorageWrite" }

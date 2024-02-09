@@ -61,7 +61,6 @@ variable "iam" {
 
 variable "loganalytics" {
   type = object({
-    enabled           = bool
     sku               = optional(string, "PerGB2018")
     retention_in_days = optional(number, 30)
   })

@@ -61,11 +61,8 @@ resource "azurerm_kubernetes_cluster" "i" {
   workload_identity_enabled = true
   local_account_disabled    = true
 
-  dynamic "oms_agent" {
-    for_each = var.loganalytics.enabled ? [1] : []
-    content {
-      log_analytics_workspace_id = try(azurerm_log_analytics_workspace.i[0].id, "")
-    }
+  oms_agent {
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
   }
 
   key_vault_secrets_provider {
@@ -249,11 +246,11 @@ resource "azurerm_role_assignment" "aks_iam_su" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "aks" {
-  count = var.kube.enabled && var.loganalytics.enabled ? 1 : 0
+  count = var.kube.enabled ? 1 : 0
 
   name                       = "loganalytics"
   target_resource_id         = azurerm_kubernetes_cluster.i[0].id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "kube-apiserver" }
   enabled_log { category = "kube-controller-manager" }

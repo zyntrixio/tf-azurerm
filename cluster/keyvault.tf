@@ -19,11 +19,11 @@ resource "azurerm_key_vault" "i" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "kv" {
-  count = var.keyvault.enabled && var.loganalytics.enabled ? 1 : 0
+  count = var.keyvault.enabled ? 1 : 0
 
   name                       = "loganalytics"
   target_resource_id         = azurerm_key_vault.i[0].id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "AuditEvent" }
   metric {

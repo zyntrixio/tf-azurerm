@@ -52,7 +52,7 @@ resource "azurerm_monitor_diagnostic_setting" "tableau_nsg" {
 
   name                       = "loganalytics"
   target_resource_id         = azurerm_network_security_group.tableau[0].id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "NetworkSecurityGroupEvent" }
   enabled_log { category = "NetworkSecurityGroupRuleCounter" }

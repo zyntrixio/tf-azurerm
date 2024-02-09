@@ -14,11 +14,9 @@ resource "azurerm_app_configuration" "i" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "ac" {
-  count = var.loganalytics.enabled ? 1 : 0
-
   name                       = "loganalytics"
   target_resource_id         = azurerm_app_configuration.i.id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "HttpRequest" }
   metric {

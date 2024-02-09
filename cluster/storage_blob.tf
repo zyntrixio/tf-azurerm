@@ -18,11 +18,9 @@ resource "azurerm_storage_account" "i" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "blob" {
-  count = var.loganalytics.enabled ? 1 : 0
-
   name                       = "loganalytics"
   target_resource_id         = "${azurerm_storage_account.i.id}/blobServices/default"
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
 
   enabled_log { category = "StorageRead" }
   enabled_log { category = "StorageWrite" }
