@@ -176,7 +176,7 @@ module "uksouth_grafana" {
   ]
   permissions = {
     admins  = [local.entra_groups["DevOps"]]
-    editors = [local.entra_groups["Backend"]]
+    editors = [local.entra_groups["Backend"], local.entra_groups["Business Analysis"]]
     readers = [local.entra_groups["All Users"]]
     subscriptions = {
       "uksouth_tools"   = "0add5c8e-50a6-4821-be0f-7a47c879b009"
