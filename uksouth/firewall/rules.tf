@@ -120,6 +120,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       "ocsp.rootca1.amazontrust.com",
       "ocsp.rootg2.amazontrust.com",
       "o.ss2.us",
+      "ocsp.digicert.com",
     ]
     protocol {
       port = "80"
