@@ -146,6 +146,7 @@ module "uksouth_frontdoor" {
       }
       admin_ips = concat(local.secure_origins, [module.uksouth_tailscale.ip_addresses.ipv4])
     }
+    log_iam = [local.entra_groups["All Users"]]
   }
 }
 

@@ -42,8 +42,6 @@ locals {
 resource "azurerm_resource_group" "acmebot" {
   name     = "${var.common.location}-acmebot"
   location = var.common.location
-
-  tags = var.common.tags
 }
 
 module "keyvault_acmebot" {

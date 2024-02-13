@@ -337,6 +337,7 @@ variable "common" {
     location                 = optional(string, "uksouth")
     loganalytics_id          = string
     response_timeout_seconds = optional(number, 60)
+    log_iam                  = optional(list(string), [])
     secure_origins = object({
       ipv4      = list(string)
       ipv6      = list(string)
@@ -347,10 +348,6 @@ variable "common" {
       id             = string
       name           = string
       resource_group = string
-    })
-    tags = optional(map(string), {
-      Environment = "Core"
-      Role        = "Front Door"
     })
     key_vault = object({
       sku_name         = optional(string, "standard")
@@ -367,8 +364,6 @@ data "azurerm_client_config" "i" {}
 resource "azurerm_resource_group" "i" {
   name     = "${var.common.location}-frontdoor"
   location = var.common.location
-
-  tags = var.common.tags
 }
 
 resource "azurerm_log_analytics_workspace" "i" {
@@ -377,6 +372,13 @@ resource "azurerm_log_analytics_workspace" "i" {
   resource_group_name = azurerm_resource_group.i.name
   sku                 = "PerGB2018"
   retention_in_days   = 90
+}
+
+resource "azurerm_role_assignment" "log_iam" {
+  for_each             = toset(var.common.log_iam)
+  scope                = azurerm_log_analytics_workspace.i.id
+  role_definition_name = "Log Analytics Reader"
+  principal_id         = each.key
 }
 
 resource "azurerm_key_vault" "i" {
@@ -446,8 +448,6 @@ resource "azurerm_cdn_frontdoor_profile" "i" {
   resource_group_name      = azurerm_resource_group.i.name
   response_timeout_seconds = var.common.response_timeout_seconds
   sku_name                 = "Premium_AzureFrontDoor"
-
-  tags = var.common.tags
 }
 
 resource "azurerm_monitor_diagnostic_setting" "afd" {
