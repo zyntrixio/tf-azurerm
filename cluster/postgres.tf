@@ -126,7 +126,7 @@ resource "azurerm_role_assignment" "pg_iam" {
 
   scope                = azurerm_postgresql_flexible_server.i.id
   role_definition_name = "Contributor"
-  principal_id         = each.value.identity
+  principal_id         = each.key
 }
 
 resource "azurerm_key_vault_secret" "pg" {
