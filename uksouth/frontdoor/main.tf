@@ -36,48 +36,10 @@ locals {
       "origins"          = { "bpl.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
     }
     "uksouth_dev_rewards" = {
-      "endpoint"         = "uksouth-dev"
-      "domain"           = "rewards.dev.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-dev-gb-bink-com"
-      "origins"          = { "rewards.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_docs" = {
       "endpoint"  = "uksouth-dev"
-      "domain"    = "docs.dev.gb.bink.com"
+      "domain"    = "rewards.dev.gb.bink.com"
       "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "docs.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_portal" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "portal.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "portal.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_wallet" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "wallet.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "web-bink.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_wasabi" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "wasabi.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "web-wasabi.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_cosmos" = {
-      "endpoint"         = "uksouth-dev"
-      "domain"           = "cosmos.dev.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-dev-gb-bink-com"
-      "origins"          = { "cosmos.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_retailer" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "retailer.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "retailer.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
+      "origins"   = { "rewards.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
     }
     # Staging Envrionment
     "uksouth_staging_api" = {

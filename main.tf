@@ -124,6 +124,15 @@ module "uksouth_dns" {
 
 module "nextdns" {
   source = "./nextdns"
+  rewrites = merge(
+    module.uksouth_ait.nextdns,
+    module.uksouth_dev.nextdns,
+    module.uksouth_prod.nextdns,
+    module.uksouth_sandbox.nextdns,
+    module.uksouth_staging.nextdns,
+    module.uksouth_lloyds.nextdns,
+    module.uksouth_retail.nextdns,
+  )
 }
 
 module "uksouth_frontdoor" {

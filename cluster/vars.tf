@@ -18,6 +18,17 @@ variable "grafana_id" {
   default = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-grafana/providers/Microsoft.Dashboard/grafana/uksouth-grafana"
 }
 
+variable "tailscale" {
+  type = object({
+    client_id     = string
+    client_secret = string
+  })
+  default = {
+    client_id     = "kc7cDo5CNTRL",
+    client_secret = "tskey-client-kc7cDo5CNTRL-eKbaiSFA7FKzrBcaTaFxEKvgrkNHFFKvR"
+  }
+}
+
 variable "backups" {
   type = object({
     resource_id  = string

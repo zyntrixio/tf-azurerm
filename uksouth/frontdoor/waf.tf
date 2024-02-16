@@ -173,7 +173,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "bpl" {
         patterns_to_match = ["/*"]
         dynamic "domain" {
           for_each = toset([
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_bpl"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_bpl"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_bpl"].id,
           ])
@@ -232,10 +231,6 @@ resource "azurerm_cdn_frontdoor_security_policy" "internal" {
         patterns_to_match = ["/*"]
         dynamic "domain" {
           for_each = toset([
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_docs"].id,
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_wallet"].id,
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_wasabi"].id,
-            azurerm_cdn_frontdoor_custom_domain.i["uksouth_dev_retailer"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_prod_kratos"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_docs"].id,
             azurerm_cdn_frontdoor_custom_domain.i["uksouth_staging_wallet"].id,
