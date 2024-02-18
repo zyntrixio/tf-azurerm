@@ -93,19 +93,6 @@ module "uksouth_cloudamqp" {
   subnet = "192.168.1.0/24"
 }
 
-module "uksouth_tailscale" {
-  source = "./tailscale"
-  common = {
-    secure_origins_v4 = local.secure_origins
-    secure_origins_v6 = local.secure_origins_v6
-  }
-  dns = {
-    record              = "tailscale.gb"
-    resource_group_name = module.uksouth_dns.resource_group_name
-    zone_name           = module.uksouth_dns.bink_com_zone
-  }
-}
-
 module "uksouth_website" {
   source = "./website"
   common = {
@@ -145,15 +132,14 @@ module "uksouth_frontdoor" {
     }
     loganalytics_id = module.uksouth_loganalytics.id
     secure_origins = {
-      ipv4      = local.secure_origins
-      ipv6      = local.secure_origins_v6
-      tailscale = [module.uksouth_tailscale.ip_addresses.ipv4, module.uksouth_tailscale.ip_addresses.ipv6]
+      ipv4 = local.secure_origins
+      ipv6 = local.secure_origins_v6
     }
     key_vault = {
       admin_object_ids = {
         "devops" = local.entra_groups["DevOps"]
       }
-      admin_ips = concat(local.secure_origins, [module.uksouth_tailscale.ip_addresses.ipv4])
+      admin_ips = concat(local.secure_origins)
     }
     log_iam = [local.entra_groups["All Users"]]
   }

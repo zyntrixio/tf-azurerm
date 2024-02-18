@@ -19,8 +19,8 @@ module "uksouth_prod" {
   dns = { id = module.uksouth_dns.bink_sh_id }
   acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {
-    ipv4 = concat(local.secure_origins, [module.uksouth_tailscale.ip_addresses.ipv4_cidr])
-    ipv6 = concat(local.secure_origins_v6, [module.uksouth_tailscale.ip_addresses.ipv6_cidr])
+    ipv4 = concat(local.secure_origins)
+    ipv6 = concat(local.secure_origins_v6)
   }
   iam = {
     (local.aad_user.terraform)                            = { assigned_to = ["kv_su"] }
