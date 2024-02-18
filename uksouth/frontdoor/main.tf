@@ -81,42 +81,11 @@ locals {
       "cert_name" = "acmebot-staging-gb-bink-com"
       "origins"   = { "portal.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
     }
-    "uksouth_staging_wallet" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "wallet.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "web-bink.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_wasabi" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "wasabi.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "web-wasabi.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_cosmos" = {
-      "endpoint"         = "uksouth-staging"
-      "domain"           = "cosmos.staging.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-staging-gb-bink-com"
-      "origins"          = { "cosmos.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
     "uksouth_staging_retailer" = {
       "endpoint"  = "uksouth-staging"
       "domain"    = "retailer.staging.gb.bink.com"
       "cert_name" = "acmebot-staging-gb-bink-com"
       "origins"   = { "retailer.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_prefect" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "prefect.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "prefect.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_airbyte" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "airbyte.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "airbyte.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
     }
 
     # Sandbox Environment
@@ -168,18 +137,6 @@ locals {
     }
 
     # Production Environment
-    "uksouth_prod_stats" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "stats.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "stats.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_kratos" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "service-api.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "kratos.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
     "uksouth_prod_bpl" = {
       "endpoint"         = "uksouth-prod"
       "domain"           = "bpl.gb.bink.com"
@@ -205,36 +162,6 @@ locals {
       "domain"    = "tableau.gb.bink.com"
       "cert_name" = "acmebot-gb-bink-com"
       "origins"   = { "tableau.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_airbyte" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "airbyte.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "airbyte.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_prefect" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "prefect.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "prefect.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_audit" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "audit.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "audit.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_asset_register" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "asset-register.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "asset-register.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-    "uksouth_prod_bridge" = {
-      "endpoint"  = "uksouth-prod"
-      "domain"    = "bridge.gb.bink.com"
-      "cert_name" = "acmebot-gb-bink-com"
-      "origins"   = { "bridge.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
     }
     "uksouth_prod_docs" = {
       "endpoint"  = "uksouth-prod"
