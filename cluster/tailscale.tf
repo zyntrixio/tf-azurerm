@@ -24,6 +24,19 @@ resource "azurerm_network_security_group" "tailscale" {
   resource_group_name = azurerm_resource_group.i.name
 
   security_rule {
+    name                       = "BlockEverything"
+    description                = "Default Block All Rule"
+    access                     = "Deny"
+    priority                   = 4096
+    direction                  = "Inbound"
+    protocol                   = "*"
+    source_address_prefix      = "*"
+    source_port_range          = "*"
+    destination_address_prefix = "*"
+    destination_port_range     = "*"
+  }
+
+  security_rule {
     name                         = "tailscale"
     priority                     = 100
     direction                    = "Inbound"
@@ -32,7 +45,7 @@ resource "azurerm_network_security_group" "tailscale" {
     source_port_range            = "*"
     destination_port_range       = "41641"
     source_address_prefix        = "*"
-    destination_address_prefixes = [azurerm_network_interface.tailscale.private_ip_address, azurerm_public_ip.tailscale.ip_address]
+    destination_address_prefixes = [azurerm_public_ip.tailscale.ip_address]
   }
 }
 

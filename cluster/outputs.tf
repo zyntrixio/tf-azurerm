@@ -27,13 +27,22 @@ locals {
   nextdns_redis_optional = var.redis.enabled ? {
     (azurerm_redis_cache.i[0].hostname) : cidrhost(one(azurerm_subnet.redis.address_prefixes), 4),
   } : {}
+  nextdns_cloudamqp_optional = var.cloudamqp.enabled ? {
+    (cloudamqp_instance.i[0].host) : cidrhost(one(azurerm_subnet.cloudamqp.address_prefixes), 4),
+  } : {}
+  nextdns_grafana_optional = azurerm_resource_group.i.name == "uksouth-prod" ? {
+    "uksouth-grafana-h7f6hnafbwgeg3a0.suk.grafana.azure.com" : cidrhost(one(azurerm_subnet.grafana.address_prefixes), 4),
+  } : {}
 }
 
 output "nextdns" {
-  value = merge(local.nextdns_redis_optional, {
-    (azurerm_kubernetes_cluster.i.fqdn) : cidrhost(one(azurerm_subnet.kube_controller.address_prefixes), 4),
-    (azurerm_postgresql_flexible_server.i.fqdn) : cidrhost(one(azurerm_subnet.postgres.address_prefixes), 4),
-    "${var.common.name}.${azurerm_resource_group.i.location}.bink.sh" : cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)
+  value = merge(
+    local.nextdns_redis_optional,
+    local.nextdns_cloudamqp_optional,
+    local.nextdns_grafana_optional,
+    { (azurerm_kubernetes_cluster.i.fqdn) : cidrhost(one(azurerm_subnet.kube_controller.address_prefixes), 4),
+      (azurerm_postgresql_flexible_server.i.fqdn) : cidrhost(one(azurerm_subnet.postgres.address_prefixes), 4),
+      "${var.common.name}.${azurerm_resource_group.i.location}.bink.sh" : cidrhost(cidrsubnet(var.common.cidr, 1, 0), 32766)
   })
 }
 
