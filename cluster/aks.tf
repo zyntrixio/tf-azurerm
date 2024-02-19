@@ -66,7 +66,7 @@ resource "azurerm_kubernetes_cluster" "i" {
     os_sku                      = var.kube.pool_os_sku
     vnet_subnet_id              = azurerm_subnet.kube_nodes.id
     temporary_name_for_rotation = "temp"
-    max_pods                    = 250
+    max_pods                    = var.kube.pool_max_pods
   }
 
   api_server_access_profile {
@@ -140,7 +140,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "i" {
   enable_auto_scaling = each.value.enable_auto_scaling
   max_count           = each.value.max_count
   min_count           = each.value.min_count
-  max_pods            = 250
+  max_pods            = each.value.max_pods
 
   lifecycle {
     ignore_changes = [eviction_policy]

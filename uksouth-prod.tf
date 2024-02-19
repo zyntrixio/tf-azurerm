@@ -67,9 +67,7 @@ module "uksouth_prod" {
     automatic_channel_upgrade = "patch"
     pool_vm_size              = "Standard_D4ads_v5"
     ebpf_enabled              = true
-    pool_os_disk_size_gb      = 128
     pool_min_count            = 2
-    pool_max_count            = 20
     additional_node_pools = {
       spot = { vm_size = "Standard_D4ads_v5" }
       bpl = {
