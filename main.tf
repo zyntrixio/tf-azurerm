@@ -113,9 +113,7 @@ module "nextdns" {
   source = "./nextdns"
   rewrites = merge(
     module.uksouth_ait.nextdns,
-    module.uksouth_dev.nextdns,
     module.uksouth_prod.nextdns,
-    module.uksouth_sandbox.nextdns,
     module.uksouth_staging.nextdns,
     module.uksouth_lloyds.nextdns,
     module.uksouth_retail.nextdns,
@@ -164,9 +162,7 @@ module "uksouth_grafana" {
   workspace_integrations = [
     module.uksouth_retail.prometheus,
     module.uksouth_lloyds.prometheus,
-    module.uksouth_sandbox.prometheus,
     module.uksouth_ait.prometheus,
-    module.uksouth_dev.prometheus,
     module.uksouth_staging.prometheus,
     module.uksouth_prod.prometheus,
   ]
@@ -175,12 +171,10 @@ module "uksouth_grafana" {
     editors = [local.entra_groups["Backend"], local.entra_groups["Business Analysis"]]
     readers = [local.entra_groups["All Users"]]
     subscriptions = {
-      "uksouth_tools"   = "0add5c8e-50a6-4821-be0f-7a47c879b009"
-      "uksouth_dev"     = "6a36a6fd-e97c-42f2-88ff-2484d8165f53"
+      "uksouth_core"    = "0add5c8e-50a6-4821-be0f-7a47c879b009"
       "uksouth_ait"     = "0b92124d-e5fe-4c9a-a898-1fdf02502e01"
       "uksouth_staging" = "e28b2912-1f6d-4ac7-9cd7-443d73876e10"
       "uksouth_sandbox" = "64678f82-1a1b-4096-b7e9-41b1bdcdc024"
-      "uksouth_perf"    = "c49c2fde-9e7d-41c6-ac61-f85f9fa51416"
       "uksouth_prod"    = "42706d13-8023-4b0c-b98a-1a562cb9ac40"
     }
   }
@@ -209,12 +203,10 @@ module "uksouth_loganalytics" {
 module "uksouth_subscription" {
   source = "./uksouth/subscription"
   subscription_id = {
-    "uksouth_tools"   = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009"
-    "uksouth_dev"     = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53"
+    "uksouth_core"    = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009"
     "uksouth_ait"     = "/subscriptions/0b92124d-e5fe-4c9a-a898-1fdf02502e01"
     "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10"
     "uksouth_sandbox" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024"
-    "uksouth_perf"    = "/subscriptions/c49c2fde-9e7d-41c6-ac61-f85f9fa51416"
     "uksouth_prod"    = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40"
   }
   users = {

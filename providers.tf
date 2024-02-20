@@ -27,15 +27,6 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias           = "uksouth_development"
-  subscription_id = "6a36a6fd-e97c-42f2-88ff-2484d8165f53"
-  client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
-  client_secret   = var.azurerm_terraform_client_id
-  tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"
-  features {}
-}
-
-provider "azurerm" {
   alias           = "uksouth_staging"
   subscription_id = "e28b2912-1f6d-4ac7-9cd7-443d73876e10"
   client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
@@ -56,15 +47,6 @@ provider "azurerm" {
 provider "azurerm" {
   alias           = "uksouth_sandbox"
   subscription_id = "64678f82-1a1b-4096-b7e9-41b1bdcdc024"
-  client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
-  client_secret   = var.azurerm_terraform_client_id
-  tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"
-  features {}
-}
-
-provider "azurerm" {
-  alias           = "uksouth_performance"
-  subscription_id = "c49c2fde-9e7d-41c6-ac61-f85f9fa51416"
   client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
   client_secret   = var.azurerm_terraform_client_id
   tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"

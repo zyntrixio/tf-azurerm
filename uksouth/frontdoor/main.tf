@@ -11,36 +11,13 @@ locals {
   # The below list should be dynamically generated, but alas, this was easier given the
   # time constaints
   private_link_ids = {
-    "uksouth_dev"     = "/subscriptions/6a36a6fd-e97c-42f2-88ff-2484d8165f53/resourceGroups/uksouth-dev-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-dev"
     "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
-    "uksouth_sandbox" = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-sandbox-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-sandbox"
     "uksouth_lloyds"  = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-lloyds-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-lloyds"
     "uksouth_retail"  = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-retail-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-retail"
     "uksouth_prod"    = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
   }
 
   origin_groups = {
-    # Dev Environment
-    "uksouth_dev_api" = {
-      "endpoint"         = "uksouth-dev"
-      "domain"           = "api.dev.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-dev-gb-bink-com"
-      "origins"          = { "api.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_bpl" = {
-      "endpoint"         = "uksouth-dev"
-      "domain"           = "bpl.dev.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-dev-gb-bink-com"
-      "origins"          = { "bpl.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
-    "uksouth_dev_rewards" = {
-      "endpoint"  = "uksouth-dev"
-      "domain"    = "rewards.dev.gb.bink.com"
-      "cert_name" = "acmebot-dev-gb-bink-com"
-      "origins"   = { "rewards.dev.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_dev } }
-    }
     # Staging Envrionment
     "uksouth_staging_api" = {
       "endpoint"         = "uksouth-staging"
@@ -86,20 +63,6 @@ locals {
       "domain"    = "retailer.staging.gb.bink.com"
       "cert_name" = "acmebot-staging-gb-bink-com"
       "origins"   = { "retailer.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-
-    # Sandbox Environment
-    "uksouth_sandbox_api" = {
-      "endpoint"  = "uksouth-sandbox",
-      "domain"    = "api.sandbox.gb.bink.com"
-      "cert_name" = "acmebot-sandbox-gb-bink-com"
-      "origins"   = { "api.sandbox.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_sandbox } }
-    }
-    "uksouth_sandbox_retailer" = {
-      "endpoint"  = "uksouth-sandbox",
-      "domain"    = "retailer.sandbox.gb.bink.com"
-      "cert_name" = "acmebot-sandbox-gb-bink-com"
-      "origins"   = { "retailer.sandbox.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_sandbox } }
     }
 
     # Lloyds Environment
@@ -212,7 +175,6 @@ locals {
 
   kv_certs = toset([
     "acmebot-gb-bink-com",
-    "acmebot-dev-gb-bink-com",
     "acmebot-staging-gb-bink-com",
     "acmebot-sandbox-gb-bink-com",
     "acmebot-lloyds-gb-bink-com",
