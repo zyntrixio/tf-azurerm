@@ -5,6 +5,7 @@ locals {
     image-reflector-controller = { namespaces = ["flux-system"], assigned_to = [] }
     nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro", "sftp_rw"] }
     pytest                     = { namespaces = [], assigned_to = ["kv_ro"] }
+    snowboard                  = { namespaces = ["datawarehouse"], assigned_to = ["kv_ro"]}
   }
   identities = merge(local.default_identities, var.managed_identities)
   identity_namespace_map = merge(([
