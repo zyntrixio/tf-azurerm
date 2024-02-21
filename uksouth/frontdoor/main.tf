@@ -239,12 +239,6 @@ resource "azurerm_key_vault" "i" {
   sku_name                      = var.common.key_vault.sku_name
   tenant_id                     = data.azurerm_client_config.i.tenant_id
   public_network_access_enabled = true
-
-  network_acls {
-    default_action = "Deny"
-    bypass         = "AzureServices"
-    ip_rules       = concat(var.common.key_vault.admin_ips, local.acmebot_ips)
-  }
 }
 
 resource "azurerm_key_vault_access_policy" "i" {
