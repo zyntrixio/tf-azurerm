@@ -30,6 +30,7 @@ module "uksouth_prod" {
     (local.entra_users["njames@bink.com"].object_id)      = { assigned_to = ["kv_su"] }
     (local.entra_users["kaziz@bink.com"].object_id)       = { assigned_to = ["kv_ro"] }
     (local.entra_users["ml@bink.com"].object_id)          = { assigned_to = ["rg", "aks_rw", "st_rw"] }
+    (local.entra_users["cl@bink.com"].object_id)          = { assigned_to = ["rg", "aks_rw", "st_rw"] }
     (local.entra_users["fmilani@bink.com"].object_id)     = { assigned_to = ["aks_rw"] }
     (local.entra_users["lhamilton@bink.com"].object_id)   = { assigned_to = ["aks_rw"] }
     (local.entra_users["cgouws@bink.com"].object_id)      = { assigned_to = ["aks_rw"] }
