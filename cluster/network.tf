@@ -3,6 +3,13 @@ resource "azurerm_virtual_network" "i" {
   location            = azurerm_resource_group.i.location
   resource_group_name = azurerm_resource_group.i.name
   address_space       = [var.common.cidr]
+
+  dynamic "encryption" {
+    for_each = var.common.encryption ? [1] : []
+    content {
+      enforcement = "AllowUnencrypted"
+    }
+  }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "vnet" {

@@ -5,9 +5,10 @@ module "uksouth_ait" {
     azurerm.core = azurerm
   }
   common = {
-    name     = "ait"
-    location = "uksouth"
-    cidr     = "10.61.0.0/16"
+    name       = "ait"
+    location   = "uksouth"
+    cidr       = "10.61.0.0/16"
+    encryption = true
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id

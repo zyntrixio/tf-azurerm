@@ -1,8 +1,9 @@
 variable "common" {
   type = object({
-    name     = string
-    location = string
-    cidr     = string
+    name       = string
+    location   = string
+    cidr       = string
+    encryption = optional(bool, false)
   })
 }
 

@@ -5,9 +5,10 @@ module "uksouth_staging" {
     azurerm.core = azurerm
   }
   common = {
-    name     = "staging"
-    location = "uksouth"
-    cidr     = "10.31.0.0/16"
+    name       = "staging"
+    location   = "uksouth"
+    cidr       = "10.31.0.0/16"
+    encryption = true
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
