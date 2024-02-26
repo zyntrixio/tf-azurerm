@@ -8,7 +8,6 @@ module "uksouth_retail" {
     name       = "retail"
     location   = "uksouth"
     cidr       = "10.21.0.0/16"
-    encryption = true
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
@@ -75,7 +74,6 @@ module "uksouth_lloyds" {
     name       = "lloyds"
     location   = "uksouth"
     cidr       = "10.23.0.0/16"
-    encryption = true
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
