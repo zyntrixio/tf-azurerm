@@ -5,9 +5,9 @@ module "uksouth_retail" {
     azurerm.core = azurerm
   }
   common = {
-    name       = "retail"
-    location   = "uksouth"
-    cidr       = "10.21.0.0/16"
+    name     = "retail"
+    location = "uksouth"
+    cidr     = "10.21.0.0/16"
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
@@ -71,9 +71,9 @@ module "uksouth_lloyds" {
     azurerm.core = azurerm
   }
   common = {
-    name       = "lloyds"
-    location   = "uksouth"
-    cidr       = "10.23.0.0/16"
+    name     = "lloyds"
+    location = "uksouth"
+    cidr     = "10.23.0.0/16"
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
