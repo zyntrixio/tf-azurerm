@@ -58,10 +58,7 @@ module "uksouth_sandbox" {
     "metis"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     "midas"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
   }
-  kube = {
-    additional_node_pools = { spot = {} }
-    ebpf_enabled          = false
-  }
+  kube = { additional_node_pools = { spot = {} } }
   cloudamqp = {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
@@ -142,10 +139,7 @@ module "uksouth_retail" {
     "metis"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     "midas"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
   }
-  kube = {
-    additional_node_pools = { spot = {} }
-    ebpf_enabled          = false
-  }
+  kube = { additional_node_pools = { spot = {} } }
   cloudamqp = {
     enabled = true
     vpc_id  = module.uksouth_cloudamqp.vpc.id
