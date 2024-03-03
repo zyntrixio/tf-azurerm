@@ -102,6 +102,12 @@ resource "azurerm_postgresql_flexible_server_configuration" "extensions" {
   value     = "UUID-OSSP,PG_TRGM"
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "logging" {
+  name      = "logfiles.download_enable"
+  server_id = azurerm_postgresql_flexible_server.i.id
+  value     = "ON"
+}
+
 resource "azurerm_monitor_diagnostic_setting" "pg" {
   name                       = "loganalytics"
   target_resource_id         = azurerm_postgresql_flexible_server.i.id

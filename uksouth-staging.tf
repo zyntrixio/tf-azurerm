@@ -9,12 +9,49 @@ module "uksouth_staging" {
     location = "uksouth"
     cidr     = "10.31.0.0/16"
   }
+  frontdoor = {
+    profile = module.uksouth_frontdoor.profile
+    domains = {
+      "api.staging.gb.bink.com" = {
+        origin_fqdn = "api.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "bpl.staging.gb.bink.com" = {
+        origin_fqdn = "bpl.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "rewards.staging.gb.bink.com" = {
+        origin_fqdn = "rewards.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "policies.staging.gb.bink.com" = {
+        origin_fqdn = "policies.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "docs.staging.gb.bink.com" = {
+        origin_fqdn = "docs.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "portal.staging.gb.bink.com" = {
+        origin_fqdn = "portal.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+      "retailer.staging.gb.bink.com" = {
+        origin_fqdn = "retailer.staging.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+      }
+    }
+  }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
     principal_id = module.uksouth_backups.principal_id
     policies     = module.uksouth_backups.policies
   }
-  dns = { id = module.uksouth_dns.bink_sh_id }
+  dns = {
+    id                  = module.uksouth_dns.bink_sh_id
+    zone_name           = module.uksouth_dns.bink_com_zone
+    resource_group_name = module.uksouth_dns.resource_group_name
+  }
   acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {
     ipv4 = concat(local.secure_origins)

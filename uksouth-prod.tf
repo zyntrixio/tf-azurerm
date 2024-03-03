@@ -16,7 +16,11 @@ module "uksouth_prod" {
     principal_id = module.uksouth_backups.principal_id
     policies     = module.uksouth_backups.policies
   }
-  dns = { id = module.uksouth_dns.bink_sh_id }
+  dns = {
+    id                  = module.uksouth_dns.bink_sh_id
+    zone_name           = module.uksouth_dns.bink_com_zone
+    resource_group_name = module.uksouth_dns.resource_group_name
+  }
   acr = { id = module.uksouth_core.acr_id }
   allowed_hosts = {
     ipv4 = concat(local.secure_origins)

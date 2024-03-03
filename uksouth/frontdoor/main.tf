@@ -8,98 +8,11 @@ terraform {
 }
 
 locals {
-  # The below list should be dynamically generated, but alas, this was easier given the
-  # time constaints
   private_link_ids = {
-    "uksouth_staging" = "/subscriptions/e28b2912-1f6d-4ac7-9cd7-443d73876e10/resourceGroups/uksouth-staging-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-staging"
-    "uksouth_lloyds"  = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-lloyds-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-lloyds"
-    "uksouth_retail"  = "/subscriptions/64678f82-1a1b-4096-b7e9-41b1bdcdc024/resourceGroups/uksouth-retail-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-retail"
-    "uksouth_prod"    = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
+    "uksouth_prod" = "/subscriptions/42706d13-8023-4b0c-b98a-1a562cb9ac40/resourceGroups/uksouth-prod-nodes/providers/Microsoft.Network/privateLinkServices/uksouth-prod"
   }
 
   origin_groups = {
-    # Staging Envrionment
-    "uksouth_staging_api" = {
-      "endpoint"         = "uksouth-staging"
-      "domain"           = "api.staging.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-staging-gb-bink-com"
-      "origins"          = { "api.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_bpl" = {
-      "endpoint"         = "uksouth-staging"
-      "domain"           = "bpl.staging.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-staging-gb-bink-com"
-      "origins"          = { "bpl.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_rewards" = {
-      "endpoint"         = "uksouth-staging"
-      "domain"           = "rewards.staging.gb.bink.com"
-      "cached_endpoints" = ["/content/*"]
-      "cert_name"        = "acmebot-staging-gb-bink-com"
-      "origins"          = { "rewards.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_policies" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "policies.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "policies.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_docs" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "docs.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "docs.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_portal" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "portal.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "portal.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-    "uksouth_staging_retailer" = {
-      "endpoint"  = "uksouth-staging"
-      "domain"    = "retailer.staging.gb.bink.com"
-      "cert_name" = "acmebot-staging-gb-bink-com"
-      "origins"   = { "retailer.staging.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_staging } }
-    }
-
-    # Lloyds Environment
-    "uksouth_lloyds_api" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "api.lloyds.gb.bink.com"
-      "cert_name" = "acmebot-lloyds-gb-bink-com"
-      "origins"   = { "api.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
-    "uksouth_lloyds_docs" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "docs.lloyds.gb.bink.com"
-      "cert_name" = "acmebot-lloyds-gb-bink-com"
-      "origins"   = { "docs.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
-    }
-
-    # Retail Environment
-    "uksouth_retail_api" = {
-      "endpoint"  = "uksouth-retail"
-      "domain"    = "api.retail.gb.bink.com"
-      "cert_name" = "acmebot-retail-gb-bink-com"
-      "origins"   = { "api.retail.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_retail } }
-    }
-    "uksouth_retail_docs" = {
-      "endpoint"  = "uksouth-retail"
-      "domain"    = "docs.retail.gb.bink.com"
-      "cert_name" = "acmebot-retail-gb-bink-com"
-      "origins"   = { "docs.retail.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_retail } }
-    }
-    "uksouth_retail_retailer" = {
-      "endpoint"  = "uksouth-retail"
-      "domain"    = "retailer.retail.gb.bink.com"
-      "cert_name" = "acmebot-retail-gb-bink-com"
-      "origins"   = { "retailer.retail.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_retail } }
-    }
-
-    # Production Environment
     "uksouth_prod_bpl" = {
       "endpoint"         = "uksouth-prod"
       "domain"           = "bpl.gb.bink.com"
@@ -150,14 +63,6 @@ locals {
       "domain"    = "retailer.gb.bink.com"
       "cert_name" = "acmebot-gb-bink-com"
       "origins"   = { "retailer.prod.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_prod } }
-    }
-
-    # DEPRECATED: Endpoints to be removed after new naming convention is decided
-    "uksouth_sandbox_sit" = {
-      "endpoint"  = "uksouth-sandbox"
-      "domain"    = "sit.sandbox.gb.bink.com"
-      "cert_name" = "acmebot-sandbox-gb-bink-com"
-      "origins"   = { "api.lloyds.uksouth.bink.sh" = { "id" = local.private_link_ids.uksouth_lloyds } }
     }
   }
 
@@ -309,7 +214,6 @@ resource "azurerm_monitor_diagnostic_setting" "afd" {
   }
 }
 
-# TODO: Figure out a use case for this and implement in a logical way
 resource "azurerm_cdn_frontdoor_rule_set" "standard" {
   name                     = "standard"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.i.id
@@ -427,4 +331,12 @@ resource "azurerm_cdn_frontdoor_route" "cache" {
 
   cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.i[each.key].id]
   link_to_default_domain          = false
+}
+
+output "profile" {
+  value = azurerm_cdn_frontdoor_profile.i.id
+}
+
+output "certificates" {
+  value = { for k, v in azurerm_cdn_frontdoor_secret.i : k => v.id }
 }

@@ -14,6 +14,17 @@ variable "allowed_hosts" {
   })
 }
 
+variable "frontdoor" {
+  type = object({
+    profile = optional(string, "")
+    domains = optional(map(object({
+      certificate = string
+      origin_fqdn = string
+    })), {})
+  })
+  default = {}
+}
+
 variable "grafana_id" {
   type    = string
   default = "/subscriptions/0add5c8e-50a6-4821-be0f-7a47c879b009/resourceGroups/uksouth-grafana/providers/Microsoft.Dashboard/grafana/uksouth-grafana"
@@ -81,7 +92,9 @@ variable "loganalytics" {
 
 variable "dns" {
   type = object({
-    id = string
+    id                  = string
+    zone_name           = string
+    resource_group_name = string
   })
 }
 

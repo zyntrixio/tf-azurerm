@@ -50,7 +50,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.92.0"
+      version = "3.93.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -121,6 +121,7 @@ module "nextdns" {
     module.uksouth_staging.nextdns,
     module.uksouth_lloyds.nextdns,
     module.uksouth_retail.nextdns,
+    module.uksouth_sandbox.nextdns,
   )
 }
 

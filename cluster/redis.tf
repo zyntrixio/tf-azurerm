@@ -110,16 +110,3 @@ resource "azurerm_role_assignment" "rd_iam" {
   role_definition_name = "Contributor"
   principal_id         = each.key
 }
-
-resource "azurerm_monitor_diagnostic_setting" "rd" {
-  count = var.redis.enabled ? 1 : 0
-
-  name                       = "loganalytics"
-  target_resource_id         = azurerm_redis_cache.i[0].id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.i.id
-
-  metric {
-    category = "AllMetrics"
-    enabled  = false
-  }
-}
