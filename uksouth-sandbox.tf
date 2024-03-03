@@ -138,6 +138,7 @@ module "uksouth_retail" {
     "hermes"   = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     "metis"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
     "midas"    = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
+    "zephyrus" = { assigned_to = ["kv_ro"], namespaces = ["olympus"] }
   }
   kube = { additional_node_pools = { spot = {} } }
   cloudamqp = {
