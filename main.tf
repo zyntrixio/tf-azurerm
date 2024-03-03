@@ -119,7 +119,6 @@ module "nextdns" {
     module.uksouth_ait.nextdns,
     module.uksouth_prod.nextdns,
     module.uksouth_staging.nextdns,
-    module.uksouth_lloyds.nextdns,
     module.uksouth_retail.nextdns,
     module.uksouth_sandbox.nextdns,
   )
@@ -166,7 +165,7 @@ module "uksouth_grafana" {
   }
   workspace_integrations = [
     module.uksouth_retail.prometheus,
-    module.uksouth_lloyds.prometheus,
+    module.uksouth_sandbox.prometheus,
     module.uksouth_ait.prometheus,
     module.uksouth_staging.prometheus,
     module.uksouth_prod.prometheus,
