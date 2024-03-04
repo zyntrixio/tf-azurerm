@@ -599,6 +599,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "api.podifi.com",
       "rhianna.atreemo.uk",
       "sandbox.punchh.com",
+      "dashboard.punchh.com",
     ]
     protocol {
       port = "80"
