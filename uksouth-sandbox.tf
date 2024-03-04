@@ -17,11 +17,11 @@ module "uksouth_sandbox" {
         certificate = module.uksouth_frontdoor.certificates["acmebot-sandbox-gb-bink-com"]
       }
       "sit.sandbox.gb.bink.com" = { // DEPRECATED: To be removed when lloyds move to `api.sandbox.gb.bink.com`
-        origin_fqdn = "sit.sandbox.uksouth.bink.sh"
+        origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-sandbox-gb-bink-com"]
       }
       "api.lloyds.gb.bink.com" = { // DEPRECATED: To be removed when lloyds move to `api.sandbox.gb.bink.com`
-        origin_fqdn = "api.lloyds.uksouth.bink.sh"
+        origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-lloyds-gb-bink-com"]
       }
     }
