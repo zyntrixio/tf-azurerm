@@ -25,11 +25,11 @@ module "uksouth_sandbox" {
         certificate = module.uksouth_frontdoor.certificates["acmebot-lloyds-gb-bink-com"]
       }
       "api.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
-        origin_fqdn = "api.retail.uksouth.bink.sh"
+        origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
       }
       "retailer.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
-        origin_fqdn = "retailer.retail.uksouth.bink.sh"
+        origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
       }
     }
