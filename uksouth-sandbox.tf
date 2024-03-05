@@ -24,6 +24,14 @@ module "uksouth_sandbox" {
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-lloyds-gb-bink-com"]
       }
+      "api.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
+        origin_fqdn = "api.retail.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
+      }
+      "retailer.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
+        origin_fqdn = "retailer.retail.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
+      }
     }
   }
   backups = {
@@ -92,19 +100,6 @@ module "uksouth_retail" {
     name     = "retail"
     location = "uksouth"
     cidr     = "10.21.0.0/16"
-  }
-  frontdoor = {
-    profile = module.uksouth_frontdoor.profile
-    domains = {
-      "api.retail.gb.bink.com" = {
-        origin_fqdn = "api.retail.uksouth.bink.sh"
-        certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
-      }
-      "retailer.retail.gb.bink.com" = {
-        origin_fqdn = "retailer.retail.uksouth.bink.sh"
-        certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
-      }
-    }
   }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
