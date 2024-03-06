@@ -11,6 +11,43 @@ module "uksouth_prod" {
     location = "uksouth"
     cidr     = "10.11.0.0/16"
   }
+  frontdoor = {
+    profile = module.uksouth_frontdoor.profile
+    domains = {
+      "api.gb.bink.com" = {
+        origin_fqdn = "api.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "docs.gb.bink.com" = {
+        origin_fqdn = "docs.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "bpl.gb.bink.com" = {
+        origin_fqdn = "bpl.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "rewards.gb.bink.com" = {
+        origin_fqdn = "rewards.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "policies.gb.bink.com" = {
+        origin_fqdn = "policies.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "portal.gb.bink.com" = {
+        origin_fqdn = "portal.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "retailer.gb.bink.com" = {
+        origin_fqdn = "retailer.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+      "tableau.gb.bink.com" = {
+        origin_fqdn = "tableau.prod.uksouth.bink.sh"
+        certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+      }
+    }
+  }
   backups = {
     resource_id  = module.uksouth_backups.resource_id
     principal_id = module.uksouth_backups.principal_id
