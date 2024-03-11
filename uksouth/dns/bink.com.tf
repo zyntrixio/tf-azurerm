@@ -136,6 +136,7 @@ locals {
         "apple-domain-verification=jOvmiNhPlgoqmBOx",
         "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
         "status-page-domain-verification=2ymxl519fl8r",
+        "cc0b805f-3a4d-4641-8524-c6d5df008d99", // Spaceship.com Verification
       ]
       "teams" = [
         "v=spf1 include:spf.protection.outlook.com -all",
