@@ -46,54 +46,6 @@ resource "azurerm_public_ip" "v6" {
   zones               = ["1", "2", "3"]
 }
 
-resource "azurerm_dns_a_record" "apex" {
-  name                = "@"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v4.ip_address]
-}
-
-resource "azurerm_dns_aaaa_record" "apex" {
-  name                = "@"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v6.ip_address]
-}
-
-resource "azurerm_dns_a_record" "www" {
-  name                = "www"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v4.ip_address]
-}
-
-resource "azurerm_dns_aaaa_record" "www" {
-  name                = "www"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v6.ip_address]
-}
-
-resource "azurerm_dns_a_record" "rc" {
-  name                = "rc"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v4.ip_address]
-}
-
-resource "azurerm_dns_aaaa_record" "rc" {
-  name                = "rc"
-  zone_name           = var.dns.zone_name
-  resource_group_name = var.dns.resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_public_ip.v6.ip_address]
-}
-
 resource "azurerm_virtual_network" "i" {
   name                = azurerm_resource_group.i.name
   resource_group_name = azurerm_resource_group.i.name

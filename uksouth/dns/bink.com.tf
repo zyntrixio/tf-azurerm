@@ -5,17 +5,7 @@ resource "azurerm_dns_zone" "bink-com" {
 
 locals {
   bink_com = {
-    a_records = {
-      # South Africa
-      "api.za"         = "127.0.0.1",
-      "api.dev.za"     = "127.0.0.1"
-      "api.staging.za" = "127.0.0.1",
-
-      # United States
-      "api.us"         = "127.0.0.1",
-      "api.dev.us"     = "127.0.0.1",
-      "api.staging.us" = "127.0.0.1",
-    }
+    a_records = {}
     cname_records = {
       # GitHub
       "logos" = "binkhq.github.io",
@@ -173,48 +163,20 @@ locals {
   }
 }
 
-resource "azurerm_dns_caa_record" "apex" {
+resource "azurerm_dns_a_record" "apex" {
   name                = "@"
   zone_name           = azurerm_dns_zone.bink-com.name
   resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 300
-
-  record {
-    flags = 0
-    tag   = "issue"
-    value = "letsencrypt.org"
-  }
-
-  record {
-    flags = 0
-    tag   = "issue"
-    value = "sectigo.com"
-  }
-
-  record {
-    flags = 0
-    tag   = "iodef"
-    value = "mailto:devops@bink.com"
-  }
+  ttl                 = 3600
+  records             = ["63.250.43.144", "63.250.43.145"]
 }
 
-resource "azurerm_dns_caa_record" "www" {
+resource "azurerm_dns_cname_record" "www" {
   name                = "www"
   zone_name           = azurerm_dns_zone.bink-com.name
   resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 300
-
-  record {
-    flags = 0
-    tag   = "issue"
-    value = "letsencrypt.org"
-  }
-
-  record {
-    flags = 0
-    tag   = "iodef"
-    value = "mailto:devops@bink.com"
-  }
+  ttl                 = 3600
+  record              = "bink.com"
 }
 
 resource "azurerm_dns_a_record" "bink_com_a" {
