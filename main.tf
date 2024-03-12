@@ -97,18 +97,6 @@ module "uksouth_cloudamqp" {
   subnet = "192.168.1.0/24"
 }
 
-module "uksouth_website" {
-  source = "./website"
-  common = {
-    secure_origins_v4 = local.secure_origins
-    secure_origins_v6 = local.secure_origins_v6
-  }
-  dns = {
-    resource_group_name = module.uksouth_dns.resource_group_name
-    zone_name           = module.uksouth_dns.bink_com_zone
-  }
-}
-
 module "uksouth_dns" {
   source = "./uksouth/dns"
 }
