@@ -600,6 +600,8 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       "rhianna.atreemo.uk",
       "sandbox.punchh.com",
       "dashboard.punchh.com",
+      "mobileapi.punchh.com",
+      "dashboard-api.punchh.com",
     ]
     protocol {
       port = "80"
