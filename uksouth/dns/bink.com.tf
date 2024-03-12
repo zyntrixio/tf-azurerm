@@ -121,7 +121,7 @@ locals {
       "@" = [
         "atlassian-domain-verification=mqUsdFedKn6vro+U8Cacg/cxjaFFF3CWSE5Jbww0PwYRNdDs5xfJlkiluMUKZrn4",
         "google-site-verification=TkTtMyGRzTV8pXap0aQo980_lNSfYa9E2__r1kI6Djo",
-        "v=spf1 include:spf.protection.outlook.com include:mail.zendesk.com include:eu.mailgun.org include:_spf.atlassian.net include:stspg-customer.com include:spf.mailjet.com ~all",
+        "v=spf1 include:spf.protection.outlook.com include:spf.easywp.com include:eu.mailgun.org include:stspg-customer.com include:spf.mailjet.com ~all",
         "MS=ms26724008",
         "apple-domain-verification=jOvmiNhPlgoqmBOx",
         "google-site-verification=QmvtYLsc8CuTNEVdHm70WrVy5GzPJVDcwV9zxGwgelQ",
