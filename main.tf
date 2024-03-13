@@ -76,10 +76,6 @@ data "azuread_groups" "all" {
   return_all = true
 }
 
-module "golink" {
-  source = "./golink"
-}
-
 module "uksouth_core" {
   source                    = "./uksouth/core"
   loganalytics_workspace_id = module.uksouth_loganalytics.id
