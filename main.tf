@@ -45,12 +45,12 @@ terraform {
     access_key           = "bRtDCEojOLE122v5glr8g+kyxLytWMp/OSPsjqmiXr972xPOGNRwXOBFPCCze1Ge5dk+imhW+ZdKeOFahNVEFg=="
   }
 
-  required_version = ">= 1.5.4"
+  required_version = ">= 1.6.2"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.93.0"
+      version = "3.96.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
