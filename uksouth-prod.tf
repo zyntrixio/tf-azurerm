@@ -65,10 +65,9 @@ module "uksouth_prod" {
   }
   iam = {
     (local.aad_user.terraform)                            = { assigned_to = ["kv_su"] }
-    (local.entra_users["cpressland@bink.com"].object_id)  = { assigned_to = ["kv_su"] }
-    (local.entra_users["nread@bink.com"].object_id)       = { assigned_to = ["kv_su"] }
-    (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su"] }
-    (local.entra_users["njames@bink.com"].object_id)      = { assigned_to = ["kv_su"] }
+    (local.entra_users["cpressland@bink.com"].object_id)  = { assigned_to = ["kv_su", "st_rw"] }
+    (local.entra_users["nread@bink.com"].object_id)       = { assigned_to = ["kv_su", "st_rw"] }
+    (local.entra_users["tviknarajah@bink.com"].object_id) = { assigned_to = ["kv_su", "st_rw"] }
     (local.entra_users["kaziz@bink.com"].object_id)       = { assigned_to = ["kv_ro", "aks_rw"] }
     (local.entra_users["ml@bink.com"].object_id)          = { assigned_to = ["rg", "aks_rw", "st_rw"] }
     (local.entra_users["cl@bink.com"].object_id)          = { assigned_to = ["rg", "aks_rw", "st_rw"] }
