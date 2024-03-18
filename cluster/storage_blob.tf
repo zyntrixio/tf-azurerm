@@ -64,7 +64,7 @@ resource "azurerm_role_assignment" "st_iam_ro" {
   }
 
   scope                = azurerm_storage_account.i.id
-  role_definition_name = "Reader"
+  role_definition_name = "Storage Blob Data Reader"
   principal_id         = each.key
 }
 
@@ -75,7 +75,7 @@ resource "azurerm_role_assignment" "st_iam_rw" {
   }
 
   scope                = azurerm_storage_account.i.id
-  role_definition_name = "Contributor"
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = each.key
 }
 
