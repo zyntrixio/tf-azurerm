@@ -3,7 +3,7 @@ locals {
     cert-manager               = { namespaces = ["cert-manager"], assigned_to = [] }
     kv-to-kube                 = { namespaces = ["kv-to-kube"], assigned_to = ["kv_ro"] }
     image-reflector-controller = { namespaces = ["flux-system"], assigned_to = [] }
-    nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro", "sftp_rw"] }
+    nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro", "st_rw", "sftp_rw"] }
     pytest                     = { namespaces = [], assigned_to = ["kv_ro"] }
     snowboard                  = { namespaces = ["data"], assigned_to = ["kv_ro"] }
   }
