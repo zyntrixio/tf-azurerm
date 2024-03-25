@@ -76,6 +76,19 @@ data "azuread_groups" "all" {
   return_all = true
 }
 
+module "entra" {
+  source = "./entra"
+  groups = {
+    event_horizon = { description = "Access to Event Horizon Admin" }
+    hermes = { description = "Access to Hermes Admin" }
+    keyvault = { description = "Access to Azure Key Vault", roles = ["contributor", "reader"] }
+    postgres = { description = "Access to Azure PostgreSQL", roles = ["contributor", "reader"] }
+    storage = { description = "Access to Azure Storage", roles = ["contributor", "reader"] }
+    kubernetes = { description = "Access to Azure Kubernetes Service", roles = ["contributor", "reader"] }
+    log_analytics = { description = "Access to Azure Log Analytics", roles = ["contributor", "reader"] }
+  }
+}
+
 module "uksouth_core" {
   source                    = "./uksouth/core"
   loganalytics_workspace_id = module.uksouth_loganalytics.id
