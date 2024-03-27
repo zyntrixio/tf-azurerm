@@ -6,6 +6,7 @@ locals {
     nightcity                  = { namespaces = ["devops"], assigned_to = ["kv_ro", "st_rw", "sftp_rw"] }
     pytest                     = { namespaces = [], assigned_to = ["kv_ro"] }
     snowboard                  = { namespaces = ["data"], assigned_to = ["kv_ro"] }
+    nextdns-invoices           = { namespaces = ["devops"], assigned_to = ["kv_ro"] }
   }
   identities = merge(local.default_identities, var.managed_identities)
   identity_namespace_map = merge(([
