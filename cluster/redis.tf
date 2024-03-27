@@ -73,8 +73,8 @@ resource "azurerm_key_vault_secret" "rd" {
   key_vault_id = azurerm_key_vault.i.id
   content_type = "application/json"
   value = jsonencode({
-    "url_primary"          = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0",
-    "url_secondary"        = "rediss://:${azurerm_redis_cache.i[0].secondary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0",
+    "url_primary"          = "rediss://:${azurerm_redis_cache.i[0].primary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0?ssl_cert_reqs=required",
+    "url_secondary"        = "rediss://:${azurerm_redis_cache.i[0].secondary_access_key}@${azurerm_redis_cache.i[0].hostname}:${azurerm_redis_cache.i[0].ssl_port}/0?ssl_cert_reqs=required",
     "host"                 = azurerm_redis_cache.i[0].hostname
     "port"                 = tostring(azurerm_redis_cache.i[0].ssl_port)
     "access_key_primary"   = azurerm_redis_cache.i[0].primary_access_key
