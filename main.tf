@@ -80,11 +80,11 @@ module "entra" {
   source = "./entra"
   groups = {
     event_horizon = { description = "Access to Event Horizon Admin" }
-    hermes = { description = "Access to Hermes Admin" }
-    keyvault = { description = "Access to Azure Key Vault", roles = ["contributor", "reader"] }
-    postgres = { description = "Access to Azure PostgreSQL", roles = ["contributor", "reader"] }
-    storage = { description = "Access to Azure Storage", roles = ["contributor", "reader"] }
-    kubernetes = { description = "Access to Azure Kubernetes Service", roles = ["contributor", "reader"] }
+    hermes        = { description = "Access to Hermes Admin" }
+    keyvault      = { description = "Access to Azure Key Vault", roles = ["contributor", "reader"] }
+    postgres      = { description = "Access to Azure PostgreSQL", roles = ["contributor", "reader"] }
+    storage       = { description = "Access to Azure Storage", roles = ["contributor", "reader"] }
+    kubernetes    = { description = "Access to Azure Kubernetes Service", roles = ["contributor", "reader"] }
     log_analytics = { description = "Access to Azure Log Analytics", roles = ["contributor", "reader"] }
   }
 }
@@ -152,6 +152,11 @@ module "uksouth_firewall" {
   lloyds_origins   = local.lloyds_origins_v4
   production_cidrs = [local.cidrs.uksouth.aks.prod]
   aks_cidrs        = local.cidrs.uksouth.aks
+}
+
+module "uksouth_firewall_policy" {
+  source = "./firewall/policy"
+  common = {}
 }
 
 module "uksouth_grafana" {
