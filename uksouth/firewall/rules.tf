@@ -89,7 +89,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // This rule is not used according to Azure Log Analytics
     name             = "Falco"
     source_addresses = ["*"]
     target_fqdns     = ["falcosecurity.github.io"]
@@ -149,16 +149,16 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     name             = "Kubernetes"
     source_addresses = ["*"]
     target_fqdns = [
-      "storage.googleapis.com",
+      "storage.googleapis.com", // Not used according to Azure Log Analytics
       "download.docker.com",
-      "get.docker.com",
-      "discovery.etcd.io",
-      "sts.windows.net",
-      "login.windows.net",
-      "login.microsoftonline.com",
+      "get.docker.com",            // Not used according to Azure Log Analytics
+      "discovery.etcd.io",         // Not used according to Azure Log Analytics
+      "sts.windows.net",           // Not used according to Azure Log Analytics
+      "login.windows.net",         // Not used according to Azure Log Analytics
+      "login.microsoftonline.com", // Not used according to Azure Log Analytics
       "management.azure.com",
       "graph.microsoft.com",
-      "pkg.cfssl.org",
+      "pkg.cfssl.org", // Not used according to Azure Log Analytics
       "ghcr.io",
     ]
     protocol {
@@ -171,7 +171,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     source_addresses = ["*"]
     target_fqdns = [
       "global.handler.control.monitor.azure.com",
-      "*.uksouth.prometheus.monitor.azure.com",
+      "*.uksouth.prometheus.monitor.azure.com", // Not used according to Azure Log Analytics
       "*.uksouth-1.metrics.ingest.monitor.azure.com",
     ]
     protocol {
@@ -210,7 +210,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     name             = "python-pypi"
     source_addresses = ["*"]
     target_fqdns = [
-      "pypi.python.org",
+      "pypi.python.org", // Not used according to Azure Log Analytics
       "pypi.org",
       "files.pythonhosted.org",
     ]
@@ -233,7 +233,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Cloudflare"
     source_addresses = ["*"]
     target_fqdns     = ["api.cloudflare.com"]
@@ -251,7 +251,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used anymore
     name             = "Linkerd"
     source_addresses = ["*"]
     target_fqdns = [
@@ -278,7 +278,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Bookstack"
     source_addresses = ["*"]
     target_fqdns     = ["graph.windows.net"]
@@ -287,7 +287,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Atlassian"
     source_addresses = ["*"]
     target_fqdns = [
@@ -306,19 +306,19 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     target_fqdns = [
       "*.ods.opinsights.azure.com",
       "*.oms.opinsights.azure.com",
-      "*.blob.core.windows.net",
-      "*.azure-automation.net",
-      "*.vault.azure.net",
-      "www.microsoft.com", # For getting RSS feeds
+      "*.blob.core.windows.net", // Not used according to Azure Log Analytics
+      "*.azure-automation.net",  // Not used according to Azure Log Analytics
+      "*.vault.azure.net",       // Not used according to Azure Log Analytics
+      "www.microsoft.com",       # For getting RSS feeds
       "api.loganalytics.io",
-      "aka.ms", # For AzCopy
+      "aka.ms", // Not used according to Azure Log Analytics
     ]
     protocol {
       port = "443"
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Healthchecks.io"
     source_addresses = ["*"]
     target_fqdns = [
@@ -336,11 +336,11 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     target_fqdns = [
       "*.tableau.com",
       "*.tableausoftware.com",
-      "*.mapbox.com",
-      "tableau.internal.cloudapp.net",
+      "*.mapbox.com",                  // not used according to Azure Log Analytics
+      "tableau.internal.cloudapp.net", // not used according to Azure Log Analytics
       "licensing.tableau.com",
       "apt.postgresql.org",
-      "www.postgresql.org",
+      "www.postgresql.org", // not used according to Azure Log Analytics
       "nginx.org",
     ]
     protocol {
@@ -348,7 +348,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Grafana"
     source_addresses = ["*"]
     target_fqdns = [
@@ -360,7 +360,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "ClamAV"
     source_addresses = ["*"]
     target_fqdns     = ["*.clamav.net"]
@@ -387,7 +387,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Google Cloud HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
@@ -399,7 +399,7 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
-  rule {
+  rule { // Not used according to Azure Log Analytics
     name             = "Grafana Cloud HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
@@ -416,9 +416,9 @@ resource "azurerm_firewall_application_rule_collection" "software" {
     target_fqdns = [
       "bink.eu.auth0.com",
       "bink-prod.uk.auth0.com",
-      "auth.bink.com",            # currently used by the non-prod Auth0 tenant. deprecated.
-      "auth.nonprod.gb.bink.com", # to be used by the non-prod Auth0 tenant.
-      "auth.gb.bink.com",         # to be used by the prod Auth0 tenant.
+      "auth.bink.com",            // not used according to Azure Log Analytics
+      "auth.nonprod.gb.bink.com", // not used according to Azure Log Analytics
+      "auth.gb.bink.com",         // not used according to Azure Log Analytics
     ]
     protocol {
       port = "443"
@@ -434,7 +434,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
   priority            = 200
   action              = "Allow"
 
-  rule {
+  rule { // not used according to Azure Log Analytics
     name             = "Bink HTTPS"
     source_addresses = ["*"]
     target_fqdns = [
@@ -468,7 +468,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       type = "Https"
     }
   }
-  rule {
+  rule { // not used according to Azure Log Analytics
     name             = "Hermes"
     source_addresses = ["*"]
     target_fqdns = [
@@ -486,17 +486,17 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     name             = "Metis"
     source_addresses = ["*"]
     target_fqdns = [
-      "ws.mastercard.com",
-      "api.qa.americanexpress.com",
-      "api.dev2s.americanexpress.com",
-      "api.qa2s.americanexpress.com",
-      "apigateway.americanexpress.com",
+      "ws.mastercard.com",              // not used according to Azure Log Analytics
+      "api.qa.americanexpress.com",     // not used according to Azure Log Analytics
+      "api.dev2s.americanexpress.com",  // not used according to Azure Log Analytics
+      "api.qa2s.americanexpress.com",   // not used according to Azure Log Analytics
+      "apigateway.americanexpress.com", // not used according to Azure Log Analytics
       "apigateway2s.americanexpress.com",
-      "api.americanexpress.com",
+      "api.americanexpress.com", // not used according to Azure Log Analytics
       "core.spreedly.com",
-      "status.spreedly.com",
+      "status.spreedly.com", // not used according to Azure Log Analytics
       "api.visa.com",
-      "*.api.visa.com",
+      "*.api.visa.com", // not used according to Azure Log Analytics
     ]
     protocol {
       port = "443"
@@ -507,90 +507,90 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     name             = "Midas"
     source_addresses = ["*"]
     target_fqdns = [
-      "wasabiuat.wasabiworld.co.uk",
-      "account.theclub.macdonaldhotels.co.uk",
-      "accounts.eurostar.com",
-      "api.avios.com",
-      "api.loyalty.marksandspencer.services",
-      "api.bink.membership.coop.co.uk",
-      "api.membership.coop.co.uk",
-      "api.prod.eurostar.com",
-      "api.services.qantasloyalty.com",
-      "api.wyevalegardencentres.co.uk",
-      "assistive.airasia.com",
-      "auth.morrisons.com",
-      "beta.addisonlee.com",
-      "bookings.priorityguestrewards.com",
-      "customergateway-uat.iceland.co.uk",
-      "customergateway.iceland.co.uk",
-      "cws.givex.com",
-      "identity.membership.coop.co.uk",
-      "login.microsoftonline.com",
-      "loyalty.harveynichols.com",
-      "*.harveynichols.com",
-      "order.gbk.co.uk",
-      "prd-east.webapi.enterprise.co.uk",
-      "prd.b6prdeng.net",
-      "purehmv.com",
-      "rewards.api.mygravity.co",
-      "rewards.heathrow.com",
-      "secure.accorhotels.com",
-      "secure.avis.co.uk",
-      "secure.harrods.com",
-      "secure.tesco.com",
-      "ssl.omnihotels.com",
-      "starrewardapps.valero.com",
-      "www.avis.co.uk",
-      "www.beefeatergrillrewardclub.co.uk",
-      "www.bigbrandtreasure.com",
-      "www.boostjuicebars.co.uk",
-      "www.boots.com",
-      "www.brewersfayrebonusclub.co.uk",
-      "www.clubcarlson.com",
-      "www.coffee1.co.uk",
-      "www.debenhams.com",
-      "www.delta.com",
-      "www.discoveryloyalty.com",
-      "www.esprit.co.uk",
-      "www.flytap.com",
-      "www.foyalty.co.uk",
-      "www.harrods.com",
-      "www.hertz.co.uk",
-      "www.hollandandbarrett.com",
-      "www.houseoffraser.co.uk",
-      "www.hyatt.com",
-      "www.loylap.com",
-      "www.malaysiaairlines.com",
-      "www.mandco.com",
-      "www.marksandspencer.com",
-      "www.maximiles.co.uk",
-      "www.miles-and-more.com",
-      "www.paperchase.com",
-      "www.priorityguestrewards.com",
-      "www.quidco.com",
-      "www.showcasecinemas.co.uk",
-      "www.singaporeair.com",
-      "www.superdrug.com",
-      "www.tastyrewards.co.uk",
-      "www.thaiairways.com",
-      "www.thebodyshop.com",
-      "www.theperfumeshop.com",
-      "www.tkmaxx.com",
-      "www.uk.jal.co.jp",
-      "www.virginatlantic.com",
-      "www.waterstones.com",
-      "www.wyevalegardencentres.co.uk",
-      "www121.jal.co.jp",
-      "www2.hm.com",
-      "wwws-uk1.givex.com",
-      "wwws-uk2.givex.com",
-      "virtserver.swaggerhub.com",
+      "wasabiuat.wasabiworld.co.uk",           // not used according to Azure Log Analytics
+      "account.theclub.macdonaldhotels.co.uk", // not used according to Azure Log Analytics
+      "accounts.eurostar.com",                 // not used according to Azure Log Analytics
+      "api.avios.com",                         // not used according to Azure Log Analytics
+      "api.loyalty.marksandspencer.services",  // not used according to Azure Log Analytics
+      "api.bink.membership.coop.co.uk",        // not used according to Azure Log Analytics
+      "api.membership.coop.co.uk",             // not used according to Azure Log Analytics
+      "api.prod.eurostar.com",                 // not used according to Azure Log Analytics
+      "api.services.qantasloyalty.com",        // not used according to Azure Log Analytics
+      "api.wyevalegardencentres.co.uk",        // not used according to Azure Log Analytics
+      "assistive.airasia.com",                 // not used according to Azure Log Analytics
+      "auth.morrisons.com",                    // not used according to Azure Log Analytics
+      "beta.addisonlee.com",                   // not used according to Azure Log Analytics
+      "bookings.priorityguestrewards.com",     // not used according to Azure Log Analytics
+      "customergateway-uat.iceland.co.uk",     // not used according to Azure Log Analytics
+      "customergateway.iceland.co.uk",         // not used according to Azure Log Analytics
+      "cws.givex.com",                         // not used according to Azure Log Analytics
+      "identity.membership.coop.co.uk",        // not used according to Azure Log Analytics
+      "login.microsoftonline.com",             // not used according to Azure Log Analytics
+      "loyalty.harveynichols.com",             // not used according to Azure Log Analytics
+      "*.harveynichols.com",                   // not used according to Azure Log Analytics
+      "order.gbk.co.uk",                       // not used according to Azure Log Analytics
+      "prd-east.webapi.enterprise.co.uk",      // not used according to Azure Log Analytics
+      "prd.b6prdeng.net",                      // not used according to Azure Log Analytics
+      "purehmv.com",                           // not used according to Azure Log Analytics
+      "rewards.api.mygravity.co",              // not used according to Azure Log Analytics
+      "rewards.heathrow.com",                  // not used according to Azure Log Analytics
+      "secure.accorhotels.com",                // not used according to Azure Log Analytics
+      "secure.avis.co.uk",                     // not used according to Azure Log Analytics
+      "secure.harrods.com",                    // not used according to Azure Log Analytics
+      "secure.tesco.com",                      // not used according to Azure Log Analytics
+      "ssl.omnihotels.com",                    // not used according to Azure Log Analytics
+      "starrewardapps.valero.com",             // not used according to Azure Log Analytics
+      "www.avis.co.uk",                        // not used according to Azure Log Analytics
+      "www.beefeatergrillrewardclub.co.uk",    // not used according to Azure Log Analytics
+      "www.bigbrandtreasure.com",              // not used according to Azure Log Analytics
+      "www.boostjuicebars.co.uk",              // not used according to Azure Log Analytics
+      "www.boots.com",                         // not used according to Azure Log Analytics
+      "www.brewersfayrebonusclub.co.uk",       // not used according to Azure Log Analytics
+      "www.clubcarlson.com",                   // not used according to Azure Log Analytics
+      "www.coffee1.co.uk",                     // not used according to Azure Log Analytics
+      "www.debenhams.com",                     // not used according to Azure Log Analytics
+      "www.delta.com",                         // not used according to Azure Log Analytics
+      "www.discoveryloyalty.com",              // not used according to Azure Log Analytics
+      "www.esprit.co.uk",                      // not used according to Azure Log Analytics
+      "www.flytap.com",                        // not used according to Azure Log Analytics
+      "www.foyalty.co.uk",                     // not used according to Azure Log Analytics
+      "www.harrods.com",                       // not used according to Azure Log Analytics
+      "www.hertz.co.uk",                       // not used according to Azure Log Analytics
+      "www.hollandandbarrett.com",             // not used according to Azure Log Analytics
+      "www.houseoffraser.co.uk",               // not used according to Azure Log Analytics
+      "www.hyatt.com",                         // not used according to Azure Log Analytics
+      "www.loylap.com",                        // not used according to Azure Log Analytics
+      "www.malaysiaairlines.com",              // not used according to Azure Log Analytics
+      "www.mandco.com",                        // not used according to Azure Log Analytics
+      "www.marksandspencer.com",               // not used according to Azure Log Analytics
+      "www.maximiles.co.uk",                   // not used according to Azure Log Analytics
+      "www.miles-and-more.com",                // not used according to Azure Log Analytics
+      "www.paperchase.com",                    // not used according to Azure Log Analytics
+      "www.priorityguestrewards.com",          // not used according to Azure Log Analytics
+      "www.quidco.com",                        // not used according to Azure Log Analytics
+      "www.showcasecinemas.co.uk",             // not used according to Azure Log Analytics
+      "www.singaporeair.com",                  // not used according to Azure Log Analytics
+      "www.superdrug.com",                     // not used according to Azure Log Analytics
+      "www.tastyrewards.co.uk",                // not used according to Azure Log Analytics
+      "www.thaiairways.com",                   // not used according to Azure Log Analytics
+      "www.thebodyshop.com",                   // not used according to Azure Log Analytics
+      "www.theperfumeshop.com",                // not used according to Azure Log Analytics
+      "www.tkmaxx.com",                        // not used according to Azure Log Analytics
+      "www.uk.jal.co.jp",                      // not used according to Azure Log Analytics
+      "www.virginatlantic.com",                // not used according to Azure Log Analytics
+      "www.waterstones.com",                   // not used according to Azure Log Analytics
+      "www.wyevalegardencentres.co.uk",        // not used according to Azure Log Analytics
+      "www121.jal.co.jp",                      // not used according to Azure Log Analytics
+      "www2.hm.com",                           // not used according to Azure Log Analytics
+      "wwws-uk1.givex.com",                    // not used according to Azure Log Analytics
+      "wwws-uk2.givex.com",                    // not used according to Azure Log Analytics
+      "virtserver.swaggerhub.com",             // not used according to Azure Log Analytics
+      "statement.club-individual.co.uk",       // not used according to Azure Log Analytics
+      "www.foyalty.co.uk",                     // not used according to Azure Log Analytics
+      "www.maximiles.co.uk",                   // not used according to Azure Log Analytics
+      "london-capi.ecrebo.com",                // not used according to Azure Log Analytics
+      "london-capi-test.ecrebo.com",           // not used according to Azure Log Analytics
       "sm-uk.azure-api.net",
-      "statement.club-individual.co.uk",
-      "www.foyalty.co.uk",
-      "www.maximiles.co.uk",
-      "london-capi.ecrebo.com",
-      "london-capi-test.ecrebo.com",
       "atreemouat.itsucomms.com",
       "atreemo.itsucomms.com",
       "beta-api.pepperhq.com",
@@ -616,9 +616,9 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
     name             = "Harmonia"
     source_addresses = ["*"]
     target_fqdns = [
-      "tools.wasabi.atreemo.co.uk",
-      "wasabi.atreemo.co.uk",
-      "rihanna.atreemo.uk",
+      "tools.wasabi.atreemo.co.uk", // not used according to Azure Log Analytics
+      "wasabi.atreemo.co.uk",       // not used according to Azure Log Analytics
+      "rihanna.atreemo.uk",         // defined elsewhere
       "binkwebhook.atreemo.uk",
       "uk-bink-transactions-dev.azurewebsites.net", # Squaremeal Dev
       "uk-bink-transactions.azurewebsites.net",     # Squaremeal Prod
@@ -631,7 +631,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       type = "Https"
     }
   }
-  rule {
+  rule { // not used according to Azure Log Analytics
     name             = "Athena"
     source_addresses = ["*"]
     target_fqdns = [
@@ -680,7 +680,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
       port = "50104"
       type = "Https"
     }
-    protocol {
+    protocol { // Not used according to Azure Log Analytics
       port = "50099"
       type = "Https"
     }
@@ -688,7 +688,7 @@ resource "azurerm_firewall_application_rule_collection" "olympus" {
 }
 
 
-resource "azurerm_firewall_network_rule_collection" "ntp" {
+resource "azurerm_firewall_network_rule_collection" "ntp" { // not used according to Azure Log Analytics
   name                = "ntp"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_resource_group.rg.name
@@ -818,7 +818,7 @@ resource "azurerm_firewall_network_rule_collection" "github" {
   }
 }
 
-resource "azurerm_firewall_network_rule_collection" "smtp" {
+resource "azurerm_firewall_network_rule_collection" "smtp" { // not used according to Azure Log Analytics
   name                = "smtp"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_resource_group.rg.name
@@ -826,7 +826,7 @@ resource "azurerm_firewall_network_rule_collection" "smtp" {
   action              = "Allow"
 
   rule {
-    name                  = "smtp" # We should log a helpdesk ticket with Mailgun to lock this down
+    name                  = "smtp"
     source_addresses      = ["*"]
     destination_ports     = ["465", "587"]
     destination_addresses = ["*"]
@@ -858,7 +858,7 @@ resource "azurerm_firewall_network_rule_collection" "tailscale" {
   }
 }
 
-resource "azurerm_firewall_network_rule_collection" "grafana_prometheus" {
+resource "azurerm_firewall_network_rule_collection" "grafana_prometheus" { // Not used according to Azure Log Analytics
   name                = "grafana_to_prometheus"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_firewall.firewall.resource_group_name
@@ -877,7 +877,7 @@ resource "azurerm_firewall_network_rule_collection" "grafana_prometheus" {
   }
 }
 
-resource "azurerm_firewall_network_rule_collection" "tableau" {
+resource "azurerm_firewall_network_rule_collection" "tableau" { // Not used according to Azure Log Analytics
   name                = "tableau"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_resource_group.rg.name
@@ -894,7 +894,7 @@ resource "azurerm_firewall_network_rule_collection" "tableau" {
 }
 
 # TODO: Rewrite this to only use the IP Ranges for UK South
-resource "azurerm_firewall_network_rule_collection" "aks" {
+resource "azurerm_firewall_network_rule_collection" "aks" { // Not used according to Azure Log Analytics
   name                = "aks"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_resource_group.rg.name
@@ -913,7 +913,7 @@ resource "azurerm_firewall_network_rule_collection" "aks" {
 # The below is allows AKS clusters to be bootstrapped before the explicit
 # network rules are created. This is a non-ideal scenario, but it's livable.
 # Access is restricted to a 10/8 to prevent non-clusters from using this.
-resource "azurerm_firewall_application_rule_collection" "aks" {
+resource "azurerm_firewall_application_rule_collection" "aks" { // Not used according to Azure Log Analytics
   name                = "AzureKubernetesService"
   azure_firewall_name = azurerm_firewall.firewall.name
   resource_group_name = azurerm_resource_group.rg.name
