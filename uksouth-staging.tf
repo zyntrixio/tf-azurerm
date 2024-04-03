@@ -15,6 +15,10 @@ module "uksouth_staging" {
       "api.staging.gb.bink.com" = {
         origin_fqdn = "api.staging.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-staging-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
       "bpl.staging.gb.bink.com" = {
         origin_fqdn = "bpl.staging.uksouth.bink.sh"
@@ -65,7 +69,7 @@ module "uksouth_staging" {
     (local.entra_users["mmorar@bink.com"].object_id)      = { assigned_to = ["rg", "aks_rw", "kv_rw"] }
     (local.entra_groups["Backend"])                       = { assigned_to = ["rg", "pg", "aks_rw", "st_rw", "kv_rw", "ac_rw"] }
     (local.entra_groups["Architecture"])                  = { assigned_to = ["rg", "aks_rw", "kv_ro"] }
-    (local.entra_groups["Business Analysis"])             = { assigned_to = ["st_rw", "la"] }
+    (local.entra_groups["Business Analysis"])             = { assigned_to = ["st_rw", "la", "rg"] }
     (local.entra_groups["Data Engineers"])                = { assigned_to = ["st_ro"] }
     (local.entra_groups["Service"])                       = { assigned_to = ["sftp_ro"] }
   }

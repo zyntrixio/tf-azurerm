@@ -15,22 +15,42 @@ module "uksouth_sandbox" {
       "api.sandbox.gb.bink.com" = {
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-sandbox-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
       "sit.sandbox.gb.bink.com" = { // DEPRECATED: To be removed when lloyds move to `api.sandbox.gb.bink.com`
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-sandbox-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
       "api.lloyds.gb.bink.com" = { // DEPRECATED: To be removed when lloyds move to `api.sandbox.gb.bink.com`
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-lloyds-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
       "api.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
       "retailer.retail.gb.bink.com" = { // DEPRECATED: To be removed when Stonegate move to `api.sandbox.gb.bink.com`
         origin_fqdn = "api.sandbox.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-retail-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+        }
       }
     }
   }

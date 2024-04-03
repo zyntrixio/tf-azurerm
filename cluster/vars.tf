@@ -19,6 +19,23 @@ variable "frontdoor" {
     domains = optional(map(object({
       certificate = string
       origin_fqdn = string
+      waf = optional(object({
+        enforced = optional(bool, false)
+        custom_rules = optional(map(object({
+          enabled = optional(bool, true)
+          action  = optional(string, "Block")
+          match_conditions = list(object({
+            match_variable     = string
+            operator           = string
+            match_values       = list(string)
+            negation_condition = optional(bool, false)
+          }))
+        })), {})
+        managed_rules = optional(map(object({
+          version = string
+          action  = string
+        })), {})
+      }), {})
     })), {})
   })
   default = {}

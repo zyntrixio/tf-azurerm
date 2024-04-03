@@ -117,3 +117,60 @@ resource "azurerm_cdn_frontdoor_route" "i" {
   cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.i[each.key].id]
   link_to_default_domain          = false
 }
+
+resource "azurerm_cdn_frontdoor_firewall_policy" "i" {
+  provider            = azurerm.core
+  for_each            = var.frontdoor.domains
+  name                = replace(each.key, ".", "")
+  resource_group_name = split("/", var.frontdoor.profile)[4]
+  sku_name            = "Premium_AzureFrontDoor"
+  enabled             = true
+  mode                = each.value.waf.enforced ? "Prevention" : "Detection"
+
+  dynamic "custom_rule" {
+    for_each = each.value.waf.custom_rules
+    content {
+      name     = replace(custom_rule.key, "_", "")
+      enabled  = custom_rule.value.enabled
+      priority = index(keys(each.value.waf.custom_rules), custom_rule.key)
+      type     = "MatchRule"
+      action   = custom_rule.value.action
+      dynamic "match_condition" {
+        for_each = custom_rule.value.match_conditions
+        content {
+          match_variable     = match_condition.value.match_variable
+          operator           = match_condition.value.operator
+          match_values       = match_condition.value.match_values
+          negation_condition = match_condition.value.negation_condition
+        }
+      }
+    }
+  }
+
+  dynamic "managed_rule" {
+    for_each = each.value.waf.managed_rules
+    content {
+      type    = managed_rule.key
+      version = managed_rule.value.version
+      action  = managed_rule.value.action
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "i" {
+  provider                 = azurerm.core
+  for_each                 = var.frontdoor.domains
+  name                     = replace(each.key, ".", "")
+  cdn_frontdoor_profile_id = var.frontdoor.profile
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.i[each.key].id
+      association {
+        patterns_to_match = ["/*"]
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.i[each.key].id
+        }
+      }
+    }
+  }
+}

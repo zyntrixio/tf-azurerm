@@ -9,6 +9,9 @@ locals {
       },
     },
   }
+  amex_origins       = ["148.173.97.160", "148.173.97.161"]
+  visa_origins       = ["198.241.162.104", "198.241.168.15", "198.241.174.12"]
+  mastercard_origins = ["12.22.155.240", "209.64.211.240", "216.119.209.240", "216.119.217.240"]
   secure_origins = [
     "62.64.135.206/32",  # Ascot Primary - Giganet
     "194.74.152.11/32",  # Ascot Secondary - BT
@@ -50,7 +53,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.96.0"
+      version = "3.97.1"
     }
     azuread = {
       source  = "hashicorp/azuread"

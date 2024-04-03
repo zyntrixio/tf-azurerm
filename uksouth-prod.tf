@@ -17,6 +17,60 @@ module "uksouth_prod" {
       "api.gb.bink.com" = {
         origin_fqdn = "api.prod.uksouth.bink.sh"
         certificate = module.uksouth_frontdoor.certificates["acmebot-gb-bink-com"]
+        waf = {
+          enforced      = false
+          managed_rules = { Microsoft_DefaultRuleSet = { version = "2.1", action = "Log" } }
+          custom_rules = {
+            zephyrus_amex = {
+              action = "Log"
+              match_conditions = [
+                {
+                  match_variable = "RequestUri"
+                  operator       = "Equal"
+                  match_values   = ["/auth_transactions/authorize", "/auth_transactions/amex", "/auth_transactions/amex/settlement"]
+                },
+                {
+                  match_variable     = "RemoteAddr"
+                  operator           = "IPMatch"
+                  negation_condition = true
+                  match_values       = local.amex_origins
+                },
+              ]
+            }
+            zephyrus_visa = {
+              action = "Log"
+              match_conditions = [
+                {
+                  match_variable = "RequestUri"
+                  operator       = "Equal"
+                  match_values   = ["/auth_transactions/visa"]
+                },
+                {
+                  match_variable     = "RemoteAddr"
+                  operator           = "IPMatch"
+                  negation_condition = true
+                  match_values       = local.visa_origins
+                },
+              ]
+            }
+            zephyrus_mastercard = {
+              action = "Log"
+              match_conditions = [
+                {
+                  match_variable = "RequestUri"
+                  operator       = "Equal"
+                  match_values   = ["/auth_transactions/mastercard"]
+                },
+                {
+                  match_variable     = "RemoteAddr"
+                  operator           = "IPMatch"
+                  negation_condition = true
+                  match_values       = local.mastercard_origins
+                },
+              ]
+            }
+          }
+        }
       }
       "docs.gb.bink.com" = {
         origin_fqdn = "docs.prod.uksouth.bink.sh"
