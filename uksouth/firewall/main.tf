@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    azurerm = { source = "hashicorp/azurerm" }
+    github  = { source = "integrations/github", version = "~> 6.2.1" }
+  }
+}
+
+data "github_ip_ranges" "i" {}
+
 resource "azurerm_resource_group" "rg" {
   name     = "uksouth-firewall"
   location = "uksouth"
