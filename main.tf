@@ -146,7 +146,7 @@ module "uksouth_frontdoor" {
   }
 }
 
-module "uksouth_firewall" {
+module "old_uksouth_firewall" {
   source = "./uksouth/firewall"
 
   ip_range         = "192.168.0.0/24"
@@ -157,9 +157,18 @@ module "uksouth_firewall" {
   aks_cidrs        = local.cidrs.uksouth.aks
 }
 
-module "uksouth_firewall_policy" {
+module "firewall_policy" {
+  providers = {
+    azurerm = azurerm.global_core
+  }
   source = "./firewall/policy"
-  common = {}
+}
+
+module "uksouth_firewall" {
+  source    = "./firewall/deployment"
+  location  = "uksouth"
+  ip_range  = "192.168.0.0/24"
+  policy_id = module.firewall_policy.id.uksouth
 }
 
 module "uksouth_grafana" {

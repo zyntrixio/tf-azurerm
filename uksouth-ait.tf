@@ -9,6 +9,7 @@ module "uksouth_ait" {
     location = "uksouth"
     cidr     = "10.61.0.0/16"
   }
+  firewall = module.uksouth_firewall.peer_info
   backups = {
     resource_id  = module.uksouth_backups.resource_id
     principal_id = module.uksouth_backups.principal_id

@@ -5,24 +5,25 @@ terraform {
   }
 }
 
-variable "common" {
-  type = object({
-    location = optional(string, "uksouth")
-  })
-}
-
 data "github_ip_ranges" "i" {}
 
 resource "azurerm_resource_group" "i" {
-  name     = "${var.common.location}-firewall-policy"
-  location = var.common.location
+  name     = "firewall-policy"
+  location = "uksouth"
 }
 
 resource "azurerm_firewall_policy" "i" {
-  name                = azurerm_resource_group.i.name
+  name                = "global-${azurerm_resource_group.i.name}"
   resource_group_name = azurerm_resource_group.i.name
   location            = azurerm_resource_group.i.location
   sku                 = "Basic"
+}
+
+output "id" {
+  value = {
+    global  = azurerm_firewall_policy.i.id
+    uksouth = azurerm_firewall_policy.uksouth.id
+  }
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "infrastructure" {
@@ -126,7 +127,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "infrastructure" {
         port = 443
       }
       source_addresses  = ["*"]
-      destination_fqdns = ["*.cloudamqp.com"]
+      destination_fqdns = ["*.cloudamqp.com"] // Make rule more verbose
     }
   }
   application_rule_collection {
@@ -227,6 +228,15 @@ resource "azurerm_firewall_policy_rule_collection_group" "infrastructure" {
       ]
     }
     rule {
+      name = "AKS Extras"
+      protocols {
+        port = "443"
+        type = "Https"
+      }
+      source_addresses      = ["*"]
+      destination_fqdn_tags = ["AzureKubernetesService"]
+    }
+    rule {
       name = "Microsoft Teams"
       protocols {
         port = "443"
@@ -237,7 +247,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "infrastructure" {
     }
   }
   application_rule_collection {
-    name     = "Python Tooling"
+    name     = "Python Tooling" // Ideally should be removed.
     action   = "Allow"
     priority = 2100
     rule {
@@ -355,7 +365,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "tailscale" {
 resource "azurerm_firewall_policy_rule_collection_group" "github" {
   name               = "GitHub"
   firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 200
+  priority           = 120
   network_rule_collection {
     name     = "GitHub Network Rules"
     action   = "Allow"
@@ -393,103 +403,10 @@ resource "azurerm_firewall_policy_rule_collection_group" "github" {
   }
 }
 
-resource "azurerm_firewall_policy_rule_collection_group" "datawarehouse" {
-  name               = "DataWarehouse"
-  firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 300
-  application_rule_collection {
-    name     = "Snowflake"
-    action   = "Allow"
-    priority = 2000
-    rule {
-      name = "Snowflake Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["xb90214.eu-west-2.aws.snowflakecomputing.com"]
-    }
-    rule {
-      name = "Snowflake UAT"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["ee39463.eu-west-2.aws.snowflakecomputing.com"]
-    }
-    rule {
-      name = "Snowflake Dev"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["ci34413.eu-west-2.aws.snowflakecomputing.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "GetDBT"
-    action   = "Allow"
-    priority = 2010
-    rule {
-      name = "DBT"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["hub.getdbt.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "Tableau"
-    action   = "Allow"
-    priority = 2020
-    rule {
-      name = "Telemetry"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["prod.telemetry.tableausoftware.com", "qa.telemetry.tableausoftware.com"]
-    }
-    rule {
-      name = "License Server"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["atr.licensing.tableau.com"]
-    }
-    rule {
-      name = "NGINX"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["*.nginx.org"]
-    }
-    rule {
-      name = "Postgres APT"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["apt.postgresql.org"]
-    }
-  }
-}
-
 resource "azurerm_firewall_policy_rule_collection_group" "registries" {
   name               = "ContainerRegistries"
   firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 400
+  priority           = 130
   application_rule_collection {
     name     = "GitHub Container Registry"
     action   = "Allow"
@@ -529,7 +446,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "registries" {
         port = 443
       }
       source_addresses  = ["*"]
-      destination_fqdns = ["registry-1.docker.io", "production.cloudflare.docker.com"]
+      destination_fqdns = ["registry-1.docker.io", "production.cloudflare.docker.com", "auth.docker.io"]
     }
   }
   application_rule_collection {
@@ -579,7 +496,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "registries" {
 resource "azurerm_firewall_policy_rule_collection_group" "sinch" {
   name               = "Sinch"
   firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 500
+  priority           = 200
   application_rule_collection {
     name     = "Mailgun"
     action   = "Allow"
@@ -613,7 +530,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "sinch" {
 resource "azurerm_firewall_policy_rule_collection_group" "payment_schemes" {
   name               = "PaymentSchemes"
   firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 600
+  priority           = 300
   network_rule_collection {
     name     = "SFTP"
     action   = "Allow"
@@ -694,196 +611,6 @@ resource "azurerm_firewall_policy_rule_collection_group" "payment_schemes" {
       }
       source_addresses  = ["*"]
       destination_fqdns = ["core.spreedly.com"]
-    }
-  }
-}
-
-resource "azurerm_firewall_policy_rule_collection_group" "loyalty_schemes" {
-  name               = "LoyatySchemes"
-  firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 700
-  network_rule_collection {
-    name     = "TGIFridays SFTP"
-    action   = "Allow"
-    priority = 1000
-    rule {
-      name                  = "SFTP"
-      protocols             = ["TCP"]
-      source_addresses      = ["*"]
-      destination_ports     = [22]
-      destination_addresses = ["185.64.224.12"]
-    }
-  }
-  application_rule_collection {
-    name     = "Itsu"
-    action   = "Allow"
-    priority = 2000
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["itsucomms.com", "api.pepperhq.com"]
-    }
-    rule {
-      name = "UAT"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["atreemouat.itsucomms.com", "beta-api.pepperhq.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "Atreemo"
-    action   = "Allow"
-    priority = 2010
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["rhianna.atreemo.uk", "binkwebhook.atreemo.uk"]
-    }
-  }
-  application_rule_collection {
-    name     = "Slim Chickens"
-    action   = "Allow"
-    priority = 2020
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["api.podifi.com", "pos.uk.eagleeye.com", "portal.uk.eagleeye.com"]
-    }
-    rule {
-      name = "Demo"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["demoapi.podifi.com", "pos.sandbox.uk.eagleeye.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "Squaremeal"
-    action   = "Allow"
-    priority = 2030
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["sm-uk.azure-api.net", "uk-bink-transactions.azurewebsites.net"]
-    }
-    rule {
-      name = "Dev"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["uk-bink-transactions-dev.azurewebsites.net"]
-    }
-  }
-  application_rule_collection {
-    name     = "TGIFridays"
-    action   = "Allow"
-    priority = 2040
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["dashboard.punchh.com", "mobileapi.punchh.com", "dashboard-api.punchh.com"]
-    }
-    rule {
-      name = "Sandbox"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["sandbox.punchh.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "ASOS"
-    action   = "Allow"
-    priority = 2050
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["api.jigsaw360.com"]
-    }
-    rule {
-      name = "Dev"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["dev.jigsaw360.com"]
-    }
-  }
-  application_rule_collection {
-    name     = "The Works"
-    action   = "Allow"
-    priority = 2060
-    rule {
-      name = "Production"
-      protocols {
-        type = "Https"
-        port = 50104
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["dc-uk1.givex.com", "dc-uk2.givex.com"]
-    }
-    rule {
-      name = "Dev"
-      protocols {
-        type = "Https"
-        port = 50104
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["dev-dataconnect.givex.com", "beta-dataconnect.givex.com"]
-    }
-  }
-}
-
-resource "azurerm_firewall_policy_rule_collection_group" "freshservice" {
-  name               = "FreshService"
-  firewall_policy_id = azurerm_firewall_policy.i.id
-  priority           = 800
-  application_rule_collection {
-    name     = "FreshService"
-    action   = "Allow"
-    priority = 2000
-    rule {
-      name = "Bink"
-      protocols {
-        type = "Https"
-        port = 443
-      }
-      source_addresses  = ["*"]
-      destination_fqdns = ["bink.freshservice.com"]
     }
   }
 }

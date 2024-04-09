@@ -63,6 +63,15 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  alias           = "global_core"
+  subscription_id = "b52771ed-3045-438d-9207-abf61303acc3"
+  client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
+  client_secret   = var.azurerm_terraform_client_id
+  tenant_id       = "a6e2367a-92ea-4e5a-b565-723830bcc095"
+  features {}
+}
+
+provider "azurerm" {
   alias           = "ukwest_disasterrecovery"
   subscription_id = "538100b6-70c7-4b23-b5fa-eb2de96115ea"
   client_id       = "204e5c70-3a77-4ba3-9714-af93352db62a"
