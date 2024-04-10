@@ -90,6 +90,30 @@ resource "azurerm_firewall" "i" {
   }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "i" {
+  name                           = "loganalytics"
+  target_resource_id             = azurerm_firewall.i.id
+  log_analytics_workspace_id     = azurerm_log_analytics_workspace.i.id
+  log_analytics_destination_type = "Dedicated"
+
+  enabled_log { category = "AZFWNetworkRule" }
+  enabled_log { category = "AZFWApplicationRule" }
+  enabled_log { category = "AZFWNatRule" }
+  enabled_log { category = "AZFWThreatIntel" }
+  enabled_log { category = "AZFWIdpsSignature" }
+  enabled_log { category = "AZFWDnsQuery" }
+  enabled_log { category = "AZFWFqdnResolveFailure" }
+  enabled_log { category = "AZFWFatFlow" }
+  enabled_log { category = "AZFWFlowTrace" }
+  enabled_log { category = "AZFWApplicationRuleAggregation" }
+  enabled_log { category = "AZFWNetworkRuleAggregation" }
+  enabled_log { category = "AZFWNatRuleAggregation" }
+  metric {
+    category = "AllMetrics"
+    enabled  = false
+  }
+}
+
 output "peer_info" {
   value = {
     resource_group_name = azurerm_resource_group.i.name
