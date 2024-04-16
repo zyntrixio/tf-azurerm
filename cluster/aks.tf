@@ -117,6 +117,9 @@ resource "azurerm_kubernetes_cluster" "i" {
     azurerm_virtual_network_peering.local,
     azurerm_virtual_network_peering.remote,
   ]
+  lifecycle {
+    ignore_changes = [default_node_pool[0].upgrade_settings]
+  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "i" {
