@@ -161,7 +161,6 @@ module "uksouth_prod" {
     sku_tier                  = "Standard"
     automatic_channel_upgrade = "patch"
     pool_vm_size              = "Standard_D4ads_v5"
-    ebpf_enabled              = false
     pool_min_count            = 2
     additional_node_pools = {
       spot = { vm_size = "Standard_D4ads_v5" }

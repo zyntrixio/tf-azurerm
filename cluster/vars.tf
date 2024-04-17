@@ -182,7 +182,6 @@ variable "kube" {
     pool_vm_size               = optional(string, "Standard_D4ads_v5")
     pool_zones                 = optional(list(string), ["1", "2", "3"])
     pool_os_disk_type          = optional(string, "Ephemeral")
-    ebpf_enabled               = optional(bool, false)
     pool_os_disk_size_gb       = optional(number, 128)
     pool_os_sku                = optional(string, "AzureLinux")
     pool_max_pods              = optional(number, 50)
