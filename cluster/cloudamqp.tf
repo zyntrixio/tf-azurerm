@@ -118,3 +118,18 @@ resource "azurerm_key_vault_secret" "amqp" {
 
   depends_on = [azurerm_key_vault_access_policy.iam_su]
 }
+
+resource "azurerm_key_vault_secret" "cloudamqp" {
+  for_each = var.cloudamqp.enabled ? merge({
+    "host" : cloudamqp_instance.i[0].host,
+    "url" : "amqps://${local.amqp_credentials.user}:${local.amqp_credentials.pass}@${cloudamqp_instance.i[0].host}/${local.amqp_credentials.user}",
+    "username" : local.amqp_credentials.user,
+    "password" : local.amqp_credentials.pass,
+  }, { for node in data.cloudamqp_nodes.i[0].nodes : "node-${reverse(split("-", node.name))[0]}" => node.hostname }) : {}
+  name         = "infra-cloudamqp-${each.key}"
+  key_vault_id = azurerm_key_vault.i.id
+  content_type = "text/plain"
+  value        = each.value
+
+  depends_on = [azurerm_key_vault_access_policy.iam_su]
+}
