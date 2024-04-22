@@ -425,6 +425,15 @@ resource "azurerm_firewall_application_rule_collection" "software" {
       type = "Https"
     }
   }
+  rule {
+    name             = "akv2k8s"
+    source_addresses = ["*"]
+    target_fqdns     = ["charts.spvapi.no"]
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
 }
 
 resource "azurerm_firewall_application_rule_collection" "olympus" {

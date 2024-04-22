@@ -316,6 +316,20 @@ resource "azurerm_firewall_policy_rule_collection_group" "infrastructure" {
       destination_fqdns = ["bink.eu.auth0.com", "bink-prod.uk.auth0.com"]
     }
   }
+  application_rule_collection {
+    name     = "Akv2k8s"
+    action   = "Allow"
+    priority = 2150
+    rule {
+      name = "Akv2k8s"
+      protocols {
+        port = "443"
+        type = "Https"
+      }
+      source_addresses  = ["*"]
+      destination_fqdns = ["charts.spvapi.no"]
+    }
+  }
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "tailscale" {
